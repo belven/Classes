@@ -1,0 +1,25 @@
+name: BelvensClasses
+main: belven.classes.ClassManager
+version: 1
+
+commands:
+   bchealer:
+      description: This will change your class to a healer
+      usage: /bchealer 
+      permission: BelvensClasses.bchealer
+      permission-message: You don't have bchealer
+   listclasses:
+      description: Lists all players and thier classes
+      usage: /listclasses
+      permission: BelvensClasses.listclasses
+      permission-message: You don't have listclasses
+   listabilities:
+      description: Lists your classes abilities
+      usage: /listabilities
+      permission: BelvensClasses.listabilities
+      permission-message: You don't have listabilities
+   bcmage:
+      description: This will change your class to a mage
+      usage: /bcmage 
+      permission: BelvensClasses.bcmage 
+      permission-message: You don't have bcmage 
