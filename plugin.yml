@@ -23,3 +23,23 @@ commands:
       usage: /bcmage 
       permission: BelvensClasses.bcmage 
       permission-message: You don't have bcmage 
+   bcwarrior:
+      description: This will change your class to a warrior
+      usage: /bcwarrior 
+      permission: BelvensClasses.bcwarrior 
+      permission-message: You don't have bcwarrior
+   bcassassin:
+      description: This will change your class to a assassin
+      usage: /bcassassin 
+      permission: BelvensClasses.bcassassin 
+      permission-message: You don't have assassin
+   bcarcher:
+      description: This will change your class to a archer
+      usage: /bcarcher 
+      permission: BelvensClasses.bcarcher 
+      permission-message: You don't have archer   
+   bcdummy:
+      description: Spawns a dummy player entity
+      usage: /bcdummy 
+      permission: BelvensClasses.bcdummy
+      permission-message: You don't have bcdummy

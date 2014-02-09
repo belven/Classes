@@ -2,11 +2,16 @@ package belven.classes;
 
 import java.util.HashMap;
 
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import belven.listeners.BlockListener;
+import belven.listeners.PlayerListener;
 
 public class ClassManager extends JavaPlugin
 {
@@ -62,9 +67,35 @@ public class ClassManager extends JavaPlugin
 
             return true;
         }
+        else if (commandSent.equalsIgnoreCase("bcdummy"))
+        {
+            Location playerLocation = player.getLocation();
+            playerLocation.setX(playerLocation.getX() + 3);
+            player.getWorld().spawnEntity(playerLocation, EntityType.ZOMBIE);
+
+            return true;
+        }
         else if (commandSent.equalsIgnoreCase("bcmage"))
         {
             this.SetClass(player, "Mage");
+
+            return true;
+        }
+        else if (commandSent.equalsIgnoreCase("bcwarrior"))
+        {
+            this.SetClass(player, "Warrior");
+
+            return true;
+        }
+        else if (commandSent.equalsIgnoreCase("bcassassin"))
+        {
+            this.SetClass(player, "Assassin");
+
+            return true;
+        }
+        else if (commandSent.equalsIgnoreCase("bcarcher"))
+        {
+            this.SetClass(player, "Archer");
 
             return true;
         }

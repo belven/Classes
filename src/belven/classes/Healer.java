@@ -1,7 +1,6 @@
 package belven.classes;
 
-import java.util.ArrayList;
-
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -11,10 +10,7 @@ import belven.classes.Abilities.Bandage;
 import belven.classes.Abilities.Heal;
 
 public class Healer extends Class
-{
-    public ArrayList<Ability> Abilities = new ArrayList<Ability>();
-    public Player classOwner = null;
-    public ClassManager plugin;
+{  
     public Heal classHeal;
     public Bandage classBandage;
 
@@ -22,9 +18,9 @@ public class Healer extends Class
     {
         plugin = instance;
         classOwner = currentPlayer;
-        classHeal = new Heal(this);
-        classBandage = new Bandage(this);
-        SetAbilities();
+        this.classHeal = new Heal(this);
+        this.classBandage = new Bandage(this);
+        this.SetAbilities();
     }
 
     @Override
@@ -32,7 +28,7 @@ public class Healer extends Class
     {
         Player playerSelected;
         playerSelected = classOwner;
-        CheckAbilitiesToCast(playerSelected);
+        this.CheckAbilitiesToCast(playerSelected);
     }
 
     public void PerformAbility(Entity currentEntity)
@@ -42,44 +38,45 @@ public class Healer extends Class
         if (currentEntity.getType() == EntityType.PLAYER)
         {
             playerSelected = (Player) currentEntity;
-            CheckAbilitiesToCast(playerSelected);
+            this.CheckAbilitiesToCast(playerSelected);
         }
         else
         {
             playerSelected = classOwner;
-            CheckAbilitiesToCast(playerSelected);
+            this.CheckAbilitiesToCast(playerSelected);
         }
     }
 
     public void CheckAbilitiesToCast(Player player)
     {
 
-        if (Abilities != null)
-        {
-            for (int i = 0; i < Abilities.size(); i++)
-            {
-                if (Abilities.get(i).HasRequirements(player))
-                {
-                    Abilities.get(i).PerformAbility(player);
-                }
-            }
-        }
+        // if (Abilities != null)
+        // {
+        // for (int i = 0; i < Abilities.size(); i++)
+        // {
+        // if (Abilities.get(i).HasRequirements(player))
+        // {
+        // Abilities.get(i).PerformAbility(player);
+        // }
+        // }
+        // }
 
-        // if (classHeal.HasRequirements(classOwner)
-        // )
-        // {
-        // classHeal.PerformAbility(player);
-        // plugin.getServer().broadcastMessage(
-        // classOwner().getName() + " healed " + player.getName());
-        // }
-        // else if (classBandage.HasRequirements(classOwner)
-        // )
-        // {
-        // classBandage.PerformAbility(player);
-        // plugin.getServer().broadcastMessage(
-        // classOwner().getName() + " gave " + player.getName()
-        // + " a bandage");
-        // }
+        if (player.getHealth() <= 10
+                && this.classHeal.HasRequirements(classOwner))
+        {
+            this.classHeal.PerformAbility(player);
+            plugin.getServer().broadcastMessage(
+                    classOwner().getName() + " healed " + player.getName());
+        }
+        else if ((classOwner.getItemInHand().getType() == Material.STICK || classOwner
+                .getItemInHand().getType() == Material.PAPER)
+                && this.classBandage.HasRequirements(classOwner))
+        {
+            this.classBandage.PerformAbility(player);
+            plugin.getServer().broadcastMessage(
+                    classOwner().getName() + " gave " + player.getName()
+                            + " a bandage");
+        }
     }
 
     public void SetAbilities()
@@ -90,12 +87,12 @@ public class Healer extends Class
 
             if (currentLevel > 1)
             {
-                AddToAbilities(classBandage);
+                this.AddToAbilities(classBandage);
             }
 
             if (currentLevel > 3)
             {
-                AddToAbilities(classHeal);
+                this.AddToAbilities(classHeal);
             }
 
         }

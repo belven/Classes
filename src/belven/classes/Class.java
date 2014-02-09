@@ -1,5 +1,7 @@
 package belven.classes;
 
+import java.util.ArrayList;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -7,6 +9,10 @@ import belven.classes.Abilities.Ability;
 
 public abstract class Class
 {
+    public ArrayList<Ability> Abilities = new ArrayList<Ability>();
+    public Player classOwner = null;
+    public ClassManager plugin;
+    
     public String getClassName()
     {
         return "";
@@ -41,6 +47,7 @@ public abstract class Class
 
     public void PerformAbility(Entity currentEntity)
     {
+        
     }
 
     public String ListAbilities()
@@ -54,6 +61,12 @@ public abstract class Class
 
     public Player classOwner()
     {
+        return null;
+    }
+
+    public ClassManager plugin()
+    {
+        // TODO Auto-generated method stub
         return null;
     }
 }

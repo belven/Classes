@@ -5,51 +5,52 @@ import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class Heal implements Ability
+public class CripplingArrow implements Ability
 {
-
-    public belven.classes.Class currentClass;
-
-    public Heal(belven.classes.Class CurrentClass)
-    {
-        currentClass = CurrentClass;
-    }
-
-    @Override
-    public void PerformAbility(Player playerToHeal)
-    {
-        playerToHeal.addPotionEffect(new PotionEffect(PotionEffectType.HEAL,
-                SecondsToTicks(1), Amplifier()));
-    }
-
-    public int SecondsToTicks(int seconds)
-    {
-        return (seconds * 20);
-
-    }
 
     @Override
     public void PerformAbility()
     {
-    }
+        // TODO Auto-generated method stub
 
-    public int Amplifier()
-    {
-        return Math.round(currentClass.classOwner().getLevel() / 7);
     }
 
     @Override
-    public String GetAbilityName()
+    public void PerformAbility(Player targetPlayer)
     {
-        return "Heal";
+        // TODO Auto-generated method stub
+
     }
 
-    @SuppressWarnings("deprecation")
+    public void PerformAbility(Zombie targetZombie)
+    {
+        targetZombie.addPotionEffect(SlowArrow());
+    }
+    
+    public void PerformAbility(Skeleton targetSkeleton)
+    {
+        targetSkeleton.addPotionEffect(SlowArrow());
+    }
+
+    @Override
+    public int SecondsToTicks(int seconds)
+    {
+        return (seconds * 20);
+    }
+
+    @Override
+    public int Amplifier()
+    {
+        return 3;
+    }
+
     @Override
     public boolean HasRequirements(Player playerToCheck)
     {
@@ -71,10 +72,11 @@ public class Heal implements Ability
             int positionID;
             for (int i = 0; i < requirements.size(); i++)
             {
-                positionID = playerInventory.first(requirements.get(i).getType());
+                positionID = playerInventory.first(requirements.get(i)
+                        .getType());
                 tempStack = playerInventory.getItem(positionID);
                 tempStack.setAmount(tempStack.getAmount() - 1);
-                currentClass.classOwner().updateInventory();
+                // playerInventory.setItem(positionID, tempStack);
             }
             return true;
         }
@@ -82,11 +84,23 @@ public class Heal implements Ability
             return false;
     }
 
+    @Override
+    public String GetAbilityName()
+    {
+        return "CripplingArrow";
+    }
+
+    @Override
     public List<ItemStack> GetAbilityRequirements()
     {
         List<ItemStack> tempRequirements = new ArrayList<ItemStack>();
-        tempRequirements.add(new ItemStack(Material.LAPIS_BLOCK, 1));
-
+        tempRequirements.add(new ItemStack(Material.SNOW_BALL, 1));
         return tempRequirements;
+    }
+
+    private PotionEffect SlowArrow()
+    {
+        return new PotionEffect(PotionEffectType.SLOW, SecondsToTicks(5),
+                Amplifier());
     }
 }

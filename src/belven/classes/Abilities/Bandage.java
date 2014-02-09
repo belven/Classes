@@ -26,21 +26,14 @@ public class Bandage implements Ability
 
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void PerformAbility(Player targetPlayer)
     {
-        Inventory healerInventory = currentClass.classOwner().getInventory();
-        ItemStack paperItem = new ItemStack(Material.PAPER, 1);
-        ItemStack stickItem = new ItemStack(Material.STICK, 1);
-
         targetPlayer.addPotionEffect(new PotionEffect(
                 PotionEffectType.ABSORPTION, SecondsToTicks(20), 1), true);
-
-        healerInventory.removeItem(paperItem, stickItem);
-        currentClass.classOwner().updateInventory();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean HasRequirements(Player playerToCheck)
     {
@@ -65,7 +58,7 @@ public class Bandage implements Ability
                 positionID = playerInventory.first(requirements.get(i).getType());
                 tempStack = playerInventory.getItem(positionID);
                 tempStack.setAmount(tempStack.getAmount() - 1);
-                playerInventory.setItem(positionID, tempStack);
+                currentClass.classOwner().updateInventory();
             }
             return true;
         }
