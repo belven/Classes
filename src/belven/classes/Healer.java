@@ -10,7 +10,7 @@ import belven.classes.Abilities.Bandage;
 import belven.classes.Abilities.Heal;
 
 public class Healer extends Class
-{  
+{
     public Heal classHeal;
     public Bandage classBandage;
 
@@ -49,33 +49,19 @@ public class Healer extends Class
 
     public void CheckAbilitiesToCast(Player player)
     {
-
-        // if (Abilities != null)
-        // {
-        // for (int i = 0; i < Abilities.size(); i++)
-        // {
-        // if (Abilities.get(i).HasRequirements(player))
-        // {
-        // Abilities.get(i).PerformAbility(player);
-        // }
-        // }
-        // }
-
         if (player.getHealth() <= 10
-                && this.classHeal.HasRequirements(classOwner))
+                && this.classHeal.HasRequirements(classOwner, 1))
         {
             this.classHeal.PerformAbility(player);
-            plugin.getServer().broadcastMessage(
-                    classOwner().getName() + " healed " + player.getName());
+            classOwner.sendMessage("You healed " + player.getName());
         }
         else if ((classOwner.getItemInHand().getType() == Material.STICK || classOwner
                 .getItemInHand().getType() == Material.PAPER)
-                && this.classBandage.HasRequirements(classOwner))
+                && this.classBandage.HasRequirements(classOwner, 1))
         {
             this.classBandage.PerformAbility(player);
-            plugin.getServer().broadcastMessage(
-                    classOwner().getName() + " gave " + player.getName()
-                            + " a bandage");
+            classOwner.sendMessage("You gave " + player.getName()
+                    + " a bandage");
         }
     }
 
@@ -94,7 +80,6 @@ public class Healer extends Class
             {
                 this.AddToAbilities(classHeal);
             }
-
         }
     }
 

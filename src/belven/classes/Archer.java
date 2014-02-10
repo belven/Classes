@@ -1,6 +1,6 @@
 package belven.classes;
 
-
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.material.Wool;
 import org.bukkit.scheduler.BukkitTask;
 
 import belven.classes.Abilities.CripplingArrow;
@@ -49,9 +50,11 @@ public class Archer extends Class
         Location trapLocation = classOwner.getLocation();
         trapLocation.setY(trapLocation.getY() - 1);
 
-        if (classOwner.getItemInHand().getType() == Material.WOOL
-                && trapLocation.getBlock().getType() != Material.WOOL
-                && classFireTrap.HasRequirements(classOwner))
+        if (classOwner.getItemInHand().getType() == (new Wool(DyeColor.RED)
+                .getItemType())
+                && trapLocation.getBlock().getType() != (new Wool(DyeColor.RED)
+                        .getItemType())
+                && classFireTrap.HasRequirements(classOwner, 1))
             classFireTrap.PerformAbility(classOwner.getLocation());
         {
             classFireTrap.PerformAbility(trapLocation);
@@ -64,11 +67,15 @@ public class Archer extends Class
         Location trapLocation = classOwner.getLocation();
         trapLocation.setY(trapLocation.getY() - 1);
 
-        if (classOwner.getItemInHand().getType() == Material.WOOL
-                && trapLocation.getBlock().getType() != Material.WOOL
-                && classFireTrap.HasRequirements(classOwner))
+        if (classOwner.getItemInHand().getType() == (new Wool(DyeColor.RED)
+                .getItemType())
+                && trapLocation.getBlock().getType() != (new Wool(DyeColor.RED)
+                        .getItemType())
+                && classFireTrap.HasRequirements(classOwner, 1))
+            classFireTrap.PerformAbility(classOwner.getLocation());
         {
             classFireTrap.PerformAbility(trapLocation);
+
         }
     }
 
@@ -95,7 +102,7 @@ public class Archer extends Class
                     currentZombie.getMaxHealth());
 
             event.setDamage(damageToDo);
-            if (classCripplingArrow.HasRequirements(classOwner))
+            if (classCripplingArrow.HasRequirements(classOwner, 1))
             {
                 Location zombieLocation = currentZombie.getLocation();
                 zombieLocation.setY(zombieLocation.getY() + 1);
@@ -117,7 +124,7 @@ public class Archer extends Class
 
             event.setDamage(damageToDo);
 
-            if (classCripplingArrow.HasRequirements(classOwner))
+            if (classCripplingArrow.HasRequirements(classOwner, 1))
             {
                 Location skeletonLocation = currentSkeleton.getLocation();
                 skeletonLocation.setY(skeletonLocation.getY() + 1);
@@ -139,17 +146,15 @@ public class Archer extends Class
     {
         return plugin;
     }
-    
+
     public Player classOwner()
     {
         return classOwner;
     }
-    
-    public int SecondsToTicks(int seconds)
 
+    public int SecondsToTicks(int seconds)
     {
         return (seconds * 20);
-
     }
 
     private double damageToDo(double damageDone, double currentHealth,

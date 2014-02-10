@@ -57,30 +57,23 @@ public class Mage extends Class
 
     public void CheckAbilitiesToCast(Player target, Player player)
     {
-        // if (Abilities != null)
-        // {
-        // for (int i = 0; i < Abilities.size(); i++)
-        // {
-        // if (Abilities.get(i).HasRequirements(player))
-        // {
-        // Abilities.get(i).PerformAbility(player);
-        // }
-        // }
-        // }
-
         if (classOwner.getItemInHand().getType() == Material.NETHER_STAR
-                && classChainLightning.HasRequirements(classOwner))
+                && classChainLightning.HasRequirements(classOwner, 1))
         {
             classChainLightning.PerformAbility(classOwner.getLocation());
         }
         else if (classOwner.getItemInHand().getType() == Material.FEATHER
-                && classPop.HasRequirements(classOwner))
+                && classPop.HasRequirements(classOwner, 1))
         {
             currentBlockIterator = new BlockIterator(classOwner, 40);
+            Block popBlock = GetTargetBlock();
 
-            classPop.PerformAbility(GetTargetBlock().getLocation());
+            if (popBlock != null)
+            {
+                classPop.PerformAbility(popBlock.getLocation());
+            }
         }
-        else if (classFireball.HasRequirements(player))
+        else if (classFireball.HasRequirements(player, 1))
         {
             this.classFireball.PerformAbility(player);
         }
@@ -88,14 +81,17 @@ public class Mage extends Class
 
     public Block GetTargetBlock()
     {
+        Block lastBlock;
+
         if (currentBlockIterator != null)
         {
             do
             {
-                currentBlockIterator.next();
+                lastBlock = currentBlockIterator.next();
             }
-            while (currentBlockIterator.hasNext() && currentBlockIterator.next().getType() == Material.AIR );
-            return currentBlockIterator.next();
+            while (currentBlockIterator.hasNext()
+                    && lastBlock.getType() == Material.AIR);
+            return lastBlock;
         }
         else
             return null;

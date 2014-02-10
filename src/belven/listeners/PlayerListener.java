@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import belven.classes.Archer;
 import belven.classes.Assassin;
@@ -46,6 +47,21 @@ public class PlayerListener implements Listener
     {
         PerformClassAbility(event);
     }
+    
+
+    @EventHandler
+    public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event)
+    {
+        PerformClassAbility(event);
+    }
+
+    private void PerformClassAbility(PlayerToggleSneakEvent event)
+    {
+        if (plugin.CurrentPlayerClasses.get(event.getPlayer()) instanceof Assassin)
+        {
+            ((Assassin)plugin.CurrentPlayerClasses.get(event.getPlayer())).ToggleSneakEvent(event);
+        }        
+    }
 
     public void PerformClassAbility(PlayerInteractEvent event)
     {
@@ -53,8 +69,26 @@ public class PlayerListener implements Listener
         {
             Player currentPlayer = event.getPlayer();
 
-            StringToClass(plugin.CurrentClasses.get(currentPlayer),
-                    currentPlayer);
+            if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Healer)
+            {
+                ((Healer)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentPlayer);
+            }
+            else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Mage)
+            {
+                ((Mage)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentPlayer);
+            }
+            else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Warrior)
+            {
+                ((Warrior)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentPlayer);
+            }
+            else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Assassin)
+            {
+                ((Assassin)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentPlayer);
+            }
+            else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Archer)
+            {
+                ((Archer)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentPlayer);
+            }
         }
     }
 
@@ -63,68 +97,25 @@ public class PlayerListener implements Listener
         Player currentPlayer = event.getPlayer();
         Entity currentEntity = event.getRightClicked();
 
-        StringToClass(plugin.CurrentClasses.get(currentPlayer), currentPlayer,
-                currentEntity);
-
-    }
-
-    public void StringToClass(String className, Player player,
-            Entity currentEntity)
-    {
-
-        // plugin.CurrentPlayerClasses.get(player).PerformAbility(currentEntity);
-
-        switch (className.toLowerCase())
+        if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Healer)
         {
-        case "healer":
-            Healer currentHealer = new Healer(player, plugin);
-            currentHealer.PerformAbility(currentEntity);
-            break;
-        case "mage":
-            Mage currentMage = new Mage(player, plugin);
-            currentMage.PerformAbility(currentEntity);
-            break;
-        case "warrior":
-            Warrior currentWarrior = new Warrior(player, plugin);
-            currentWarrior.PerformAbility(currentEntity);
-            break;
-        case "assassin":
-            Assassin currentAssassin = new Assassin(player, plugin);
-            currentAssassin.PerformAbility(player);
-            break;
-        case "archer":
-            Archer currentArcher = new Archer(player, plugin);
-            currentArcher.PerformAbility(currentEntity);
-            break;
+            ((Healer)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentEntity);
         }
-    }
-
-    public void StringToClass(String className, Player player)
-    {
-        // plugin.CurrentPlayerClasses.get(player).PerformAbility(player);
-
-        switch (className.toLowerCase())
+        else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Mage)
         {
-        case "healer":
-            Healer currentHealer = new Healer(player, plugin);
-            currentHealer.PerformAbility(player);
-            break;
-        case "mage":
-            Mage currentMage = new Mage(player, plugin);
-            currentMage.PerformAbility(player);
-            break;
-        case "warrior":
-            Warrior currentWarrior = new Warrior(player, plugin);
-            currentWarrior.PerformAbility(player);
-            break;
-        case "assassin":
-            Assassin currentAssassin = new Assassin(player, plugin);
-            currentAssassin.PerformAbility(player);
-            break;
-        case "archer":
-            Archer currentArcher = new Archer(player, plugin);
-            currentArcher.PerformAbility(player);
-            break;
+            ((Mage)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentEntity);
+        }
+        else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Warrior)
+        {
+            ((Warrior)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentEntity);
+        }
+        else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Assassin)
+        {
+            ((Assassin)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentEntity);
+        }
+        else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Archer)
+        {
+            ((Archer)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentEntity);
         }
     }
 
@@ -166,14 +157,11 @@ public class PlayerListener implements Listener
     public void MobTakenDamage(EntityDamageByEntityEvent event)
     {
         Entity damagerEntity = event.getDamager();
-        String playerClass = null;
         Player currentPlayer = null;
 
         if (damagerEntity.getType() == EntityType.PLAYER)
         {
             currentPlayer = (Player) event.getDamager();
-            playerClass = plugin.CurrentClasses.get(currentPlayer)
-                    .toLowerCase();
         }
         else if (damagerEntity.getType() == EntityType.ARROW)
         {
@@ -182,8 +170,6 @@ public class PlayerListener implements Listener
             if (currentArrow.getShooter().getType() == EntityType.PLAYER)
             {
                 currentPlayer = (Player) currentArrow.getShooter();
-                playerClass = plugin.CurrentClasses.get(currentPlayer)
-                        .toLowerCase();
             }
         }
         else if (damagerEntity.getType() == EntityType.FIREBALL)
@@ -193,48 +179,34 @@ public class PlayerListener implements Listener
             if (currentFireball.getShooter().getType() == EntityType.PLAYER)
             {
                 currentPlayer = (Player) currentFireball.getShooter();
-                playerClass = plugin.CurrentClasses.get(currentPlayer)
-                        .toLowerCase();
             }
         }
-
-        if (playerClass != null && currentPlayer != null)
+        
+        if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Mage)
         {
-            switch (playerClass)
-            {
-            case "archer":
-                Archer newArcher = new Archer(currentPlayer, plugin);
-                newArcher.MobTakenDamage(event);
-                break;
-            case "assassin":
-                Assassin newAssassin = new Assassin(currentPlayer, plugin);
-                newAssassin.MobTakenDamage(event);
-                break;
-            case "mage":
-                event.setDamage(7);
-                break;
-            }
+            event.setDamage(7);
         }
+        else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Assassin)
+        {
+            ((Assassin)plugin.CurrentPlayerClasses.get(currentPlayer)).MobTakenDamage(event);;
+        }
+        else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Archer)
+        {
+            ((Archer)plugin.CurrentPlayerClasses.get(currentPlayer)).MobTakenDamage(event);
+        }       
     }
 
     public void PlayerTakenDamage(EntityDamageByEntityEvent event)
     {
         Player damagedPlayer = (Player) event.getEntity();
-        Warrior currentWarrior = new Warrior(damagedPlayer, plugin);
-        Mage currentMage = new Mage(damagedPlayer, plugin);
-        String playerClass = plugin.CurrentClasses.get(damagedPlayer)
-                .toLowerCase();
         
-        switch (playerClass)
+        if (plugin.CurrentPlayerClasses.get(damagedPlayer) instanceof Mage)
         {
-        case "warrior":
-            currentWarrior.TakeDamage(event, damagedPlayer);
-            break;
-        case "assassin":
-            break;
-        case "mage":
-            currentMage.TakeDamage(event, damagedPlayer);
-            break;
+            ((Mage)plugin.CurrentPlayerClasses.get(damagedPlayer)).TakeDamage(event, damagedPlayer);
+        }
+        else if (plugin.CurrentPlayerClasses.get(damagedPlayer) instanceof Warrior)
+        {
+            ((Warrior)plugin.CurrentPlayerClasses.get(damagedPlayer)).TakeDamage(event, damagedPlayer);
         }
     }
 

@@ -17,7 +17,6 @@ public class ClassManager extends JavaPlugin
 {
     private final PlayerListener newplayerListener = new PlayerListener(this);
     private final BlockListener blockListener = new BlockListener(this);
-    public HashMap<Player, String> CurrentClasses = new HashMap<Player, String>();
     public HashMap<Player, Class> CurrentPlayerClasses = new HashMap<Player, Class>();
 
     @Override
@@ -26,6 +25,22 @@ public class ClassManager extends JavaPlugin
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(newplayerListener, this);
         pm.registerEvents(blockListener, this);
+
+        Player[] currentPlayers = this.getServer().getOnlinePlayers();
+
+        if (currentPlayers != null)
+        {
+            for (int i = 0; i < currentPlayers.length; i++)
+            {
+                Player currentPlayer = currentPlayers[i];
+
+                if (currentPlayer != null)
+                {
+                    AddClassToPlayer(currentPlayer);
+                }
+            }
+        }
+
     }
 
     public void AddClassToPlayer(Player playerToAdd)
@@ -44,7 +59,6 @@ public class ClassManager extends JavaPlugin
 
             if (classString != null)
             {
-                CurrentClasses.put(playerToAdd, classString);
                 CurrentPlayerClasses.put(playerToAdd,
                         StringToClass(classString, playerToAdd));
 
@@ -109,13 +123,14 @@ public class ClassManager extends JavaPlugin
 
                     if (currentPlayer != null)
                     {
-                        String currentClass = CurrentClasses.get(currentPlayer);
+                        Class currentClass = CurrentPlayerClasses
+                                .get(currentPlayer);
 
                         if (currentClass != null)
                         {
                             this.getServer().broadcastMessage(
                                     currentPlayer.getName() + " is a "
-                                            + currentClass);
+                                            + currentClass.getClassName());
                         }
                     }
                 }
@@ -129,18 +144,11 @@ public class ClassManager extends JavaPlugin
         {
             if (player != null)
             {
-                String currentClassName = CurrentClasses.get(player);
-
-                if (currentClassName != null)
-                {
-                    Class currentClass = StringToClass(currentClassName, player);
-                    if (currentClass != null)
-                        this.getServer().broadcastMessage(
-                                currentClass.ListAbilities());
-                    return true;
-                }
-                else
-                    return false;
+                Class currentClass = CurrentPlayerClasses.get(player);
+                if (currentClass != null)
+                    this.getServer().broadcastMessage(
+                            currentClass.ListAbilities());
+                return true;
             }
             else
                 return false;
@@ -158,6 +166,12 @@ public class ClassManager extends JavaPlugin
             return new Healer(player, this);
         case "mage":
             return new Mage(player, this);
+        case "assassin":
+            return new Assassin(player, this);
+        case "archer":
+            return new Archer(player, this);
+        case "warrior":
+            return new Warrior(player, this);
         default:
             return new DEFAULT();
         }
@@ -175,7 +189,6 @@ public class ClassManager extends JavaPlugin
                 PlayerName + " is class " + classString);
 
         this.saveConfig();
-        CurrentClasses.put(playerToChange, classString);
         CurrentPlayerClasses.put(playerToChange,
                 StringToClass(classString, playerToChange));
     }

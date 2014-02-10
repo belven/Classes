@@ -5,17 +5,19 @@ import java.util.HashSet;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 public class Assassin extends Class
 {
     public Entity lastEntityConfused;
+    private Block recallBlock;
 
     public Assassin(Player currentPlayer, ClassManager instance)
     {
@@ -27,69 +29,18 @@ public class Assassin extends Class
     @Override
     public void PerformAbility(Player currentPlayer)
     {
-        Entity[] entitiesToDamage = getNearbyEntities(
-                currentPlayer.getLocation(), 15);
-
         if (classOwner.getItemInHand().getType() == Material.NETHER_STAR)
         {
-            for (int i = 0; i < entitiesToDamage.length; i++)
-            {
-                if (entitiesToDamage[i] != null
-                        && entitiesToDamage[i].getType() != EntityType.PLAYER)
-                {
-                    Confusion(entitiesToDamage[i]);
-                }
-            }
+
         }
     }
 
     @Override
     public void PerformAbility(Entity currentEntity)
     {
-        Entity[] entitiesToDamage = getNearbyEntities(
-                currentEntity.getLocation(), 15);
-
         if (classOwner.getItemInHand().getType() == Material.NETHER_STAR)
         {
-            for (int i = 0; i < entitiesToDamage.length; i++)
-            {
-                if (entitiesToDamage[i] != null
-                        && entitiesToDamage[i].getType() != EntityType.PLAYER)
-                {
-                    Confusion(entitiesToDamage[i]);
-                }
-            }
-        }
-    }
 
-    private void Confusion(Entity targetEntity)
-    {
-        switch (targetEntity.getType().toString().toLowerCase())
-        {
-        case "zombie":
-            Zombie currentZombie = (Zombie) targetEntity;
-            if (lastEntityConfused != null)
-            {
-                currentZombie.setTarget((LivingEntity) lastEntityConfused);
-            }
-            else
-            {
-                currentZombie.setTarget(null);
-                lastEntityConfused = currentZombie;
-            }
-            break;
-        case "skeleton":
-            Skeleton currentSkeleton = (Skeleton) targetEntity;
-            if (lastEntityConfused != null)
-            {
-                currentSkeleton.setTarget((LivingEntity) lastEntityConfused);
-            }
-            else
-            {
-                currentSkeleton.setTarget(null);
-                lastEntityConfused = currentSkeleton;
-            }
-            break;
         }
     }
 
@@ -130,12 +81,6 @@ public class Assassin extends Class
             }
         }
 
-        if (damagedEntity.getLocation().getDirection() == classOwner
-                .getLocation().getDirection())
-        {
-            // event.setDamage(event.getDamage() + 4);
-        }
-
         if (arrowEntity)
         {
             switch (damagedEntity.getType().toString().toLowerCase())
@@ -143,10 +88,14 @@ public class Assassin extends Class
             case "zombie":
                 Zombie currentZombie = (Zombie) damagedEntity;
                 TeleportToTarget(currentZombie);
+                classOwner.getLocation().setDirection(
+                        currentZombie.getLocation().getDirection());
                 break;
             case "skeleton":
                 Skeleton currentSkeleton = (Skeleton) damagedEntity;
                 TeleportToTarget(currentSkeleton);
+                classOwner.getLocation().setDirection(
+                        currentSkeleton.getLocation().getDirection());
                 break;
             }
         }
@@ -157,6 +106,10 @@ public class Assassin extends Class
         Location mobLocation = damagedEntity.getLocation();
         Location playerLocation = classOwner.getLocation();
         Location locationToTeleportTo = damagedEntity.getLocation();
+        Location recallLocation = classOwner.getLocation();
+
+        recallLocation.setY(recallLocation.getY() - 1);
+        recallBlock = recallLocation.getBlock();
 
         if (damagedEntity.hasLineOfSight(classOwner))
         {
@@ -192,6 +145,10 @@ public class Assassin extends Class
         Location mobLocation = damagedEntity.getLocation();
         Location playerLocation = classOwner.getLocation();
         Location locationToTeleportTo = damagedEntity.getLocation();
+        Location recallLocation = classOwner.getLocation();
+
+        recallLocation.setY(recallLocation.getY() - 1);
+        recallBlock = recallLocation.getBlock();
 
         if (damagedEntity.hasLineOfSight(classOwner))
         {
@@ -241,5 +198,17 @@ public class Assassin extends Class
         {
             // int currentLevel = classOwner.getLevel();
         }
+    }
+
+    public void ToggleSneakEvent(PlayerToggleSneakEvent event)
+    {
+        if (event.isSneaking() && recallBlock != null)
+        {
+            Location recallLocation = recallBlock.getLocation();
+            recallLocation.setY(recallLocation.getY() + 1);
+            classOwner.teleport(recallLocation);
+            recallBlock = null;
+        }
+
     }
 }

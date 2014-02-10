@@ -12,11 +12,13 @@ public class FireTrapTimer extends BukkitRunnable
     private Location blockLocation;
     private Material MaterialToRestore;
     private int trapRadius;
+    private int maxDuration;
 
     public FireTrapTimer(Block currentBlock, int trapRadius)
     {
         blockLocation = currentBlock.getLocation();
         MaterialToRestore = currentBlock.getType();
+        maxDuration = 20;
         this.trapRadius = trapRadius;
     }
 
@@ -29,6 +31,7 @@ public class FireTrapTimer extends BukkitRunnable
     public void run()
     {
         Entity[] entitiesToDamage = getNearbyEntities(blockLocation, trapRadius);
+        maxDuration--;
 
         if (entitiesToDamage.length > 0)
         {
@@ -40,6 +43,11 @@ public class FireTrapTimer extends BukkitRunnable
                 }
             }
 
+            blockLocation.getBlock().setType(MaterialToRestore);
+            this.cancel();
+        }
+        else if(maxDuration <= 0)
+        {
             blockLocation.getBlock().setType(MaterialToRestore);
             this.cancel();
         }
