@@ -23,6 +23,7 @@ public class Assassin extends Class
     {
         plugin = instance;
         classOwner = currentPlayer;
+        className = "Assassin";
         this.SetAbilities();
     }
 

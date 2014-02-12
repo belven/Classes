@@ -12,8 +12,9 @@ public abstract class Class
     public ArrayList<Ability> Abilities = new ArrayList<Ability>();
     public Player classOwner = null;
     public ClassManager plugin;
+    protected String className = "";
     
-    public String getClassName()
+    public final String getClassName()
     {
         return "";
     }

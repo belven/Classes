@@ -7,13 +7,7 @@ import belven.classes.Abilities.Ability;
 
 public class DEFAULT extends Class
 {
-
-    @Override
-    public String getClassName()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
+   
 
     @Override
     public void PerformAbility(Player currentPlayer)

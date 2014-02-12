@@ -16,6 +16,7 @@ public class FireTrap extends Ability
     {
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.SNOW_BALL, 1));
+        abilitiyName = "FireTrap";
     }
 
     @Override
@@ -44,12 +45,5 @@ public class FireTrap extends Ability
     public int Amplifier()
     {
         return 0;
-    }
-
-
-    @Override
-    public String GetAbilityName()
-    {
-        return "FireTrap";
-    }
+    }  
 }

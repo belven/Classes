@@ -18,6 +18,7 @@ public class Pop extends Ability
     {
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.FEATHER));
+        abilitiyName = "Pop";
     }
 
     public static Entity[] getNearbyEntities(Location l, int radius)
@@ -84,11 +85,5 @@ public class Pop extends Ability
     public int Amplifier()
     {
         return 0;
-    }    
-
-    @Override
-    public String GetAbilityName()
-    {
-        return "Pop";
-    }
+    } 
 }

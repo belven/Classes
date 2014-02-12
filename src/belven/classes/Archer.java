@@ -27,6 +27,7 @@ public class Archer extends Class
         classOwner = currentPlayer;
         classCripplingArrow = new CripplingArrow();
         classFireTrap = new FireTrap(this);
+        className = "Archer";
         this.SetAbilities();
     }
 

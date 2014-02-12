@@ -29,6 +29,7 @@ public class Healer extends Class
         Player playerSelected;
         playerSelected = classOwner;
         this.CheckAbilitiesToCast(playerSelected);
+        className = "Healer";
     }
 
     public void PerformAbility(Entity currentEntity)
@@ -82,13 +83,7 @@ public class Healer extends Class
             }
         }
     }
-
-    @Override
-    public String getClassName()
-    {
-        return "Healer";
-    }
-
+    
     public String ListAbilities()
     {
         String ListOfAbilities = "";

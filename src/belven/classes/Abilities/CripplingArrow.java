@@ -13,6 +13,7 @@ public class CripplingArrow extends Ability
     public CripplingArrow()
     {
         requirements.add(new ItemStack(Material.SNOW_BALL, 1));
+        abilitiyName = "CripplingArrow";
     }
 
     @Override
@@ -43,13 +44,7 @@ public class CripplingArrow extends Ability
     public int Amplifier()
     {
         return 3;
-    }
-
-    @Override
-    public String GetAbilityName()
-    {
-        return "CripplingArrow";
-    }
+    } 
 
     private PotionEffect SlowArrow()
     {

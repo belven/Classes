@@ -1,6 +1,5 @@
 package belven.classes.Abilities;
 
-
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -13,6 +12,7 @@ public class Heal extends Ability
     {
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.LAPIS_BLOCK, 1));
+        abilitiyName = "Heal";
     }
 
     @Override
@@ -32,9 +32,4 @@ public class Heal extends Ability
         return Math.round(currentClass.classOwner().getLevel() / 7);
     }
 
-    @Override
-    public String GetAbilityName()
-    {
-        return "Heal";
-    }
 }

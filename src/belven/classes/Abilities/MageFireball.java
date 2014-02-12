@@ -11,6 +11,7 @@ public class MageFireball extends Ability
     {
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.LAPIS_BLOCK, 1));
+        abilitiyName = "MageFireball";
     }
 
     @Override
@@ -29,11 +30,5 @@ public class MageFireball extends Ability
     public int Amplifier()
     {
         return Math.round(currentClass.classOwner().getLevel() / 7);
-    }
-
-    @Override
-    public String GetAbilityName()
-    {
-        return "Fireball";
     }
 }

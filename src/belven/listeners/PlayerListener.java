@@ -96,26 +96,27 @@ public class PlayerListener implements Listener
     {
         Player currentPlayer = event.getPlayer();
         Entity currentEntity = event.getRightClicked();
+        belven.classes.Class currentClass = plugin.CurrentPlayerClasses.get(currentPlayer);
 
-        if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Healer)
+        if (currentClass instanceof Healer)
         {
-            ((Healer)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentEntity);
+            ((Healer)currentClass).PerformAbility(currentEntity);
         }
-        else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Mage)
+        else if (currentClass instanceof Mage)
         {
-            ((Mage)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentEntity);
+            ((Mage)currentClass).PerformAbility(currentEntity);
         }
-        else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Warrior)
+        else if (currentClass instanceof Warrior)
         {
-            ((Warrior)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentEntity);
+            ((Warrior)currentClass).PerformAbility(currentEntity);
         }
-        else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Assassin)
+        else if (currentClass instanceof Assassin)
         {
-            ((Assassin)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentEntity);
+            ((Assassin)currentClass).PerformAbility(currentEntity);
         }
-        else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Archer)
+        else if (currentClass instanceof Archer)
         {
-            ((Archer)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentEntity);
+            ((Archer)currentClass).PerformAbility(currentEntity);
         }
     }
 
@@ -158,6 +159,7 @@ public class PlayerListener implements Listener
     {
         Entity damagerEntity = event.getDamager();
         Player currentPlayer = null;
+        belven.classes.Class currentClass = plugin.CurrentPlayerClasses.get(currentPlayer);
 
         if (damagerEntity.getType() == EntityType.PLAYER)
         {
@@ -182,31 +184,32 @@ public class PlayerListener implements Listener
             }
         }
         
-        if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Mage)
+        if (currentClass instanceof Mage)
         {
             event.setDamage(7);
         }
-        else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Assassin)
+        else if (currentClass instanceof Assassin)
         {
-            ((Assassin)plugin.CurrentPlayerClasses.get(currentPlayer)).MobTakenDamage(event);;
+            ((Assassin)currentClass).MobTakenDamage(event);;
         }
-        else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Archer)
+        else if (currentClass instanceof Archer)
         {
-            ((Archer)plugin.CurrentPlayerClasses.get(currentPlayer)).MobTakenDamage(event);
+            ((Archer)currentClass).MobTakenDamage(event);
         }       
     }
 
     public void PlayerTakenDamage(EntityDamageByEntityEvent event)
     {
         Player damagedPlayer = (Player) event.getEntity();
+        belven.classes.Class currentClass = plugin.CurrentPlayerClasses.get(damagedPlayer);
         
-        if (plugin.CurrentPlayerClasses.get(damagedPlayer) instanceof Mage)
+        if (currentClass instanceof Mage)
         {
-            ((Mage)plugin.CurrentPlayerClasses.get(damagedPlayer)).TakeDamage(event, damagedPlayer);
+            ((Mage)currentClass).TakeDamage(event, damagedPlayer);
         }
-        else if (plugin.CurrentPlayerClasses.get(damagedPlayer) instanceof Warrior)
+        else if (currentClass instanceof Warrior)
         {
-            ((Warrior)plugin.CurrentPlayerClasses.get(damagedPlayer)).TakeDamage(event, damagedPlayer);
+            ((Warrior)currentClass).TakeDamage(event, damagedPlayer);
         }
     }
 

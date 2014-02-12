@@ -7,39 +7,72 @@ commands:
       description: This will change your class to a healer
       usage: /bchealer 
       permission: BelvensClasses.bchealer
-      permission-message: You don't have bchealer
+      permission-message: You don't have BelvensClasses.bchealer
    listclasses:
       description: Lists all players and thier classes
       usage: /listclasses
       permission: BelvensClasses.listclasses
-      permission-message: You don't have listclasses
+      permission-message: You don't have BelvensClasses.listclasses
    listabilities:
       description: Lists your classes abilities
       usage: /listabilities
       permission: BelvensClasses.listabilities
-      permission-message: You don't have listabilities
+      permission-message: You don't have BelvensClasses.listabilities
    bcmage:
       description: This will change your class to a mage
       usage: /bcmage 
       permission: BelvensClasses.bcmage 
-      permission-message: You don't have bcmage 
+      permission-message: You don't have BelvensClasses.bcmage
    bcwarrior:
       description: This will change your class to a warrior
       usage: /bcwarrior 
       permission: BelvensClasses.bcwarrior 
-      permission-message: You don't have bcwarrior
+      permission-message: You don't have BelvensClasses.bcwarrior 
    bcassassin:
       description: This will change your class to a assassin
       usage: /bcassassin 
       permission: BelvensClasses.bcassassin 
-      permission-message: You don't have assassin
+      permission-message: You don't have BelvensClasses.bcassassin 
    bcarcher:
       description: This will change your class to a archer
       usage: /bcarcher 
       permission: BelvensClasses.bcarcher 
-      permission-message: You don't have archer   
+      permission-message: You don't have BelvensClasses.bcarcher
    bcdummy:
       description: Spawns a dummy player entity
       usage: /bcdummy 
       permission: BelvensClasses.bcdummy
-      permission-message: You don't have bcdummy
+      permission-message: You don't have BelvensClasses.bcdummy
+
+permissions:
+    BelvensClasses.*:
+        description: Gives access to all of BelvensClasses commands
+        children:
+            BelvensClasses.listclasses: true
+            BelvensClasses.listabilities: true
+            BelvensClasses.bchealer: true
+            BelvensClasses.bcmage: true
+            BelvensClasses.bcwarrior: true
+            BelvensClasses.bcassassin: true
+            BelvensClasses.bcarcher: true
+    BelvensClasses.listclasses:
+        description: Lists all players and thier classes
+        default: op
+    BelvensClasses.listabilities:
+        description: Lists your classes abilities
+        default: op
+    BelvensClasses.bchealer:
+        description: This will change your class to a Healer
+        default: true
+    BelvensClasses.bcmage:
+        description: This will change your class to a Mage
+        default: true
+    BelvensClasses.bcwarrior:
+        description: This will change your class to a Warrior
+        default: true
+    BelvensClasses.bcassassin:
+        description: This will change your class to a Assassin
+        default: true
+    BelvensClasses.bcarcher:
+        description: This will change your class to a Archer
+        default: true

@@ -28,6 +28,7 @@ public class Mage extends Class
         classChainLightning = new ChainLightning(this);
         classPop = new Pop(this);
         this.SetAbilities();
+        className = "Mage";
     }
 
     @Override
@@ -108,12 +109,6 @@ public class Mage extends Class
                 AddToAbilities(new MageFireball(this));
             }
         }
-    }
-
-    @Override
-    public String getClassName()
-    {
-        return "Mage";
     }
 
     public String ListAbilities()

@@ -16,6 +16,7 @@ public class ChainLightning extends Ability
     {
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.LAPIS_BLOCK));
+        abilitiyName = "ChainLightning";
     }
 
     public static Entity[] getNearbyEntities(Location l, int radius)
@@ -56,13 +57,7 @@ public class ChainLightning extends Ability
             }
         }
     }
-
-    @Override
-    public String GetAbilityName()
-    {
-        return "ChainLightning";
-    }
-
+  
     @Override
     public void PerformAbility()
     {        

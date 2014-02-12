@@ -13,6 +13,7 @@ public class Bandage extends Ability
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.PAPER, 1));
         requirements.add(new ItemStack(Material.STICK, 1));
+        abilitiyName = "Bandage";
     }
 
     @Override
@@ -31,12 +32,6 @@ public class Bandage extends Ability
     public int Amplifier()
     {
         return Math.round(currentClass.classOwner().getLevel() / 7);
-    }
-
-    @Override
-    public String GetAbilityName()
-    {
-        return "Bandage";
-    }
+    }  
 
 }

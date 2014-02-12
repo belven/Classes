@@ -19,6 +19,7 @@ public class Warrior extends Class
     {
         plugin = instance;
         classOwner = currentPlayer;
+        className = "Warrior";
     }
 
     public void TakeDamage(EntityDamageByEntityEvent event, Player damagedPlayer)

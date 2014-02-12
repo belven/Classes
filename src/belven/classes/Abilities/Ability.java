@@ -12,6 +12,7 @@ public abstract class Ability
 {
     List<ItemStack> requirements = new ArrayList<ItemStack>();
     public belven.classes.Class currentClass;
+    protected String abilitiyName = "";
 
     public abstract void PerformAbility();
 
@@ -24,7 +25,6 @@ public abstract class Ability
 
     public abstract int Amplifier();
 
-    @SuppressWarnings("deprecation")
     public boolean HasRequirements(Player playerToCheck, int amountToTake)
     {
         int checksRequired = 0;
@@ -48,7 +48,7 @@ public abstract class Ability
                         .getType());
                 tempStack = playerInventory.getItem(positionID);
 
-                if (tempStack.getAmount() != 1)
+                if (tempStack.getAmount() > amountToTake)
                 {
                     tempStack.setAmount(tempStack.getAmount() - amountToTake);
                 }
@@ -56,8 +56,6 @@ public abstract class Ability
                 {
                     tempStack.setType(Material.AIR);
                 }
-
-                currentClass.classOwner().updateInventory();
             }
             return true;
         }
@@ -65,7 +63,10 @@ public abstract class Ability
             return false;
     }
 
-    public abstract String GetAbilityName();
+    public String GetAbilityName()
+    {
+        return this.abilitiyName;
+    }
 
     public List<ItemStack> GetAbilityRequirements()
     {
