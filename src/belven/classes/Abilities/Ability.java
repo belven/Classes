@@ -7,6 +7,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
+
+import belven.timedevents.ItemRestorer;
 
 public abstract class Ability
 {
@@ -25,6 +28,7 @@ public abstract class Ability
 
     public abstract int Amplifier();
 
+    @SuppressWarnings({ "deprecation", "unused" })
     public boolean HasRequirements(Player playerToCheck, int amountToTake)
     {
         int checksRequired = 0;
@@ -32,7 +36,8 @@ public abstract class Ability
 
         for (int i = 0; i < requirements.size(); i++)
         {
-            if (playerInventory.containsAtLeast(requirements.get(i), 1))
+            if (playerInventory.containsAtLeast(requirements.get(i),
+                    amountToTake))
             {
                 checksRequired++;
             }
@@ -55,8 +60,17 @@ public abstract class Ability
                 else
                 {
                     tempStack.setType(Material.AIR);
+                    playerInventory.setItem(positionID, tempStack);
+                }
+
+                if (requirements.get(i).getType() == Material.NETHER_STAR )
+                {
+                    BukkitTask itemRestore = new ItemRestorer(playerToCheck)
+                            .runTaskLater(currentClass.plugin,
+                                    SecondsToTicks(120));
                 }
             }
+            playerToCheck.updateInventory();
             return true;
         }
         else

@@ -8,17 +8,21 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
-public class ChainLightning extends Ability
+public class Barrier extends Ability
 {
-    public ChainLightning(belven.classes.Class CurrentClass)
+    public int radius = 0;
+
+    public Barrier(belven.classes.Class CurrentClass, int Radius)
     {
         currentClass = CurrentClass;
-        requirements.add(new ItemStack(Material.LAPIS_BLOCK));
-        abilitiyName = "ChainLightning";
+        this.radius = Radius;
+        requirements.add(new ItemStack(Material.NETHER_STAR, 1));
+        abilitiyName = "Barrier";
     }
 
-    public static Entity[] getNearbyEntities(Location l, int radius)
+    public Entity[] getNearbyEntities(Location l)
     {
         int chunkRadius = radius < 16 ? 1 : (radius - (radius % 16)) / 16;
         HashSet<Entity> radiusEntities = new HashSet<Entity>();
@@ -41,35 +45,43 @@ public class ChainLightning extends Ability
 
         return radiusEntities.toArray(new Entity[radiusEntities.size()]);
     }
-    
+
     public void PerformAbility(Location targetLocation)
     {
-        Entity[] entitiesToDamage = getNearbyEntities(targetLocation, 15);
+        Entity[] entitiesToDamage = getNearbyEntities(targetLocation);
 
         for (int i = 0; i < entitiesToDamage.length; i++)
         {
             if (entitiesToDamage[i] != null
                     && entitiesToDamage[i].getType() != EntityType.PLAYER)
             {
-                entitiesToDamage[i].getWorld().strikeLightning(
-                        entitiesToDamage[i].getLocation());
+                Vector currentVector = entitiesToDamage[i].getVelocity();
+                currentVector.setX(currentVector.getX() + 2);
+                currentVector.setZ(currentVector.getZ() + 2);
+                currentVector.setY(currentVector.getY() + 1);
+                entitiesToDamage[i].setVelocity(currentVector);
             }
         }
     }
-  
+
     @Override
     public void PerformAbility()
-    {        
+    {
+        // TODO Auto-generated method stub
+
     }
 
     @Override
     public void PerformAbility(Player targetPlayer)
-    {        
+    {
+        // TODO Auto-generated method stub
+
     }
 
     @Override
     public int Amplifier()
     {
+        // TODO Auto-generated method stub
         return 0;
     }
 

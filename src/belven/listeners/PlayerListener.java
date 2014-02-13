@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.scheduler.BukkitTask;
 
 import belven.classes.Archer;
 import belven.classes.Assassin;
@@ -20,6 +21,7 @@ import belven.classes.ClassManager;
 import belven.classes.Healer;
 import belven.classes.Mage;
 import belven.classes.Warrior;
+import belven.timedevents.AbilityDelay;
 
 public class PlayerListener implements Listener
 {
@@ -47,7 +49,6 @@ public class PlayerListener implements Listener
     {
         PerformClassAbility(event);
     }
-    
 
     @EventHandler
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event)
@@ -55,68 +56,99 @@ public class PlayerListener implements Listener
         PerformClassAbility(event);
     }
 
+    @SuppressWarnings("unused")
     private void PerformClassAbility(PlayerToggleSneakEvent event)
-    {
-        if (plugin.CurrentPlayerClasses.get(event.getPlayer()) instanceof Assassin)
+    {        
+        if (plugin.CurrentPlayerClasses.get(event.getPlayer()).CanCast)
         {
-            ((Assassin)plugin.CurrentPlayerClasses.get(event.getPlayer())).ToggleSneakEvent(event);
-        }        
+            BukkitTask currentTimer = new AbilityDelay(event.getPlayer(), plugin)
+            .runTaskLater(plugin, SecondsToTicks(1));
+            
+            if (plugin.CurrentPlayerClasses.get(event.getPlayer()) instanceof Assassin)
+            {
+                ((Assassin) plugin.CurrentPlayerClasses.get(event.getPlayer()))
+                        .ToggleSneakEvent(event);
+            }
+        }
     }
 
+    @SuppressWarnings("unused")
     public void PerformClassAbility(PlayerInteractEvent event)
     {
         if (event.getAction() == Action.RIGHT_CLICK_AIR)
         {
             Player currentPlayer = event.getPlayer();
-
-            if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Healer)
+            
+            if (plugin.CurrentPlayerClasses.get(currentPlayer).CanCast)
             {
-                ((Healer)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentPlayer);
-            }
-            else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Mage)
-            {
-                ((Mage)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentPlayer);
-            }
-            else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Warrior)
-            {
-                ((Warrior)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentPlayer);
-            }
-            else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Assassin)
-            {
-                ((Assassin)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentPlayer);
-            }
-            else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Archer)
-            {
-                ((Archer)plugin.CurrentPlayerClasses.get(currentPlayer)).PerformAbility(currentPlayer);
+                BukkitTask currentTimer = new AbilityDelay(currentPlayer, plugin)
+                .runTaskLater(plugin, SecondsToTicks(1));
+                
+                if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Healer)
+                {
+                    ((Healer) plugin.CurrentPlayerClasses.get(currentPlayer))
+                            .PerformAbility(currentPlayer);
+                }
+                else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Mage)
+                {
+                    ((Mage) plugin.CurrentPlayerClasses.get(currentPlayer))
+                            .PerformAbility(currentPlayer);
+                }
+                else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Warrior)
+                {
+                    ((Warrior) plugin.CurrentPlayerClasses.get(currentPlayer))
+                            .PerformAbility(currentPlayer);
+                }
+                else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Assassin)
+                {
+                    ((Assassin) plugin.CurrentPlayerClasses.get(currentPlayer))
+                            .PerformAbility(currentPlayer);
+                }
+                else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Archer)
+                {
+                    ((Archer) plugin.CurrentPlayerClasses.get(currentPlayer))
+                            .PerformAbility(currentPlayer);
+                }
             }
         }
     }
 
+    @SuppressWarnings("unused")
     public void PerformClassAbility(PlayerInteractEntityEvent event)
     {
         Player currentPlayer = event.getPlayer();
         Entity currentEntity = event.getRightClicked();
-        belven.classes.Class currentClass = plugin.CurrentPlayerClasses.get(currentPlayer);
-
-        if (currentClass instanceof Healer)
+        
+        if (plugin.CurrentPlayerClasses.get(event.getPlayer()).CanCast)
         {
-            ((Healer)currentClass).PerformAbility(currentEntity);
-        }
-        else if (currentClass instanceof Mage)
-        {
-            ((Mage)currentClass).PerformAbility(currentEntity);
-        }
-        else if (currentClass instanceof Warrior)
-        {
-            ((Warrior)currentClass).PerformAbility(currentEntity);
-        }
-        else if (currentClass instanceof Assassin)
-        {
-            ((Assassin)currentClass).PerformAbility(currentEntity);
-        }
-        else if (currentClass instanceof Archer)
-        {
-            ((Archer)currentClass).PerformAbility(currentEntity);
+            BukkitTask currentTimer = new AbilityDelay(event.getPlayer(), plugin)
+            .runTaskLater(plugin, SecondsToTicks(1));
+            
+            if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Healer)
+            {
+                ((Healer) plugin.CurrentPlayerClasses.get(currentPlayer))
+                        .PerformAbility(currentEntity);
+            }
+            else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Mage)
+            {
+                ((Mage) plugin.CurrentPlayerClasses.get(currentPlayer))
+                        .PerformAbility(currentEntity);
+            }
+            else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Warrior)
+            {
+                ((Warrior) plugin.CurrentPlayerClasses.get(currentPlayer))
+                        .PerformAbility(currentEntity);
+            }
+            else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Assassin)
+            {
+                ((Assassin) plugin.CurrentPlayerClasses.get(currentPlayer))
+                        .PerformAbility(currentEntity);
+            }
+            else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Archer)
+            {
+                ((Archer) plugin.CurrentPlayerClasses.get(currentPlayer))
+                        .PerformAbility(currentEntity);
+            }
         }
     }
 
@@ -159,7 +191,6 @@ public class PlayerListener implements Listener
     {
         Entity damagerEntity = event.getDamager();
         Player currentPlayer = null;
-        belven.classes.Class currentClass = plugin.CurrentPlayerClasses.get(currentPlayer);
 
         if (damagerEntity.getType() == EntityType.PLAYER)
         {
@@ -183,33 +214,37 @@ public class PlayerListener implements Listener
                 currentPlayer = (Player) currentFireball.getShooter();
             }
         }
-        
-        if (currentClass instanceof Mage)
+
+        if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Mage)
         {
             event.setDamage(7);
         }
-        else if (currentClass instanceof Assassin)
+        else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Assassin)
         {
-            ((Assassin)currentClass).MobTakenDamage(event);;
+            ((Assassin) plugin.CurrentPlayerClasses.get(currentPlayer))
+                    .MobTakenDamage(event);
+            ;
         }
-        else if (currentClass instanceof Archer)
+        else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Archer)
         {
-            ((Archer)currentClass).MobTakenDamage(event);
-        }       
+            ((Archer) plugin.CurrentPlayerClasses.get(currentPlayer))
+                    .MobTakenDamage(event);
+        }
     }
 
     public void PlayerTakenDamage(EntityDamageByEntityEvent event)
     {
         Player damagedPlayer = (Player) event.getEntity();
-        belven.classes.Class currentClass = plugin.CurrentPlayerClasses.get(damagedPlayer);
-        
-        if (currentClass instanceof Mage)
+
+        if (plugin.CurrentPlayerClasses.get(damagedPlayer) instanceof Mage)
         {
-            ((Mage)currentClass).TakeDamage(event, damagedPlayer);
+            ((Mage) plugin.CurrentPlayerClasses.get(damagedPlayer)).TakeDamage(
+                    event, damagedPlayer);
         }
-        else if (currentClass instanceof Warrior)
+        else if (plugin.CurrentPlayerClasses.get(damagedPlayer) instanceof Warrior)
         {
-            ((Warrior)currentClass).TakeDamage(event, damagedPlayer);
+            ((Warrior) plugin.CurrentPlayerClasses.get(damagedPlayer))
+                    .TakeDamage(event, damagedPlayer);
         }
     }
 

@@ -1,6 +1,5 @@
 package belven.classes;
 
-import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -8,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.material.Wool;
 import org.bukkit.scheduler.BukkitTask;
 
 import belven.classes.Abilities.CripplingArrow;
@@ -28,7 +26,7 @@ public class Archer extends Class
         classCripplingArrow = new CripplingArrow();
         classFireTrap = new FireTrap(this);
         className = "Archer";
-        this.SetAbilities();
+        SetAbilities();
     }
 
     @Override
@@ -37,13 +35,12 @@ public class Archer extends Class
         Player playerSelected;
         playerSelected = classOwner;
 
-        this.CheckAbilitiesToCast(playerSelected, currentPlayer);
+        CheckAbilitiesToCast(playerSelected, currentPlayer);
     }
 
     public void PerformAbility(Entity currentEntity)
     {
-        this.CheckAbilitiesToCast(currentEntity);
-
+        CheckAbilitiesToCast(currentEntity);
     }
 
     private void CheckAbilitiesToCast(Entity currentEntity)
@@ -51,15 +48,11 @@ public class Archer extends Class
         Location trapLocation = classOwner.getLocation();
         trapLocation.setY(trapLocation.getY() - 1);
 
-        if (classOwner.getItemInHand().getType() == (new Wool(DyeColor.RED)
-                .getItemType())
-                && trapLocation.getBlock().getType() != (new Wool(DyeColor.RED)
-                        .getItemType())
+        if (classOwner.getItemInHand().getType() == Material.WOOL
+                && trapLocation.getBlock().getType() != Material.WOOL
                 && classFireTrap.HasRequirements(classOwner, 1))
-            classFireTrap.PerformAbility(classOwner.getLocation());
         {
             classFireTrap.PerformAbility(trapLocation);
-
         }
     }
 
@@ -68,15 +61,11 @@ public class Archer extends Class
         Location trapLocation = classOwner.getLocation();
         trapLocation.setY(trapLocation.getY() - 1);
 
-        if (classOwner.getItemInHand().getType() == (new Wool(DyeColor.RED)
-                .getItemType())
-                && trapLocation.getBlock().getType() != (new Wool(DyeColor.RED)
-                        .getItemType())
+        if (classOwner.getItemInHand().getType() == Material.WOOL
+                && trapLocation.getBlock().getType() != Material.WOOL
                 && classFireTrap.HasRequirements(classOwner, 1))
-            classFireTrap.PerformAbility(classOwner.getLocation());
         {
             classFireTrap.PerformAbility(trapLocation);
-
         }
     }
 

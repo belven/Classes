@@ -4,23 +4,28 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.Bandage;
+import belven.classes.Abilities.Barrier;
 import belven.classes.Abilities.Heal;
+import belven.timedevents.BarrierTimer;
 
 public class Healer extends Class
 {
     public Heal classHeal;
     public Bandage classBandage;
+    public Barrier classBarrier;
 
     public Healer(Player currentPlayer, ClassManager instance)
     {
         plugin = instance;
         classOwner = currentPlayer;
-        this.classHeal = new Heal(this);
-        this.classBandage = new Bandage(this);
-        this.SetAbilities();
+        classHeal = new Heal(this);
+        classBandage = new Bandage(this);
+        classBarrier = new Barrier(this, 6);
+        SetAbilities();
     }
 
     @Override
@@ -28,7 +33,7 @@ public class Healer extends Class
     {
         Player playerSelected;
         playerSelected = classOwner;
-        this.CheckAbilitiesToCast(playerSelected);
+        CheckAbilitiesToCast(playerSelected);
         className = "Healer";
     }
 
@@ -48,21 +53,29 @@ public class Healer extends Class
         }
     }
 
+    @SuppressWarnings("unused")
     public void CheckAbilitiesToCast(Player player)
     {
         if (player.getHealth() <= 10
-                && this.classHeal.HasRequirements(classOwner, 1))
+                && classHeal.HasRequirements(classOwner, 1))
         {
             this.classHeal.PerformAbility(player);
             classOwner.sendMessage("You healed " + player.getName());
         }
         else if ((classOwner.getItemInHand().getType() == Material.STICK || classOwner
                 .getItemInHand().getType() == Material.PAPER)
-                && this.classBandage.HasRequirements(classOwner, 1))
+                && classBandage.HasRequirements(classOwner, 1))
         {
             this.classBandage.PerformAbility(player);
             classOwner.sendMessage("You gave " + player.getName()
                     + " a bandage");
+        }
+        else if ((classOwner.getItemInHand().getType() == Material.NETHER_STAR && classBarrier
+                .HasRequirements(classOwner, 1)))
+        {
+            BukkitTask currentTimer = new BarrierTimer(classBarrier).runTaskTimer(plugin, 0,
+                    10);
+            classOwner.sendMessage("You used " + classBarrier.GetAbilityName());
         }
     }
 
@@ -83,7 +96,7 @@ public class Healer extends Class
             }
         }
     }
-    
+
     public String ListAbilities()
     {
         String ListOfAbilities = "";
@@ -119,4 +132,8 @@ public class Healer extends Class
         return classOwner;
     }
 
+    public int SecondsToTicks(int seconds)
+    {
+        return (seconds * 20);
+    }
 }

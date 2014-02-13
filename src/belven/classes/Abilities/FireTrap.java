@@ -1,11 +1,9 @@
 package belven.classes.Abilities;
 
-import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Wool;
 import org.bukkit.scheduler.BukkitTask;
 
 import belven.timedevents.FireTrapTimer;
@@ -15,7 +13,7 @@ public class FireTrap extends Ability
     public FireTrap(belven.classes.Class CurrentClass)
     {
         currentClass = CurrentClass;
-        requirements.add(new ItemStack(Material.SNOW_BALL, 1));
+        requirements.add(new ItemStack(Material.WOOL, 1));
         abilitiyName = "FireTrap";
     }
 
@@ -37,8 +35,7 @@ public class FireTrap extends Ability
         BukkitTask currentTimer = new FireTrapTimer(targetLocation.getBlock(),
                 4).runTaskTimer(currentClass.plugin(), SecondsToTicks(5),
                 SecondsToTicks(2));
-        targetLocation.getBlock().setType(
-                (new Wool(DyeColor.RED).getItemType()));
+        targetLocation.getBlock().setType(Material.WOOL);
     }
 
     @Override

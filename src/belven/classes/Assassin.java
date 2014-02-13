@@ -83,20 +83,16 @@ public class Assassin extends Class
         }
 
         if (arrowEntity)
-        {
+        {            
             switch (damagedEntity.getType().toString().toLowerCase())
             {
             case "zombie":
                 Zombie currentZombie = (Zombie) damagedEntity;
                 TeleportToTarget(currentZombie);
-                classOwner.getLocation().setDirection(
-                        currentZombie.getLocation().getDirection());
                 break;
             case "skeleton":
                 Skeleton currentSkeleton = (Skeleton) damagedEntity;
                 TeleportToTarget(currentSkeleton);
-                classOwner.getLocation().setDirection(
-                        currentSkeleton.getLocation().getDirection());
                 break;
             }
         }

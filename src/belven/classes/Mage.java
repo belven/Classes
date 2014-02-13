@@ -1,5 +1,8 @@
 package belven.classes;
 
+import java.util.HashSet;
+
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -59,14 +62,14 @@ public class Mage extends Class
     public void CheckAbilitiesToCast(Player target, Player player)
     {
         if (classOwner.getItemInHand().getType() == Material.NETHER_STAR
-                && classChainLightning.HasRequirements(classOwner, 1))
+                && classChainLightning.HasRequirements(classOwner, 30))
         {
             classChainLightning.PerformAbility(classOwner.getLocation());
         }
         else if (classOwner.getItemInHand().getType() == Material.FEATHER
                 && classPop.HasRequirements(classOwner, 1))
         {
-            currentBlockIterator = new BlockIterator(classOwner, 40);
+            currentBlockIterator = new BlockIterator(classOwner, 100);
             Block popBlock = GetTargetBlock();
 
             if (popBlock != null)
@@ -91,11 +94,40 @@ public class Mage extends Class
                 lastBlock = currentBlockIterator.next();
             }
             while (currentBlockIterator.hasNext()
-                    && lastBlock.getType() == Material.AIR);
+                    && lastBlock.getType() == Material.AIR
+                    && getNearbyEntities(lastBlock.getLocation(), 1).length == 0);
             return lastBlock;
         }
         else
             return null;
+    }
+
+    // excluding players
+    public static Entity[] getNearbyEntities(Location l, int radius)
+    {
+        int chunkRadius = radius < 16 ? 1 : (radius - (radius % 16)) / 16;
+        HashSet<Entity> radiusEntities = new HashSet<Entity>();
+
+        for (int chX = 0 - chunkRadius; chX <= chunkRadius; chX++)
+        {
+            for (int chZ = 0 - chunkRadius; chZ <= chunkRadius; chZ++)
+            {
+                int x = (int) l.getX(), y = (int) l.getY(), z = (int) l.getZ();
+
+                for (Entity e : new Location(l.getWorld(), x + (chX * 16), y, z
+                        + (chZ * 16)).getChunk().getEntities())
+                {
+                    if (e.getLocation().distance(l) <= radius
+                            && e.getLocation().getBlock() != l.getBlock()
+                            && e.getType() != EntityType.PLAYER)
+                    {
+                        radiusEntities.add(e);
+                    }
+                }
+            }
+        }
+        
+        return radiusEntities.toArray(new Entity[radiusEntities.size()]);
     }
 
     public void SetAbilities()

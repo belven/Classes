@@ -13,6 +13,7 @@ public abstract class Class
     public Player classOwner = null;
     public ClassManager plugin;
     protected String className = "";
+    public boolean CanCast = true;
     
     public final String getClassName()
     {
