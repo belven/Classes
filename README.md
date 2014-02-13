@@ -1,7 +1,7 @@
 Welcome to the Classes mod. 
 
-The server for this is: 85.236.101.19:27165
-Be mindful it's still a work in progress just as much as the mod is. It's using MobArena
+The server for this is: 85.236.101.19:27165 (facebook page: https://www.facebook.com/groups/517289625053919/)
+Be mindful it's still a work in progress just as much as the mod is. It's using MobArena, WorldGuard and Multi-Verse. All the permissions are set up and working for these mods and mine. I just need to develop the arenas and classes. This server is for a comunity called NorDevNor (www.NorDevNor.co.uk) that mainly plays swtor.    
 
 The aim of this mod is to give users the ability to have a class and utilise a set of spells and abilities. It’s currently a work in progress, all the abilities work there just aren’t that many right now. The main item used to cast is Lapis blocks. Each class will have passive abilities (the warrior gains temporary hearts when at low health) and active abilities (the archer webs its target on hit). 
 Here’s a list of the classes and their abilities (the command to change to the class is in the brackets):
