@@ -11,7 +11,7 @@ public class MageFireball extends Ability
     {
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.LAPIS_BLOCK, 1));
-        abilitiyName = "MageFireball";
+        abilitiyName = "Mage Fireball";
     }
 
     @Override

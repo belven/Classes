@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import belven.classes.Abilities.Ability;
+import belven.timedevents.AbilityCooldown;
 
 public abstract class Class
 {
@@ -14,7 +16,7 @@ public abstract class Class
     public ClassManager plugin;
     protected String className = "";
     public boolean CanCast = true;
-    
+
     public final String getClassName()
     {
         return "";
@@ -49,7 +51,20 @@ public abstract class Class
 
     public void PerformAbility(Entity currentEntity)
     {
-        
+
+    }
+
+    public void UltAbilityUsed(Ability currentAbility)
+    {
+        setAbilityOnCoolDown(currentAbility, 120);
+    }
+
+    @SuppressWarnings("unused")
+    public void setAbilityOnCoolDown(Ability currentAbility, int seconds)
+    {
+        BukkitTask currentTimer = new AbilityCooldown(currentAbility)
+                .runTaskLater(plugin, SecondsToTicks(seconds));
+        currentAbility.onCooldown = true;
     }
 
     public String ListAbilities()
@@ -70,5 +85,10 @@ public abstract class Class
     {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public int SecondsToTicks(int seconds)
+    {
+        return seconds * 20;
     }
 }

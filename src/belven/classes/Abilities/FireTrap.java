@@ -14,7 +14,8 @@ public class FireTrap extends Ability
     {
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.WOOL, 1));
-        abilitiyName = "FireTrap";
+        inHandRequirements.add(Material.WOOL);
+        abilitiyName = "Fire Trap";
     }
 
     @Override
@@ -33,14 +34,17 @@ public class FireTrap extends Ability
     public void PerformAbility(Location targetLocation)
     {
         BukkitTask currentTimer = new FireTrapTimer(targetLocation.getBlock(),
-                4).runTaskTimer(currentClass.plugin(), SecondsToTicks(5),
-                SecondsToTicks(2));
+                SecondsToTicks(Amplifier()), 4).runTaskTimer(
+                currentClass.plugin(), SecondsToTicks(5), SecondsToTicks(2));
+
         targetLocation.getBlock().setType(Material.WOOL);
+
+        currentClass.classOwner.sendMessage(String.valueOf(Amplifier()));
     }
 
     @Override
     public int Amplifier()
     {
-        return 0;
-    }  
+        return (int) ((currentClass.classOwner.getLevel() / 3) + 2);
+    }
 }

@@ -7,7 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 public class Barrier extends Ability
@@ -17,8 +16,8 @@ public class Barrier extends Ability
     public Barrier(belven.classes.Class CurrentClass, int Radius)
     {
         currentClass = CurrentClass;
-        this.radius = Radius;
-        requirements.add(new ItemStack(Material.NETHER_STAR, 1));
+        radius = Radius;
+        inHandRequirements.add(Material.NETHER_STAR);
         abilitiyName = "Barrier";
     }
 

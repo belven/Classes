@@ -9,17 +9,19 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class ItemRestorer extends BukkitRunnable
 {
     public Player currentPlayer;
+    public Material typeToRestore;
 
-    public ItemRestorer(Player CurrentPlayer)
+    public ItemRestorer(Player CurrentPlayer, Material TypeToRestore)
     {
         currentPlayer = CurrentPlayer;
+        typeToRestore = TypeToRestore;
     }
 
     @Override
     public void run()
     {
         int positionID;
-        ItemStack tempStack = new ItemStack(Material.NETHER_STAR, 1);
+        ItemStack tempStack = new ItemStack(typeToRestore, 1);
         PlayerInventory playerInventory = currentPlayer.getInventory();
         
         if (!playerInventory.containsAtLeast(tempStack, 1))

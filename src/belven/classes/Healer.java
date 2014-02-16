@@ -1,6 +1,5 @@
 package belven.classes;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -10,11 +9,13 @@ import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.Bandage;
 import belven.classes.Abilities.Barrier;
 import belven.classes.Abilities.Heal;
+import belven.classes.Abilities.LightHeal;
 import belven.timedevents.BarrierTimer;
 
 public class Healer extends Class
 {
     public Heal classHeal;
+    public LightHeal classLightHeal;
     public Bandage classBandage;
     public Barrier classBarrier;
 
@@ -23,9 +24,11 @@ public class Healer extends Class
         plugin = instance;
         classOwner = currentPlayer;
         classHeal = new Heal(this);
+        classLightHeal = new LightHeal(this);
         classBandage = new Bandage(this);
         classBarrier = new Barrier(this, 6);
         SetAbilities();
+        currentPlayer.setMaxHealth(16);
     }
 
     @Override
@@ -56,26 +59,31 @@ public class Healer extends Class
     @SuppressWarnings("unused")
     public void CheckAbilitiesToCast(Player player)
     {
-        if (player.getHealth() <= 10
-                && classHeal.HasRequirements(classOwner, 1))
+        if (player.getHealth() <= 10 && classHeal.HasRequirements(classOwner))
         {
             this.classHeal.PerformAbility(player);
             classOwner.sendMessage("You healed " + player.getName());
         }
-        else if ((classOwner.getItemInHand().getType() == Material.STICK || classOwner
-                .getItemInHand().getType() == Material.PAPER)
-                && classBandage.HasRequirements(classOwner, 1))
+        else if (classBandage.HasRequirements(classOwner))
         {
             this.classBandage.PerformAbility(player);
             classOwner.sendMessage("You gave " + player.getName()
                     + " a bandage");
         }
-        else if ((classOwner.getItemInHand().getType() == Material.NETHER_STAR && classBarrier
-                .HasRequirements(classOwner, 1)))
+        else if (!classBarrier.onCooldown
+                && classBarrier.HasRequirements(classOwner))
         {
-            BukkitTask currentTimer = new BarrierTimer(classBarrier).runTaskTimer(plugin, 0,
-                    10);
+            BukkitTask currentTimer = new BarrierTimer(classBarrier)
+                    .runTaskTimer(plugin, 0, 10);
+
+            UltAbilityUsed(classBarrier);
+
             classOwner.sendMessage("You used " + classBarrier.GetAbilityName());
+        }
+        else if (classLightHeal.HasRequirements(classOwner))
+        {
+            this.classLightHeal.PerformAbility(player);
+            classOwner.sendMessage("You healed " + player.getName());
         }
     }
 

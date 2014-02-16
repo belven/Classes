@@ -6,15 +6,17 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+
+import belven.timedevents.ChainLightningTimer;
 
 public class ChainLightning extends Ability
 {
     public ChainLightning(belven.classes.Class CurrentClass)
     {
         currentClass = CurrentClass;
-        requirements.add(new ItemStack(Material.LAPIS_BLOCK));
+        inHandRequirements.add(Material.NETHER_STAR);
         abilitiyName = "ChainLightning";
     }
 
@@ -41,14 +43,15 @@ public class ChainLightning extends Ability
 
         return radiusEntities.toArray(new Entity[radiusEntities.size()]);
     }
-    
+
     public void PerformAbility(Location targetLocation)
     {
-        Entity[] entitiesToDamage = getNearbyEntities(targetLocation, 15);
+        Entity[] entitiesToDamage = getNearbyEntities(targetLocation, 12);
 
         for (int i = 0; i < entitiesToDamage.length; i++)
         {
             if (entitiesToDamage[i] != null
+                    && entitiesToDamage[i] instanceof LivingEntity
                     && entitiesToDamage[i].getType() != EntityType.PLAYER)
             {
                 entitiesToDamage[i].getWorld().strikeLightning(
@@ -56,15 +59,16 @@ public class ChainLightning extends Ability
             }
         }
     }
-  
+
     @Override
     public void PerformAbility()
-    {        
+    {
+        new ChainLightningTimer(this).runTaskTimer(currentClass.plugin, 0, 10);
     }
 
     @Override
     public void PerformAbility(Player targetPlayer)
-    {        
+    {
     }
 
     @Override

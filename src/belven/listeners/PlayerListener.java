@@ -1,5 +1,6 @@
 package belven.listeners;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -58,12 +59,12 @@ public class PlayerListener implements Listener
 
     @SuppressWarnings("unused")
     private void PerformClassAbility(PlayerToggleSneakEvent event)
-    {        
+    {
         if (plugin.CurrentPlayerClasses.get(event.getPlayer()).CanCast)
         {
-            BukkitTask currentTimer = new AbilityDelay(event.getPlayer(), plugin)
-            .runTaskLater(plugin, SecondsToTicks(1));
-            
+            BukkitTask currentTimer = new AbilityDelay(event.getPlayer(),
+                    plugin).runTaskLater(plugin, SecondsToTicks(1));
+
             if (plugin.CurrentPlayerClasses.get(event.getPlayer()) instanceof Assassin)
             {
                 ((Assassin) plugin.CurrentPlayerClasses.get(event.getPlayer()))
@@ -75,15 +76,30 @@ public class PlayerListener implements Listener
     @SuppressWarnings("unused")
     public void PerformClassAbility(PlayerInteractEvent event)
     {
-        if (event.getAction() == Action.RIGHT_CLICK_AIR)
+        if (event.getAction() == Action.RIGHT_CLICK_AIR
+                || event.getAction() == Action.RIGHT_CLICK_BLOCK)
         {
             Player currentPlayer = event.getPlayer();
-            
+
+            if (event.getAction() == Action.RIGHT_CLICK_BLOCK)
+            {
+                Material blockMaterial = event.getClickedBlock().getType();
+                if (!isNotInteractiveBlock(blockMaterial))
+                {
+                    return;
+                }
+                else if (event.getItem() != null
+                        && !isNotInteractiveBlock(event.getItem().getType()))
+                {
+                    return;
+                }
+            }
+
             if (plugin.CurrentPlayerClasses.get(currentPlayer).CanCast)
             {
-                BukkitTask currentTimer = new AbilityDelay(currentPlayer, plugin)
-                .runTaskLater(plugin, SecondsToTicks(1));
-                
+                BukkitTask currentTimer = new AbilityDelay(currentPlayer,
+                        plugin).runTaskLater(plugin, SecondsToTicks(1));
+
                 if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Healer)
                 {
                     ((Healer) plugin.CurrentPlayerClasses.get(currentPlayer))
@@ -113,17 +129,42 @@ public class PlayerListener implements Listener
         }
     }
 
+    public boolean isNotInteractiveBlock(Material material)
+    {
+        switch (material.toString())
+        {
+        case "CHEST":
+            return false;
+        case "WORKBENCH":
+            return false;
+        case "ANVIL":
+            return false;
+        case "FURNACE":
+            return false;
+        case "ENCHANTMENT_TABLE":
+            return false;
+        case "ENDER_CHEST":
+            return false;
+        case "BED":
+            return false;
+        case "MINECART":
+            return false;
+        default:
+            return true;
+        }
+    }
+
     @SuppressWarnings("unused")
     public void PerformClassAbility(PlayerInteractEntityEvent event)
     {
         Player currentPlayer = event.getPlayer();
         Entity currentEntity = event.getRightClicked();
-        
+
         if (plugin.CurrentPlayerClasses.get(event.getPlayer()).CanCast)
         {
-            BukkitTask currentTimer = new AbilityDelay(event.getPlayer(), plugin)
-            .runTaskLater(plugin, SecondsToTicks(1));
-            
+            BukkitTask currentTimer = new AbilityDelay(event.getPlayer(),
+                    plugin).runTaskLater(plugin, SecondsToTicks(1));
+
             if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Healer)
             {
                 ((Healer) plugin.CurrentPlayerClasses.get(currentPlayer))
@@ -176,6 +217,7 @@ public class PlayerListener implements Listener
                 || currentEntityType == EntityType.MAGMA_CUBE
                 || currentEntityType == EntityType.PIG_ZOMBIE
                 || currentEntityType == EntityType.SKELETON
+                || currentEntityType == EntityType.SPIDER
                 || currentEntityType == EntityType.SLIME
                 || currentEntityType == EntityType.WITCH
                 || currentEntityType == EntityType.WITHER
@@ -194,7 +236,13 @@ public class PlayerListener implements Listener
 
         if (damagerEntity.getType() == EntityType.PLAYER)
         {
-            currentPlayer = (Player) event.getDamager();
+            currentPlayer = (Player) damagerEntity;
+
+            if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Assassin)
+            {
+                ((Assassin) plugin.CurrentPlayerClasses.get(currentPlayer))
+                        .MobTakenDamage(event);
+            }
         }
         else if (damagerEntity.getType() == EntityType.ARROW)
         {
@@ -203,6 +251,17 @@ public class PlayerListener implements Listener
             if (currentArrow.getShooter().getType() == EntityType.PLAYER)
             {
                 currentPlayer = (Player) currentArrow.getShooter();
+
+                if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Assassin)
+                {
+                    ((Assassin) plugin.CurrentPlayerClasses.get(currentPlayer))
+                            .MobTakenDamage(event);
+                }
+                else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Archer)
+                {
+                    ((Archer) plugin.CurrentPlayerClasses.get(currentPlayer))
+                            .MobTakenDamage(event);
+                }
             }
         }
         else if (damagerEntity.getType() == EntityType.FIREBALL)
@@ -212,24 +271,16 @@ public class PlayerListener implements Listener
             if (currentFireball.getShooter().getType() == EntityType.PLAYER)
             {
                 currentPlayer = (Player) currentFireball.getShooter();
+                if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Mage)
+                {
+                    event.setDamage(event.getDamage()
+                            + (currentPlayer.getLevel() / 4));
+                }
             }
         }
 
-        if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Mage)
-        {
-            event.setDamage(7);
-        }
-        else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Assassin)
-        {
-            ((Assassin) plugin.CurrentPlayerClasses.get(currentPlayer))
-                    .MobTakenDamage(event);
-            ;
-        }
-        else if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Archer)
-        {
-            ((Archer) plugin.CurrentPlayerClasses.get(currentPlayer))
-                    .MobTakenDamage(event);
-        }
+        // currentPlayer.sendMessage(String.valueOf(event.getDamage()));
+
     }
 
     public void PlayerTakenDamage(EntityDamageByEntityEvent event)

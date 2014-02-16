@@ -12,7 +12,7 @@ public class LastResort extends Ability
     {
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.NETHER_STAR, 1));
-        abilitiyName = "LastResort";
+        abilitiyName = "Last Resort";
     }
 
     @Override

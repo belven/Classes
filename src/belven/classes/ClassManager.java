@@ -45,7 +45,7 @@ public class ClassManager extends JavaPlugin
 
     public void AddClassToPlayer(Player playerToAdd)
     {
-        String PlayerName = playerToAdd.getPlayerListName().toLowerCase();
+        String PlayerName = playerToAdd.getPlayerListName();
         this.reloadConfig();
 
         if (!this.getConfig().contains(PlayerName))
@@ -59,12 +59,14 @@ public class ClassManager extends JavaPlugin
 
             if (classString != null)
             {
-                CurrentPlayerClasses.put(playerToAdd,
-                        StringToClass(classString, playerToAdd));
+                if (CurrentPlayerClasses.get(playerToAdd) == null)
 
-                this.getServer().broadcastMessage(
-                        PlayerName + " was given class " + classString);
+                    CurrentPlayerClasses.put(playerToAdd,
+                            StringToClass(classString, playerToAdd));
             }
+
+            this.getServer().broadcastMessage(
+                    PlayerName + " was given class " + classString);
         }
     }
 
@@ -179,24 +181,24 @@ public class ClassManager extends JavaPlugin
 
     public void SetClass(Player playerToChange, String classString)
     {
-        String PlayerName = playerToChange.getPlayerListName().toLowerCase();
+        String PlayerName = playerToChange.getPlayerListName();
+
         this.reloadConfig();
-
         getConfig().set(PlayerName + ".Class", classString);
-        getConfig().set(PlayerName + ".Level", playerToChange.getLevel());
 
-        this.getServer().broadcastMessage(
-                PlayerName + " is class " + classString);
+        playerToChange.sendMessage(PlayerName + " is class " + classString);
 
         this.saveConfig();
         CurrentPlayerClasses.put(playerToChange,
                 StringToClass(classString, playerToChange));
+
     }
 
     @Override
     public void onDisable()
     {
         getLogger().info("Goodbye world!");
+        this.saveConfig();
     }
 
 }

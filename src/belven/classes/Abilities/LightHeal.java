@@ -6,20 +6,21 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class Heal extends Ability
+public class LightHeal extends Ability
 {
-    public Heal(belven.classes.Class CurrentClass)
+    public LightHeal(belven.classes.Class CurrentClass)
     {
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.LAPIS_BLOCK, 1));
-        abilitiyName = "Heal";
+        abilitiyName = "Light Heal";
     }
 
     @Override
     public void PerformAbility(Player playerToHeal)
     {
-        playerToHeal.addPotionEffect(new PotionEffect(PotionEffectType.HEAL,
-                1, Amplifier()));
+        playerToHeal.addPotionEffect(new PotionEffect(
+                PotionEffectType.REGENERATION, SecondsToTicks(5), Amplifier(),
+                true));
     }
 
     @Override
@@ -29,7 +30,7 @@ public class Heal extends Ability
 
     public int Amplifier()
     {
-        return Math.round(currentClass.classOwner().getLevel() / 7);
+        int PlayerLevel = currentClass.classOwner.getLevel();
+        return PlayerLevel > 20 ? 3 : 2;
     }
-
 }

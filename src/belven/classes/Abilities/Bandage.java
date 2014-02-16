@@ -13,6 +13,8 @@ public class Bandage extends Ability
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.PAPER, 1));
         requirements.add(new ItemStack(Material.STICK, 1));
+        inHandRequirements.add(Material.PAPER);
+        inHandRequirements.add(Material.STICK);
         abilitiyName = "Bandage";
     }
 

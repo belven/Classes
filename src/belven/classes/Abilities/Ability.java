@@ -4,40 +4,64 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitTask;
 
-import belven.timedevents.ItemRestorer;
-
-public abstract class Ability
+public class Ability
 {
     List<ItemStack> requirements = new ArrayList<ItemStack>();
+    List<Material> inHandRequirements = new ArrayList<Material>();
     public belven.classes.Class currentClass;
     protected String abilitiyName = "";
+    public boolean onCooldown = false;
 
-    public abstract void PerformAbility();
+    public void PerformAbility()
+    {
+    }
 
-    public abstract void PerformAbility(Player targetPlayer);
+    public void PerformAbility(Player targetPlayer)
+    {
+    }
+
+    public void PerformAbility(Entity targetEntity)
+    {
+    }
 
     public int SecondsToTicks(int seconds)
     {
         return (seconds * 20);
     }
 
-    public abstract int Amplifier();
+    public int Amplifier()
+    {
+        return 0;
+    }
 
-    @SuppressWarnings({ "deprecation", "unused" })
-    public boolean HasRequirements(Player playerToCheck, int amountToTake)
+    public boolean HasRequirements(Player playerToCheck)
     {
         int checksRequired = 0;
         Inventory playerInventory = playerToCheck.getInventory();
 
+        if (inHandRequirements.size() > 0)
+        {
+            if (!inHandRequirements.contains(playerToCheck.getItemInHand()
+                    .getType()))
+            {
+                return false;
+            }
+            else if (requirements.size() == 0)
+            {
+                return true;
+            }
+        }
+
         for (int i = 0; i < requirements.size(); i++)
         {
             if (playerInventory.containsAtLeast(requirements.get(i),
-                    amountToTake))
+                    requirements.get(i).getAmount()))
             {
                 checksRequired++;
             }
@@ -45,45 +69,56 @@ public abstract class Ability
 
         if (checksRequired == requirements.size())
         {
-            ItemStack tempStack;
-            int positionID;
-            for (int i = 0; i < requirements.size(); i++)
-            {
-                positionID = playerInventory.first(requirements.get(i)
-                        .getType());
-                tempStack = playerInventory.getItem(positionID);
-
-                if (tempStack.getAmount() > amountToTake)
-                {
-                    tempStack.setAmount(tempStack.getAmount() - amountToTake);
-                }
-                else
-                {
-                    tempStack.setType(Material.AIR);
-                    playerInventory.setItem(positionID, tempStack);
-                }
-
-                if (requirements.get(i).getType() == Material.NETHER_STAR )
-                {
-                    BukkitTask itemRestore = new ItemRestorer(playerToCheck)
-                            .runTaskLater(currentClass.plugin,
-                                    SecondsToTicks(120));
-                }
-            }
-            playerToCheck.updateInventory();
+            RemoveItems();
             return true;
         }
         else
             return false;
     }
 
+    @SuppressWarnings("deprecation")
+    public void RemoveItems()
+    {
+        ItemStack tempStack;
+        Inventory playerInventory = currentClass.classOwner.getInventory();
+
+        int positionID;
+        for (int i = 0; i < requirements.size(); i++)
+        {
+            if (requirements.get(i).getType() != Material.NETHER_STAR)
+            {
+                positionID = playerInventory.first(requirements.get(i)
+                        .getType());
+                tempStack = playerInventory.getItem(positionID);
+
+                if (tempStack.getAmount() > requirements.get(i).getAmount())
+                {
+                    tempStack.setAmount(tempStack.getAmount()
+                            - requirements.get(i).getAmount());
+                }
+                else
+                {
+                    tempStack.setType(Material.AIR);
+                    playerInventory.setItem(positionID, tempStack);
+                }
+            }
+        }
+        currentClass.classOwner.updateInventory();
+    }
+
     public String GetAbilityName()
     {
-        return this.abilitiyName;
+        return abilitiyName;
     }
 
     public List<ItemStack> GetAbilityRequirements()
     {
         return requirements;
+    }
+
+    public void PerformAbility(EntityDamageByEntityEvent event)
+    {
+        // TODO Auto-generated method stub
+
     }
 }

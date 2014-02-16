@@ -1,15 +1,13 @@
 package belven.classes;
 
-import java.util.HashSet;
-
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.util.BlockIterator;
+import org.bukkit.util.Vector;
 
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.ChainLightning;
@@ -26,12 +24,13 @@ public class Mage extends Class
     public Mage(Player currentPlayer, ClassManager instance)
     {
         plugin = instance;
-        this.classOwner = currentPlayer;
-        this.classFireball = new MageFireball(this);
+        classOwner = currentPlayer;
+        classFireball = new MageFireball(this);
         classChainLightning = new ChainLightning(this);
         classPop = new Pop(this);
-        this.SetAbilities();
         className = "Mage";
+        currentPlayer.setMaxHealth(16);
+        SetAbilities();
     }
 
     @Override
@@ -61,74 +60,58 @@ public class Mage extends Class
 
     public void CheckAbilitiesToCast(Player target, Player player)
     {
-        if (classOwner.getItemInHand().getType() == Material.NETHER_STAR
-                && classChainLightning.HasRequirements(classOwner, 30))
+        if (!classChainLightning.onCooldown
+               && classChainLightning.HasRequirements(classOwner))
         {
-            classChainLightning.PerformAbility(classOwner.getLocation());
-        }
-        else if (classOwner.getItemInHand().getType() == Material.FEATHER
-                && classPop.HasRequirements(classOwner, 1))
-        {
-            currentBlockIterator = new BlockIterator(classOwner, 100);
-            Block popBlock = GetTargetBlock();
+            classChainLightning.PerformAbility();
 
-            if (popBlock != null)
+            UltAbilityUsed(classChainLightning);
+        }
+        else if (classPop.HasRequirements(classOwner))
+        {
+            LivingEntity targetEntity = findTarget(classOwner);
+
+            if (targetEntity != null)
             {
-                classPop.PerformAbility(popBlock.getLocation());
+                classPop.PerformAbility(targetEntity.getLocation());
             }
         }
-        else if (classFireball.HasRequirements(player, 1))
+        else if (classFireball.HasRequirements(player))
         {
             this.classFireball.PerformAbility(player);
         }
     }
 
-    public Block GetTargetBlock()
+    private LivingEntity findTarget(Player origin)
     {
-        Block lastBlock;
+        double radius = 150.0D;
+        Location originLocation = origin.getEyeLocation();
+        Vector originDirection = originLocation.getDirection();
+        Vector originVector = originLocation.toVector();
 
-        if (currentBlockIterator != null)
+        LivingEntity target = null;
+        double minDotProduct = Double.MIN_VALUE;
+        for (Entity entity : origin.getNearbyEntities(radius, radius, radius))
         {
-            do
+            if (entity instanceof LivingEntity && !entity.equals(origin))
             {
-                lastBlock = currentBlockIterator.next();
-            }
-            while (currentBlockIterator.hasNext()
-                    && lastBlock.getType() == Material.AIR
-                    && getNearbyEntities(lastBlock.getLocation(), 1).length == 0);
-            return lastBlock;
-        }
-        else
-            return null;
-    }
+                LivingEntity living = (LivingEntity) entity;
+                Location newTargetLocation = living.getEyeLocation();
 
-    // excluding players
-    public static Entity[] getNearbyEntities(Location l, int radius)
-    {
-        int chunkRadius = radius < 16 ? 1 : (radius - (radius % 16)) / 16;
-        HashSet<Entity> radiusEntities = new HashSet<Entity>();
-
-        for (int chX = 0 - chunkRadius; chX <= chunkRadius; chX++)
-        {
-            for (int chZ = 0 - chunkRadius; chZ <= chunkRadius; chZ++)
-            {
-                int x = (int) l.getX(), y = (int) l.getY(), z = (int) l.getZ();
-
-                for (Entity e : new Location(l.getWorld(), x + (chX * 16), y, z
-                        + (chZ * 16)).getChunk().getEntities())
+                // check angle to target:
+                Vector toTarget = newTargetLocation.toVector()
+                        .subtract(originVector).normalize();
+                double dotProduct = toTarget.dot(originDirection);
+                if (dotProduct > 0.30D && origin.hasLineOfSight(living)
+                        && (target == null || dotProduct > minDotProduct))
                 {
-                    if (e.getLocation().distance(l) <= radius
-                            && e.getLocation().getBlock() != l.getBlock()
-                            && e.getType() != EntityType.PLAYER)
-                    {
-                        radiusEntities.add(e);
-                    }
+                    target = living;
+                    minDotProduct = dotProduct;
                 }
             }
         }
-        
-        return radiusEntities.toArray(new Entity[radiusEntities.size()]);
-    }
+        return target;
+    }   
 
     public void SetAbilities()
     {
@@ -142,7 +125,7 @@ public class Mage extends Class
             }
         }
     }
-
+    
     public String ListAbilities()
     {
         String ListOfAbilities = "";

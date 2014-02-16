@@ -18,6 +18,7 @@ public class Pop extends Ability
     {
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.FEATHER));
+        inHandRequirements.add(Material.FEATHER);
         abilitiyName = "Pop";
     }
 
@@ -69,9 +70,9 @@ public class Pop extends Ability
                 vectorToUse.setY(vectorToUse.getY() + 1);
 
                 entitiesToDamage[i].setVelocity(vectorToUse);
-                
+
                 counter++;
-                
+
                 if (counter >= 3)
                 {
                     counter = 0;
@@ -85,5 +86,5 @@ public class Pop extends Ability
     public int Amplifier()
     {
         return 0;
-    } 
+    }
 }

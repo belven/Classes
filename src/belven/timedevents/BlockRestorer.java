@@ -10,10 +10,11 @@ public class BlockRestorer extends BukkitRunnable
     private Location blockLocation;
     private Material MaterialToRestore;
 
-    public BlockRestorer(Block currentBlock)
+    public BlockRestorer(Block blockToRestore, Material MaterialToChangeTo)
     {
-        blockLocation = currentBlock.getLocation();
-        MaterialToRestore = currentBlock.getType();
+        blockLocation = blockToRestore.getLocation();
+        MaterialToRestore = blockToRestore.getType();
+        blockToRestore.setType(MaterialToChangeTo);
     }
 
     @Override
