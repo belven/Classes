@@ -2,7 +2,9 @@ package belven.classes;
 
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
@@ -10,8 +12,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import belven.events.ClassChangeEvent;
 import belven.listeners.BlockListener;
 import belven.listeners.PlayerListener;
+import belven.timedevents.ArenaTimer;
 
 public class ClassManager extends JavaPlugin
 {
@@ -45,7 +49,7 @@ public class ClassManager extends JavaPlugin
 
     public void AddClassToPlayer(Player playerToAdd)
     {
-        String PlayerName = playerToAdd.getPlayerListName();
+        String PlayerName = playerToAdd.getName();
         this.reloadConfig();
 
         if (!this.getConfig().contains(PlayerName))
@@ -155,6 +159,14 @@ public class ClassManager extends JavaPlugin
             else
                 return false;
         }
+        else if (commandSent.equalsIgnoreCase("bcarena"))
+        {
+            new ArenaTimer(player.getLocation().getBlock(),
+                    Integer.valueOf(args[0]), Material.getMaterial(args[1]))
+                    .runTaskTimer(this, SecondsToTicks(1),
+                            SecondsToTicks(Integer.valueOf(args[2])));
+            return true;
+        }
         else
             return false;
 
@@ -181,7 +193,7 @@ public class ClassManager extends JavaPlugin
 
     public void SetClass(Player playerToChange, String classString)
     {
-        String PlayerName = playerToChange.getPlayerListName();
+        String PlayerName = playerToChange.getName();
 
         this.reloadConfig();
         getConfig().set(PlayerName + ".Class", classString);
@@ -192,6 +204,9 @@ public class ClassManager extends JavaPlugin
         CurrentPlayerClasses.put(playerToChange,
                 StringToClass(classString, playerToChange));
 
+        Bukkit.getPluginManager().callEvent(
+                new ClassChangeEvent(CurrentPlayerClasses.get(playerToChange),
+                        playerToChange));
     }
 
     @Override
@@ -199,6 +214,11 @@ public class ClassManager extends JavaPlugin
     {
         getLogger().info("Goodbye world!");
         this.saveConfig();
+    }
+
+    public int SecondsToTicks(int seconds)
+    {
+        return (seconds * 20);
     }
 
 }

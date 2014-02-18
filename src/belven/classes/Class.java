@@ -19,7 +19,7 @@ public abstract class Class
 
     public final String getClassName()
     {
-        return "";
+        return className;
     }
 
     @Override

@@ -1,19 +1,29 @@
 package belven.listeners;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.MagmaCube;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
 
 import belven.classes.Archer;
@@ -23,6 +33,7 @@ import belven.classes.Healer;
 import belven.classes.Mage;
 import belven.classes.Warrior;
 import belven.timedevents.AbilityDelay;
+import belven.timedevents.MobOutOfCombatTimer;
 
 public class PlayerListener implements Listener
 {
@@ -55,6 +66,36 @@ public class PlayerListener implements Listener
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event)
     {
         PerformClassAbility(event);
+    }
+
+    @SuppressWarnings("deprecation")
+    @EventHandler
+    public void OnPlayerExpChangeEvent(PlayerExpChangeEvent event)
+    {
+        Inventory currentInventory = event.getPlayer().getInventory();
+        List<String> lore;
+        belven.classes.Class currentClass = plugin.CurrentPlayerClasses
+                .get(event.getPlayer());
+
+        for (int i = 0; i < currentInventory.getSize(); i++)
+        {
+            ItemStack currentItemStack = currentInventory.getItem(i);
+            lore = new ArrayList<String>();
+
+            if (currentItemStack != null
+                    && currentItemStack.getMaxStackSize() == 1)
+            {
+                ItemMeta currentItemMeta = currentItemStack.getItemMeta();
+                if (currentItemMeta != null)
+                {
+                    lore.add(currentClass.getClassName());
+                    currentItemMeta.setLore(lore);
+                    currentItemStack.setItemMeta(currentItemMeta);
+                    event.getPlayer().updateInventory();
+                }
+
+            }
+        }
     }
 
     @SuppressWarnings("unused")
@@ -262,6 +303,13 @@ public class PlayerListener implements Listener
                     ((Archer) plugin.CurrentPlayerClasses.get(currentPlayer))
                             .MobTakenDamage(event);
                 }
+
+                if (event.getEntity() instanceof LivingEntity
+                        && currentPlayer != null)
+                {
+                    event.setDamage(ScaleDamage(currentPlayer.getLevel(),
+                            event.getDamage()));
+                }
             }
         }
         else if (damagerEntity.getType() == EntityType.FIREBALL)
@@ -271,16 +319,126 @@ public class PlayerListener implements Listener
             if (currentFireball.getShooter().getType() == EntityType.PLAYER)
             {
                 currentPlayer = (Player) currentFireball.getShooter();
+
                 if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Mage)
                 {
-                    event.setDamage(event.getDamage()
-                            + (currentPlayer.getLevel() / 4));
+                    event.setDamage(ScaleDamage(currentPlayer.getLevel(),
+                            event.getDamage()));
                 }
             }
         }
 
-        // currentPlayer.sendMessage(String.valueOf(event.getDamage()));
+        if (event.getEntity() instanceof LivingEntity && currentPlayer != null)
+        {
+            ScaleMobHealth(currentPlayer, (LivingEntity) event.getEntity(),
+                    event.getDamage());
+            currentPlayer.sendMessage(String.valueOf(((LivingEntity) event
+                    .getEntity()).getMaxHealth()));
+        }
+    }
 
+    public void ScaleMobHealth(Player player, LivingEntity mobToScale,
+            double DamageDone)
+    {
+        int heathToscaleTo = (int) (MobMaxHealth(mobToScale) + (player
+                .getLevel() * 1.2));
+
+        if (mobToScale.getMaxHealth() != heathToscaleTo)
+        {
+            mobToScale.setMaxHealth(heathToscaleTo);
+            mobToScale.setHealth(heathToscaleTo - DamageDone);
+            new MobOutOfCombatTimer(mobToScale).runTaskTimer(plugin, 0,
+                    SecondsToTicks(15));
+        }
+    }
+
+    public int MobMaxHealth(LivingEntity entity)
+    {
+        if (entity.getType() == EntityType.ZOMBIE)
+        {
+            return 20;
+        }
+        else if (entity.getType() == EntityType.SKELETON)
+        {
+            return 20;
+        }
+        else if (entity.getType() == EntityType.SPIDER)
+        {
+            return 16;
+        }
+        else if (entity.getType() == EntityType.CREEPER)
+        {
+            return 20;
+        }
+        else if (entity.getType() == EntityType.WITHER)
+        {
+            return 300;
+        }
+        else if (entity.getType() == EntityType.BLAZE)
+        {
+            return 20;
+        }
+        else if (entity.getType() == EntityType.ENDERMAN)
+        {
+            return 40;
+        }
+        else if (entity.getType() == EntityType.CAVE_SPIDER)
+        {
+            return 12;
+        }
+        else if (entity.getType() == EntityType.GHAST)
+        {
+            return 10;
+        }
+        else if (entity.getType() == EntityType.MAGMA_CUBE)
+        {
+            MagmaCube MagmaCube = (MagmaCube) entity;
+
+            if (MagmaCube.getSize() == 4)
+
+            {
+                return 16;
+            }
+            else if (MagmaCube.getSize() == 2)
+            {
+                return 4;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+        else if (entity.getType() == EntityType.PIG_ZOMBIE)
+        {
+            return 20;
+        }
+        else if (entity.getType() == EntityType.SLIME)
+        {
+            Slime slime = (Slime) entity;
+
+            if (slime.getSize() == 4)
+
+            {
+                return 16;
+            }
+            else if (slime.getSize() == 2)
+            {
+                return 4;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+        else
+        {
+            return 20;
+        }
+    }
+
+    public int ScaleDamage(int Level, double damageDone)
+    {
+        return (int) damageDone + (Level / 5);
     }
 
     public void PlayerTakenDamage(EntityDamageByEntityEvent event)

@@ -1,9 +1,12 @@
 package belven.classes;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
 
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.Bandage;
@@ -23,11 +26,11 @@ public class Healer extends Class
     {
         plugin = instance;
         classOwner = currentPlayer;
+        className = "Healer";
         classHeal = new Heal(this);
         classLightHeal = new LightHeal(this);
         classBandage = new Bandage(this);
         classBarrier = new Barrier(this, 6);
-        SetAbilities();
         currentPlayer.setMaxHealth(16);
     }
 
@@ -35,14 +38,36 @@ public class Healer extends Class
     public void PerformAbility(Player currentPlayer)
     {
         Player playerSelected;
-        playerSelected = classOwner;
+
+        if (classOwner.isSneaking())
+        {
+            CheckAbilitiesToCast(classOwner);
+            return;
+        }
+
+        LivingEntity targetEntity = findTarget(classOwner);
+
+        if (targetEntity != null)
+        {
+            playerSelected = (Player) targetEntity;
+        }
+        else
+        {
+            playerSelected = classOwner;
+        }
+
         CheckAbilitiesToCast(playerSelected);
-        className = "Healer";
     }
 
     public void PerformAbility(Entity currentEntity)
     {
         Player playerSelected;
+        
+        if (classOwner.isSneaking())
+        {
+            CheckAbilitiesToCast(classOwner);
+            return;
+        }
 
         if (currentEntity.getType() == EntityType.PLAYER)
         {
@@ -51,8 +76,17 @@ public class Healer extends Class
         }
         else
         {
-            playerSelected = classOwner;
-            this.CheckAbilitiesToCast(playerSelected);
+            LivingEntity targetEntity = findTarget(classOwner);
+
+            if (targetEntity != null)
+            {
+                playerSelected = (Player) targetEntity;
+            }
+            else
+            {
+                playerSelected = classOwner;
+                this.CheckAbilitiesToCast(playerSelected);
+            }
         }
     }
 
@@ -85,6 +119,37 @@ public class Healer extends Class
             this.classLightHeal.PerformAbility(player);
             classOwner.sendMessage("You healed " + player.getName());
         }
+    }
+
+    private LivingEntity findTarget(Player origin)
+    {
+        double radius = 150.0D;
+        Location originLocation = origin.getEyeLocation();
+        Vector originDirection = originLocation.getDirection();
+        Vector originVector = originLocation.toVector();
+
+        LivingEntity target = null;
+        double minDotProduct = Double.MIN_VALUE;
+        for (Entity entity : origin.getNearbyEntities(radius, radius, radius))
+        {
+            if (entity instanceof Player && !entity.equals(origin))
+            {
+                LivingEntity living = (LivingEntity) entity;
+                Location newTargetLocation = living.getEyeLocation();
+
+                // check angle to target:
+                Vector toTarget = newTargetLocation.toVector()
+                        .subtract(originVector).normalize();
+                double dotProduct = toTarget.dot(originDirection);
+                if (dotProduct > 0.30D && origin.hasLineOfSight(living)
+                        && (target == null || dotProduct > minDotProduct))
+                {
+                    target = living;
+                    minDotProduct = dotProduct;
+                }
+            }
+        }
+        return target;
     }
 
     public void SetAbilities()

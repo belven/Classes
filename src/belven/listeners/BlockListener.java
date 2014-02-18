@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import belven.classes.Archer;
 import belven.classes.ClassManager;
@@ -15,7 +16,6 @@ import belven.classes.Mage;
 
 public class BlockListener implements Listener
 {
-
     public ClassManager plugin;
 
     public BlockListener(ClassManager instance)
@@ -29,6 +29,12 @@ public class BlockListener implements Listener
         belven.classes.Class currentClass = plugin.CurrentPlayerClasses
                 .get(event.getPlayer());
         Material mat = event.getBlock().getType();
+
+        if (mat == Material.STONE)
+        {
+            event.getBlock().setMetadata("ArenaBlock",
+                    new FixedMetadataValue(plugin, "Something"));
+        }
 
         if (mat == Material.LAPIS_BLOCK
                 && (currentClass instanceof Mage || currentClass instanceof Healer))
@@ -48,11 +54,7 @@ public class BlockListener implements Listener
 
         if (tempblock.getType() == Material.DISPENSER)
         {
-            // plugin.getServer().broadcastMessage("Dispenser Used");
-
             Dispenser tempDispenser = (Dispenser) tempblock.getState();
-            // Inventory tempInventory = tempDispenser.getInventory();
-
             tempDispenser.getInventory().addItem(event.getItem().clone());
         }
         return;

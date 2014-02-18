@@ -43,6 +43,11 @@ commands:
       usage: /bcdummy 
       permission: BelvensClasses.bcdummy
       permission-message: You don't have BelvensClasses.bcdummy
+   bcarena:
+      description: Spawns mobs in an arena
+      usage: /bcarena 
+      permission: BelvensClasses.bcarena
+      permission-message: You don't have BelvensClasses.bcarena
 
 permissions:
     BelvensClasses.*:
