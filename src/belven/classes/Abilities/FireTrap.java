@@ -38,8 +38,6 @@ public class FireTrap extends Ability
                 currentClass.plugin(), SecondsToTicks(5), SecondsToTicks(2));
 
         targetLocation.getBlock().setType(Material.WOOL);
-
-        currentClass.classOwner.sendMessage(String.valueOf(Amplifier()));
     }
 
     @Override

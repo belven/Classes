@@ -3,16 +3,23 @@ package belven.timedevents;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.MagmaCube;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Slime;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import belven.classes.blocks.ArenaBlock;
 
 public class ArenaTimer extends BukkitRunnable
 {
@@ -21,17 +28,28 @@ public class ArenaTimer extends BukkitRunnable
     private List<Player> arenaPlayers = new ArrayList<Player>();
     private List<Block> spawnArea = new ArrayList<Block>();
     private Block arenaStartingBlock;
+    private String playersString;
     private Material matToSpawnOn;
     private int mobCounter = 0;
     private int counter = 0;
     private int maxMobCounter = 0;
     private int maxRunTimes = 0;
+    private int averageLevel = 0;
+    private ArenaBlock arenaBlock;
+    private List<EntityType> entitiesToSpawn = new ArrayList<EntityType>();
+    private Location locationToCheckForPlayers;
 
-    public ArenaTimer(Block currentBlock, int areaRadius, Material matToSpawnOn)
+    public ArenaTimer(ArenaBlock arenaBlock, Block currentBlock,
+            int areaRadius, Material matToSpawnOn,
+            Location locationToCheckForPlayers)
     {
         arenaStartingBlock = currentBlock;
         radius = areaRadius;
         this.matToSpawnOn = matToSpawnOn;
+        this.arenaBlock = arenaBlock;
+        this.locationToCheckForPlayers = locationToCheckForPlayers;
+        entitiesToSpawn.add(EntityType.ZOMBIE);
+        entitiesToSpawn.add(EntityType.SKELETON);
 
         GetArenaArea();
         GetSpawnArea();
@@ -40,14 +58,27 @@ public class ArenaTimer extends BukkitRunnable
     @Override
     public void run()
     {
+        List<Player> currentArenaPlayers = arenaPlayers;
+
         if (maxRunTimes >= 5)
         {
+            new MessageTimer(currentArenaPlayers, "Arena has ended!!").run();
+            arenaBlock.isActive = false;
             this.cancel();
+            return;
         }
 
         GetPlayers();
 
-        if (spawnArea.size() > 0)
+        if (arenaPlayers.size() <= 0)
+        {
+            new MessageTimer(currentArenaPlayers, "Arena has ended!!").run();
+            arenaBlock.isActive = false;
+            this.cancel();
+            return;
+        }
+
+        if (spawnArea.size() > 0 && arenaPlayers.size() > 0)
         {
             SpawnMobs();
         }
@@ -70,10 +101,10 @@ public class ArenaTimer extends BukkitRunnable
             for (int i = 0; i < arenaArea.size(); i++)
             {
                 spawnLocation = arenaArea.get(i).getLocation();
-                spawnLocation.setY(spawnLocation.getY() - 1);
                 spawnLocation = CanSpawnAt(spawnLocation);
 
-                if (spawnLocation != null)
+                if (spawnLocation != null
+                        && !arenaArea.get(i).equals(arenaStartingBlock))
                 {
                     Block spawnBlock = spawnLocation.getBlock();
                     spawnArea.add(spawnBlock);
@@ -84,16 +115,14 @@ public class ArenaTimer extends BukkitRunnable
 
     private Location CanSpawnAt(Location currentLocation)
     {
-        Location blockBelow = currentLocation;
-        Location blockAbove = currentLocation;
-        blockBelow.setY(blockBelow.getY() - 1);
-        blockAbove.setY(blockAbove.getY() + 1);
-        
-        if (currentLocation.getBlock().getType() == Material.AIR
-                && blockAbove.getBlock().getType() == Material.AIR
-                && blockBelow.getBlock().getType() == matToSpawnOn)
+        Block currentBlock = currentLocation.getBlock();
+        Block blockBelow = currentBlock.getRelative(BlockFace.DOWN);
+        Block blockAbove = currentBlock.getRelative(BlockFace.UP);
+
+        if (currentBlock.getType() == Material.AIR
+                && blockAbove.getType() == Material.AIR
+                && blockBelow.getType() == matToSpawnOn)
         {
-            Bukkit.getServer().getPlayer("belven").sendMessage("Valid Block");
             counter = 0;
             return currentLocation;
         }
@@ -105,41 +134,65 @@ public class ArenaTimer extends BukkitRunnable
         else
         {
             counter++;
-            return CanSpawnAt(blockAbove);
+            return CanSpawnAt(blockAbove.getLocation());
         }
     }
 
     private void SpawnMobs()
     {
         mobCounter = 0;
+        int heathToscaleTo = (int) (20 + (averageLevel * 1.2));
 
-        for (int i = 0; i < spawnArea.size(); i++)
+        new MessageTimer(arenaPlayers, "Mobs Spawning: "
+                + String.valueOf(maxMobCounter)).run();
+
+        new MessageTimer(arenaPlayers, "Mobs Health (ish): "
+                + String.valueOf(heathToscaleTo)).run();
+
+        if (maxMobCounter > 50)
         {
-            Location spawnLocation = spawnArea.get(i).getLocation();
+            maxMobCounter = 50;
+        }
+
+        for (mobCounter = 0; mobCounter < maxMobCounter; mobCounter++)
+        {
+            Random randomGenerator = new Random();
+            int randomInt = randomGenerator.nextInt(spawnArea.size());
+            Location spawnLocation = spawnArea.get(randomInt).getLocation();
             spawnLocation.setY(spawnLocation.getY() + 1);
-            spawnLocation.getWorld().spawnEntity(spawnLocation,
-                    EntityType.ZOMBIE);
+            MobToSpawn(spawnLocation);
+        }
+    }
 
-            mobCounter++;
+    public void MobToSpawn(Location spawnLocation)
+    {
+        Random randomGenerator = new Random();
+        int randomInt = randomGenerator.nextInt(entitiesToSpawn.size());
 
-            if (mobCounter >= maxMobCounter)
-            {
-                break;
-            }
-            else if (i == (spawnArea.size() - 1) && mobCounter < maxMobCounter)
-            {
-                i = 0;
-            }
+        LivingEntity currentEntity = (LivingEntity) spawnLocation.getWorld()
+                .spawnEntity(spawnLocation, entitiesToSpawn.get(randomInt));
+        currentEntity.setCanPickupItems(true);
+
+        int heathToscaleTo = (int) (MobMaxHealth(currentEntity) + (averageLevel * 1.2));
+
+        if (currentEntity.getMaxHealth() != heathToscaleTo)
+        {
+            currentEntity.setMaxHealth(heathToscaleTo);
+            currentEntity.setHealth(heathToscaleTo);
+            currentEntity.setMetadata("ArenaMob", new FixedMetadataValue(
+                    arenaBlock.GetPlugin(), playersString));
         }
     }
 
     public void GetPlayers()
     {
-        Player[] currentPlayers = getNearbyPlayers(
-                arenaStartingBlock.getLocation(), radius + 3);
+        Location areaToCheck = locationToCheckForPlayers;
+        Player[] currentPlayers = getNearbyPlayers(areaToCheck, radius
+                + (radius / 2));
         int totalLevels = 0;
+        averageLevel = 0;
         maxMobCounter = 0;
-
+        playersString = "";
         arenaPlayers.clear();
 
         if (currentPlayers.length > 0)
@@ -150,6 +203,8 @@ public class ArenaTimer extends BukkitRunnable
                 {
                     totalLevels += currentPlayers[i].getLevel();
                     arenaPlayers.add(currentPlayers[i]);
+                    playersString = playersString + currentPlayers[i].getName()
+                            + " ";
                 }
             }
 
@@ -157,17 +212,16 @@ public class ArenaTimer extends BukkitRunnable
             {
                 if (totalLevels == 0)
                 {
+                    averageLevel = 1;
                     maxMobCounter = 5;
                 }
                 else
                 {
-                    maxMobCounter = (int) totalLevels / currentPlayers.length;
+                    averageLevel = (int) (totalLevels / currentPlayers.length);
+                    maxMobCounter = (int) (totalLevels / currentPlayers.length)
+                            + (currentPlayers.length * 5);
                 }
             }
-        }
-        else
-        {
-            maxMobCounter = 0;
         }
     }
 
@@ -213,5 +267,89 @@ public class ArenaTimer extends BukkitRunnable
             }
         }
         return tempList;
+    }
+
+    public int MobMaxHealth(LivingEntity entity)
+    {
+        if (entity.getType() == EntityType.ZOMBIE)
+        {
+            return 20;
+        }
+        else if (entity.getType() == EntityType.SKELETON)
+        {
+            return 20;
+        }
+        else if (entity.getType() == EntityType.SPIDER)
+        {
+            return 16;
+        }
+        else if (entity.getType() == EntityType.CREEPER)
+        {
+            return 20;
+        }
+        else if (entity.getType() == EntityType.WITHER)
+        {
+            return 300;
+        }
+        else if (entity.getType() == EntityType.BLAZE)
+        {
+            return 20;
+        }
+        else if (entity.getType() == EntityType.ENDERMAN)
+        {
+            return 40;
+        }
+        else if (entity.getType() == EntityType.CAVE_SPIDER)
+        {
+            return 12;
+        }
+        else if (entity.getType() == EntityType.GHAST)
+        {
+            return 10;
+        }
+        else if (entity.getType() == EntityType.MAGMA_CUBE)
+        {
+            MagmaCube MagmaCube = (MagmaCube) entity;
+
+            if (MagmaCube.getSize() == 4)
+
+            {
+                return 16;
+            }
+            else if (MagmaCube.getSize() == 2)
+            {
+                return 4;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+        else if (entity.getType() == EntityType.PIG_ZOMBIE)
+        {
+            return 20;
+        }
+        else if (entity.getType() == EntityType.SLIME)
+        {
+            Slime slime = (Slime) entity;
+
+            if (slime.getSize() == 4)
+
+            {
+                return 16;
+            }
+            else if (slime.getSize() == 2)
+            {
+                return 4;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+        else
+        {
+            return 20;
+        }
     }
 }

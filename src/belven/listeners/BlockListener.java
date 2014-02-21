@@ -1,5 +1,6 @@
 package belven.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Dispenser;
@@ -7,12 +8,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.event.block.BlockRedstoneEvent;
 
 import belven.classes.Archer;
 import belven.classes.ClassManager;
 import belven.classes.Healer;
 import belven.classes.Mage;
+import belven.events.ArenaBlockActivatedEvent;
 
 public class BlockListener implements Listener
 {
@@ -30,12 +32,6 @@ public class BlockListener implements Listener
                 .get(event.getPlayer());
         Material mat = event.getBlock().getType();
 
-        if (mat == Material.STONE)
-        {
-            event.getBlock().setMetadata("ArenaBlock",
-                    new FixedMetadataValue(plugin, "Something"));
-        }
-
         if (mat == Material.LAPIS_BLOCK
                 && (currentClass instanceof Mage || currentClass instanceof Healer))
         {
@@ -45,6 +41,17 @@ public class BlockListener implements Listener
         {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onBlockRedstoneEvent(BlockRedstoneEvent event)
+    {
+        Block tempblock = event.getBlock();
+        
+        //tempblock = tempblock.getRelative(BlockFace.UP);
+        Bukkit.getPluginManager().callEvent(
+                new ArenaBlockActivatedEvent(tempblock.getLocation()));
+        return;
     }
 
     @EventHandler

@@ -68,19 +68,19 @@ public class PlayerListener implements Listener
         PerformClassAbility(event);
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings(
+    { "unused" })
     @EventHandler
     public void OnPlayerExpChangeEvent(PlayerExpChangeEvent event)
     {
         Inventory currentInventory = event.getPlayer().getInventory();
-        List<String> lore;
+        List<String> lore = new ArrayList<String>();
         belven.classes.Class currentClass = plugin.CurrentPlayerClasses
                 .get(event.getPlayer());
 
         for (int i = 0; i < currentInventory.getSize(); i++)
         {
             ItemStack currentItemStack = currentInventory.getItem(i);
-            lore = new ArrayList<String>();
 
             if (currentItemStack != null
                     && currentItemStack.getMaxStackSize() == 1)
@@ -88,10 +88,11 @@ public class PlayerListener implements Listener
                 ItemMeta currentItemMeta = currentItemStack.getItemMeta();
                 if (currentItemMeta != null)
                 {
-                    lore.add(currentClass.getClassName());
-                    currentItemMeta.setLore(lore);
-                    currentItemStack.setItemMeta(currentItemMeta);
-                    event.getPlayer().updateInventory();
+                    // lore.add("Actual damage: " +
+                    // ScaleDamage(event.getPlayer().getLevel(), );
+                    // currentItemMeta.setLore(lore);
+                    // currentItemStack.setItemMeta(currentItemMeta);
+                    // event.getPlayer().updateInventory();
                 }
 
             }
@@ -189,6 +190,12 @@ public class PlayerListener implements Listener
         case "BED":
             return false;
         case "MINECART":
+            return false;
+        case "SIGN":
+            return false;
+        case "BUTTON":
+            return false;
+        case "LEVER":
             return false;
         default:
             return true;
@@ -332,8 +339,6 @@ public class PlayerListener implements Listener
         {
             ScaleMobHealth(currentPlayer, (LivingEntity) event.getEntity(),
                     event.getDamage());
-            currentPlayer.sendMessage(String.valueOf(((LivingEntity) event
-                    .getEntity()).getMaxHealth()));
         }
     }
 

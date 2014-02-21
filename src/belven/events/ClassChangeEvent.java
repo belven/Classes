@@ -23,12 +23,14 @@ public class ClassChangeEvent extends Event
         this.classChagedTo = classChagedTo;
         this.playerThatChanged = playerThatChanged;
     }
-    
-    public Player GetPlayerInvolved(){
+
+    public Player GetPlayerInvolved()
+    {
         return playerThatChanged;
     }
-    
-    public belven.classes.Class GetNewClass(){
+
+    public belven.classes.Class GetNewClass()
+    {
         return classChagedTo;
     }
 }

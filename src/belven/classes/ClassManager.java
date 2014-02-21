@@ -1,27 +1,38 @@
 package belven.classes;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import belven.classes.blocks.ArenaBlock;
 import belven.events.ClassChangeEvent;
+import belven.listeners.ArenaListener;
 import belven.listeners.BlockListener;
+import belven.listeners.MobListener;
 import belven.listeners.PlayerListener;
-import belven.timedevents.ArenaTimer;
 
 public class ClassManager extends JavaPlugin
 {
     private final PlayerListener newplayerListener = new PlayerListener(this);
     private final BlockListener blockListener = new BlockListener(this);
+    private final ArenaListener arenaListener = new ArenaListener(this);
+    private final MobListener mobListener = new MobListener(this);
+
     public HashMap<Player, Class> CurrentPlayerClasses = new HashMap<Player, Class>();
+    public List<ArenaBlock> currentArenaBlocks = new ArrayList<ArenaBlock>();
+    public ArenaBlock currentArenaBlock;
 
     @Override
     public void onEnable()
@@ -29,6 +40,8 @@ public class ClassManager extends JavaPlugin
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(newplayerListener, this);
         pm.registerEvents(blockListener, this);
+        pm.registerEvents(arenaListener, this);
+        pm.registerEvents(mobListener, this);
 
         Player[] currentPlayers = this.getServer().getOnlinePlayers();
 
@@ -161,15 +174,135 @@ public class ClassManager extends JavaPlugin
         }
         else if (commandSent.equalsIgnoreCase("bcarena"))
         {
-            new ArenaTimer(player.getLocation().getBlock(),
-                    Integer.valueOf(args[0]), Material.getMaterial(args[1]))
-                    .runTaskTimer(this, SecondsToTicks(1),
-                            SecondsToTicks(Integer.valueOf(args[2])));
-            return true;
+            if (args[0].contains("select"))
+            {
+                SelectArena(player, args[1]);
+                return true;
+            }
+            else if (args[0].contains("setactivateblock"))
+            {
+                MoveArenaBlock(player);
+                return true;
+            }
+            else if (args[0].contains("setplayerblock"))
+            {
+                SetPlayerBlock(player);
+                return true;
+            }
+            else if (args[0].contains("setwavetimer"))
+            {
+                SetWaveTimer(player, args[1]);
+                return true;
+            }
+            else
+            {
+                ArenaBlockCreated(player, player.getLocation().getBlock(), args);
+                return true;
+            }
         }
         else
             return false;
+    }
 
+    private void SetWaveTimer(Player currentPlayer, String newPeriod)
+    {
+        int period = SecondsToTicks(Integer.valueOf(newPeriod));
+
+        if (currentArenaBlock == null)
+        {
+            currentPlayer
+                    .sendMessage("Please select an Arena using /bcarena select <ArenaName>");
+            return;
+        }
+        else
+        {
+            currentArenaBlock.timerPeriod = period;
+            currentPlayer.sendMessage(currentArenaBlock.arenaName
+                    + " mobs now spawn every " + newPeriod);
+        }
+    }
+
+    private void SetPlayerBlock(Player currentPlayer)
+    {
+        if (currentArenaBlock == null)
+        {
+            currentPlayer
+                    .sendMessage("Please select an Arena using /bcarena select <ArenaName>");
+            return;
+        }
+        else
+        {
+            currentArenaBlock.LocationToCheckForPlayers = currentPlayer
+                    .getLocation();
+            currentPlayer.sendMessage(currentArenaBlock.arenaName
+                    + " player block has moved!");
+        }
+
+    }
+
+    private void MoveArenaBlock(Player currentPlayer)
+    {
+        if (currentArenaBlock == null)
+        {
+            currentPlayer
+                    .sendMessage("Please select an Arena using /bcarena select <ArenaName>");
+            return;
+        }
+        else
+        {
+            Block tempBlock = currentArenaBlock.blockToActivate;
+            tempBlock.removeMetadata("ArenaBlock", this);
+
+            tempBlock = currentPlayer.getLocation().getBlock();
+            tempBlock.setType(Material.STONE);
+            tempBlock.setMetadata("ArenaBlock", new FixedMetadataValue(this,
+                    "Something"));
+            currentArenaBlock.blockToActivate = tempBlock;
+            currentPlayer.sendMessage(currentArenaBlock.arenaName
+                    + " active block has moved!");
+        }
+
+    }
+
+    private void SelectArena(Player currentPlayer, String arenaToSelect)
+    {
+        for (int i = 0; i < currentArenaBlocks.size(); i++)
+        {
+            ArenaBlock tempArenaBlock = currentArenaBlocks.get(i);
+            if (tempArenaBlock != null)
+            {
+                if (tempArenaBlock.arenaName.contains(arenaToSelect))
+                {
+                    currentArenaBlock = tempArenaBlock;
+                    currentPlayer.sendMessage(arenaToSelect
+                            + " is now selected");
+                    break;
+                }
+            }
+        }
+    }
+
+    public void ArenaBlockCreated(Player currentPlayer, Block block,
+            String[] args)
+    {
+        try
+        {
+            block.setType(Material.STONE);
+            block.setMetadata("ArenaBlock", new FixedMetadataValue(this,
+                    "Something"));
+
+            ArenaBlock newArenaBlock = new ArenaBlock(block, args[0],
+                    Integer.valueOf(args[1]), Material.getMaterial(args[2]),
+                    this, SecondsToTicks(1),
+                    SecondsToTicks(Integer.valueOf(args[3])));
+
+            currentArenaBlock = newArenaBlock;
+            currentArenaBlocks.add(newArenaBlock);
+        }
+        catch (NumberFormatException err)
+        {
+            // currentPlayer.sendMessage("")
+        }
     }
 
     public Class StringToClass(String className, Player player)
