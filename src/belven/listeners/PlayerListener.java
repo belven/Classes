@@ -3,6 +3,7 @@ package belven.listeners;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -16,10 +17,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -39,6 +42,9 @@ public class PlayerListener implements Listener
 {
     private final ClassManager plugin;
 
+    Location arenaWarp;
+    ItemStack[] currentPlayerInventory;
+
     public PlayerListener(ClassManager instance)
     {
         plugin = instance;
@@ -48,6 +54,45 @@ public class PlayerListener implements Listener
     public void onPlayerLoginEvent(PlayerLoginEvent event)
     {
         plugin.AddClassToPlayer(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerDeathEvent(PlayerDeathEvent event)
+    {
+        Player currentPlayer = (Player) event.getEntity();
+
+        if (plugin.currentArenaBlocks.size() > 0)
+        {
+            for (int i = 0; i < plugin.currentArenaBlocks.size(); i++)
+            {
+                if (plugin.currentArenaBlocks.get(i).isActive
+                        && plugin.currentArenaBlocks.get(i).playersString
+                                .contains(currentPlayer.getName()))
+                {
+                    event.setNewLevel(currentPlayer.getLevel() / 2);
+
+                    currentPlayerInventory = currentPlayer.getInventory()
+                            .getContents();
+
+                    arenaWarp = plugin.currentArenaBlocks.get(i).arenaWarp
+                            .getLocation();
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerRespawnEvent(PlayerRespawnEvent event)
+    {
+        Player currentPlayer = event.getPlayer();
+
+        if (arenaWarp != null)
+        {
+            event.setRespawnLocation(arenaWarp);
+            currentPlayer.getInventory().setContents(currentPlayerInventory);
+            arenaWarp = null;
+            currentPlayerInventory = null;
+        }
     }
 
     @EventHandler
@@ -330,7 +375,7 @@ public class PlayerListener implements Listener
                 if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Mage)
                 {
                     event.setDamage(ScaleDamage(currentPlayer.getLevel(),
-                            event.getDamage()));
+                            event.getDamage() + 3));
                 }
             }
         }
@@ -351,7 +396,7 @@ public class PlayerListener implements Listener
         if (mobToScale.getMaxHealth() != heathToscaleTo)
         {
             mobToScale.setMaxHealth(heathToscaleTo);
-            mobToScale.setHealth(heathToscaleTo - DamageDone);
+            mobToScale.damage(heathToscaleTo - DamageDone);
             new MobOutOfCombatTimer(mobToScale).runTaskTimer(plugin, 0,
                     SecondsToTicks(15));
         }

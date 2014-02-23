@@ -16,6 +16,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.MagmaCube;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Slime;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -23,31 +24,21 @@ import belven.classes.blocks.ArenaBlock;
 
 public class ArenaTimer extends BukkitRunnable
 {
-    private int radius;
     private List<Block> arenaArea;
     private List<Player> arenaPlayers = new ArrayList<Player>();
     private List<Block> spawnArea = new ArrayList<Block>();
-    private Block arenaStartingBlock;
-    private String playersString;
-    private Material matToSpawnOn;
     private int mobCounter = 0;
     private int counter = 0;
     private int maxMobCounter = 0;
-    private int maxRunTimes = 0;
+    private int currentRunTimes = 1;
     private int averageLevel = 0;
     private ArenaBlock arenaBlock;
     private List<EntityType> entitiesToSpawn = new ArrayList<EntityType>();
-    private Location locationToCheckForPlayers;
 
-    public ArenaTimer(ArenaBlock arenaBlock, Block currentBlock,
-            int areaRadius, Material matToSpawnOn,
-            Location locationToCheckForPlayers)
+    public ArenaTimer(ArenaBlock arenaBlock)
     {
-        arenaStartingBlock = currentBlock;
-        radius = areaRadius;
-        this.matToSpawnOn = matToSpawnOn;
         this.arenaBlock = arenaBlock;
-        this.locationToCheckForPlayers = locationToCheckForPlayers;
+
         entitiesToSpawn.add(EntityType.ZOMBIE);
         entitiesToSpawn.add(EntityType.SKELETON);
 
@@ -60,12 +51,18 @@ public class ArenaTimer extends BukkitRunnable
     {
         List<Player> currentArenaPlayers = arenaPlayers;
 
-        if (maxRunTimes >= 5)
+        if (!arenaBlock.isActive)
+        {
+            currentRunTimes = 1;
+            this.cancel();
+        }
+
+        if (currentRunTimes >= arenaBlock.maxRunTimes)
         {
             new MessageTimer(currentArenaPlayers, "Arena has ended!!").run();
             arenaBlock.isActive = false;
+            currentRunTimes = 1;
             this.cancel();
-            return;
         }
 
         GetPlayers();
@@ -74,21 +71,25 @@ public class ArenaTimer extends BukkitRunnable
         {
             new MessageTimer(currentArenaPlayers, "Arena has ended!!").run();
             arenaBlock.isActive = false;
+            currentRunTimes = 0;
             this.cancel();
             return;
         }
-
-        if (spawnArea.size() > 0 && arenaPlayers.size() > 0)
+        else if (spawnArea.size() > 0 && arenaPlayers.size() > 0)
         {
+            // new MessageTimer(currentArenaPlayers,
+            // "30 seconds before next wave!!").runTaskLater(
+            // arenaBlock.GetPlugin(), arenaBlock.timerPeriod - (30 * 20));
+            currentRunTimes++;
             SpawnMobs();
         }
-
-        maxRunTimes++;
     }
 
     public void GetArenaArea()
     {
-        arenaArea = getArenaBlocks(arenaStartingBlock.getLocation(), radius);
+        arenaArea = getArenaBlocks(
+                arenaBlock.arenaBlockStartLocation.getLocation(),
+                arenaBlock.radius);
     }
 
     public void GetSpawnArea()
@@ -104,7 +105,8 @@ public class ArenaTimer extends BukkitRunnable
                 spawnLocation = CanSpawnAt(spawnLocation);
 
                 if (spawnLocation != null
-                        && !arenaArea.get(i).equals(arenaStartingBlock))
+                        && !arenaArea.get(i).equals(
+                                arenaBlock.arenaBlockStartLocation))
                 {
                     Block spawnBlock = spawnLocation.getBlock();
                     spawnArea.add(spawnBlock);
@@ -121,12 +123,12 @@ public class ArenaTimer extends BukkitRunnable
 
         if (currentBlock.getType() == Material.AIR
                 && blockAbove.getType() == Material.AIR
-                && blockBelow.getType() == matToSpawnOn)
+                && blockBelow.getType() == arenaBlock.material)
         {
             counter = 0;
             return currentLocation;
         }
-        else if (counter >= radius)
+        else if (counter >= arenaBlock.radius)
         {
             counter = 0;
             return null;
@@ -173,6 +175,12 @@ public class ArenaTimer extends BukkitRunnable
                 .spawnEntity(spawnLocation, entitiesToSpawn.get(randomInt));
         currentEntity.setCanPickupItems(true);
 
+        if (currentEntity.getType() == EntityType.SKELETON)
+        {
+            currentEntity.getEquipment().setItemInHand(
+                    new ItemStack(Material.BOW));
+        }
+
         int heathToscaleTo = (int) (MobMaxHealth(currentEntity) + (averageLevel * 1.2));
 
         if (currentEntity.getMaxHealth() != heathToscaleTo)
@@ -180,19 +188,19 @@ public class ArenaTimer extends BukkitRunnable
             currentEntity.setMaxHealth(heathToscaleTo);
             currentEntity.setHealth(heathToscaleTo);
             currentEntity.setMetadata("ArenaMob", new FixedMetadataValue(
-                    arenaBlock.GetPlugin(), playersString));
+                    arenaBlock.GetPlugin(), arenaBlock.playersString));
         }
     }
 
     public void GetPlayers()
     {
-        Location areaToCheck = locationToCheckForPlayers;
-        Player[] currentPlayers = getNearbyPlayers(areaToCheck, radius
-                + (radius / 2));
+        Location areaToCheck = arenaBlock.LocationToCheckForPlayers;
+        Player[] currentPlayers = getNearbyPlayers(areaToCheck,
+                arenaBlock.radius + (arenaBlock.radius / 2));
         int totalLevels = 0;
         averageLevel = 0;
         maxMobCounter = 0;
-        playersString = "";
+        arenaBlock.playersString = "";
         arenaPlayers.clear();
 
         if (currentPlayers.length > 0)
@@ -203,8 +211,8 @@ public class ArenaTimer extends BukkitRunnable
                 {
                     totalLevels += currentPlayers[i].getLevel();
                     arenaPlayers.add(currentPlayers[i]);
-                    playersString = playersString + currentPlayers[i].getName()
-                            + " ";
+                    arenaBlock.playersString = arenaBlock.playersString
+                            + currentPlayers[i].getName() + " ";
                 }
             }
 
