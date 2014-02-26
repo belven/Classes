@@ -60,16 +60,15 @@ public class Pop extends Ability
     {
         Entity[] entitiesToDamage = getNearbyEntities(targetLocation, 4);
 
-        for (int i = 0; i < entitiesToDamage.length; i++)
+        for (Entity e : entitiesToDamage)
         {
-            if (entitiesToDamage[i] != null
-                    && entitiesToDamage[i].getType() != EntityType.PLAYER)
+            if (e != null && e.getType() != EntityType.PLAYER)
             {
                 Vector vectorToUse = currentClass.classOwner().getLocation()
                         .getDirection();
                 vectorToUse.setY(vectorToUse.getY() + 1);
 
-                entitiesToDamage[i].setVelocity(vectorToUse);
+                e.setVelocity(vectorToUse);
 
                 counter++;
 

@@ -13,7 +13,7 @@ import belven.classes.Abilities.Bandage;
 import belven.classes.Abilities.Barrier;
 import belven.classes.Abilities.Heal;
 import belven.classes.Abilities.LightHeal;
-import belven.timedevents.BarrierTimer;
+import belven.classes.timedevents.BarrierTimer;
 
 public class Healer extends Class
 {
@@ -32,6 +32,7 @@ public class Healer extends Class
         classBandage = new Bandage(this);
         classBarrier = new Barrier(this, 6);
         currentPlayer.setMaxHealth(16);
+        currentPlayer.setHealth(currentPlayer.getMaxHealth());
     }
 
     @Override
@@ -62,7 +63,7 @@ public class Healer extends Class
     public void PerformAbility(Entity currentEntity)
     {
         Player playerSelected;
-        
+
         if (classOwner.isSneaking())
         {
             CheckAbilitiesToCast(classOwner);
@@ -168,24 +169,6 @@ public class Healer extends Class
                 this.AddToAbilities(classHeal);
             }
         }
-    }
-
-    public String ListAbilities()
-    {
-        String ListOfAbilities = "";
-
-        if (Abilities != null)
-        {
-            for (int i = 0; i < Abilities.size(); i++)
-            {
-                ListOfAbilities = ListOfAbilities
-                        + (Abilities.get(i) != null ? Abilities.get(i)
-                                .GetAbilityName() + ", " : "");
-            }
-            return ListOfAbilities;
-        }
-        else
-            return "";
     }
 
     public void AddToAbilities(Ability abilityToAdd)

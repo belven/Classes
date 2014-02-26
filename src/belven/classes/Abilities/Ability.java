@@ -58,10 +58,9 @@ public class Ability
             }
         }
 
-        for (int i = 0; i < requirements.size(); i++)
+        for (ItemStack is : requirements)
         {
-            if (playerInventory.containsAtLeast(requirements.get(i),
-                    requirements.get(i).getAmount()))
+            if (playerInventory.containsAtLeast(is, is.getAmount()))
             {
                 checksRequired++;
             }
@@ -83,18 +82,17 @@ public class Ability
         Inventory playerInventory = currentClass.classOwner.getInventory();
 
         int positionID;
-        for (int i = 0; i < requirements.size(); i++)
+        for (ItemStack is : requirements)
         {
-            if (requirements.get(i).getType() != Material.NETHER_STAR)
+            if (is.getType() != Material.NETHER_STAR)
             {
-                positionID = playerInventory.first(requirements.get(i)
-                        .getType());
+                positionID = playerInventory.first(is.getType());
+
                 tempStack = playerInventory.getItem(positionID);
 
-                if (tempStack.getAmount() > requirements.get(i).getAmount())
+                if (tempStack.getAmount() > is.getAmount())
                 {
-                    tempStack.setAmount(tempStack.getAmount()
-                            - requirements.get(i).getAmount());
+                    tempStack.setAmount(tempStack.getAmount() - is.getAmount());
                 }
                 else
                 {

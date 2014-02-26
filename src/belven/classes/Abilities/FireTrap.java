@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
-import belven.timedevents.FireTrapTimer;
+import belven.classes.timedevents.FireTrapTimer;
 
 public class FireTrap extends Ability
 {

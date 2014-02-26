@@ -28,6 +28,7 @@ public class Assassin extends Class
         classSoulDrain = new SoulDrain(this);
         SetAbilities();
         currentPlayer.setMaxHealth(24);
+        currentPlayer.setHealth(currentPlayer.getMaxHealth());
     }
 
     @Override

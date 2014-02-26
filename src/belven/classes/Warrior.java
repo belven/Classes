@@ -19,6 +19,7 @@ public class Warrior extends Class
         currentRetaliation = new Retaliation(this);
         className = "Warrior";
         currentPlayer.setMaxHealth(40);
+        currentPlayer.setHealth(currentPlayer.getMaxHealth());
     }
 
     public void TakeDamage(EntityDamageByEntityEvent event, Player damagedPlayer)
@@ -32,7 +33,7 @@ public class Warrior extends Class
         else if (!currentRetaliation.onCooldown && damagedPlayer.isBlocking())
         {
             currentRetaliation.PerformAbility(event);
-            setAbilityOnCoolDown(currentRetaliation, 1);
+            setAbilityOnCoolDown(currentRetaliation, 2);
         }
     }
 

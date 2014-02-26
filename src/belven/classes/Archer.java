@@ -9,7 +9,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import belven.classes.Abilities.WebArrow;
 import belven.classes.Abilities.FireTrap;
-import belven.timedevents.BlockRestorer;
+import belven.classes.timedevents.BlockRestorer;
 
 public class Archer extends Class
 {
@@ -26,6 +26,7 @@ public class Archer extends Class
         className = "Archer";
         SetAbilities();
         currentPlayer.setMaxHealth(24);
+        currentPlayer.setHealth(currentPlayer.getMaxHealth());
     }
 
     @Override

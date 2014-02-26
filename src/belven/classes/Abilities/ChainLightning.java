@@ -9,7 +9,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import belven.timedevents.ChainLightningTimer;
+import belven.classes.timedevents.ChainLightningTimer;
 
 public class ChainLightning extends Ability
 {
@@ -48,14 +48,12 @@ public class ChainLightning extends Ability
     {
         Entity[] entitiesToDamage = getNearbyEntities(targetLocation, 12);
 
-        for (int i = 0; i < entitiesToDamage.length; i++)
+        for (Entity e : entitiesToDamage)
         {
-            if (entitiesToDamage[i] != null
-                    && entitiesToDamage[i] instanceof LivingEntity
-                    && entitiesToDamage[i].getType() != EntityType.PLAYER)
+            if (e != null && e instanceof LivingEntity
+                    && e.getType() != EntityType.PLAYER)
             {
-                entitiesToDamage[i].getWorld().strikeLightning(
-                        entitiesToDamage[i].getLocation());
+                e.getWorld().strikeLightning(e.getLocation());
             }
         }
     }

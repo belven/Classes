@@ -1,6 +1,7 @@
 package belven.classes;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -11,6 +12,7 @@ import org.bukkit.util.Vector;
 
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.ChainLightning;
+import belven.classes.Abilities.LightningStrike;
 import belven.classes.Abilities.MageFireball;
 import belven.classes.Abilities.Pop;
 
@@ -18,6 +20,7 @@ public class Mage extends Class
 {
     public MageFireball classFireball;
     public ChainLightning classChainLightning;
+    public LightningStrike classLightningStrike;
     public BlockIterator currentBlockIterator;
     public Pop classPop;
 
@@ -27,9 +30,11 @@ public class Mage extends Class
         classOwner = currentPlayer;
         classFireball = new MageFireball(this);
         classChainLightning = new ChainLightning(this);
+        classLightningStrike = new LightningStrike(this);
         classPop = new Pop(this);
         className = "Mage";
         currentPlayer.setMaxHealth(16);
+        currentPlayer.setHealth(currentPlayer.getMaxHealth());
         SetAbilities();
     }
 
@@ -61,7 +66,7 @@ public class Mage extends Class
     public void CheckAbilitiesToCast(Player target, Player player)
     {
         if (!classChainLightning.onCooldown
-               && classChainLightning.HasRequirements(classOwner))
+                && classChainLightning.HasRequirements(classOwner))
         {
             classChainLightning.PerformAbility();
 
@@ -111,7 +116,7 @@ public class Mage extends Class
             }
         }
         return target;
-    }   
+    }
 
     public void SetAbilities()
     {
@@ -125,18 +130,17 @@ public class Mage extends Class
             }
         }
     }
-    
+
     public String ListAbilities()
     {
         String ListOfAbilities = "";
 
         if (Abilities != null)
         {
-            for (int i = 0; i < Abilities.size(); i++)
+            for (Ability a : Abilities)
             {
                 ListOfAbilities = ListOfAbilities
-                        + (Abilities.get(i) != null ? Abilities.get(i)
-                                .GetAbilityName() + ", " : "");
+                        + (a != null ? a.GetAbilityName() + ", " : "");
             }
             return ListOfAbilities;
         }
@@ -169,6 +173,19 @@ public class Mage extends Class
         if (event.getDamager().getType() == EntityType.LIGHTNING)
         {
             event.setDamage(0);
+        }
+        else if (!classLightningStrike.onCooldown)
+        {
+            Entity entityToStrike = event.getDamager();
+
+            if (entityToStrike.getType() == EntityType.ARROW)
+            {
+                Arrow entityArrow = (Arrow) entityToStrike;
+                entityToStrike = entityArrow.getShooter();
+            }
+
+            classLightningStrike.PerformAbility(entityToStrike);
+            setAbilityOnCoolDown(classLightningStrike, 2);
         }
 
     }

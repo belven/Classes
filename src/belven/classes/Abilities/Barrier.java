@@ -49,16 +49,15 @@ public class Barrier extends Ability
     {
         Entity[] entitiesToDamage = getNearbyEntities(targetLocation);
 
-        for (int i = 0; i < entitiesToDamage.length; i++)
+        for (Entity e : entitiesToDamage)
         {
-            if (entitiesToDamage[i] != null
-                    && entitiesToDamage[i].getType() != EntityType.PLAYER)
+            if (e != null && e.getType() != EntityType.PLAYER)
             {
-                Vector currentVector = entitiesToDamage[i].getVelocity();
-                currentVector.setX(currentVector.getX() + 2);
-                currentVector.setZ(currentVector.getZ() + 2);
+                Vector currentVector = e.getVelocity();
+                currentVector.setX(currentVector.getX() + 1);
+                currentVector.setZ(currentVector.getZ() + 1);
                 currentVector.setY(currentVector.getY() + 1);
-                entitiesToDamage[i].setVelocity(currentVector);
+                e.setVelocity(currentVector);
             }
         }
     }
