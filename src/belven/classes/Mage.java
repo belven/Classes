@@ -1,15 +1,15 @@
 package belven.classes;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.util.BlockIterator;
-import org.bukkit.util.Vector;
 
+import resources.functions;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.ChainLightning;
 import belven.classes.Abilities.LightningStrike;
@@ -33,8 +33,9 @@ public class Mage extends Class
         classLightningStrike = new LightningStrike(this);
         classPop = new Pop(this);
         className = "Mage";
-        currentPlayer.setMaxHealth(16);
-        currentPlayer.setHealth(currentPlayer.getMaxHealth());
+        Damageable dcurrentPlayer = (Damageable) currentPlayer;
+        dcurrentPlayer.setMaxHealth(16.0);
+        dcurrentPlayer.setHealth(dcurrentPlayer.getMaxHealth());
         SetAbilities();
     }
 
@@ -74,7 +75,7 @@ public class Mage extends Class
         }
         else if (classPop.HasRequirements(classOwner))
         {
-            LivingEntity targetEntity = findTarget(classOwner);
+            LivingEntity targetEntity = functions.findTarget(classOwner);
 
             if (targetEntity != null)
             {
@@ -85,37 +86,6 @@ public class Mage extends Class
         {
             this.classFireball.PerformAbility(player);
         }
-    }
-
-    private LivingEntity findTarget(Player origin)
-    {
-        double radius = 150.0D;
-        Location originLocation = origin.getEyeLocation();
-        Vector originDirection = originLocation.getDirection();
-        Vector originVector = originLocation.toVector();
-
-        LivingEntity target = null;
-        double minDotProduct = Double.MIN_VALUE;
-        for (Entity entity : origin.getNearbyEntities(radius, radius, radius))
-        {
-            if (entity instanceof LivingEntity && !entity.equals(origin))
-            {
-                LivingEntity living = (LivingEntity) entity;
-                Location newTargetLocation = living.getEyeLocation();
-
-                // check angle to target:
-                Vector toTarget = newTargetLocation.toVector()
-                        .subtract(originVector).normalize();
-                double dotProduct = toTarget.dot(originDirection);
-                if (dotProduct > 0.30D && origin.hasLineOfSight(living)
-                        && (target == null || dotProduct > minDotProduct))
-                {
-                    target = living;
-                    minDotProduct = dotProduct;
-                }
-            }
-        }
-        return target;
     }
 
     public void SetAbilities()
@@ -168,11 +138,12 @@ public class Mage extends Class
         return classOwner;
     }
 
+    @SuppressWarnings("deprecation")
     public void TakeDamage(EntityDamageByEntityEvent event, Player damagedPlayer)
     {
         if (event.getDamager().getType() == EntityType.LIGHTNING)
         {
-            event.setDamage(0);
+            event.setDamage(0.0);
         }
         else if (!classLightningStrike.onCooldown)
         {

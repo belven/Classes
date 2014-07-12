@@ -1,13 +1,13 @@
 package belven.classes.Abilities;
 
-import java.util.HashSet;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+
+import resources.functions;
 
 public class Barrier extends Ability
 {
@@ -21,33 +21,10 @@ public class Barrier extends Ability
         abilitiyName = "Barrier";
     }
 
-    public Entity[] getNearbyEntities(Location l)
-    {
-        int chunkRadius = radius < 16 ? 1 : (radius - (radius % 16)) / 16;
-        HashSet<Entity> radiusEntities = new HashSet<Entity>();
-
-        for (int chX = 0 - chunkRadius; chX <= chunkRadius; chX++)
-        {
-            for (int chZ = 0 - chunkRadius; chZ <= chunkRadius; chZ++)
-            {
-                int x = (int) l.getX(), y = (int) l.getY(), z = (int) l.getZ();
-
-                for (Entity e : new Location(l.getWorld(), x + (chX * 16), y, z
-                        + (chZ * 16)).getChunk().getEntities())
-                {
-                    if (e.getLocation().distance(l) <= radius
-                            && e.getLocation().getBlock() != l.getBlock())
-                        radiusEntities.add(e);
-                }
-            }
-        }
-
-        return radiusEntities.toArray(new Entity[radiusEntities.size()]);
-    }
-
     public void PerformAbility(Location targetLocation)
     {
-        Entity[] entitiesToDamage = getNearbyEntities(targetLocation);
+        Entity[] entitiesToDamage = functions.getNearbyEntities(targetLocation,
+                radius);
 
         for (Entity e : entitiesToDamage)
         {

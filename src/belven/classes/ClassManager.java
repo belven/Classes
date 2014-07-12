@@ -4,8 +4,6 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
@@ -26,6 +24,7 @@ public class ClassManager extends JavaPlugin
 
     public HashMap<String, Class> CurrentPlayerClasses = new HashMap<String, Class>();
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onEnable()
     {
@@ -76,6 +75,7 @@ public class ClassManager extends JavaPlugin
     public boolean onCommand(CommandSender sender, Command cmd, String label,
             String[] args)
     {
+        @SuppressWarnings("deprecation")
         Player[] currentPlayers = this.getServer().getOnlinePlayers();
         Player player = (Player) sender;
         String commandSent = cmd.getName();
@@ -109,6 +109,12 @@ public class ClassManager extends JavaPlugin
         {
             this.SetClass(player, "Assassin");
 
+            return true;
+        }
+        else if (commandSent.equalsIgnoreCase("setlevel"))
+        {
+            int level = Integer.valueOf(args[0]);
+            player.setLevel(level);
             return true;
         }
         else if (commandSent.equalsIgnoreCase("bcarcher"))
@@ -201,42 +207,6 @@ public class ClassManager extends JavaPlugin
     {
         getLogger().info("Goodbye world!");
         this.saveConfig();
-    }
-
-    public Location StringToLocation(String s, World world)
-    {
-        String[] strings = s.split(",");
-        int x = Integer.valueOf(strings[0].trim());
-        int y = Integer.valueOf(strings[1].trim());
-        int z = Integer.valueOf(strings[2].trim());
-
-        return new Location(world, x, y, z);
-    }
-
-    public String LocationToString(Block block)
-    {
-        String locationString = "";
-        Location l = block.getLocation();
-
-        locationString = String.valueOf(l.getBlockX()) + ","
-                + String.valueOf(l.getBlockY()) + ","
-                + String.valueOf(l.getBlockZ());
-        return locationString;
-    }
-
-    public String LocationToString(Location l)
-    {
-        String locationString = "";
-
-        locationString = String.valueOf(l.getBlockX()) + ","
-                + String.valueOf(l.getBlockY()) + ","
-                + String.valueOf(l.getBlockZ());
-        return locationString;
-    }
-
-    public int SecondsToTicks(int seconds)
-    {
-        return (seconds * 20);
     }
 
 }

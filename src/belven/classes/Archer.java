@@ -2,11 +2,13 @@ package belven.classes;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import resources.functions;
 import belven.classes.Abilities.WebArrow;
 import belven.classes.Abilities.FireTrap;
 import belven.classes.timedevents.BlockRestorer;
@@ -25,8 +27,10 @@ public class Archer extends Class
         classFireTrap = new FireTrap(this);
         className = "Archer";
         SetAbilities();
-        currentPlayer.setMaxHealth(24);
-        currentPlayer.setHealth(currentPlayer.getMaxHealth());
+
+        Damageable dcurrentPlayer = (Damageable) currentPlayer;
+        dcurrentPlayer.setMaxHealth(24.0);
+        dcurrentPlayer.setHealth(dcurrentPlayer.getMaxHealth());
     }
 
     @Override
@@ -77,8 +81,6 @@ public class Archer extends Class
     public void MobTakenDamage(EntityDamageByEntityEvent event)
     {
         Entity damagedEntity = event.getEntity();
-        double damageDone = event.getDamage();
-        double damageToDo = 0;
         Location damagedEntityLocation = damagedEntity.getLocation();
         damagedEntityLocation.setY(damagedEntityLocation.getY() + 1);
 
@@ -86,16 +88,18 @@ public class Archer extends Class
                 && damagedEntityLocation.getBlock().getType() != Material.WEB)
         {
             new BlockRestorer(damagedEntityLocation.getBlock(), Material.WEB)
-                    .runTaskLater(plugin, SecondsToTicks(5));
+                    .runTaskLater(plugin, functions.SecondsToTicks(5));
         }
 
         if (damagedEntity instanceof LivingEntity)
         {
             LivingEntity currentLivingEntity = (LivingEntity) damagedEntity;
-            damageToDo = damageToDo(damageDone,
-                    currentLivingEntity.getHealth(),
-                    currentLivingEntity.getMaxHealth());
-            event.setDamage(damageToDo);
+
+            Damageable dcurrentLivingEntity = (Damageable) currentLivingEntity;
+
+            event.setDamage(functions.damageToDo(event.getDamage(),
+                    dcurrentLivingEntity.getHealth(),
+                    dcurrentLivingEntity.getMaxHealth()));
         }
     }
 
@@ -108,17 +112,6 @@ public class Archer extends Class
     public Player classOwner()
     {
         return classOwner;
-    }
-
-    public int SecondsToTicks(int seconds)
-    {
-        return (seconds * 20);
-    }
-
-    private double damageToDo(double damageDone, double currentHealth,
-            double maxHealth)
-    {
-        return damageDone + (damageDone / ((currentHealth / maxHealth)));
     }
 
 }

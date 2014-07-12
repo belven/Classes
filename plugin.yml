@@ -1,7 +1,6 @@
 name: BelvensClasses
 main: belven.classes.ClassManager
 version: 1
-depend: [SQLibrary]
 
 commands:
    bchealer:
@@ -19,6 +18,11 @@ commands:
       usage: /listabilities
       permission: BelvensClasses.listabilities
       permission-message: You don't have BelvensClasses.listabilities
+   setlevel:
+      description: sets the players level
+      usage: /setlevel
+      permission: BelvensClasses.setlevel
+      permission-message: You don't have BelvensClasses.setlevel
    bcmage:
       description: This will change your class to a mage
       usage: /bcmage 

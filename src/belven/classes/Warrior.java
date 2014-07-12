@@ -1,5 +1,6 @@
 package belven.classes;
 
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
@@ -18,13 +19,15 @@ public class Warrior extends Class
         currentLastResort = new LastResort(this);
         currentRetaliation = new Retaliation(this);
         className = "Warrior";
-        currentPlayer.setMaxHealth(40);
-        currentPlayer.setHealth(currentPlayer.getMaxHealth());
+        Damageable dcurrentPlayer = (Damageable) currentPlayer;
+        dcurrentPlayer.setMaxHealth(40.0);
+        dcurrentPlayer.setHealth(dcurrentPlayer.getMaxHealth());
     }
 
     public void TakeDamage(EntityDamageByEntityEvent event, Player damagedPlayer)
     {
-        if (!currentLastResort.onCooldown && damagedPlayer.getHealth() <= 5
+        Damageable dcurrentPlayer = (Damageable) damagedPlayer;
+        if (!currentLastResort.onCooldown && dcurrentPlayer.getHealth() <= 5
                 && currentLastResort.HasRequirements(damagedPlayer))
         {
             UltAbilityUsed(currentLastResort);
@@ -35,11 +38,6 @@ public class Warrior extends Class
             currentRetaliation.PerformAbility(event);
             setAbilityOnCoolDown(currentRetaliation, 2);
         }
-    }
-
-    public int SecondsToTicks(int seconds)
-    {
-        return (seconds * 20);
     }
 
 }

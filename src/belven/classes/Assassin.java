@@ -1,10 +1,9 @@
 package belven.classes;
 
-import java.util.HashSet;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -12,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
+import resources.functions;
 import belven.classes.Abilities.SoulDrain;
 
 public class Assassin extends Class
@@ -27,8 +27,9 @@ public class Assassin extends Class
         className = "Assassin";
         classSoulDrain = new SoulDrain(this);
         SetAbilities();
-        currentPlayer.setMaxHealth(24);
-        currentPlayer.setHealth(currentPlayer.getMaxHealth());
+        Damageable dcurrentLivingEntity = (Damageable) currentPlayer;
+        dcurrentLivingEntity.setMaxHealth(24.0);
+        dcurrentLivingEntity.setHealth(dcurrentLivingEntity.getMaxHealth());
     }
 
     @Override
@@ -51,40 +52,12 @@ public class Assassin extends Class
         }
     }
 
-    public static Entity[] getNearbyEntities(Location l, int radius)
-    {
-        int chunkRadius = radius < 16 ? 1 : (radius - (radius % 16)) / 16;
-        HashSet<Entity> radiusEntities = new HashSet<Entity>();
-
-        for (int chX = 0 - chunkRadius; chX <= chunkRadius; chX++)
-        {
-            for (int chZ = 0 - chunkRadius; chZ <= chunkRadius; chZ++)
-            {
-                int x = (int) l.getX(), y = (int) l.getY(), z = (int) l.getZ();
-
-                for (Entity e : new Location(l.getWorld(), x + (chX * 16), y, z
-                        + (chZ * 16)).getChunk().getEntities())
-                {
-                    if (e.getLocation().distance(l) <= radius
-                            && e.getLocation().getBlock() != l.getBlock())
-                        radiusEntities.add(e);
-                }
-            }
-        }
-
-        return radiusEntities.toArray(new Entity[radiusEntities.size()]);
-    }
-
     public void MobTakenDamage(EntityDamageByEntityEvent event)
     {
         Entity damagedEntity = event.getEntity();
-        int healthToSet = (int) (classOwner.getHealth() + 1);
         boolean arrowEntity = (event.getDamager().getType() == EntityType.ARROW);
 
-        if (healthToSet != 0 && healthToSet < classOwner.getMaxHealth())
-        {
-            classOwner.setHealth(healthToSet);
-        }
+        functions.Heal(classOwner, 1); 
 
         if (arrowEntity)
         {
@@ -137,8 +110,7 @@ public class Assassin extends Class
             LivingEntity currentLivingEntity = (LivingEntity) damagedEntity;
             return currentLivingEntity.hasLineOfSight(classOwner);
         }
-        else
-            return false;
+        return false;
     }
 
     public void CanTeleportTo(Location locationToTeleportTo)

@@ -6,6 +6,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import resources.functions;
+
 public class LightHeal extends Ability
 {
     public LightHeal(belven.classes.Class CurrentClass)
@@ -19,8 +21,8 @@ public class LightHeal extends Ability
     public void PerformAbility(Player playerToHeal)
     {
         playerToHeal.addPotionEffect(new PotionEffect(
-                PotionEffectType.REGENERATION, SecondsToTicks(5), Amplifier(),
-                true));
+                PotionEffectType.REGENERATION, functions.SecondsToTicks(5),
+                Amplifier(), true));
     }
 
     @Override

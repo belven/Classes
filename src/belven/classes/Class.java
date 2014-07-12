@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import resources.functions;
 import belven.classes.Abilities.Ability;
 import belven.classes.timedevents.AbilityCooldown;
 
@@ -61,7 +62,7 @@ public abstract class Class
     public void setAbilityOnCoolDown(Ability currentAbility, int seconds, boolean sendMessage)
     {
         new AbilityCooldown(currentAbility, sendMessage).runTaskLater(plugin,
-                SecondsToTicks(seconds));
+                functions.SecondsToTicks(seconds));
         currentAbility.onCooldown = true;
     }
     
@@ -88,10 +89,5 @@ public abstract class Class
     {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    public int SecondsToTicks(int seconds)
-    {
-        return seconds * 20;
     }
 }

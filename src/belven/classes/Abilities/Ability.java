@@ -28,12 +28,8 @@ public class Ability
 
     public void PerformAbility(Entity targetEntity)
     {
-    }
-
-    public int SecondsToTicks(int seconds)
-    {
-        return (seconds * 20);
-    }
+        
+    }   
 
     public int Amplifier()
     {
@@ -71,8 +67,7 @@ public class Ability
             RemoveItems();
             return true;
         }
-        else
-            return false;
+        return false;
     }
 
     @SuppressWarnings("deprecation")

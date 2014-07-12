@@ -6,6 +6,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import resources.functions;
+
 public class Bandage extends Ability
 {
     public Bandage(belven.classes.Class CurrentClass)
@@ -27,7 +29,7 @@ public class Bandage extends Ability
     public void PerformAbility(Player targetPlayer)
     {
         targetPlayer.addPotionEffect(new PotionEffect(
-                PotionEffectType.ABSORPTION, SecondsToTicks(20), 1), true);
+                PotionEffectType.ABSORPTION,  functions.SecondsToTicks(20), 1), true);
     }  
 
     @Override

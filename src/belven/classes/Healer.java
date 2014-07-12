@@ -1,13 +1,13 @@
 package belven.classes;
 
-import org.bukkit.Location;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.Vector;
 
+import resources.functions;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.Bandage;
 import belven.classes.Abilities.Barrier;
@@ -31,33 +31,34 @@ public class Healer extends Class
         classLightHeal = new LightHeal(this);
         classBandage = new Bandage(this);
         classBarrier = new Barrier(this, 6);
-        currentPlayer.setMaxHealth(16);
-        currentPlayer.setHealth(currentPlayer.getMaxHealth());
+        Damageable dcurrentPlayer = (Damageable) currentPlayer;
+        dcurrentPlayer.setMaxHealth(16.0);
+        dcurrentPlayer.setHealth(dcurrentPlayer.getMaxHealth());
     }
 
     @Override
     public void PerformAbility(Player currentPlayer)
     {
-        Player playerSelected;
-
         if (classOwner.isSneaking())
         {
             CheckAbilitiesToCast(classOwner);
-            return;
-        }
-
-        LivingEntity targetEntity = findTarget(classOwner);
-
-        if (targetEntity != null)
-        {
-            playerSelected = (Player) targetEntity;
         }
         else
         {
-            playerSelected = classOwner;
-        }
+            Player playerSelected;
+            LivingEntity targetEntity = functions.findTarget(classOwner);
 
-        CheckAbilitiesToCast(playerSelected);
+            if (targetEntity != null)
+            {
+                playerSelected = (Player) targetEntity;
+            }
+            else
+            {
+                playerSelected = classOwner;
+            }
+
+            CheckAbilitiesToCast(playerSelected);
+        }
     }
 
     public void PerformAbility(Entity currentEntity)
@@ -67,17 +68,15 @@ public class Healer extends Class
         if (classOwner.isSneaking())
         {
             CheckAbilitiesToCast(classOwner);
-            return;
         }
-
-        if (currentEntity.getType() == EntityType.PLAYER)
+        else if (currentEntity.getType() == EntityType.PLAYER)
         {
             playerSelected = (Player) currentEntity;
-            this.CheckAbilitiesToCast(playerSelected);
+            CheckAbilitiesToCast(playerSelected);
         }
         else
         {
-            LivingEntity targetEntity = findTarget(classOwner);
+            LivingEntity targetEntity = functions.findTarget(classOwner);
 
             if (targetEntity != null)
             {
@@ -86,7 +85,7 @@ public class Healer extends Class
             else
             {
                 playerSelected = classOwner;
-                this.CheckAbilitiesToCast(playerSelected);
+                CheckAbilitiesToCast(playerSelected);
             }
         }
     }
@@ -94,14 +93,16 @@ public class Healer extends Class
     @SuppressWarnings("unused")
     public void CheckAbilitiesToCast(Player player)
     {
-        if (player.getHealth() <= 10 && classHeal.HasRequirements(classOwner))
+        Damageable dplayer = (Damageable) player;
+
+        if (dplayer.getHealth() <= 10 && classHeal.HasRequirements(classOwner))
         {
-            this.classHeal.PerformAbility(player);
+            classHeal.PerformAbility(player);
             classOwner.sendMessage("You healed " + player.getName());
         }
         else if (classBandage.HasRequirements(classOwner))
         {
-            this.classBandage.PerformAbility(player);
+            classBandage.PerformAbility(player);
             classOwner.sendMessage("You gave " + player.getName()
                     + " a bandage");
         }
@@ -117,40 +118,9 @@ public class Healer extends Class
         }
         else if (classLightHeal.HasRequirements(classOwner))
         {
-            this.classLightHeal.PerformAbility(player);
+            classLightHeal.PerformAbility(player);
             classOwner.sendMessage("You healed " + player.getName());
         }
-    }
-
-    private LivingEntity findTarget(Player origin)
-    {
-        double radius = 150.0D;
-        Location originLocation = origin.getEyeLocation();
-        Vector originDirection = originLocation.getDirection();
-        Vector originVector = originLocation.toVector();
-
-        LivingEntity target = null;
-        double minDotProduct = Double.MIN_VALUE;
-        for (Entity entity : origin.getNearbyEntities(radius, radius, radius))
-        {
-            if (entity instanceof Player && !entity.equals(origin))
-            {
-                LivingEntity living = (LivingEntity) entity;
-                Location newTargetLocation = living.getEyeLocation();
-
-                // check angle to target:
-                Vector toTarget = newTargetLocation.toVector()
-                        .subtract(originVector).normalize();
-                double dotProduct = toTarget.dot(originDirection);
-                if (dotProduct > 0.30D && origin.hasLineOfSight(living)
-                        && (target == null || dotProduct > minDotProduct))
-                {
-                    target = living;
-                    minDotProduct = dotProduct;
-                }
-            }
-        }
-        return target;
     }
 
     public void SetAbilities()
@@ -161,12 +131,12 @@ public class Healer extends Class
 
             if (currentLevel > 1)
             {
-                this.AddToAbilities(classBandage);
+                AddToAbilities(classBandage);
             }
 
             if (currentLevel > 3)
             {
-                this.AddToAbilities(classHeal);
+                AddToAbilities(classHeal);
             }
         }
     }
@@ -186,10 +156,5 @@ public class Healer extends Class
     public Player classOwner()
     {
         return classOwner;
-    }
-
-    public int SecondsToTicks(int seconds)
-    {
-        return (seconds * 20);
     }
 }

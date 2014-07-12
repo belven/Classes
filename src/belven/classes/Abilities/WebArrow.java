@@ -8,6 +8,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import resources.functions;
+
 public class WebArrow extends Ability
 {
     public WebArrow(belven.classes.Class CurrentClass)
@@ -40,16 +42,16 @@ public class WebArrow extends Ability
     {
         targetSkeleton.addPotionEffect(SlowArrow());
     }
-  
+
     @Override
     public int Amplifier()
     {
         return 3;
-    } 
+    }
 
     private PotionEffect SlowArrow()
     {
-        return new PotionEffect(PotionEffectType.SLOW, SecondsToTicks(5),
-                Amplifier());
+        return new PotionEffect(PotionEffectType.SLOW,
+                functions.SecondsToTicks(5), Amplifier());
     }
 }

@@ -14,6 +14,7 @@ public class Retaliation extends Ability
         abilitiyName = "Retaliation";
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void PerformAbility(EntityDamageByEntityEvent event)
     {
