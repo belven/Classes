@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import resources.functions;
 import belven.classes.Abilities.Ability;
@@ -47,6 +50,7 @@ public abstract class Class
 
     public void PerformAbility()
     {
+
     }
 
     public void PerformAbility(Entity currentEntity)
@@ -59,13 +63,14 @@ public abstract class Class
         setAbilityOnCoolDown(currentAbility, 120);
     }
 
-    public void setAbilityOnCoolDown(Ability currentAbility, int seconds, boolean sendMessage)
+    public void setAbilityOnCoolDown(Ability currentAbility, int seconds,
+            boolean sendMessage)
     {
         new AbilityCooldown(currentAbility, sendMessage).runTaskLater(plugin,
                 functions.SecondsToTicks(seconds));
         currentAbility.onCooldown = true;
     }
-    
+
     public void setAbilityOnCoolDown(Ability currentAbility, int seconds)
     {
         setAbilityOnCoolDown(currentAbility, seconds, false);
@@ -80,14 +85,33 @@ public abstract class Class
     {
     }
 
-    public Player classOwner()
-    {
-        return null;
-    }
-
     public ClassManager plugin()
     {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public void PlayerTakenDamage(EntityDamageEvent event)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void MobTakenDamage(EntityDamageByEntityEvent event)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void TakeDamage(EntityDamageByEntityEvent event, Player damagedPlayer)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void ToggleSneakEvent(PlayerToggleSneakEvent event)
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

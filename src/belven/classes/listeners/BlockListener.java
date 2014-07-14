@@ -12,6 +12,7 @@ import belven.classes.Archer;
 import belven.classes.ClassManager;
 import belven.classes.Healer;
 import belven.classes.Mage;
+import belven.classes.Priest;
 
 public class BlockListener implements Listener
 {
@@ -34,11 +35,15 @@ public class BlockListener implements Listener
         {
             event.setCancelled(true);
         }
+        else if (mat == Material.LAPIS_BLOCK && currentClass instanceof Priest)
+        {
+            event.setCancelled(true);
+        }
         else if (mat == Material.WOOL && currentClass instanceof Archer)
         {
             event.setCancelled(true);
         }
-    }  
+    }
 
     @EventHandler
     public void onBlockDispenseEvent(BlockDispenseEvent event)

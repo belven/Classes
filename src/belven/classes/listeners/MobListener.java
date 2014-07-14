@@ -2,22 +2,27 @@ package belven.classes.listeners;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 
+import resources.functions;
+import belven.arena.blocks.ArenaBlock;
 import belven.classes.ClassManager;
 
 public class MobListener implements Listener
@@ -39,6 +44,15 @@ public class MobListener implements Listener
     }
 
     @EventHandler
+    public void onTemp(ProjectileLaunchEvent event)
+    {
+        if (event.getEntity().getType() == EntityType.FIREBALL)
+        {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
     public void onEntityDeathEvent(EntityDeathEvent event)
     {
         Entity currentEntity = event.getEntity();
@@ -55,40 +69,63 @@ public class MobListener implements Listener
                 return;
             }
 
+            Iterator<ItemStack> drops = event.getDrops().iterator();
+
+            while (drops.hasNext())
+            {
+                ItemStack is = drops.next();
+                if (is.getMaxStackSize() == 1)
+                {
+                    drops.remove();
+                }
+            }
+
             List<String> arena = Arrays.asList(currentMetaData.get(0)
                     .asString().split(" "));
 
-            List<String> playerList = Arrays.asList(arena.get(1).split(","));
+            ArenaBlock currentArena = this.plugin.arenas
+                    .getArenaBlock((String) arena.get(0));
 
-            if (playerList.get(0) != null)
+            if (currentArena == null)
             {
-                for (String pn : playerList)
-                {
-                    if (plugin.CurrentPlayerClasses.containsKey(pn))
-                    {
-                        String className = plugin.CurrentPlayerClasses
-                                .get(pn.trim()).getClassName().toLowerCase();
+                return;
+            }
 
-                        if (className != null)
+            for (Player p : currentArena.arenaPlayers)
+            {
+                if (plugin.CurrentPlayerClasses.containsKey(p))
+                {
+                    String className = plugin.CurrentPlayerClasses.get(p)
+                            .getClassName().toLowerCase();
+
+                    if (className != null)
+                    {
+                        switch (className)
                         {
-                            switch (className)
-                            {
-                            case "healer":
-                                SetHealerDrops(pn);
-                                break;
-                            case "warrior":
-                                SetWarriorDrops(pn);
-                                break;
-                            case "mage":
-                                SetMageDrops(pn);
-                                break;
-                            case "archer":
-                                SetArcherDrops(pn);
-                                break;
-                            case "assassin":
-                                SetAssassinDrops(pn);
-                                break;
-                            }
+                        case "healer":
+                            SetHealerDrops(p);
+                            break;
+                        case "warrior":
+                            SetWarriorDrops(p);
+                            break;
+                        case "berserker":
+                            SetBerserkerDrops(p);
+                            break;
+                        case "daemon":
+                            SetDaemonDrops(p);
+                            break;
+                        case "priest":
+                            SetPriestDrops(p);
+                            break;
+                        case "mage":
+                            SetMageDrops(p);
+                            break;
+                        case "archer":
+                            SetArcherDrops(p);
+                            break;
+                        case "assassin":
+                            SetAssassinDrops(p);
+                            break;
                         }
                     }
                 }
@@ -96,12 +133,59 @@ public class MobListener implements Listener
         }
     }
 
-    private void SetWarriorDrops(String pn)
+    private void SetPriestDrops(Player p)
+    {
+        if (!functions.deosPlayersInventoryContainAtLeast(p,
+                Material.GLOWSTONE_DUST, 64))
+        {
+            p.getInventory().addItem(new ItemStack(Material.GLOWSTONE_DUST, 1));
+        }
+
+        SetHealerDrops(p);
+
+    }
+
+    private void SetDaemonDrops(Player p)
+    {
+        if (!functions.deosPlayersInventoryContainAtLeast(p,
+                Material.FIREWORK_CHARGE, 64))
+        {
+            p.getInventory()
+                    .addItem(new ItemStack(Material.FIREWORK_CHARGE, 1));
+        }
+
+        SetBerserkerDrops(p);
+    }
+
+    private void SetBerserkerDrops(Player currentPlayer)
+    {
+        if (!functions.deosPlayersInventoryContainAtLeast(currentPlayer,
+                Material.STONE_SWORD, 1))
+        {
+            if (currentPlayer.getItemInHand() == null)
+            {
+                currentPlayer
+                        .setItemInHand(new ItemStack(Material.STONE_SWORD));
+            }
+            else
+            {
+                currentPlayer.getInventory().addItem(
+                        new ItemStack(Material.STONE_SWORD));
+            }
+        }
+
+        if (!functions.deosPlayersInventoryContainAtLeast(currentPlayer,
+                Material.STRING, 61))
+        {
+            currentPlayer.getInventory().addItem(
+                    new ItemStack(Material.STRING, 4));
+        }
+
+    }
+
+    private void SetWarriorDrops(Player currentPlayer)
     {
         int currentRand = randomGenerator.nextInt(99);
-
-        @SuppressWarnings("deprecation")
-        Player currentPlayer = plugin.getServer().getPlayer(pn);
 
         if (!currentPlayer.getInventory().containsAtLeast(
                 new ItemStack(Material.BREAD, 1), 64))
@@ -126,47 +210,42 @@ public class MobListener implements Listener
                     new ItemStack(new Potion(PotionType.STRENGTH, 2)
                             .toItemStack(1)));
         }
-        else if (currentRand > 50 && currentRand < 100)
+
+        if (!currentPlayer.getInventory().contains(Material.IRON_BOOTS)
+                && currentPlayer.getInventory().getBoots() == null)
         {
-            if (!currentPlayer.getInventory().contains(Material.IRON_BOOTS)
-                    && currentPlayer.getInventory().getBoots() == null)
-            {
-                currentPlayer.getInventory().setBoots(
-                        new ItemStack(Material.IRON_BOOTS, 1));
-                return;
-            }
-            else if (!currentPlayer.getInventory().contains(
-                    Material.IRON_HELMET)
-                    && currentPlayer.getInventory().getHelmet() == null)
-            {
-                currentPlayer.getInventory().setHelmet(
-                        new ItemStack(Material.IRON_HELMET, 1));
-                return;
-            }
-            else if (!currentPlayer.getInventory().contains(
-                    Material.IRON_LEGGINGS)
-                    && currentPlayer.getInventory().getLeggings() == null)
-            {
-                currentPlayer.getInventory().setLeggings(
-                        new ItemStack(Material.IRON_LEGGINGS, 1));
-                return;
-            }
-            else if (!currentPlayer.getInventory().contains(
-                    Material.IRON_CHESTPLATE)
-                    && currentPlayer.getInventory().getChestplate() == null)
-            {
-                currentPlayer.getInventory().setChestplate(
-                        new ItemStack(Material.IRON_CHESTPLATE, 1));
-                return;
-            }
+            currentPlayer.getInventory().setBoots(
+                    new ItemStack(Material.IRON_BOOTS, 1));
+            return;
         }
+        else if (!currentPlayer.getInventory().contains(Material.IRON_HELMET)
+                && currentPlayer.getInventory().getHelmet() == null)
+        {
+            currentPlayer.getInventory().setHelmet(
+                    new ItemStack(Material.IRON_HELMET, 1));
+            return;
+        }
+        else if (!currentPlayer.getInventory().contains(Material.IRON_LEGGINGS)
+                && currentPlayer.getInventory().getLeggings() == null)
+        {
+            currentPlayer.getInventory().setLeggings(
+                    new ItemStack(Material.IRON_LEGGINGS, 1));
+            return;
+        }
+        else if (!currentPlayer.getInventory().contains(
+                Material.IRON_CHESTPLATE)
+                && currentPlayer.getInventory().getChestplate() == null)
+        {
+            currentPlayer.getInventory().setChestplate(
+                    new ItemStack(Material.IRON_CHESTPLATE, 1));
+            return;
+        }
+
     }
 
-    @SuppressWarnings("deprecation")
-    private void SetAssassinDrops(String pn)
+    private void SetAssassinDrops(Player currentPlayer)
     {
         int currentRand = randomGenerator.nextInt(99);
-        Player currentPlayer = plugin.getServer().getPlayer(pn);
 
         if (!currentPlayer.getInventory().containsAtLeast(
                 new ItemStack(Material.ARROW, 1), 61))
@@ -198,25 +277,23 @@ public class MobListener implements Listener
                     new ItemStack(new Potion(PotionType.NIGHT_VISION, 1)
                             .toItemStack(1)));
         }
-        else if (currentRand > 70 && currentRand < 100
-                && !currentPlayer.getInventory().contains(Material.IRON_SWORD))
+
+        if (!currentPlayer.getInventory().contains(Material.IRON_SWORD))
         {
             currentPlayer.getInventory().addItem(
-                    new ItemStack(Material.IRON_SWORD, 1));
+                    new ItemStack(Material.IRON_SWORD));
         }
     }
 
-    @SuppressWarnings("deprecation")
-    private void SetHealerDrops(String pn)
+    private void SetHealerDrops(Player currentPlayer)
     {
         int currentRand = randomGenerator.nextInt(99);
-        Player currentPlayer = plugin.getServer().getPlayer(pn);
 
         if (!currentPlayer.getInventory().containsAtLeast(
-                new ItemStack(Material.LAPIS_BLOCK, 1), 62))
+                new ItemStack(Material.LAPIS_BLOCK, 1), 60))
         {
             currentPlayer.getInventory().addItem(
-                    new ItemStack(Material.LAPIS_BLOCK, 2));
+                    new ItemStack(Material.LAPIS_BLOCK, 4));
         }
 
         if (currentRand > 0 && currentRand < 20
@@ -281,24 +358,21 @@ public class MobListener implements Listener
         }
     }
 
-    @SuppressWarnings("deprecation")
-    private void SetMageDrops(String pn)
+    private void SetMageDrops(Player currentPlayer)
     {
         int currentRand = randomGenerator.nextInt(99);
 
-        Player currentPlayer = plugin.getServer().getPlayer(pn);
-
         if (!currentPlayer.getInventory().containsAtLeast(
-                new ItemStack(Material.LAPIS_BLOCK, 1), 61))
+                new ItemStack(Material.LAPIS_BLOCK), 54))
         {
             currentPlayer.getInventory().addItem(
-                    new ItemStack(Material.LAPIS_BLOCK, 3));
+                    new ItemStack(Material.LAPIS_BLOCK, 10));
         }
 
         if (currentRand > 10 && currentRand < 40)
         {
             if (!currentPlayer.getInventory().containsAtLeast(
-                    new ItemStack(Material.LAPIS_BLOCK, 1), 62))
+                    new ItemStack(Material.FEATHER, 1), 62))
             {
                 currentPlayer.getInventory().addItem(
                         new ItemStack(Material.FEATHER, 2));
@@ -340,26 +414,24 @@ public class MobListener implements Listener
         }
     }
 
-    @SuppressWarnings("deprecation")
-    private void SetArcherDrops(String pn)
+    private void SetArcherDrops(Player currentPlayer)
     {
         int currentRand = randomGenerator.nextInt(99);
-        Player currentPlayer = plugin.getServer().getPlayer(pn);
 
         if (!currentPlayer.getInventory().containsAtLeast(
-                new ItemStack(Material.ARROW, 1), 61))
+                new ItemStack(Material.ARROW, 1), 64))
         {
             currentPlayer.getInventory().addItem(
-                    new ItemStack(Material.ARROW, 3));
+                    new ItemStack(Material.ARROW, 10));
         }
 
-        if (currentRand > 20 && currentRand < 30
-                && !currentPlayer.getInventory().contains(Material.BOW))
+        if (!currentPlayer.getInventory().contains(Material.BOW))
         {
             currentPlayer.getInventory()
                     .addItem(new ItemStack(Material.BOW, 1));
         }
-        else if (currentRand > 30 && currentRand < 40)
+
+        if (currentRand > 30 && currentRand < 40)
         {
             ItemStack redwool = new Wool(DyeColor.RED).toItemStack(2);
 
@@ -372,10 +444,10 @@ public class MobListener implements Listener
         else if (currentRand > 50 && currentRand < 70)
         {
             if (!currentPlayer.getInventory().containsAtLeast(
-                    new ItemStack(Material.SNOW_BALL), 10))
+                    new ItemStack(Material.SNOW_BALL), 9))
             {
                 currentPlayer.getInventory().addItem(
-                        new ItemStack(Material.SNOW_BALL, 6));
+                        new ItemStack(Material.SNOW_BALL, 8));
             }
         }
         else if (currentRand > 70 && currentRand < 100)

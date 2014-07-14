@@ -14,13 +14,13 @@ public class AbilityDelay extends BukkitRunnable
     {
         currentPlayer = CurrentPlayer;
         currentPlugin = Plugin;
-        currentPlugin.CurrentPlayerClasses.get(currentPlayer.getName()).CanCast = false;
+        currentPlugin.CurrentPlayerClasses.get(currentPlayer).CanCast = false;
     }
 
     @Override
     public void run()
     {
-        currentPlugin.CurrentPlayerClasses.get(currentPlayer.getName()).CanCast = true;
+        currentPlugin.CurrentPlayerClasses.get(currentPlayer).CanCast = true;
         this.cancel();
     }
 

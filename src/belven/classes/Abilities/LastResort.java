@@ -34,6 +34,6 @@ public class LastResort extends Ability
 
     public int Amplifier()
     {
-        return Math.round(currentClass.classOwner().getLevel() / 7);
+        return Math.round(currentClass.classOwner.getLevel() / 7);
     }
 }

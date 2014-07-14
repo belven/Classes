@@ -33,7 +33,6 @@ public class MobOutOfCombatTimer extends BukkitRunnable
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void ResetMaxHealth()
     {
         currentEntity.setMaxHealth(functions.MobMaxHealth(currentEntity));

@@ -64,7 +64,7 @@ public class Pop extends Ability
         {
             if (e != null && e.getType() != EntityType.PLAYER)
             {
-                Vector vectorToUse = currentClass.classOwner().getLocation()
+                Vector vectorToUse = currentClass.classOwner.getLocation()
                         .getDirection();
                 vectorToUse.setY(vectorToUse.getY() + 1);
 

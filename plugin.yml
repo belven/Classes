@@ -28,11 +28,26 @@ commands:
       usage: /bcmage 
       permission: BelvensClasses.bcmage 
       permission-message: You don't have BelvensClasses.bcmage
+   bcpriest:
+      description: This will change your class to a Priest
+      usage: /bcpriest 
+      permission: BelvensClasses.bcpriest 
+      permission-message: You don't have BelvensClasses.bcpriest
    bcwarrior:
       description: This will change your class to a warrior
       usage: /bcwarrior 
       permission: BelvensClasses.bcwarrior 
       permission-message: You don't have BelvensClasses.bcwarrior 
+   bcberserker:
+      description: This will change your class to a berserker 
+      usage: /bcberserker 
+      permission: BelvensClasses.bcberserker 
+      permission-message: You don't have BelvensClasses.bcberserker 
+   bcdaemon:
+      description: This will change your class to a daemon 
+      usage: /bcdaemon 
+      permission: BelvensClasses.bcdaemon 
+      permission-message: You don't have BelvensClasses.bcdaemon 
    bcassassin:
       description: This will change your class to a assassin
       usage: /bcassassin 
@@ -52,24 +67,44 @@ permissions:
     BelvensClasses.*:
         description: Gives access to all of BelvensClasses commands
         children:
-            BelvensClasses.listclasses: true
-            BelvensClasses.listabilities: true
+            BelvensClasses.BaseClasses.*: true
+            BelvensClasses.TierClasses.*: true
+    BelvensClasses.BaseClasses.*:
+        description: Gives access to all of base classes
+        children:
             BelvensClasses.bchealer: true
             BelvensClasses.bcmage: true
             BelvensClasses.bcwarrior: true
             BelvensClasses.bcassassin: true
             BelvensClasses.bcarcher: true
+            BelvensClasses.bcberserker: true
+            BelvensClasses.listclasses: true
+            BelvensClasses.listabilities: true
+    BelvensClasses.TierClasses.*:
+        description: Gives access to all of tier classes
+        children:
+            BelvensClasses.bcdaemon: true
+            BelvensClasses.bcpriest: true
     BelvensClasses.listclasses:
         description: Lists all players and thier classes
         default: op
     BelvensClasses.listabilities:
         description: Lists your classes abilities
         default: op
-    BelvensClasses.bchealer:
-        description: This will change your class to a Healer
+    BelvensClasses.bcberserker:
+        description: This will change your class to a Berserker
+        default: true
+    BelvensClasses.bcdaemon:
+        description: This will change your class to a Daemon
         default: true
     BelvensClasses.bcmage:
         description: This will change your class to a Mage
+        default: true
+    BelvensClasses.bchealer:
+        description: This will change your class to a Healer
+        default: true
+    BelvensClasses.bcpriest:
+        description: This will change your class to a Priest
         default: true
     BelvensClasses.bcwarrior:
         description: This will change your class to a Warrior

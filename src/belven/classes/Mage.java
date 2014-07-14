@@ -75,7 +75,8 @@ public class Mage extends Class
         }
         else if (classPop.HasRequirements(classOwner))
         {
-            LivingEntity targetEntity = functions.findTarget(classOwner);
+            LivingEntity targetEntity = functions.findTargetEntity(classOwner,
+                    150.0D);
 
             if (targetEntity != null)
             {
@@ -130,12 +131,6 @@ public class Mage extends Class
     public void PerformAbility()
     {
 
-    }
-
-    @Override
-    public Player classOwner()
-    {
-        return classOwner;
     }
 
     @SuppressWarnings("deprecation")

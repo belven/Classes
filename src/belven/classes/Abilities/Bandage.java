@@ -29,13 +29,14 @@ public class Bandage extends Ability
     public void PerformAbility(Player targetPlayer)
     {
         targetPlayer.addPotionEffect(new PotionEffect(
-                PotionEffectType.ABSORPTION,  functions.SecondsToTicks(20), 1), true);
-    }  
+                PotionEffectType.ABSORPTION, functions.SecondsToTicks(20), 1),
+                true);
+    }
 
     @Override
     public int Amplifier()
     {
-        return Math.round(currentClass.classOwner().getLevel() / 7);
-    }  
+        return Math.round(currentClass.classOwner.getLevel() / 7);
+    }
 
 }

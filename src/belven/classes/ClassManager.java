@@ -11,10 +11,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import belven.arena.ArenaManager;
 import belven.classes.events.ClassChangeEvent;
 import belven.classes.listeners.BlockListener;
 import belven.classes.listeners.MobListener;
 import belven.classes.listeners.PlayerListener;
+import belven.teams.TeamManager;
 
 public class ClassManager extends JavaPlugin
 {
@@ -22,9 +24,13 @@ public class ClassManager extends JavaPlugin
     private final BlockListener blockListener = new BlockListener(this);
     private final MobListener mobListener = new MobListener(this);
 
-    public HashMap<String, Class> CurrentPlayerClasses = new HashMap<String, Class>();
+    public ArenaManager arenas = (ArenaManager) Bukkit.getServer()
+            .getPluginManager().getPlugin("BelvensArenas");
+    public TeamManager teams = (TeamManager) Bukkit.getServer()
+            .getPluginManager().getPlugin("BelvensTeams");
 
-    @SuppressWarnings("deprecation")
+    public HashMap<Player, Class> CurrentPlayerClasses = new HashMap<Player, Class>();
+
     @Override
     public void onEnable()
     {
@@ -63,7 +69,7 @@ public class ClassManager extends JavaPlugin
             {
                 if (CurrentPlayerClasses.get(playerToAdd) == null)
 
-                    CurrentPlayerClasses.put(playerToAdd.getName(),
+                    CurrentPlayerClasses.put(playerToAdd,
                             StringToClass(classString, playerToAdd));
             }
 
@@ -75,10 +81,17 @@ public class ClassManager extends JavaPlugin
     public boolean onCommand(CommandSender sender, Command cmd, String label,
             String[] args)
     {
-        @SuppressWarnings("deprecation")
         Player[] currentPlayers = this.getServer().getOnlinePlayers();
         Player player = (Player) sender;
         String commandSent = cmd.getName();
+
+        if ((this.arenas != null) && (this.arenas.IsPlayerInArena(player)))
+        {
+            if (this.arenas.getArenaInIsPlayer(player).isActive)
+            {
+                return false;
+            }
+        }
 
         if (commandSent.equalsIgnoreCase("bchealer"))
         {
@@ -93,22 +106,35 @@ public class ClassManager extends JavaPlugin
 
             return true;
         }
-        else if (commandSent.equalsIgnoreCase("bcmage"))
-        {
-            this.SetClass(player, "Mage");
-
-            return true;
-        }
+        // else if (commandSent.equalsIgnoreCase("bcmage"))
+        // {
+        // this.SetClass(player, "Mage");
+        //
+        // return true;
+        // }
         else if (commandSent.equalsIgnoreCase("bcwarrior"))
         {
             this.SetClass(player, "Warrior");
-
+            return true;
+        }
+        else if (commandSent.equalsIgnoreCase("bcpriest"))
+        {
+            this.SetClass(player, "Priest");
+            return true;
+        }
+        else if (commandSent.equalsIgnoreCase("bcdaemon"))
+        {
+            this.SetClass(player, "Daemon");
+            return true;
+        }
+        else if (commandSent.equalsIgnoreCase("bcberserker"))
+        {
+            this.SetClass(player, "Berserker");
             return true;
         }
         else if (commandSent.equalsIgnoreCase("bcassassin"))
         {
             this.SetClass(player, "Assassin");
-
             return true;
         }
         else if (commandSent.equalsIgnoreCase("setlevel"))
@@ -120,7 +146,6 @@ public class ClassManager extends JavaPlugin
         else if (commandSent.equalsIgnoreCase("bcarcher"))
         {
             this.SetClass(player, "Archer");
-
             return true;
         }
         else if (commandSent.equalsIgnoreCase("listclasses"))
@@ -171,14 +196,22 @@ public class ClassManager extends JavaPlugin
         {
         case "healer":
             return new Healer(player, this);
+            // case "mage":
+            // return new Mage(player, this);
         case "mage":
-            return new Mage(player, this);
+            return new DEFAULT();
         case "assassin":
             return new Assassin(player, this);
         case "archer":
             return new Archer(player, this);
+        case "daemon":
+            return new Daemon(player, this);
+        case "priest":
+            return new Priest(player, this);
         case "warrior":
             return new Warrior(player, this);
+        case "berserker":
+            return new Berserker(player, this);
         default:
             return new DEFAULT();
         }
@@ -194,7 +227,7 @@ public class ClassManager extends JavaPlugin
         playerToChange.sendMessage(PlayerName + " is class " + classString);
 
         this.saveConfig();
-        CurrentPlayerClasses.put(playerToChange.getName(),
+        CurrentPlayerClasses.put(playerToChange,
                 StringToClass(classString, playerToChange));
 
         Bukkit.getPluginManager().callEvent(

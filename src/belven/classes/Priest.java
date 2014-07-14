@@ -7,32 +7,21 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import resources.functions;
+import belven.classes.Abilities.AOEHeal;
 import belven.classes.Abilities.Ability;
-import belven.classes.Abilities.Bandage;
-import belven.classes.Abilities.Barrier;
-import belven.classes.Abilities.Heal;
-import belven.classes.Abilities.LightHeal;
-import belven.classes.timedevents.BarrierTimer;
+import belven.classes.Abilities.Cleanse;
 
-public class Healer extends Class
+public class Priest extends Healer
 {
-    public Heal classHeal;
-    public LightHeal classLightHeal;
-    public Bandage classBandage;
-    public Barrier classBarrier;
+    public AOEHeal classAOEHeal;
+    public Cleanse classCleanse;
 
-    public Healer(Player currentPlayer, ClassManager instance)
+    public Priest(Player currentPlayer, ClassManager instance)
     {
-        plugin = instance;
-        classOwner = currentPlayer;
-        className = "Healer";
-        classHeal = new Heal(this);
-        classLightHeal = new LightHeal(this);
-        classBandage = new Bandage(this);
-        classBarrier = new Barrier(this, 6);
-        Damageable dcurrentPlayer = (Damageable) currentPlayer;
-        dcurrentPlayer.setMaxHealth(16.0);
-        dcurrentPlayer.setHealth(dcurrentPlayer.getMaxHealth());
+        super(currentPlayer, instance);
+        classAOEHeal = new AOEHeal(this);
+        classCleanse = new Cleanse(this);
+        className = "Priest";
     }
 
     @Override
@@ -101,31 +90,21 @@ public class Healer extends Class
             dplayer = dclassOwner;
         }
 
-        if (dplayer.getHealth() <= 10 && classHeal.HasRequirements(classOwner))
+        if (!classAOEHeal.onCooldown
+                && classAOEHeal.HasRequirements(classOwner))
         {
-            classHeal.PerformAbility(player);
-            classOwner.sendMessage("You healed " + player.getName());
+            classAOEHeal.PerformAbility(player);
+            setAbilityOnCoolDown(classAOEHeal, 8);
         }
-        else if (!classBandage.onCooldown
-                && classBandage.HasRequirements(classOwner))
+        else
         {
-            classBandage.PerformAbility(player);
-            classOwner.sendMessage("You gave " + player.getName()
-                    + " a bandage");
+            super.CheckAbilitiesToCast(player);
         }
-        else if (!classBarrier.onCooldown
-                && classBarrier.HasRequirements(classOwner))
-        {
-            new BarrierTimer(classBarrier).runTaskTimer(plugin, 0, 10);
 
-            UltAbilityUsed(classBarrier);
-
-            classOwner.sendMessage("You used " + classBarrier.GetAbilityName());
-        }
-        else if (classLightHeal.HasRequirements(classOwner))
+        if (!classCleanse.onCooldown
+                && classCleanse.HasRequirements(classOwner))
         {
-            classLightHeal.PerformAbility(player);
-            classOwner.sendMessage("You healed " + player.getName());
+            classCleanse.PerformAbility(player);
         }
     }
 

@@ -44,12 +44,6 @@ public class DEFAULT extends Class
         
     }
 
-    @Override
-    public Player classOwner()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
 
 }
