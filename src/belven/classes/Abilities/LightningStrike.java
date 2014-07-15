@@ -5,28 +5,23 @@ import org.bukkit.entity.LivingEntity;
 
 public class LightningStrike extends Ability
 {
-    public LightningStrike(belven.classes.Class CurrentClass)
+    public LightningStrike(belven.classes.Class CurrentClass, int priority)
     {
+        super(priority);
         currentClass = CurrentClass;
         abilitiyName = "Lightning Strike";
     }
 
     @Override
-    public void PerformAbility(Entity targetEntity)
+    public boolean PerformAbility(Entity targetEntity)
     {
         if (targetEntity instanceof LivingEntity)
         {
             LivingEntity entityDamaged = (LivingEntity) targetEntity;
-                        
+
             entityDamaged.getWorld()
                     .strikeLightning(targetEntity.getLocation());
         }
+        return true;
     }
-
-    @Override
-    public int Amplifier()
-    {
-        return 0;
-    }
-
 }

@@ -2,18 +2,21 @@ package belven.classes;
 
 import java.util.Iterator;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import resources.functions;
 import belven.classes.Abilities.FeelTheBurn;
 import belven.classes.Abilities.SetAlight;
+import belvens.classes.resources.ClassDrop;
+import belvens.classes.resources.functions;
 
 public class Daemon extends Berserker
 {
@@ -24,8 +27,11 @@ public class Daemon extends Berserker
     {
         super(currentPlayer, instance);
         this.className = "Daemon";
-        classFeelTheBurn = new FeelTheBurn(this);
-        classSetAlight = new SetAlight(this);
+        baseClassName = "Berserker";
+        classFeelTheBurn = new FeelTheBurn(this, 1);
+        classSetAlight = new SetAlight(this, 2);
+        SortAbilities();
+        SetClassDrops();
     }
 
     public void PerformAbility(Player currentPlayer)
@@ -104,5 +110,13 @@ public class Daemon extends Berserker
     public int Amplifier()
     {
         return Math.round(classOwner.getLevel() / 5) + 1;
+    }
+
+    @Override
+    public void SetClassDrops()
+    {
+        super.SetClassDrops();
+        ItemStack fire = new ItemStack(Material.FIREWORK_CHARGE, 2);
+        classDrops.add(new ClassDrop(fire, true));
     }
 }

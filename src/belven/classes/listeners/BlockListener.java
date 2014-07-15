@@ -31,11 +31,8 @@ public class BlockListener implements Listener
         Material mat = event.getBlock().getType();
 
         if (mat == Material.LAPIS_BLOCK
-                && (currentClass instanceof Mage || currentClass instanceof Healer))
-        {
-            event.setCancelled(true);
-        }
-        else if (mat == Material.LAPIS_BLOCK && currentClass instanceof Priest)
+                && (currentClass instanceof Mage
+                        || currentClass instanceof Healer || currentClass instanceof Priest))
         {
             event.setCancelled(true);
         }

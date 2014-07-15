@@ -6,7 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -14,8 +13,9 @@ public class Pop extends Ability
 {
     private int counter = 0;
 
-    public Pop(belven.classes.Class CurrentClass)
+    public Pop(belven.classes.Class CurrentClass, int priority)
     {
+        super(priority);
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.FEATHER));
         inHandRequirements.add(Material.FEATHER);
@@ -46,17 +46,7 @@ public class Pop extends Ability
         return radiusEntities.toArray(new Entity[radiusEntities.size()]);
     }
 
-    @Override
-    public void PerformAbility()
-    {
-    }
-
-    @Override
-    public void PerformAbility(Player targetPlayer)
-    {
-    }
-
-    public void PerformAbility(Location targetLocation)
+    public boolean PerformAbility(Location targetLocation)
     {
         Entity[] entitiesToDamage = getNearbyEntities(targetLocation, 4);
 
@@ -79,11 +69,6 @@ public class Pop extends Ability
                 }
             }
         }
-    }
-
-    @Override
-    public int Amplifier()
-    {
-        return 0;
+        return true;
     }
 }

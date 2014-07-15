@@ -4,19 +4,20 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import resources.functions;
+import belvens.classes.resources.functions;
 
 public class SetAlight extends Ability
 {
-    public SetAlight(belven.classes.Class CurrentClass)
+    public SetAlight(belven.classes.Class CurrentClass, int priority)
     {
+        super(priority);
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.FIREWORK_CHARGE, 1));
         abilitiyName = "Set Alight";
     }
 
     @Override
-    public void PerformAbility(Player playerToBurn)
+    public boolean PerformAbility(Player playerToBurn)
     {
         int Amplifier = Amplifier();
 
@@ -26,6 +27,7 @@ public class SetAlight extends Ability
         }
 
         playerToBurn.setFireTicks(functions.SecondsToTicks(Amplifier));
+        return true;
     }
 
     public int Amplifier()

@@ -25,15 +25,13 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 
-import resources.functions;
 import belven.arena.blocks.ArenaBlock;
 import belven.classes.Archer;
 import belven.classes.Assassin;
 import belven.classes.ClassManager;
 import belven.classes.Daemon;
 import belven.classes.timedevents.AbilityDelay;
-
-//import belven.classes.timedevents.MobOutOfCombatTimer;
+import belvens.classes.resources.functions;
 
 public class PlayerListener implements Listener
 {
@@ -126,13 +124,6 @@ public class PlayerListener implements Listener
 
             plugin.CurrentPlayerClasses.get(event.getPlayer())
                     .ToggleSneakEvent(event);
-
-            // if (plugin.CurrentPlayerClasses.get(event.getPlayer()) instanceof
-            // Assassin)
-            // {
-            // ((Assassin) plugin.CurrentPlayerClasses.get(event.getPlayer()))
-            // .ToggleSneakEvent(event);
-            // }
         }
     }
 
@@ -173,55 +164,6 @@ public class PlayerListener implements Listener
 
                 plugin.CurrentPlayerClasses.get(currentPlayer).PerformAbility(
                         currentPlayer);
-
-                // if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof
-                // Healer)
-                // {
-                // ((Healer) plugin.CurrentPlayerClasses.get(currentPlayer))
-                // .PerformAbility(currentPlayer);
-                // }
-                // else if (plugin.CurrentPlayerClasses.get(currentPlayer)
-                // instanceof Priest)
-                // {
-                // ((Priest) plugin.CurrentPlayerClasses.get(currentPlayer))
-                // .PerformAbility(currentPlayer);
-                // }
-                // else if (plugin.CurrentPlayerClasses.get(currentPlayer)
-                // instanceof Mage)
-                // {
-                // ((Mage) plugin.CurrentPlayerClasses.get(currentPlayer))
-                // .PerformAbility(currentPlayer);
-                // }
-                // else if (plugin.CurrentPlayerClasses.get(currentPlayer)
-                // instanceof Warrior)
-                // {
-                // ((Warrior) plugin.CurrentPlayerClasses.get(currentPlayer))
-                // .PerformAbility(currentPlayer);
-                // }
-                // else if (plugin.CurrentPlayerClasses.get(currentPlayer)
-                // instanceof Assassin)
-                // {
-                // ((Assassin) plugin.CurrentPlayerClasses.get(currentPlayer))
-                // .PerformAbility(currentPlayer);
-                // }
-                // else if (plugin.CurrentPlayerClasses.get(currentPlayer)
-                // instanceof Daemon)
-                // {
-                // ((Daemon) plugin.CurrentPlayerClasses.get(currentPlayer))
-                // .PerformAbility(currentPlayer);
-                // }
-                // else if (plugin.CurrentPlayerClasses.get(currentPlayer)
-                // instanceof Berserker)
-                // {
-                // ((Berserker) plugin.CurrentPlayerClasses.get(currentPlayer))
-                // .PerformAbility(currentPlayer);
-                // }
-                // else if (plugin.CurrentPlayerClasses.get(currentPlayer)
-                // instanceof Archer)
-                // {
-                // ((Archer) plugin.CurrentPlayerClasses.get(currentPlayer))
-                // .PerformAbility(currentPlayer);
-                // }
             }
         }
     }
@@ -239,43 +181,6 @@ public class PlayerListener implements Listener
 
             plugin.CurrentPlayerClasses.get(currentPlayer).PerformAbility(
                     currentEntity);
-            //
-            // if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof
-            // Healer)
-            // {
-            // ((Healer) plugin.CurrentPlayerClasses.get(currentPlayer))
-            // .PerformAbility(currentEntity);
-            // }
-            // else if (plugin.CurrentPlayerClasses.get(currentPlayer)
-            // instanceof Priest)
-            // {
-            // ((Priest) plugin.CurrentPlayerClasses.get(currentPlayer))
-            // .PerformAbility(currentEntity);
-            // }
-            // else if (plugin.CurrentPlayerClasses.get(currentPlayer)
-            // instanceof Mage)
-            // {
-            // ((Mage) plugin.CurrentPlayerClasses.get(currentPlayer))
-            // .PerformAbility(currentEntity);
-            // }
-            // else if (plugin.CurrentPlayerClasses.get(currentPlayer)
-            // instanceof Warrior)
-            // {
-            // ((Warrior) plugin.CurrentPlayerClasses.get(currentPlayer))
-            // .PerformAbility(currentEntity);
-            // }
-            // else if (plugin.CurrentPlayerClasses.get(currentPlayer)
-            // instanceof Assassin)
-            // {
-            // ((Assassin) plugin.CurrentPlayerClasses.get(currentPlayer))
-            // .PerformAbility(currentEntity);
-            // }
-            // else if (plugin.CurrentPlayerClasses.get(currentPlayer)
-            // instanceof Archer)
-            // {
-            // ((Archer) plugin.CurrentPlayerClasses.get(currentPlayer))
-            // .PerformAbility(currentEntity);
-            // }
         }
     }
 
@@ -303,13 +208,6 @@ public class PlayerListener implements Listener
 
             plugin.CurrentPlayerClasses.get(currentPlayer).PlayerTakenDamage(
                     event);
-
-            // if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof
-            // Daemon)
-            // {
-            // ((Daemon) plugin.CurrentPlayerClasses.get(currentPlayer))
-            // .PlayerTakenDamage(event);
-            // }
         }
     }
 
@@ -326,25 +224,6 @@ public class PlayerListener implements Listener
 
             plugin.CurrentPlayerClasses.get(currentPlayer)
                     .MobTakenDamage(event);
-            //
-            // if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof
-            // Assassin)
-            // {
-            // ((Assassin) plugin.CurrentPlayerClasses.get(currentPlayer))
-            // .MobTakenDamage(event);
-            // }
-            // else if (plugin.CurrentPlayerClasses.get(currentPlayer)
-            // instanceof Berserker)
-            // {
-            // ((Berserker) plugin.CurrentPlayerClasses.get(currentPlayer))
-            // .MobTakenDamage(event);
-            // }
-            // else if (plugin.CurrentPlayerClasses.get(currentPlayer)
-            // instanceof Daemon)
-            // {
-            // ((Daemon) plugin.CurrentPlayerClasses.get(currentPlayer))
-            // .MobTakenDamage(event);
-            // }
         }
         else if (damagerEntity.getType() == EntityType.ARROW)
         {
@@ -359,19 +238,6 @@ public class PlayerListener implements Listener
 
                 plugin.CurrentPlayerClasses.get(currentPlayer).MobTakenDamage(
                         event);
-
-                // if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof
-                // Assassin)
-                // {
-                // ((Assassin) plugin.CurrentPlayerClasses.get(currentPlayer))
-                // .MobTakenDamage(event);
-                // }
-                // else if (plugin.CurrentPlayerClasses.get(currentPlayer)
-                // instanceof Archer)
-                // {
-                // ((Archer) plugin.CurrentPlayerClasses.get(currentPlayer))
-                // .MobTakenDamage(event);
-                // }
             }
 
         }
@@ -476,30 +342,5 @@ public class PlayerListener implements Listener
 
         plugin.CurrentPlayerClasses.get(damagedPlayer).TakeDamage(event,
                 damagedPlayer);
-        //
-        // if (plugin.CurrentPlayerClasses.get(damagedPlayer) instanceof Mage)
-        // {
-        // ((Mage) plugin.CurrentPlayerClasses.get(damagedPlayer)).TakeDamage(
-        // event, damagedPlayer);
-        // }
-        // else if (plugin.CurrentPlayerClasses.get(damagedPlayer) instanceof
-        // Warrior)
-        // {
-        // ((Warrior) plugin.CurrentPlayerClasses.get(damagedPlayer))
-        // .TakeDamage(event, damagedPlayer);
-        // }
-        // else if (plugin.CurrentPlayerClasses.get(damagedPlayer) instanceof
-        // Berserker)
-        // {
-        // ((Berserker) plugin.CurrentPlayerClasses.get(damagedPlayer))
-        // .TakeDamage(event, damagedPlayer);
-        // }
-        // else if (plugin.CurrentPlayerClasses.get(damagedPlayer) instanceof
-        // Daemon)
-        // {
-        // ((Daemon) plugin.CurrentPlayerClasses.get(damagedPlayer))
-        // .TakeDamage(event, damagedPlayer);
-        // }
     }
-
 }

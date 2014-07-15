@@ -10,15 +10,16 @@ import belven.arena.resources.functions;
 
 public class AOEHeal extends Ability
 {
-    public AOEHeal(belven.classes.Class CurrentClass)
+    public AOEHeal(belven.classes.Class CurrentClass, int priority)
     {
+        super(priority);
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.LAPIS_BLOCK, 4));
         abilitiyName = "AOEHeal";
     }
 
     @Override
-    public void PerformAbility(Player playerToHeal)
+    public boolean PerformAbility(Player playerToHeal)
     {
         for (Player p : functions.getNearbyPlayersNew(
                 playerToHeal.getLocation(), Amplifier() + 8))
@@ -29,6 +30,9 @@ public class AOEHeal extends Ability
                     PotionEffectType.REGENERATION, functions.SecondsToTicks(5),
                     Amplifier(), true));
         }
+
+        currentClass.setAbilityOnCoolDown(this, 8, true);
+        return true;
     }
 
     public int Amplifier()

@@ -1,5 +1,6 @@
 package belven.classes;
 
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Damageable;
@@ -7,11 +8,15 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Wool;
 
-import resources.functions;
+import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.WebArrow;
 import belven.classes.Abilities.FireTrap;
 import belven.classes.timedevents.BlockRestorer;
+import belvens.classes.resources.ClassDrop;
+import belvens.classes.resources.functions;
 
 public class Archer extends Class
 {
@@ -23,23 +28,23 @@ public class Archer extends Class
     {
         plugin = instance;
         classOwner = currentPlayer;
-        classCripplingArrow = new WebArrow(this);
-        classFireTrap = new FireTrap(this);
+        classCripplingArrow = new WebArrow(this, 0);
+        classFireTrap = new FireTrap(this, 1);
         className = "Archer";
-        SetAbilities();
 
         Damageable dcurrentPlayer = (Damageable) currentPlayer;
         dcurrentPlayer.setMaxHealth(24.0);
         dcurrentPlayer.setHealth(dcurrentPlayer.getMaxHealth());
+
+        Abilities.add(classFireTrap);
+        SortAbilities();
+        SetClassDrops();
     }
 
     @Override
     public void PerformAbility(Player currentPlayer)
     {
-        Player playerSelected;
-        playerSelected = classOwner;
-
-        CheckAbilitiesToCast(playerSelected, currentPlayer);
+        CheckAbilitiesToCast(currentPlayer);
     }
 
     public void PerformAbility(Entity currentEntity)
@@ -51,30 +56,19 @@ public class Archer extends Class
     {
         Location trapLocation = classOwner.getLocation();
         trapLocation.setY(trapLocation.getY() - 1);
-
-        if (trapLocation.getBlock().getType() != Material.WOOL
-                && classFireTrap.HasRequirements(classOwner))
+        for (Ability a : Abilities)
         {
-            classFireTrap.PerformAbility(trapLocation);
-        }
-    }
-
-    public void CheckAbilitiesToCast(Player target, Player player)
-    {
-        Location trapLocation = classOwner.getLocation();
-        trapLocation.setY(trapLocation.getY() - 1);
-
-        if (trapLocation.getBlock().getType() != Material.WOOL
-                && classFireTrap.HasRequirements(classOwner))
-        {
-            classFireTrap.PerformAbility(trapLocation);
-        }
-    }
-
-    public void SetAbilities()
-    {
-        if (classOwner != null)
-        {
+            if (!a.onCooldown && a.HasRequirements(classOwner))
+            {
+                if (!a.PerformAbility(trapLocation))
+                {
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
+            }
         }
     }
 
@@ -112,6 +106,27 @@ public class Archer extends Class
     public Player classOwner()
     {
         return classOwner;
+    }
+
+    @Override
+    public void SetClassDrops()
+    {
+        ItemStack redwool = new Wool(DyeColor.RED).toItemStack(2);
+        ItemStack arrow = new ItemStack(Material.ARROW, 10);
+        ItemStack bow = new ItemStack(Material.BOW);
+        ItemStack snowBall = new ItemStack(Material.SNOW_BALL, 8);
+
+        classDrops.add(new ClassDrop(arrow, true));
+        classDrops.add(new ClassDrop(bow, true));
+
+        classDrops.add(new ClassDrop(redwool, 0, 30));
+        classDrops.add(new ClassDrop(snowBall, 30, 50));
+
+        classDrops.add(new ClassDrop(l_Boots(), 50, 100));
+        classDrops.add(new ClassDrop(l_ChestPlate(), 50, 100));
+        classDrops.add(new ClassDrop(l_Leggings(), 50, 100));
+        classDrops.add(new ClassDrop(l_Helmet(), 50, 100));
+
     }
 
 }

@@ -7,24 +7,19 @@ import org.bukkit.inventory.ItemStack;
 
 public class MageFireball extends Ability
 {
-    public MageFireball(belven.classes.Class CurrentClass)
+    public MageFireball(belven.classes.Class CurrentClass, int priority)
     {
+        super(priority);
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.LAPIS_BLOCK, 1));
         abilitiyName = "Mage Fireball";
     }
 
     @Override
-    public void PerformAbility(Player mage)
+    public boolean PerformAbility(Player mage)
     {
         mage.launchProjectile(Fireball.class);
-        return;
-    }
-
-    @Override
-    public void PerformAbility()
-    {
-
+        return true;
     }
 
     public int Amplifier()

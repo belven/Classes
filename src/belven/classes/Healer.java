@@ -1,18 +1,20 @@
 package belven.classes;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
-import resources.functions;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.Bandage;
 import belven.classes.Abilities.Barrier;
 import belven.classes.Abilities.Heal;
 import belven.classes.Abilities.LightHeal;
-import belven.classes.timedevents.BarrierTimer;
+import belvens.classes.resources.ClassDrop;
+import belvens.classes.resources.functions;
 
 public class Healer extends Class
 {
@@ -26,13 +28,19 @@ public class Healer extends Class
         plugin = instance;
         classOwner = currentPlayer;
         className = "Healer";
-        classHeal = new Heal(this);
-        classLightHeal = new LightHeal(this);
-        classBandage = new Bandage(this);
-        classBarrier = new Barrier(this, 6);
+        classHeal = new Heal(this, 1);
+        classLightHeal = new LightHeal(this, 2);
+        classBandage = new Bandage(this, 0);
+        classBarrier = new Barrier(this, 6, 4);
         Damageable dcurrentPlayer = (Damageable) currentPlayer;
         dcurrentPlayer.setMaxHealth(16.0);
         dcurrentPlayer.setHealth(dcurrentPlayer.getMaxHealth());
+
+        Abilities.add(classBandage);
+        Abilities.add(classBarrier);
+        Abilities.add(classHeal);
+        Abilities.add(classLightHeal);
+        SortAbilities();
     }
 
     @Override
@@ -93,69 +101,43 @@ public class Healer extends Class
 
     public void CheckAbilitiesToCast(Player player)
     {
-        Damageable dplayer = (Damageable) player;
-        Damageable dclassOwner = (Damageable) classOwner;
-
-        if (dclassOwner.getHealth() < dplayer.getHealth())
+        if (functions.isFood(classOwner.getItemInHand().getType()))
         {
-            dplayer = dclassOwner;
+            return;
         }
 
-        if (dplayer.getHealth() <= 10 && classHeal.HasRequirements(classOwner))
+        for (Ability a : Abilities)
         {
-            classHeal.PerformAbility(player);
-            classOwner.sendMessage("You healed " + player.getName());
-        }
-        else if (!classBandage.onCooldown
-                && classBandage.HasRequirements(classOwner))
-        {
-            classBandage.PerformAbility(player);
-            classOwner.sendMessage("You gave " + player.getName()
-                    + " a bandage");
-        }
-        else if (!classBarrier.onCooldown
-                && classBarrier.HasRequirements(classOwner))
-        {
-            new BarrierTimer(classBarrier).runTaskTimer(plugin, 0, 10);
-
-            UltAbilityUsed(classBarrier);
-
-            classOwner.sendMessage("You used " + classBarrier.GetAbilityName());
-        }
-        else if (classLightHeal.HasRequirements(classOwner))
-        {
-            classLightHeal.PerformAbility(player);
-            classOwner.sendMessage("You healed " + player.getName());
-        }
-    }
-
-    public void SetAbilities()
-    {
-        if (classOwner != null)
-        {
-            int currentLevel = classOwner.getLevel();
-
-            if (currentLevel > 1)
+            if (!a.onCooldown && a.HasRequirements(classOwner))
             {
-                AddToAbilities(classBandage);
-            }
-
-            if (currentLevel > 3)
-            {
-                AddToAbilities(classHeal);
+                if (!a.PerformAbility(player))
+                {
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
             }
         }
-    }
-
-    public void AddToAbilities(Ability abilityToAdd)
-    {
-        Abilities.add(abilityToAdd);
     }
 
     @Override
-    public void PerformAbility()
+    public void SetClassDrops()
     {
+        ItemStack lapisBlock = new ItemStack(Material.LAPIS_BLOCK, 6);
+        ItemStack woodSword = new ItemStack(Material.WOOD_SWORD);
+        ItemStack stick = new ItemStack(Material.STICK);
+        ItemStack paper = new ItemStack(Material.PAPER);
 
+        classDrops.add(new ClassDrop(lapisBlock, true));
+        classDrops.add(new ClassDrop(woodSword, true));
+        classDrops.add(new ClassDrop(paper, 20, 40));
+        classDrops.add(new ClassDrop(stick, 20, 40));
+
+        classDrops.add(new ClassDrop(l_Boots(), 60, 100));
+        classDrops.add(new ClassDrop(l_ChestPlate(), 60, 100));
+        classDrops.add(new ClassDrop(l_Leggings(), 60, 100));
+        classDrops.add(new ClassDrop(l_Helmet(), 60, 100));
     }
-
 }

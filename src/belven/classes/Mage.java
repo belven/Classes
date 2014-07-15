@@ -1,5 +1,6 @@
 package belven.classes;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -7,14 +8,18 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
 
-import resources.functions;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.ChainLightning;
 import belven.classes.Abilities.LightningStrike;
 import belven.classes.Abilities.MageFireball;
 import belven.classes.Abilities.Pop;
+import belvens.classes.resources.ClassDrop;
+import belvens.classes.resources.functions;
 
 public class Mage extends Class
 {
@@ -28,15 +33,15 @@ public class Mage extends Class
     {
         plugin = instance;
         classOwner = currentPlayer;
-        classFireball = new MageFireball(this);
-        classChainLightning = new ChainLightning(this);
-        classLightningStrike = new LightningStrike(this);
-        classPop = new Pop(this);
+        classFireball = new MageFireball(this, 1);
+        classChainLightning = new ChainLightning(this, 2);
+        classLightningStrike = new LightningStrike(this, 3);
+        classPop = new Pop(this, 4);
         className = "Mage";
         Damageable dcurrentPlayer = (Damageable) currentPlayer;
         dcurrentPlayer.setMaxHealth(16.0);
         dcurrentPlayer.setHealth(dcurrentPlayer.getMaxHealth());
-        SetAbilities();
+        SortAbilities();
     }
 
     @Override
@@ -45,7 +50,7 @@ public class Mage extends Class
         Player playerSelected;
         playerSelected = classOwner;
 
-        this.CheckAbilitiesToCast(playerSelected, currentPlayer);
+        CheckAbilitiesToCast(playerSelected, currentPlayer);
     }
 
     public void PerformAbility(Entity currentEntity)
@@ -55,17 +60,35 @@ public class Mage extends Class
         if (currentEntity.getType() == EntityType.PLAYER)
         {
             playerSelected = (Player) currentEntity;
-            this.CheckAbilitiesToCast(playerSelected, classOwner);
+            CheckAbilitiesToCast(playerSelected, classOwner);
         }
         else
         {
             playerSelected = classOwner;
-            this.CheckAbilitiesToCast(playerSelected, classOwner);
+            CheckAbilitiesToCast(playerSelected, classOwner);
         }
     }
 
     public void CheckAbilitiesToCast(Player target, Player player)
     {
+        LivingEntity targetEntity = functions.findTargetEntity(classOwner,
+                150.0D);
+
+        for (Ability a : Abilities)
+        {
+            if (!a.onCooldown && a.HasRequirements(classOwner))
+            {
+                if (!a.PerformAbility(targetEntity.getLocation()))
+                {
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
         if (!classChainLightning.onCooldown
                 && classChainLightning.HasRequirements(classOwner))
         {
@@ -75,9 +98,6 @@ public class Mage extends Class
         }
         else if (classPop.HasRequirements(classOwner))
         {
-            LivingEntity targetEntity = functions.findTargetEntity(classOwner,
-                    150.0D);
-
             if (targetEntity != null)
             {
                 classPop.PerformAbility(targetEntity.getLocation());
@@ -85,52 +105,8 @@ public class Mage extends Class
         }
         else if (classFireball.HasRequirements(player))
         {
-            this.classFireball.PerformAbility(player);
+            classFireball.PerformAbility(player);
         }
-    }
-
-    public void SetAbilities()
-    {
-        if (classOwner != null)
-        {
-            int currentLevel = classOwner.getLevel();
-
-            if (currentLevel > 1)
-            {
-                AddToAbilities(new MageFireball(this));
-            }
-        }
-    }
-
-    public String ListAbilities()
-    {
-        String ListOfAbilities = "";
-
-        if (Abilities != null)
-        {
-            for (Ability a : Abilities)
-            {
-                ListOfAbilities = ListOfAbilities
-                        + (a != null ? a.GetAbilityName() + ", " : "");
-            }
-            return ListOfAbilities;
-        }
-        else
-            return "";
-    }
-
-    public void AddToAbilities(Ability abilityToAdd)
-    {
-        if (Abilities != null)
-        {
-            Abilities.add(abilityToAdd);
-        }
-    }
-
-    @Override
-    public void PerformAbility()
-    {
-
     }
 
     @SuppressWarnings("deprecation")
@@ -154,5 +130,24 @@ public class Mage extends Class
             setAbilityOnCoolDown(classLightningStrike, 2);
         }
 
+    }
+
+    @Override
+    public void SetClassDrops()
+    {
+        ItemStack firePot = new Potion(PotionType.FIRE_RESISTANCE, 2)
+                .toItemStack(1);
+
+        ItemStack lapisBlock = new ItemStack(Material.LAPIS_BLOCK, 10);
+        ItemStack feather = new ItemStack(Material.FEATHER, 2);
+
+        classDrops.add(new ClassDrop(lapisBlock, true));
+        classDrops.add(new ClassDrop(feather, 0, 20));
+        classDrops.add(new ClassDrop(firePot, 20, 40));
+
+        classDrops.add(new ClassDrop(l_Boots(), 40, 100));
+        classDrops.add(new ClassDrop(l_ChestPlate(), 40, 100));
+        classDrops.add(new ClassDrop(l_Leggings(), 40, 100));
+        classDrops.add(new ClassDrop(l_Helmet(), 40, 100));
     }
 }

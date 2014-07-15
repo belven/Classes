@@ -8,15 +8,16 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class Retaliation extends Ability
 {
-    public Retaliation(belven.classes.Class CurrentClass)
+    public Retaliation(belven.classes.Class CurrentClass, int priority)
     {
+        super(priority);
         currentClass = CurrentClass;
         abilitiyName = "Retaliation";
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public void PerformAbility(EntityDamageByEntityEvent event)
+    public boolean PerformAbility(EntityDamageByEntityEvent event)
     {
         Entity entityToStrike = event.getDamager();
         if (entityToStrike instanceof LivingEntity)
@@ -37,12 +38,6 @@ public class Retaliation extends Ability
             entityDamaged.damage(event.getDamage() * 2);
             event.setCancelled(true);
         }
+        return true;
     }
-
-    @Override
-    public int Amplifier()
-    {
-        return 0;
-    }
-
 }

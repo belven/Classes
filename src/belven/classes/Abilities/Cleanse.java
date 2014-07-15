@@ -7,19 +7,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
-import resources.functions;
+import belvens.classes.resources.functions;
 
 public class Cleanse extends Ability
 {
-    public Cleanse(belven.classes.Class CurrentClass)
+    public Cleanse(belven.classes.Class CurrentClass, int priority)
     {
+        super(priority);
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.GLOWSTONE_DUST, 1));
         abilitiyName = "Cleanse";
     }
 
     @Override
-    public void PerformAbility(Player playerToHeal)
+    public boolean PerformAbility(Player playerToHeal)
     {
         playerToHeal.setFireTicks(0);
 
@@ -35,12 +36,8 @@ public class Cleanse extends Ability
                 break;
             }
         }
+        return true;
 
-    }
-
-    @Override
-    public void PerformAbility()
-    {
     }
 
     public int Amplifier()

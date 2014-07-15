@@ -1,15 +1,17 @@
 package belven.classes;
 
-import org.bukkit.entity.Damageable;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
-import resources.functions;
 import belven.classes.Abilities.AOEHeal;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.Cleanse;
+import belvens.classes.resources.ClassDrop;
+import belvens.classes.resources.functions;
 
 public class Priest extends Healer
 {
@@ -19,9 +21,14 @@ public class Priest extends Healer
     public Priest(Player currentPlayer, ClassManager instance)
     {
         super(currentPlayer, instance);
-        classAOEHeal = new AOEHeal(this);
-        classCleanse = new Cleanse(this);
+        classAOEHeal = new AOEHeal(this, 0);
+        classCleanse = new Cleanse(this, 3);
         className = "Priest";
+        baseClassName = "Healer";
+        Abilities.add(classAOEHeal);
+        Abilities.add(classCleanse);
+        SortAbilities();
+        SetClassDrops();
     }
 
     @Override
@@ -78,63 +85,37 @@ public class Priest extends Healer
                 CheckAbilitiesToCast(playerSelected);
             }
         }
+
+    }
+
+    @Override
+    public void SetClassDrops()
+    {
+        super.SetClassDrops();
+        ItemStack glow = new ItemStack(Material.GLOWSTONE_DUST, 1);
+        classDrops.add(new ClassDrop(glow, true));
     }
 
     public void CheckAbilitiesToCast(Player player)
     {
-        Damageable dplayer = (Damageable) player;
-        Damageable dclassOwner = (Damageable) classOwner;
-
-        if (dclassOwner.getHealth() < dplayer.getHealth())
+        if (functions.isFood(classOwner.getItemInHand().getType()))
         {
-            dplayer = dclassOwner;
+            return;
         }
 
-        if (!classAOEHeal.onCooldown
-                && classAOEHeal.HasRequirements(classOwner))
+        for (Ability a : Abilities)
         {
-            classAOEHeal.PerformAbility(player);
-            setAbilityOnCoolDown(classAOEHeal, 8);
-        }
-        else
-        {
-            super.CheckAbilitiesToCast(player);
-        }
-
-        if (!classCleanse.onCooldown
-                && classCleanse.HasRequirements(classOwner))
-        {
-            classCleanse.PerformAbility(player);
-        }
-    }
-
-    public void SetAbilities()
-    {
-        if (classOwner != null)
-        {
-            int currentLevel = classOwner.getLevel();
-
-            if (currentLevel > 1)
+            if (!a.onCooldown && a.HasRequirements(classOwner))
             {
-                AddToAbilities(classBandage);
-            }
-
-            if (currentLevel > 3)
-            {
-                AddToAbilities(classHeal);
+                if (!a.PerformAbility(player))
+                {
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
             }
         }
     }
-
-    public void AddToAbilities(Ability abilityToAdd)
-    {
-        Abilities.add(abilityToAdd);
-    }
-
-    @Override
-    public void PerformAbility()
-    {
-
-    }
-
 }

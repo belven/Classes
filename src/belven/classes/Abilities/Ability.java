@@ -3,6 +3,7 @@ package belven.classes.Abilities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -17,19 +18,28 @@ public class Ability
     public belven.classes.Class currentClass;
     protected String abilitiyName = "";
     public boolean onCooldown = false;
+    public int Priority = 0;
 
-    public void PerformAbility()
+    public Ability(int Priority)
     {
+        this.Priority = Priority;
     }
 
-    public void PerformAbility(Player targetPlayer)
+    public boolean PerformAbility()
     {
+        return false;
     }
 
-    public void PerformAbility(Entity targetEntity)
+    public boolean PerformAbility(Player targetPlayer)
     {
-        
-    }   
+        return false;
+    }
+
+    public boolean PerformAbility(Entity targetEntity)
+    {
+        return false;
+
+    }
 
     public int Amplifier()
     {
@@ -109,9 +119,13 @@ public class Ability
         return requirements;
     }
 
-    public void PerformAbility(EntityDamageByEntityEvent event)
+    public boolean PerformAbility(EntityDamageByEntityEvent event)
     {
-        // TODO Auto-generated method stub
+        return false;
+    }
 
+    public boolean PerformAbility(Location location)
+    {
+        return false;
     }
 }

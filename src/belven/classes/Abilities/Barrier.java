@@ -4,24 +4,25 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import resources.functions;
+import belven.classes.timedevents.BarrierTimer;
+import belvens.classes.resources.functions;
 
 public class Barrier extends Ability
 {
     public int radius = 0;
 
-    public Barrier(belven.classes.Class CurrentClass, int Radius)
+    public Barrier(belven.classes.Class CurrentClass, int Radius, int priority)
     {
+        super(priority);
         currentClass = CurrentClass;
         radius = Radius;
         inHandRequirements.add(Material.NETHER_STAR);
         abilitiyName = "Barrier";
     }
 
-    public void PerformAbility(Location targetLocation)
+    public boolean PerformAbility(Location targetLocation)
     {
         Entity[] entitiesToDamage = functions.getNearbyEntities(targetLocation,
                 radius);
@@ -37,27 +38,16 @@ public class Barrier extends Ability
                 e.setVelocity(currentVector);
             }
         }
+
+        return true;
     }
 
     @Override
-    public void PerformAbility()
+    public boolean PerformAbility()
     {
-        // TODO Auto-generated method stub
-
+        new BarrierTimer(this).runTaskTimer(currentClass.plugin, 0, 10);
+        currentClass.UltAbilityUsed(this);
+        currentClass.classOwner.sendMessage("You used " + GetAbilityName());
+        return true;
     }
-
-    @Override
-    public void PerformAbility(Player targetPlayer)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public int Amplifier()
-    {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
 }

@@ -1,22 +1,21 @@
 package belven.classes;
 
-import belven.classes.Abilities.Grapple;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import org.bukkit.Material;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import resources.functions;
+import belven.classes.Abilities.Ability;
+import belven.classes.Abilities.Grapple;
+import belvens.classes.resources.ClassDrop;
+import belvens.classes.resources.functions;
 
 public class Berserker extends Class
 {
@@ -27,11 +26,15 @@ public class Berserker extends Class
         this.plugin = instance;
         this.classOwner = currentPlayer;
         this.className = "Berserker";
-        this.classGrapple = new Grapple(this);
+        this.classGrapple = new Grapple(this, 1);
         SetAbilities();
         Damageable dcurrentLivingEntity = currentPlayer;
         dcurrentLivingEntity.setMaxHealth(60.0D);
         dcurrentLivingEntity.setHealth(dcurrentLivingEntity.getMaxHealth());
+
+        Abilities.add(classGrapple);
+        SortAbilities();
+        SetClassDrops();
     }
 
     public void PerformAbility(Player currentPlayer)
@@ -41,21 +44,18 @@ public class Berserker extends Class
             return;
         }
 
-        if ((!this.classGrapple.onCooldown)
-                && (this.classGrapple.HasRequirements(this.classOwner)))
+        for (Ability a : Abilities)
         {
-            List<EntityType> types = new ArrayList<EntityType>();
-            types.add(EntityType.SKELETON);
-            types.add(EntityType.BLAZE);
-            types.add(EntityType.ZOMBIE);
-
-            List<LivingEntity> tempTarget = functions.findTargetEntityByType(
-                    this.classOwner, 50.0D, types,
-                    this.classOwner.getLevel() / 5 + 1);
-            if ((tempTarget != null) && (tempTarget.size() > 0))
+            if (!a.onCooldown && a.HasRequirements(classOwner))
             {
-                this.classGrapple.PerformAbility(tempTarget);
-                setAbilityOnCoolDown(this.classGrapple, 1);
+                if (!a.PerformAbility())
+                {
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
             }
         }
     }
@@ -67,12 +67,21 @@ public class Berserker extends Class
             return;
         }
 
-        if ((!this.classGrapple.onCooldown)
-                && (this.classGrapple.HasRequirements(this.classOwner)))
+        for (Ability a : Abilities)
         {
-            this.classGrapple.PerformAbility(currentEntity);
-            setAbilityOnCoolDown(this.classGrapple, 2);
+            if (!a.onCooldown && a.HasRequirements(classOwner))
+            {
+                if (!a.PerformAbility())
+                {
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
+            }
         }
+
     }
 
     public void MobTakenDamage(EntityDamageByEntityEvent event)
@@ -139,4 +148,12 @@ public class Berserker extends Class
     {
     }
 
+    @Override
+    public void SetClassDrops()
+    {
+        ItemStack string = new ItemStack(Material.STRING, 4);
+        ItemStack sword = new ItemStack(Material.STONE_SWORD);
+        classDrops.add(new ClassDrop(string, true));
+        classDrops.add(new ClassDrop(sword, true));
+    }
 }

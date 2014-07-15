@@ -10,9 +10,13 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionType;
 
-import resources.functions;
 import belven.classes.Abilities.SoulDrain;
+import belvens.classes.resources.ClassDrop;
+import belvens.classes.resources.functions;
 
 public class Assassin extends Class
 {
@@ -25,20 +29,13 @@ public class Assassin extends Class
         plugin = instance;
         classOwner = currentPlayer;
         className = "Assassin";
-        classSoulDrain = new SoulDrain(this);
+        classSoulDrain = new SoulDrain(this, 1);
         SetAbilities();
         Damageable dcurrentLivingEntity = (Damageable) currentPlayer;
         dcurrentLivingEntity.setMaxHealth(24.0);
         dcurrentLivingEntity.setHealth(dcurrentLivingEntity.getMaxHealth());
-    }
-
-    @Override
-    public void PerformAbility(Player currentPlayer)
-    {
-        if (classOwner.getItemInHand().getType() == Material.NETHER_STAR)
-        {
-
-        }
+        SortAbilities();
+        SetClassDrops();
     }
 
     @Override
@@ -57,7 +54,7 @@ public class Assassin extends Class
         Entity damagedEntity = event.getEntity();
         boolean arrowEntity = (event.getDamager().getType() == EntityType.ARROW);
 
-        functions.Heal(classOwner, 1); 
+        functions.Heal(classOwner, 1);
 
         if (arrowEntity)
         {
@@ -144,5 +141,20 @@ public class Assassin extends Class
             classOwner.teleport(recallLocation);
             recallBlock = null;
         }
+    }
+
+    @Override
+    public void SetClassDrops()
+    {
+        ItemStack arrow = new ItemStack(Material.ARROW, 3);
+        ItemStack sword = new ItemStack(Material.IRON_SWORD);
+        ItemStack bow = new ItemStack(Material.BOW);
+
+        ItemStack speed = new Potion(PotionType.SPEED, 2).toItemStack(1);
+
+        classDrops.add(new ClassDrop(bow, true));
+        classDrops.add(new ClassDrop(sword, true));
+        classDrops.add(new ClassDrop(arrow, true));
+        classDrops.add(new ClassDrop(speed, 0, 100));
     }
 }
