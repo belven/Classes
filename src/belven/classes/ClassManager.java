@@ -31,6 +31,7 @@ public class ClassManager extends JavaPlugin
 
     public HashMap<Player, Class> CurrentPlayerClasses = new HashMap<Player, Class>();
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onEnable()
     {
@@ -39,16 +40,14 @@ public class ClassManager extends JavaPlugin
         pm.registerEvents(blockListener, this);
         pm.registerEvents(mobListener, this);
 
-        if (this.getServer().getOnlinePlayers().length > 0)
+        for (Player currentPlayer : getServer().getOnlinePlayers())
         {
-            for (Player currentPlayer : this.getServer().getOnlinePlayers())
+            if (currentPlayer != null)
             {
-                if (currentPlayer != null)
-                {
-                    AddClassToPlayer(currentPlayer);
-                }
+                AddClassToPlayer(currentPlayer);
             }
         }
+
     }
 
     public void AddClassToPlayer(Player playerToAdd)
@@ -78,10 +77,10 @@ public class ClassManager extends JavaPlugin
         }
     }
 
+    @SuppressWarnings("deprecation")
     public boolean onCommand(CommandSender sender, Command cmd, String label,
             String[] args)
     {
-        Player[] currentPlayers = this.getServer().getOnlinePlayers();
         Player player = (Player) sender;
         String commandSent = cmd.getName();
 
@@ -150,41 +149,23 @@ public class ClassManager extends JavaPlugin
         }
         else if (commandSent.equalsIgnoreCase("listclasses"))
         {
-            if (currentPlayers != null)
+            Player[] currentPlayers = this.getServer().getOnlinePlayers();
+            for (Player currentPlayer : currentPlayers)
             {
-                for (Player currentPlayer : currentPlayers)
+                if (currentPlayer != null)
                 {
-                    if (currentPlayer != null)
-                    {
-                        Class currentClass = CurrentPlayerClasses
-                                .get(currentPlayer);
-
-                        if (currentClass != null)
-                        {
-                            this.getServer().broadcastMessage(
-                                    currentPlayer.getName() + " is a "
-                                            + currentClass.getClassName());
-                        }
-                    }
+                    Class currentClass = CurrentPlayerClasses
+                            .get(currentPlayer);
+                    player.sendMessage(currentPlayer.getName() + " is a "
+                            + currentClass.getClassName());
                 }
-
-                return true;
             }
-            else
-                return false;
+            return true;
         }
         else if (commandSent.equalsIgnoreCase("listabilities"))
         {
-            if (player != null)
-            {
-                Class currentClass = CurrentPlayerClasses.get(player);
-                if (currentClass != null)
-                    this.getServer().broadcastMessage(
-                            currentClass.ListAbilities());
-                return true;
-            }
-            else
-                return false;
+            CurrentPlayerClasses.get(player).ListAbilities();
+            return true;
         }
         else
             return false;

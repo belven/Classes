@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
-import belvens.classes.resources.functions;
+import belven.classes.resources.functions;
 
 public class Cleanse extends Ability
 {

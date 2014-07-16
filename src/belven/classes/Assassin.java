@@ -15,8 +15,8 @@ import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 
 import belven.classes.Abilities.SoulDrain;
-import belvens.classes.resources.ClassDrop;
-import belvens.classes.resources.functions;
+import belven.classes.resources.ClassDrop;
+import belven.classes.resources.functions;
 
 public class Assassin extends Class
 {
@@ -30,36 +30,11 @@ public class Assassin extends Class
         classOwner = currentPlayer;
         className = "Assassin";
         classSoulDrain = new SoulDrain(this, 1);
-        SetAbilities();
         Damageable dcurrentLivingEntity = (Damageable) currentPlayer;
         dcurrentLivingEntity.setMaxHealth(24.0);
         dcurrentLivingEntity.setHealth(dcurrentLivingEntity.getMaxHealth());
         SortAbilities();
         SetClassDrops();
-    }
-
-    @Override
-    public void PerformAbility(Entity currentEntity)
-    {
-        if (!classSoulDrain.onCooldown
-                && classOwner.getItemInHand().getType() == Material.NETHER_STAR)
-        {
-            classSoulDrain.PerformAbility(currentEntity);
-            UltAbilityUsed(classSoulDrain);
-        }
-    }
-
-    public void MobTakenDamage(EntityDamageByEntityEvent event)
-    {
-        Entity damagedEntity = event.getEntity();
-        boolean arrowEntity = (event.getDamager().getType() == EntityType.ARROW);
-
-        functions.Heal(classOwner, 1);
-
-        if (arrowEntity)
-        {
-            TeleportToTarget(damagedEntity);
-        }
     }
 
     public void TeleportToTarget(Entity currentEntity)
@@ -124,14 +99,6 @@ public class Assassin extends Class
         }
     }
 
-    public void SetAbilities()
-    {
-        if (classOwner != null)
-        {
-            // int currentLevel = classOwner.getLevel();
-        }
-    }
-
     public void ToggleSneakEvent(PlayerToggleSneakEvent event)
     {
         if (event.isSneaking() && recallBlock != null)
@@ -156,5 +123,43 @@ public class Assassin extends Class
         classDrops.add(new ClassDrop(sword, true));
         classDrops.add(new ClassDrop(arrow, true));
         classDrops.add(new ClassDrop(speed, 0, 100));
+    }
+
+    @Override
+    public void SelfCast(Player currentPlayer)
+    {
+
+    }
+
+    @Override
+    public void RightClickEntity(Entity currentEntity)
+    {
+        if (!classSoulDrain.onCooldown
+                && classOwner.getItemInHand().getType() == Material.NETHER_STAR)
+        {
+            classSoulDrain.PerformAbility(currentEntity);
+            UltAbilityUsed(classSoulDrain);
+        }
+    }
+
+    @Override
+    public void SelfTakenDamage(EntityDamageByEntityEvent event)
+    {
+
+    }
+
+    @Override
+    public void SelfDamageOther(EntityDamageByEntityEvent event)
+    {
+        Entity damagedEntity = event.getEntity();
+        boolean arrowEntity = (event.getDamager().getType() == EntityType.ARROW);
+
+        functions.Heal(classOwner, 1);
+
+        if (arrowEntity)
+        {
+            TeleportToTarget(damagedEntity);
+        }
+
     }
 }

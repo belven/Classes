@@ -1,7 +1,6 @@
 package belven.classes;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -18,8 +17,8 @@ import belven.classes.Abilities.ChainLightning;
 import belven.classes.Abilities.LightningStrike;
 import belven.classes.Abilities.MageFireball;
 import belven.classes.Abilities.Pop;
-import belvens.classes.resources.ClassDrop;
-import belvens.classes.resources.functions;
+import belven.classes.resources.ClassDrop;
+import belven.classes.resources.functions;
 
 public class Mage extends Class
 {
@@ -44,32 +43,7 @@ public class Mage extends Class
         SortAbilities();
     }
 
-    @Override
-    public void PerformAbility(Player currentPlayer)
-    {
-        Player playerSelected;
-        playerSelected = classOwner;
-
-        CheckAbilitiesToCast(playerSelected, currentPlayer);
-    }
-
-    public void PerformAbility(Entity currentEntity)
-    {
-        Player playerSelected;
-
-        if (currentEntity.getType() == EntityType.PLAYER)
-        {
-            playerSelected = (Player) currentEntity;
-            CheckAbilitiesToCast(playerSelected, classOwner);
-        }
-        else
-        {
-            playerSelected = classOwner;
-            CheckAbilitiesToCast(playerSelected, classOwner);
-        }
-    }
-
-    public void CheckAbilitiesToCast(Player target, Player player)
+    public void CheckAbilitiesToCast()
     {
         LivingEntity targetEntity = functions.findTargetEntity(classOwner,
                 150.0D);
@@ -103,33 +77,10 @@ public class Mage extends Class
                 classPop.PerformAbility(targetEntity.getLocation());
             }
         }
-        else if (classFireball.HasRequirements(player))
+        else if (classFireball.HasRequirements(classOwner))
         {
-            classFireball.PerformAbility(player);
+            classFireball.PerformAbility();
         }
-    }
-
-    @SuppressWarnings("deprecation")
-    public void TakeDamage(EntityDamageByEntityEvent event, Player damagedPlayer)
-    {
-        if (event.getDamager().getType() == EntityType.LIGHTNING)
-        {
-            event.setDamage(0.0);
-        }
-        else if (!classLightningStrike.onCooldown)
-        {
-            Entity entityToStrike = event.getDamager();
-
-            if (entityToStrike.getType() == EntityType.ARROW)
-            {
-                Arrow entityArrow = (Arrow) entityToStrike;
-                entityToStrike = entityArrow.getShooter();
-            }
-
-            classLightningStrike.PerformAbility(entityToStrike);
-            setAbilityOnCoolDown(classLightningStrike, 2);
-        }
-
     }
 
     @Override
@@ -149,5 +100,42 @@ public class Mage extends Class
         classDrops.add(new ClassDrop(l_ChestPlate(), 40, 100));
         classDrops.add(new ClassDrop(l_Leggings(), 40, 100));
         classDrops.add(new ClassDrop(l_Helmet(), 40, 100));
+    }
+
+    @Override
+    public void SelfCast(Player currentPlayer)
+    {
+        CheckAbilitiesToCast();
+    }
+
+    @Override
+    public void RightClickEntity(Entity currentEntity)
+    {
+        CheckAbilitiesToCast();
+    }
+
+    @Override
+    public void SelfTakenDamage(EntityDamageByEntityEvent event)
+    {
+        if (event.getDamager().getType() == EntityType.LIGHTNING)
+        {
+            event.setDamage(0.0);
+        }
+        else if (!classLightningStrike.onCooldown)
+        {
+            Entity entityToStrike = functions.GetDamager(event);
+
+            if (entityToStrike != null)
+            {
+                classLightningStrike.PerformAbility(entityToStrike);
+                setAbilityOnCoolDown(classLightningStrike, 2);
+            }
+        }
+    }
+
+    @Override
+    public void SelfDamageOther(EntityDamageByEntityEvent event)
+    {
+
     }
 }

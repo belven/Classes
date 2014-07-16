@@ -12,11 +12,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
 
 import belven.classes.Abilities.Ability;
-import belven.classes.Abilities.WebArrow;
 import belven.classes.Abilities.FireTrap;
+import belven.classes.Abilities.WebArrow;
+import belven.classes.resources.ClassDrop;
+import belven.classes.resources.functions;
 import belven.classes.timedevents.BlockRestorer;
-import belvens.classes.resources.ClassDrop;
-import belvens.classes.resources.functions;
 
 public class Archer extends Class
 {
@@ -42,14 +42,9 @@ public class Archer extends Class
     }
 
     @Override
-    public void PerformAbility(Player currentPlayer)
+    public void SelfCast(Player currentPlayer)
     {
         CheckAbilitiesToCast(currentPlayer);
-    }
-
-    public void PerformAbility(Entity currentEntity)
-    {
-        CheckAbilitiesToCast(currentEntity);
     }
 
     private void CheckAbilitiesToCast(Entity currentEntity)
@@ -72,7 +67,42 @@ public class Archer extends Class
         }
     }
 
-    public void MobTakenDamage(EntityDamageByEntityEvent event)
+    @Override
+    public void SetClassDrops()
+    {
+        ItemStack redwool = new Wool(DyeColor.RED).toItemStack(2);
+        ItemStack arrow = new ItemStack(Material.ARROW, 10);
+        ItemStack bow = new ItemStack(Material.BOW);
+        ItemStack snowBall = new ItemStack(Material.SNOW_BALL, 8);
+
+        classDrops.add(new ClassDrop(arrow, true));
+        classDrops.add(new ClassDrop(bow, true));
+
+        classDrops.add(new ClassDrop(redwool, 0, 30));
+        classDrops.add(new ClassDrop(snowBall, 30, 50));
+
+        classDrops.add(new ClassDrop(l_Boots(), 50, 100));
+        classDrops.add(new ClassDrop(l_ChestPlate(), 50, 100));
+        classDrops.add(new ClassDrop(l_Leggings(), 50, 100));
+        classDrops.add(new ClassDrop(l_Helmet(), 50, 100));
+
+    }
+
+    @Override
+    public void RightClickEntity(Entity currentEntity)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void SelfTakenDamage(EntityDamageByEntityEvent event)
+    {
+
+    }
+
+    @Override
+    public void SelfDamageOther(EntityDamageByEntityEvent event)
     {
         Entity damagedEntity = event.getEntity();
         Location damagedEntityLocation = damagedEntity.getLocation();
@@ -95,37 +125,6 @@ public class Archer extends Class
                     dcurrentLivingEntity.getHealth(),
                     dcurrentLivingEntity.getMaxHealth()));
         }
-    }
-
-    @Override
-    public ClassManager plugin()
-    {
-        return plugin;
-    }
-
-    public Player classOwner()
-    {
-        return classOwner;
-    }
-
-    @Override
-    public void SetClassDrops()
-    {
-        ItemStack redwool = new Wool(DyeColor.RED).toItemStack(2);
-        ItemStack arrow = new ItemStack(Material.ARROW, 10);
-        ItemStack bow = new ItemStack(Material.BOW);
-        ItemStack snowBall = new ItemStack(Material.SNOW_BALL, 8);
-
-        classDrops.add(new ClassDrop(arrow, true));
-        classDrops.add(new ClassDrop(bow, true));
-
-        classDrops.add(new ClassDrop(redwool, 0, 30));
-        classDrops.add(new ClassDrop(snowBall, 30, 50));
-
-        classDrops.add(new ClassDrop(l_Boots(), 50, 100));
-        classDrops.add(new ClassDrop(l_ChestPlate(), 50, 100));
-        classDrops.add(new ClassDrop(l_Leggings(), 50, 100));
-        classDrops.add(new ClassDrop(l_Helmet(), 50, 100));
 
     }
 

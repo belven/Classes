@@ -23,15 +23,14 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
-import org.bukkit.scheduler.BukkitTask;
 
 import belven.arena.blocks.ArenaBlock;
 import belven.classes.Archer;
 import belven.classes.Assassin;
 import belven.classes.ClassManager;
 import belven.classes.Daemon;
+import belven.classes.resources.functions;
 import belven.classes.timedevents.AbilityDelay;
-import belvens.classes.resources.functions;
 
 public class PlayerListener implements Listener
 {
@@ -80,55 +79,21 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event)
     {
-        PerformClassAbility(event);
+        Player currentPlayer = event.getPlayer();
+        Entity currentEntity = event.getRightClicked();
+
+        if (plugin.CurrentPlayerClasses.get(event.getPlayer()).CanCast)
+        {
+            new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin,
+                    functions.SecondsToTicks(1));
+
+            plugin.CurrentPlayerClasses.get(currentPlayer).RightClickEntity(
+                    currentEntity);
+        }
     }
 
     @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent event)
-    {
-        PerformClassAbility(event);
-    }
-
-    @EventHandler
-    public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event)
-    {
-        PerformClassAbility(event);
-    }
-
-    @EventHandler
-    public void onPlayerVelocityEvent(PlayerVelocityEvent event)
-    {
-        if (plugin.CurrentPlayerClasses.get(event.getPlayer()) instanceof Assassin)
-        {
-            event.setCancelled(true);
-        }
-        else if (plugin.CurrentPlayerClasses.get(event.getPlayer()) instanceof Archer
-                && event.getPlayer().getItemInHand().getType() == Material.BOW)
-        {
-            event.setCancelled(true);
-        }
-        else if (plugin.CurrentPlayerClasses.get(event.getPlayer()) instanceof Daemon
-                && event.getPlayer().getFireTicks() > 0)
-        {
-            event.setCancelled(true);
-        }
-    }
-
-    @SuppressWarnings("unused")
-    private void PerformClassAbility(PlayerToggleSneakEvent event)
-    {
-        if (plugin.CurrentPlayerClasses.get(event.getPlayer()).CanCast)
-        {
-            BukkitTask currentTimer = new AbilityDelay(event.getPlayer(),
-                    plugin).runTaskLater(plugin, functions.SecondsToTicks(1));
-
-            plugin.CurrentPlayerClasses.get(event.getPlayer())
-                    .ToggleSneakEvent(event);
-        }
-    }
-
-    @SuppressWarnings("unused")
-    public void PerformClassAbility(PlayerInteractEvent event)
     {
         if (event.getAction() == Action.RIGHT_CLICK_AIR
                 || event.getAction() == Action.RIGHT_CLICK_BLOCK)
@@ -158,40 +123,58 @@ public class PlayerListener implements Listener
 
             if (plugin.CurrentPlayerClasses.get(currentPlayer).CanCast)
             {
-                BukkitTask currentTimer = new AbilityDelay(currentPlayer,
-                        plugin).runTaskLater(plugin,
+                new AbilityDelay(currentPlayer, plugin).runTaskLater(plugin,
                         functions.SecondsToTicks(1));
 
-                plugin.CurrentPlayerClasses.get(currentPlayer).PerformAbility(
+                plugin.CurrentPlayerClasses.get(currentPlayer).SelfCast(
                         currentPlayer);
             }
         }
     }
 
-    @SuppressWarnings("unused")
-    public void PerformClassAbility(PlayerInteractEntityEvent event)
+    @EventHandler
+    public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event)
     {
-        Player currentPlayer = event.getPlayer();
-        Entity currentEntity = event.getRightClicked();
-
         if (plugin.CurrentPlayerClasses.get(event.getPlayer()).CanCast)
         {
-            BukkitTask currentTimer = new AbilityDelay(event.getPlayer(),
-                    plugin).runTaskLater(plugin, functions.SecondsToTicks(1));
+            new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin,
+                    functions.SecondsToTicks(1));
 
-            plugin.CurrentPlayerClasses.get(currentPlayer).PerformAbility(
-                    currentEntity);
+            plugin.CurrentPlayerClasses.get(event.getPlayer())
+                    .ToggleSneakEvent(event);
         }
     }
 
     @EventHandler
-    public void onEntityDamage(EntityDamageByEntityEvent event)
+    public void onPlayerVelocityEvent(PlayerVelocityEvent event)
+    {
+        if (plugin.CurrentPlayerClasses.get(event.getPlayer()) instanceof Assassin)
+        {
+            event.setCancelled(true);
+        }
+        else if (plugin.CurrentPlayerClasses.get(event.getPlayer()) instanceof Archer
+                && event.getPlayer().getItemInHand().getType() == Material.BOW)
+        {
+            event.setCancelled(true);
+        }
+        else if (plugin.CurrentPlayerClasses.get(event.getPlayer()) instanceof Daemon
+                && event.getPlayer().getFireTicks() > 0)
+        {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event)
     {
         if (event.getEntityType() == EntityType.PLAYER)
         {
-            PlayerTakenDamage(event);
+            Player damagedPlayer = (Player) event.getEntity();
+
+            plugin.CurrentPlayerClasses.get(damagedPlayer).SelfTakenDamage(
+                    event);
         }
-        else if (functions.IsAMob(event.getEntityType()))
+        else
         {
             MobTakenDamage(event);
         }
@@ -200,13 +183,11 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onEntityDamageEvent(EntityDamageEvent event)
     {
-        Entity damagerEntity = event.getEntity();
-        Player currentPlayer;
-        if (damagerEntity.getType() == EntityType.PLAYER)
+        if (event.getEntityType() == EntityType.PLAYER)
         {
-            currentPlayer = (Player) damagerEntity;
+            Player damagedPlayer = (Player) event.getEntity();
 
-            plugin.CurrentPlayerClasses.get(currentPlayer).PlayerTakenDamage(
+            plugin.CurrentPlayerClasses.get(damagedPlayer).SelfTakenDamage(
                     event);
         }
     }
@@ -222,8 +203,8 @@ public class PlayerListener implements Listener
             currentPlayer = (Player) damagerEntity;
             // addPlayerToArena(currentPlayer, event.getEntity());
 
-            plugin.CurrentPlayerClasses.get(currentPlayer)
-                    .MobTakenDamage(event);
+            plugin.CurrentPlayerClasses.get(currentPlayer).SelfDamageOther(
+                    event);
         }
         else if (damagerEntity.getType() == EntityType.ARROW)
         {
@@ -236,7 +217,7 @@ public class PlayerListener implements Listener
                 currentPlayer = (Player) ps;
                 // addPlayerToArena(currentPlayer, event.getEntity());
 
-                plugin.CurrentPlayerClasses.get(currentPlayer).MobTakenDamage(
+                plugin.CurrentPlayerClasses.get(currentPlayer).SelfDamageOther(
                         event);
             }
 
@@ -336,11 +317,4 @@ public class PlayerListener implements Listener
         return false;
     }
 
-    public void PlayerTakenDamage(EntityDamageByEntityEvent event)
-    {
-        Player damagedPlayer = (Player) event.getEntity();
-
-        plugin.CurrentPlayerClasses.get(damagedPlayer).TakeDamage(event,
-                damagedPlayer);
-    }
 }

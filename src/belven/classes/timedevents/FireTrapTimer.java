@@ -6,7 +6,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import belvens.classes.resources.functions;
+import belven.classes.resources.functions;
 
 public class FireTrapTimer extends BukkitRunnable
 {

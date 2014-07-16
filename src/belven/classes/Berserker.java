@@ -6,16 +6,14 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.Grapple;
-import belvens.classes.resources.ClassDrop;
-import belvens.classes.resources.functions;
+import belven.classes.resources.ClassDrop;
+import belven.classes.resources.functions;
 
 public class Berserker extends Class
 {
@@ -27,7 +25,6 @@ public class Berserker extends Class
         this.classOwner = currentPlayer;
         this.className = "Berserker";
         this.classGrapple = new Grapple(this, 1);
-        SetAbilities();
         Damageable dcurrentLivingEntity = currentPlayer;
         dcurrentLivingEntity.setMaxHealth(60.0D);
         dcurrentLivingEntity.setHealth(dcurrentLivingEntity.getMaxHealth());
@@ -37,7 +34,17 @@ public class Berserker extends Class
         SetClassDrops();
     }
 
-    public void PerformAbility(Player currentPlayer)
+    @Override
+    public void SetClassDrops()
+    {
+        ItemStack string = new ItemStack(Material.STRING, 4);
+        ItemStack sword = new ItemStack(Material.STONE_SWORD);
+        classDrops.add(new ClassDrop(string, true));
+        classDrops.add(new ClassDrop(sword, true));
+    }
+
+    @Override
+    public void SelfCast(Player currentPlayer)
     {
         if (functions.isFood(classOwner.getItemInHand().getType()))
         {
@@ -60,7 +67,8 @@ public class Berserker extends Class
         }
     }
 
-    public void PerformAbility(Entity currentEntity)
+    @Override
+    public void RightClickEntity(Entity currentEntity)
     {
         if (functions.isFood(classOwner.getItemInHand().getType()))
         {
@@ -81,16 +89,40 @@ public class Berserker extends Class
                 }
             }
         }
-
     }
 
-    public void MobTakenDamage(EntityDamageByEntityEvent event)
+    @Override
+    public void SelfTakenDamage(EntityDamageByEntityEvent event)
+    {
+        Damageable dPlayer = (Damageable) event.getEntity();
+
+        double healthPercent = 1.3 - functions.entityCurrentHealthPercent(
+                dPlayer.getHealth(), dPlayer.getMaxHealth());
+
+        if (healthPercent > 1)
+        {
+            healthPercent = 1;
+        }
+
+        this.classOwner.addPotionEffect(new PotionEffect(
+                PotionEffectType.INCREASE_DAMAGE, functions.SecondsToTicks(2),
+                (int) (2 * healthPercent)));
+
+        this.classOwner.addPotionEffect(new PotionEffect(
+                PotionEffectType.DAMAGE_RESISTANCE,
+                functions.SecondsToTicks(2), (int) (3 * healthPercent)));
+    }
+
+    @Override
+    public void SelfDamageOther(EntityDamageByEntityEvent event)
     {
         int mobCount = 0;
         for (Entity e : functions.getNearbyEntities(event.getEntity()
                 .getLocation(), 4))
         {
-            if ((e instanceof LivingEntity))
+            double damageToDo = event.getDamage() / 3.0D;
+
+            if (e instanceof LivingEntity)
             {
                 mobCount++;
 
@@ -110,50 +142,23 @@ public class Berserker extends Class
                                     dPlayer.getMaxHealth());
                     if (healthPercent > 0.2D)
                     {
-                        le.damage(event.getDamage() / 2.0D);
+                        le.damage(damageToDo);
                     }
                 }
                 else if (!(le instanceof Player))
                 {
-                    le.damage(event.getDamage() / 2.0D);
-                    le.setLastDamageCause(new EntityDamageEvent(classOwner,
-                            DamageCause.ENTITY_ATTACK, event.getDamage() / 2.0));
+                    // HashMap<DamageModifier, Double> damageModifiers = new
+                    // HashMap<DamageModifier, Double>();
+                    //
+                    // EntityDamageEvent ede = new EntityDamageEvent(classOwner,
+                    // DamageCause.ENTITY_ATTACK, damageModifiers, null);
+
+                    le.damage(damageToDo);
+                    // le.setLastDamageCause(ede);
+
                 }
             }
         }
-    }
 
-    public void TakeDamage(EntityDamageByEntityEvent event, Player damagedPlayer)
-    {
-        Damageable dPlayer = damagedPlayer;
-
-        double healthPercent = 1.3 - functions.entityCurrentHealthPercent(
-                dPlayer.getHealth(), dPlayer.getMaxHealth());
-
-        if (healthPercent > 1)
-        {
-            healthPercent = 1;
-        }
-
-        this.classOwner.addPotionEffect(new PotionEffect(
-                PotionEffectType.INCREASE_DAMAGE, functions.SecondsToTicks(2),
-                (int) (2 * healthPercent)));
-
-        this.classOwner.addPotionEffect(new PotionEffect(
-                PotionEffectType.DAMAGE_RESISTANCE,
-                functions.SecondsToTicks(2), (int) (3 * healthPercent)));
-    }
-
-    public void SetAbilities()
-    {
-    }
-
-    @Override
-    public void SetClassDrops()
-    {
-        ItemStack string = new ItemStack(Material.STRING, 4);
-        ItemStack sword = new ItemStack(Material.STONE_SWORD);
-        classDrops.add(new ClassDrop(string, true));
-        classDrops.add(new ClassDrop(sword, true));
     }
 }

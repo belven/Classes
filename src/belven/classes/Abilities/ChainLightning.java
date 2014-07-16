@@ -6,8 +6,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
+import belven.classes.resources.functions;
 import belven.classes.timedevents.ChainLightningTimer;
-import belvens.classes.resources.functions;
 
 public class ChainLightning extends Ability
 {
@@ -16,7 +16,7 @@ public class ChainLightning extends Ability
         super(priority);
         currentClass = CurrentClass;
         inHandRequirements.add(Material.NETHER_STAR);
-        abilitiyName = "ChainLightning";
+        abilitiyName = "Chain Lightning";
     }
 
     public boolean PerformAbility(Location targetLocation)

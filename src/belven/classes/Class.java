@@ -14,9 +14,9 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import belven.classes.Abilities.Ability;
+import belven.classes.resources.ClassDrop;
+import belven.classes.resources.functions;
 import belven.classes.timedevents.AbilityCooldown;
-import belvens.classes.resources.ClassDrop;
-import belvens.classes.resources.functions;
 
 public abstract class Class
 {
@@ -38,6 +38,14 @@ public abstract class Class
     public void SetClassDrops()
     {
 
+    }
+
+    public void ListAbilities()
+    {
+        for (Ability a : Abilities)
+        {
+            classOwner.sendMessage(a.GetAbilityName());
+        }
     }
 
     public void SortAbilities()
@@ -94,18 +102,16 @@ public abstract class Class
         }
     }
 
-    public void PerformAbility(Player currentPlayer)
+    public abstract void SelfCast(Player currentPlayer);
+
+    public abstract void RightClickEntity(Entity currentEntity);
+
+    public abstract void SelfTakenDamage(EntityDamageByEntityEvent event);
+
+    public abstract void SelfDamageOther(EntityDamageByEntityEvent event);
+
+    public void ToggleSneakEvent(PlayerToggleSneakEvent event)
     {
-    }
-
-    public void PerformAbility()
-    {
-
-    }
-
-    public void PerformAbility(Entity currentEntity)
-    {
-
     }
 
     public void UltAbilityUsed(Ability currentAbility)
@@ -126,43 +132,8 @@ public abstract class Class
         setAbilityOnCoolDown(currentAbility, seconds, false);
     }
 
-    public String ListAbilities()
-    {
-        return null;
-    }
-
     public void AddToAbilities(Ability abilityToAdd)
     {
-    }
-
-    public ClassManager plugin()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public void PlayerTakenDamage(EntityDamageEvent event)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void MobTakenDamage(EntityDamageByEntityEvent event)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void TakeDamage(EntityDamageByEntityEvent event, Player damagedPlayer)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void ToggleSneakEvent(PlayerToggleSneakEvent event)
-    {
-        // TODO Auto-generated method stub
-
     }
 
     public ItemStack l_ChestPlate()
@@ -204,4 +175,11 @@ public abstract class Class
     {
         return new ItemStack(Material.IRON_BOOTS);
     }
+
+    public void SelfTakenDamage(EntityDamageEvent event)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
 }

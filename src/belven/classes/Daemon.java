@@ -1,7 +1,5 @@
 package belven.classes;
 
-import java.util.Iterator;
-
 import org.bukkit.Material;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -15,8 +13,8 @@ import org.bukkit.potion.PotionEffectType;
 
 import belven.classes.Abilities.FeelTheBurn;
 import belven.classes.Abilities.SetAlight;
-import belvens.classes.resources.ClassDrop;
-import belvens.classes.resources.functions;
+import belven.classes.resources.ClassDrop;
+import belven.classes.resources.functions;
 
 public class Daemon extends Berserker
 {
@@ -34,19 +32,9 @@ public class Daemon extends Berserker
         SetClassDrops();
     }
 
-    public void PerformAbility(Player currentPlayer)
+    public void SelfDamageOther(EntityDamageByEntityEvent event)
     {
-        super.PerformAbility(currentPlayer);
-    }
-
-    public void PerformAbility(Entity currentEntity)
-    {
-        super.PerformAbility(currentEntity);
-    }
-
-    public void MobTakenDamage(EntityDamageByEntityEvent event)
-    {
-        super.MobTakenDamage(event);
+        super.SelfDamageOther(event);
 
         for (Entity e : functions.getNearbyEntities(event.getEntity()
                 .getLocation(), 4))
@@ -55,19 +43,19 @@ public class Daemon extends Berserker
         }
     }
 
-    public void TakeDamage(EntityDamageByEntityEvent event, Player damagedPlayer)
+    public void SelfTakenDamage(EntityDamageByEntityEvent event)
     {
-        if (!this.classSetAlight.onCooldown
-                && this.classSetAlight.HasRequirements(this.classOwner))
+        super.SelfTakenDamage(event);
+        if (!classSetAlight.onCooldown
+                && classSetAlight.HasRequirements(classOwner))
         {
             classSetAlight.PerformAbility(classOwner);
-            setAbilityOnCoolDown(this.classSetAlight, 1);
+            setAbilityOnCoolDown(classSetAlight, 1);
         }
-
-        super.TakeDamage(event, damagedPlayer);
     }
 
-    public void PlayerTakenDamage(EntityDamageEvent event)
+    @Override
+    public void SelfTakenDamage(EntityDamageEvent event)
     {
         Damageable dClassOwner = classOwner;
 
@@ -77,15 +65,12 @@ public class Daemon extends Berserker
         if (event.getCause() == DamageCause.FIRE_TICK
                 || event.getCause() == DamageCause.FIRE)
         {
-            Iterator<PotionEffect> ActivePotionEffects = classOwner
-                    .getActivePotionEffects().iterator();
-
-            while (ActivePotionEffects.hasNext())
+            for (PotionEffect pe : classOwner.getActivePotionEffects())
             {
-                PotionEffect pe = ActivePotionEffects.next();
                 if (pe.getType() == PotionEffectType.HUNGER)
                 {
-                    ActivePotionEffects.remove();
+                    classOwner.addPotionEffect(new PotionEffect(pe.getType(),
+                            1, pe.getAmplifier()), true);
                     break;
                 }
             }
@@ -94,16 +79,15 @@ public class Daemon extends Berserker
             {
                 event.setDamage(0.0);
             }
-            else if (!this.classFeelTheBurn.onCooldown
-                    && this.classFeelTheBurn.HasRequirements(this.classOwner))
+            else if (!classFeelTheBurn.onCooldown
+                    && classFeelTheBurn.HasRequirements(classOwner))
             {
                 classFeelTheBurn.PerformAbility(classOwner);
-                setAbilityOnCoolDown(this.classFeelTheBurn, 2);
+                setAbilityOnCoolDown(classFeelTheBurn, 2);
             }
 
-            this.classOwner.addPotionEffect(new PotionEffect(
-                    PotionEffectType.SPEED, functions
-                            .SecondsToTicks(Amplifier()), 3));
+            classOwner.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,
+                    functions.SecondsToTicks(Amplifier()), 3));
         }
     }
 

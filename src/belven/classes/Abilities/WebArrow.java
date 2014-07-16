@@ -10,7 +10,7 @@ public class WebArrow extends Ability
         super(priority);
         requirements.add(new ItemStack(Material.SNOW_BALL, 1));
         currentClass = CurrentClass;
-        abilitiyName = "Crippling Arrow";
+        abilitiyName = "Webbing Arrow";
     }
 
 }

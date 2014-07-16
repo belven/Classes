@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import belvens.classes.resources.functions;
+import belven.classes.resources.functions;
 
 public class SetAlight extends Ability
 {

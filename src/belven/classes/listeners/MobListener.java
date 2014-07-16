@@ -18,8 +18,8 @@ import org.bukkit.metadata.MetadataValue;
 
 import belven.arena.blocks.ArenaBlock;
 import belven.classes.ClassManager;
-import belvens.classes.resources.ClassDrop;
-import belvens.classes.resources.functions;
+import belven.classes.resources.ClassDrop;
+import belven.classes.resources.functions;
 
 public class MobListener implements Listener
 {
@@ -48,6 +48,17 @@ public class MobListener implements Listener
     {
         Entity currentEntity = event.getEntity();
 
+        Iterator<ItemStack> drops = event.getDrops().iterator();
+
+        while (drops.hasNext())
+        {
+            ItemStack is = drops.next();
+            if (is.getMaxStackSize() == 1)
+            {
+                drops.remove();
+            }
+        }
+
         if (currentEntity.hasMetadata("ArenaMob"))
         {
             List<MetadataValue> currentMetaData = currentEntity
@@ -58,28 +69,20 @@ public class MobListener implements Listener
                 return;
             }
 
-            Iterator<ItemStack> drops = event.getDrops().iterator();
+            String arena = currentMetaData.get(0).asString().trim();
 
-            while (drops.hasNext())
+            if (plugin.arenas != null)
             {
-                ItemStack is = drops.next();
-                if (is.getMaxStackSize() == 1)
+                ArenaBlock currentArena = this.plugin.arenas
+                        .getArenaBlock(arena);
+
+                if (currentArena != null)
                 {
-                    drops.remove();
+                    for (Player p : currentArena.arenaPlayers)
+                    {
+                        GiveClassDrops(p);
+                    }
                 }
-            }
-
-            String arena = currentMetaData.get(0).asString();
-            ArenaBlock currentArena = this.plugin.arenas.getArenaBlock(arena);
-
-            if (currentArena == null)
-            {
-                return;
-            }
-
-            for (Player p : currentArena.arenaPlayers)
-            {
-                GiveClassDrops(p);
             }
         }
     }
@@ -96,22 +99,9 @@ public class MobListener implements Listener
 
             for (ClassDrop cd : playerClass.classDrops)
             {
-                if (cd.alwaysGive)
-                {
-                    if (!cd.isArmor)
-                    {
-                        functions.AddToInventory(p, cd.is);
-                    }
-                    else
-                    {
-                        if (AddArmor(pInv, cd.is))
-                        {
-                            break;
-                        }
-                    }
-                }
-                else if (functions.isNumberBetween(ran, cd.lowChance,
-                        cd.highChance))
+                if (cd.alwaysGive
+                        || functions.isNumberBetween(ran, cd.lowChance,
+                                cd.highChance))
                 {
                     if (!cd.isArmor)
                     {

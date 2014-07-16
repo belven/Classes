@@ -2,7 +2,6 @@ package belven.classes.Abilities;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Fireball;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class MageFireball extends Ability
@@ -16,9 +15,9 @@ public class MageFireball extends Ability
     }
 
     @Override
-    public boolean PerformAbility(Player mage)
+    public boolean PerformAbility()
     {
-        mage.launchProjectile(Fireball.class);
+        currentClass.classOwner.launchProjectile(Fireball.class);
         return true;
     }
 

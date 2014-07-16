@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -120,6 +121,11 @@ public class Ability
     }
 
     public boolean PerformAbility(EntityDamageByEntityEvent event)
+    {
+        return false;
+    }
+
+    public boolean PerformAbility(EntityDamageEvent event)
     {
         return false;
     }

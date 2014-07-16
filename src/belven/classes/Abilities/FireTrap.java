@@ -7,10 +7,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitTask;
 
+import belven.classes.resources.functions;
 import belven.classes.timedevents.FireTrapTimer;
-import belvens.classes.resources.functions;
 
 public class FireTrap extends Ability
 {
@@ -24,16 +23,13 @@ public class FireTrap extends Ability
         abilitiyName = "Fire Trap";
     }
 
-    @SuppressWarnings("unused")
     public boolean PerformAbility(Location targetLocation)
     {
-
         if (targetLocation.getBlock().getType() != Material.WOOL)
         {
-            BukkitTask currentTimer = new FireTrapTimer(
-                    targetLocation.getBlock(),
+            new FireTrapTimer(targetLocation.getBlock(),
                     functions.SecondsToTicks(Amplifier()), 4).runTaskTimer(
-                    currentClass.plugin(), functions.SecondsToTicks(5),
+                    currentClass.plugin, functions.SecondsToTicks(5),
                     functions.SecondsToTicks(2));
 
             targetLocation.getBlock().setType(Material.WOOL);

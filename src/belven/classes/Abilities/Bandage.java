@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import belvens.classes.resources.functions;
+import belven.classes.resources.functions;
 
 public class Bandage extends Ability
 {

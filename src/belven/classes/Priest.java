@@ -10,8 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import belven.classes.Abilities.AOEHeal;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.Cleanse;
-import belvens.classes.resources.ClassDrop;
-import belvens.classes.resources.functions;
+import belven.classes.resources.ClassDrop;
+import belven.classes.resources.functions;
 
 public class Priest extends Healer
 {
@@ -32,15 +32,16 @@ public class Priest extends Healer
     }
 
     @Override
-    public void PerformAbility(Player currentPlayer)
+    public void SelfCast(Player currentPlayer)
     {
+        Player playerSelected;
+
         if (classOwner.isSneaking())
         {
             CheckAbilitiesToCast(classOwner);
         }
         else
         {
-            Player playerSelected;
             LivingEntity targetEntity = functions.findTargetPlayer(classOwner,
                     150.0D);
 
@@ -51,13 +52,14 @@ public class Priest extends Healer
             else
             {
                 playerSelected = classOwner;
+                CheckAbilitiesToCast(playerSelected);
             }
-
-            CheckAbilitiesToCast(playerSelected);
         }
+
     }
 
-    public void PerformAbility(Entity currentEntity)
+    @Override
+    public void RightClickEntity(Entity currentEntity)
     {
         Player playerSelected;
 
@@ -85,7 +87,6 @@ public class Priest extends Healer
                 CheckAbilitiesToCast(playerSelected);
             }
         }
-
     }
 
     @Override

@@ -6,6 +6,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
 import belven.classes.Abilities.Ability;
@@ -13,8 +14,8 @@ import belven.classes.Abilities.Bandage;
 import belven.classes.Abilities.Barrier;
 import belven.classes.Abilities.Heal;
 import belven.classes.Abilities.LightHeal;
-import belvens.classes.resources.ClassDrop;
-import belvens.classes.resources.functions;
+import belven.classes.resources.ClassDrop;
+import belven.classes.resources.functions;
 
 public class Healer extends Class
 {
@@ -41,62 +42,6 @@ public class Healer extends Class
         Abilities.add(classHeal);
         Abilities.add(classLightHeal);
         SortAbilities();
-    }
-
-    @Override
-    public void PerformAbility(Player currentPlayer)
-    {
-        if (classOwner.isSneaking())
-        {
-            CheckAbilitiesToCast(classOwner);
-        }
-        else
-        {
-            Player playerSelected;
-            LivingEntity targetEntity = functions.findTargetPlayer(classOwner,
-                    150.0D);
-
-            if (targetEntity != null)
-            {
-                playerSelected = (Player) targetEntity;
-            }
-            else
-            {
-                playerSelected = classOwner;
-            }
-
-            CheckAbilitiesToCast(playerSelected);
-        }
-    }
-
-    public void PerformAbility(Entity currentEntity)
-    {
-        Player playerSelected;
-
-        if (classOwner.isSneaking())
-        {
-            CheckAbilitiesToCast(classOwner);
-        }
-        else if (currentEntity.getType() == EntityType.PLAYER)
-        {
-            playerSelected = (Player) currentEntity;
-            CheckAbilitiesToCast(playerSelected);
-        }
-        else
-        {
-            LivingEntity targetEntity = functions.findTargetPlayer(classOwner,
-                    150.0D);
-
-            if (targetEntity != null)
-            {
-                playerSelected = (Player) targetEntity;
-            }
-            else
-            {
-                playerSelected = classOwner;
-                CheckAbilitiesToCast(playerSelected);
-            }
-        }
     }
 
     public void CheckAbilitiesToCast(Player player)
@@ -139,5 +84,76 @@ public class Healer extends Class
         classDrops.add(new ClassDrop(l_ChestPlate(), 60, 100));
         classDrops.add(new ClassDrop(l_Leggings(), 60, 100));
         classDrops.add(new ClassDrop(l_Helmet(), 60, 100));
+    }
+
+    @Override
+    public void SelfCast(Player currentPlayer)
+    {
+        Player playerSelected;
+
+        if (classOwner.isSneaking())
+        {
+            CheckAbilitiesToCast(classOwner);
+        }
+        else
+        {
+            LivingEntity targetEntity = functions.findTargetPlayer(classOwner,
+                    150.0D);
+
+            if (targetEntity != null)
+            {
+                playerSelected = (Player) targetEntity;
+            }
+            else
+            {
+                playerSelected = classOwner;
+                CheckAbilitiesToCast(playerSelected);
+            }
+        }
+
+    }
+
+    @Override
+    public void RightClickEntity(Entity currentEntity)
+    {
+        Player playerSelected;
+
+        if (classOwner.isSneaking())
+        {
+            CheckAbilitiesToCast(classOwner);
+        }
+        else if (currentEntity.getType() == EntityType.PLAYER)
+        {
+            playerSelected = (Player) currentEntity;
+            CheckAbilitiesToCast(playerSelected);
+        }
+        else
+        {
+            LivingEntity targetEntity = functions.findTargetPlayer(classOwner,
+                    150.0D);
+
+            if (targetEntity != null)
+            {
+                playerSelected = (Player) targetEntity;
+            }
+            else
+            {
+                playerSelected = classOwner;
+                CheckAbilitiesToCast(playerSelected);
+            }
+        }
+
+    }
+
+    @Override
+    public void SelfTakenDamage(EntityDamageByEntityEvent event)
+    {
+
+    }
+
+    @Override
+    public void SelfDamageOther(EntityDamageByEntityEvent event)
+    {
+
     }
 }

@@ -15,7 +15,7 @@ public class AOEHeal extends Ability
         super(priority);
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.LAPIS_BLOCK, 4));
-        abilitiyName = "AOEHeal";
+        abilitiyName = "AOE Heal";
     }
 
     @Override

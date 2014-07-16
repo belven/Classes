@@ -6,8 +6,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.util.Vector;
 
+import belven.classes.resources.functions;
 import belven.classes.timedevents.BarrierTimer;
-import belvens.classes.resources.functions;
 
 public class Barrier extends Ability
 {

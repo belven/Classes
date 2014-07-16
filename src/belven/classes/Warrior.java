@@ -2,15 +2,17 @@ package belven.classes;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Damageable;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 
 import belven.classes.Abilities.LastResort;
 import belven.classes.Abilities.Retaliation;
-import belvens.classes.resources.ClassDrop;
+import belven.classes.resources.ClassDrop;
 
 public class Warrior extends Class
 {
@@ -33,18 +35,7 @@ public class Warrior extends Class
 
     public void TakeDamage(EntityDamageByEntityEvent event, Player damagedPlayer)
     {
-        Damageable dcurrentPlayer = (Damageable) damagedPlayer;
-        if (!currentLastResort.onCooldown && dcurrentPlayer.getHealth() <= 5
-                && currentLastResort.HasRequirements(damagedPlayer))
-        {
-            UltAbilityUsed(currentLastResort);
-            currentLastResort.PerformAbility(damagedPlayer);
-        }
-        else if (!currentRetaliation.onCooldown && damagedPlayer.isBlocking())
-        {
-            currentRetaliation.PerformAbility(event);
-            setAbilityOnCoolDown(currentRetaliation, 2);
-        }
+
     }
 
     @Override
@@ -63,6 +54,53 @@ public class Warrior extends Class
         classDrops.add(new ClassDrop(i_Boots(), true));
         classDrops.add(new ClassDrop(i_ChestPlate(), true));
         classDrops.add(new ClassDrop(i_Leggings(), true));
-        classDrops.add(new ClassDrop(i_Helmet(), true));        
+        classDrops.add(new ClassDrop(i_Helmet(), true));
+    }
+
+    @Override
+    public void SelfCast(Player currentPlayer)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void RightClickEntity(Entity currentEntity)
+    {
+
+    }
+
+    @Override
+    public void SelfTakenDamage(EntityDamageByEntityEvent event)
+    {
+        Damageable dcurrentPlayer = classOwner;
+
+        if (!currentLastResort.onCooldown && dcurrentPlayer.getHealth() <= 5
+                && currentLastResort.HasRequirements(classOwner))
+        {
+            UltAbilityUsed(currentLastResort);
+            currentLastResort.PerformAbility();
+        }
+        else if (!currentRetaliation.onCooldown && classOwner.isBlocking())
+        {
+            currentRetaliation.PerformAbility(event);
+            setAbilityOnCoolDown(currentRetaliation, 2);
+        }
+    }
+
+    @Override
+    public void SelfTakenDamage(EntityDamageEvent event)
+    {
+        if (!currentRetaliation.onCooldown && classOwner.isBlocking())
+        {
+            currentRetaliation.PerformAbility(event);
+            setAbilityOnCoolDown(currentRetaliation, 2);
+        }
+    }
+
+    @Override
+    public void SelfDamageOther(EntityDamageByEntityEvent event)
+    {
+
     }
 }

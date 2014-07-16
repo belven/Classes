@@ -1,10 +1,10 @@
 package belven.classes.Abilities;
 
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+
+import belven.classes.resources.functions;
 
 public class Retaliation extends Ability
 {
@@ -15,29 +15,29 @@ public class Retaliation extends Ability
         abilitiyName = "Retaliation";
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean PerformAbility(EntityDamageByEntityEvent event)
     {
-        Entity entityToStrike = event.getDamager();
-        if (entityToStrike instanceof LivingEntity)
+        LivingEntity entityDamaged = functions.GetDamager(event);
+
+        if (entityDamaged != null)
         {
-            LivingEntity entityDamaged = (LivingEntity) event.getDamager();
             entityDamaged.damage(event.getDamage() * 2);
             event.setCancelled(true);
         }
         else
         {
-            if (entityToStrike.getType() == EntityType.ARROW)
-            {
-                Arrow entityArrow = (Arrow) entityToStrike;
-                entityToStrike = entityArrow.getShooter();
-            }
-
-            LivingEntity entityDamaged = (LivingEntity) entityToStrike;
-            entityDamaged.damage(event.getDamage() * 2);
             event.setCancelled(true);
         }
+
         return true;
     }
+
+    @Override
+    public boolean PerformAbility(EntityDamageEvent event)
+    {
+        event.setCancelled(true);
+        return true;
+    }
+
 }
