@@ -10,9 +10,9 @@ import belven.arena.resources.functions;
 
 public class AOEHeal extends Ability
 {
-    public AOEHeal(belven.classes.Class CurrentClass, int priority)
+    public AOEHeal(belven.classes.Class CurrentClass, int priority, int amp)
     {
-        super(priority);
+        super(priority, amp);
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.LAPIS_BLOCK, 4));
         abilitiyName = "AOE Heal";
@@ -31,12 +31,14 @@ public class AOEHeal extends Ability
                     Amplifier(), true));
         }
 
-        currentClass.setAbilityOnCoolDown(this, 8, true);
+        currentClass.setAbilityOnCoolDown(this, true);
+
+        RemoveItems();
         return true;
     }
 
     public int Amplifier()
     {
-        return Math.round(currentClass.classOwner.getLevel() / 5);
+        return Math.round(currentClass.classOwner.getLevel() / Amplifier);
     }
 }

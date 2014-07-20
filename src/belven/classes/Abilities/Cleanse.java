@@ -11,9 +11,9 @@ import belven.classes.resources.functions;
 
 public class Cleanse extends Ability
 {
-    public Cleanse(belven.classes.Class CurrentClass, int priority)
+    public Cleanse(belven.classes.Class CurrentClass, int priority, int amp)
     {
-        super(priority);
+        super(priority, amp);
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.GLOWSTONE_DUST, 1));
         abilitiyName = "Cleanse";
@@ -36,6 +36,8 @@ public class Cleanse extends Ability
                 break;
             }
         }
+
+        RemoveItems();
         return true;
 
     }

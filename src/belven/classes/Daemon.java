@@ -26,10 +26,8 @@ public class Daemon extends Berserker
         super(currentPlayer, instance);
         this.className = "Daemon";
         baseClassName = "Berserker";
-        classFeelTheBurn = new FeelTheBurn(this, 1);
-        classSetAlight = new SetAlight(this, 2);
-        SortAbilities();
         SetClassDrops();
+        SetAbilities();
     }
 
     public void SelfDamageOther(EntityDamageByEntityEvent event)
@@ -94,6 +92,15 @@ public class Daemon extends Berserker
     public int Amplifier()
     {
         return Math.round(classOwner.getLevel() / 5) + 1;
+    }
+
+    @Override
+    public void SetAbilities()
+    {
+        super.SetAbilities();
+        classFeelTheBurn = new FeelTheBurn(this, 1, 0);
+        classSetAlight = new SetAlight(this, 2, 0);
+        SortAbilities();
     }
 
     @Override

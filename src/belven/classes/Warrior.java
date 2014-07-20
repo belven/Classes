@@ -21,21 +21,11 @@ public class Warrior extends Class
 
     public Warrior(Player currentPlayer, ClassManager instance)
     {
-        plugin = instance;
-        classOwner = currentPlayer;
-        currentLastResort = new LastResort(this, 1);
-        currentRetaliation = new Retaliation(this, 2);
+        super(20, currentPlayer, instance);
         className = "Warrior";
-        Damageable dcurrentPlayer = (Damageable) currentPlayer;
-        dcurrentPlayer.setMaxHealth(40.0);
-        dcurrentPlayer.setHealth(dcurrentPlayer.getMaxHealth());
-        SortAbilities();
+
         SetClassDrops();
-    }
-
-    public void TakeDamage(EntityDamageByEntityEvent event, Player damagedPlayer)
-    {
-
+        SetAbilities();
     }
 
     @Override
@@ -102,5 +92,13 @@ public class Warrior extends Class
     public void SelfDamageOther(EntityDamageByEntityEvent event)
     {
 
+    }
+
+    @Override
+    public void SetAbilities()
+    {
+        currentLastResort = new LastResort(this, 1, 5);
+        currentRetaliation = new Retaliation(this, 2, 2);
+        SortAbilities();
     }
 }

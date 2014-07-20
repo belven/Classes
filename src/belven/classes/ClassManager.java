@@ -116,6 +116,11 @@ public class ClassManager extends JavaPlugin
             this.SetClass(player, "Warrior");
             return true;
         }
+        else if (commandSent.equalsIgnoreCase("bcmonk"))
+        {
+            this.SetClass(player, "Monk");
+            return true;
+        }
         else if (commandSent.equalsIgnoreCase("bcpriest"))
         {
             this.SetClass(player, "Priest");
@@ -180,11 +185,13 @@ public class ClassManager extends JavaPlugin
             // case "mage":
             // return new Mage(player, this);
         case "mage":
-            return new DEFAULT();
+            return new DEFAULT(player, this);
         case "assassin":
             return new Assassin(player, this);
         case "archer":
             return new Archer(player, this);
+        case "monk":
+            return new Monk(player, this);
         case "daemon":
             return new Daemon(player, this);
         case "priest":
@@ -194,7 +201,7 @@ public class ClassManager extends JavaPlugin
         case "berserker":
             return new Berserker(player, this);
         default:
-            return new DEFAULT();
+            return new DEFAULT(player, this);
         }
     }
 

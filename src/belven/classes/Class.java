@@ -3,9 +3,11 @@ package belven.classes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -25,11 +27,19 @@ public abstract class Class
     public ClassManager plugin;
     protected String className = "";
     protected String baseClassName = "";
-
     public List<ClassDrop> classDrops = new ArrayList<ClassDrop>();
-
     public boolean CanCast = true;
 
+    public Class(double health, Player currentPlayer, ClassManager instance)
+    {
+        plugin = instance;
+        classOwner = currentPlayer;
+
+        Damageable dcurrentPlayer = (Damageable) currentPlayer;
+        dcurrentPlayer.setMaxHealth(health * 2);
+        dcurrentPlayer.setHealth(dcurrentPlayer.getMaxHealth());
+    }    
+    
     public final String getClassName()
     {
         return className;
@@ -38,6 +48,20 @@ public abstract class Class
     public void SetClassDrops()
     {
 
+    }
+
+    public void RemoveClassDrop(Material m)
+    {
+        Iterator<ClassDrop> tempDrops = classDrops.iterator();
+
+        while (tempDrops.hasNext())
+        {
+            ClassDrop cd = tempDrops.next();
+            if (cd.is.getType() == m)
+            {
+                tempDrops.remove();
+            }
+        }
     }
 
     public void ListAbilities()
@@ -104,6 +128,8 @@ public abstract class Class
 
     public abstract void SelfCast(Player currentPlayer);
 
+    public abstract void SetAbilities();
+
     public abstract void RightClickEntity(Entity currentEntity);
 
     public abstract void SelfTakenDamage(EntityDamageByEntityEvent event);
@@ -119,21 +145,16 @@ public abstract class Class
         setAbilityOnCoolDown(currentAbility, 120);
     }
 
-    public void setAbilityOnCoolDown(Ability currentAbility, int seconds,
-            boolean sendMessage)
+    public void setAbilityOnCoolDown(Ability currentAbility, boolean sendMessage)
     {
         new AbilityCooldown(currentAbility, sendMessage).runTaskLater(plugin,
-                functions.SecondsToTicks(seconds));
+                functions.SecondsToTicks(currentAbility.Cooldown));
         currentAbility.onCooldown = true;
     }
 
     public void setAbilityOnCoolDown(Ability currentAbility, int seconds)
     {
-        setAbilityOnCoolDown(currentAbility, seconds, false);
-    }
-
-    public void AddToAbilities(Ability abilityToAdd)
-    {
+        setAbilityOnCoolDown(currentAbility, false);
     }
 
     public ItemStack l_ChestPlate()
@@ -177,6 +198,12 @@ public abstract class Class
     }
 
     public void SelfTakenDamage(EntityDamageEvent event)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void AbilityUsed(Ability ability)
     {
         // TODO Auto-generated method stub
 

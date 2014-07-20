@@ -6,6 +6,12 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class DEFAULT extends Class
 {
+    public DEFAULT(Player currentPlayer, ClassManager instance)
+    {
+        super(10, currentPlayer, instance);
+        // TODO Auto-generated constructor stub
+    }
+
     @Override
     public void SetClassDrops()
     {
@@ -29,6 +35,12 @@ public class DEFAULT extends Class
 
     @Override
     public void SelfDamageOther(EntityDamageByEntityEvent event)
+    {
+
+    }
+
+    @Override
+    public void SetAbilities()
     {
 
     }

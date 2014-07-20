@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import belven.classes.Class;
 import belven.classes.Abilities.Ability;
 
 public class AbilityUsed extends Event
@@ -15,6 +14,11 @@ public class AbilityUsed extends Event
 
     @Override
     public HandlerList getHandlers()
+    {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList()
     {
         return handlers;
     }
@@ -34,7 +38,7 @@ public class AbilityUsed extends Event
         return a.currentClass.classOwner;
     }
 
-    public Class GetClass()
+    public belven.classes.Class GetClass()
     {
         return a.currentClass;
     }

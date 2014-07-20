@@ -3,7 +3,6 @@ package belven.classes;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -26,14 +25,9 @@ public class Assassin extends Class
 
     public Assassin(Player currentPlayer, ClassManager instance)
     {
-        plugin = instance;
-        classOwner = currentPlayer;
+        super(12, currentPlayer, instance);
         className = "Assassin";
-        classSoulDrain = new SoulDrain(this, 1);
-        Damageable dcurrentLivingEntity = (Damageable) currentPlayer;
-        dcurrentLivingEntity.setMaxHealth(24.0);
-        dcurrentLivingEntity.setHealth(dcurrentLivingEntity.getMaxHealth());
-        SortAbilities();
+        SetAbilities();
         SetClassDrops();
     }
 
@@ -161,5 +155,13 @@ public class Assassin extends Class
             TeleportToTarget(damagedEntity);
         }
 
+    }
+
+    @Override
+    public void SetAbilities()
+    {
+        classSoulDrain = new SoulDrain(this, 1, 0);
+        Abilities.add(classSoulDrain);
+        SortAbilities();
     }
 }

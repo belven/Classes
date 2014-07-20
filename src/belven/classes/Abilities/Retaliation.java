@@ -1,16 +1,18 @@
 package belven.classes.Abilities;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import belven.classes.events.AbilityUsed;
 import belven.classes.resources.functions;
 
 public class Retaliation extends Ability
 {
-    public Retaliation(belven.classes.Class CurrentClass, int priority)
+    public Retaliation(belven.classes.Class CurrentClass, int priority, int amp)
     {
-        super(priority);
+        super(priority, amp);
         currentClass = CurrentClass;
         abilitiyName = "Retaliation";
     }
@@ -22,13 +24,15 @@ public class Retaliation extends Ability
 
         if (entityDamaged != null)
         {
-            entityDamaged.damage(event.getDamage() * 2);
+            entityDamaged.damage(event.getDamage() * Amplifier());
             event.setCancelled(true);
         }
         else
         {
             event.setCancelled(true);
         }
+
+        Bukkit.getPluginManager().callEvent(new AbilityUsed(this));
 
         return true;
     }
@@ -38,6 +42,12 @@ public class Retaliation extends Ability
     {
         event.setCancelled(true);
         return true;
+    }
+
+    @Override
+    public int Amplifier()
+    {
+        return Amplifier;
     }
 
 }

@@ -1,7 +1,6 @@
 package belven.classes;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -24,24 +23,17 @@ public class Healer extends Class
     public Bandage classBandage;
     public Barrier classBarrier;
 
+    public Healer(int Health, Player currentPlayer, ClassManager instance)
+    {
+        super(Health, currentPlayer, instance);
+        className = "Healer";
+        SetAbilities();
+        SetClassDrops();
+    }
+
     public Healer(Player currentPlayer, ClassManager instance)
     {
-        plugin = instance;
-        classOwner = currentPlayer;
-        className = "Healer";
-        classHeal = new Heal(this, 1);
-        classLightHeal = new LightHeal(this, 2);
-        classBandage = new Bandage(this, 0);
-        classBarrier = new Barrier(this, 6, 4);
-        Damageable dcurrentPlayer = (Damageable) currentPlayer;
-        dcurrentPlayer.setMaxHealth(16.0);
-        dcurrentPlayer.setHealth(dcurrentPlayer.getMaxHealth());
-
-        Abilities.add(classBandage);
-        Abilities.add(classBarrier);
-        Abilities.add(classHeal);
-        Abilities.add(classLightHeal);
-        SortAbilities();
+        this(8, currentPlayer, instance);
     }
 
     public void CheckAbilitiesToCast(Player player)
@@ -59,7 +51,7 @@ public class Healer extends Class
                 {
                     continue;
                 }
-                else
+                else if (a.shouldBreak)
                 {
                     break;
                 }
@@ -154,6 +146,22 @@ public class Healer extends Class
     @Override
     public void SelfDamageOther(EntityDamageByEntityEvent event)
     {
+
+    }
+
+    @Override
+    public void SetAbilities()
+    {
+        classHeal = new Heal(this, 1, 7);
+        classLightHeal = new LightHeal(this, 2, 5);
+        classBandage = new Bandage(this, 0, 10);
+        classBarrier = new Barrier(this, 6, 4, 10);
+
+        Abilities.add(classBandage);
+        Abilities.add(classBarrier);
+        Abilities.add(classHeal);
+        Abilities.add(classLightHeal);
+        SortAbilities();
 
     }
 }

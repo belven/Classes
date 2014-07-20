@@ -13,9 +13,9 @@ import belven.classes.timedevents.FireTrapTimer;
 
 public class FireTrap extends Ability
 {
-    public FireTrap(belven.classes.Class CurrentClass, int priority)
+    public FireTrap(belven.classes.Class CurrentClass, int priority, int amp)
     {
-        super(priority);
+        super(priority, amp);
         currentClass = CurrentClass;
         ItemStack redwool = new Wool(DyeColor.RED).toItemStack(1);
         requirements.add(redwool);
@@ -35,6 +35,8 @@ public class FireTrap extends Ability
             targetLocation.getBlock().setType(Material.WOOL);
             currentClass.classOwner.addPotionEffect(new PotionEffect(
                     PotionEffectType.SPEED, functions.SecondsToTicks(2), 3));
+
+            RemoveItems();
             return true;
         }
         else

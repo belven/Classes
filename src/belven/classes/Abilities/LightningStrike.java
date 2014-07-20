@@ -5,9 +5,10 @@ import org.bukkit.entity.LivingEntity;
 
 public class LightningStrike extends Ability
 {
-    public LightningStrike(belven.classes.Class CurrentClass, int priority)
+    public LightningStrike(belven.classes.Class CurrentClass, int priority,
+            int amp)
     {
-        super(priority);
+        super(priority, amp);
         currentClass = CurrentClass;
         abilitiyName = "Lightning Strike";
     }

@@ -19,11 +19,15 @@ public class Ability
     public belven.classes.Class currentClass;
     protected String abilitiyName = "";
     public boolean onCooldown = false;
+    public boolean shouldBreak = true;
     public int Priority = 0;
+    public int Amplifier = 0;
+    public int Cooldown = 0;
 
-    public Ability(int Priority)
+    public Ability(int Priority, int amplifier)
     {
         this.Priority = Priority;
+        Amplifier = amplifier;
     }
 
     public boolean PerformAbility()
@@ -75,7 +79,6 @@ public class Ability
 
         if (checksRequired == requirements.size())
         {
-            RemoveItems();
             return true;
         }
         return false;

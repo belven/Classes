@@ -1,7 +1,6 @@
 package belven.classes;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -30,17 +29,10 @@ public class Mage extends Class
 
     public Mage(Player currentPlayer, ClassManager instance)
     {
-        plugin = instance;
-        classOwner = currentPlayer;
-        classFireball = new MageFireball(this, 1);
-        classChainLightning = new ChainLightning(this, 2);
-        classLightningStrike = new LightningStrike(this, 3);
-        classPop = new Pop(this, 4);
+        super(8, currentPlayer, instance);
         className = "Mage";
-        Damageable dcurrentPlayer = (Damageable) currentPlayer;
-        dcurrentPlayer.setMaxHealth(16.0);
-        dcurrentPlayer.setHealth(dcurrentPlayer.getMaxHealth());
-        SortAbilities();
+        SetAbilities();
+        SetClassDrops();
     }
 
     public void CheckAbilitiesToCast()
@@ -136,6 +128,21 @@ public class Mage extends Class
     @Override
     public void SelfDamageOther(EntityDamageByEntityEvent event)
     {
+
+    }
+
+    @Override
+    public void SetAbilities()
+    {
+        classFireball = new MageFireball(this, 1, 5);
+        classChainLightning = new ChainLightning(this, 2, 5);
+        classLightningStrike = new LightningStrike(this, 3, 5);
+        classPop = new Pop(this, 4, 5);
+        Abilities.add(classFireball);
+        Abilities.add(classChainLightning);
+        Abilities.add(classLightningStrike);
+        Abilities.add(classPop);
+        SortAbilities();
 
     }
 }

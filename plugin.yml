@@ -29,6 +29,11 @@ commands:
       usage: /bcmage 
       permission: BelvensClasses.bcmage 
       permission-message: You don't have BelvensClasses.bcmage
+   bcmonk:
+      description: This will change your class to a monk
+      usage: /bcmonk 
+      permission: BelvensClasses.bcmonk 
+      permission-message: You don't have BelvensClasses.bcmonk
    bcpriest:
       description: This will change your class to a Priest
       usage: /bcpriest 
@@ -86,6 +91,7 @@ permissions:
         children:
             BelvensClasses.bcdaemon: true
             BelvensClasses.bcpriest: true
+            BelvensClasses.bcmonk: true
     BelvensClasses.listclasses:
         description: Lists all players and thier classes
         default: op
@@ -100,6 +106,9 @@ permissions:
         default: true
     BelvensClasses.bcmage:
         description: This will change your class to a Mage
+        default: true
+    BelvensClasses.bcmonk:
+        description: This will change your class to a Monk
         default: true
     BelvensClasses.bchealer:
         description: This will change your class to a Healer

@@ -12,6 +12,7 @@ import belven.classes.Archer;
 import belven.classes.ClassManager;
 import belven.classes.Healer;
 import belven.classes.Mage;
+import belven.classes.Monk;
 import belven.classes.Priest;
 
 public class BlockListener implements Listener
@@ -32,7 +33,8 @@ public class BlockListener implements Listener
 
         if (mat == Material.LAPIS_BLOCK
                 && (currentClass instanceof Mage
-                        || currentClass instanceof Healer || currentClass instanceof Priest))
+                        || currentClass instanceof Healer
+                        || currentClass instanceof Priest || currentClass instanceof Monk))
         {
             event.setCancelled(true);
         }

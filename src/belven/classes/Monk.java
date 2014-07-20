@@ -5,31 +5,23 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import belven.classes.Abilities.AOEHeal;
 import belven.classes.Abilities.Ability;
-import belven.classes.Abilities.Cleanse;
-import belven.classes.resources.ClassDrop;
+import belven.classes.Abilities.HealingFurry;
 import belven.classes.resources.functions;
 
-public class Priest extends Healer
+public class Monk extends Healer
 {
-    public AOEHeal classAOEHeal;
-    public Cleanse classCleanse;
+    public HealingFurry classHealingFurry;
 
-    public Priest(Player currentPlayer, ClassManager instance)
+    public Monk(Player currentPlayer, ClassManager instance)
     {
-        super(8, currentPlayer, instance);
-        classAOEHeal = new AOEHeal(this, 0, 5);
-        classCleanse = new Cleanse(this, 3, 3);
-        className = "Priest";
+        super(12, currentPlayer, instance);
+        className = "Monk";
         baseClassName = "Healer";
-        classAOEHeal.Cooldown = 8;
-        Abilities.add(classAOEHeal);
-        Abilities.add(classCleanse);
-        SortAbilities();
         SetClassDrops();
+        SetAbilities();
     }
 
     @Override
@@ -56,7 +48,24 @@ public class Priest extends Healer
                 CheckAbilitiesToCast(playerSelected);
             }
         }
+    }
 
+    @Override
+    public void SetAbilities()
+    {
+        super.SetAbilities();
+
+        Abilities.remove(classHeal);
+
+        classHealingFurry = new HealingFurry(this, 0, 5);
+
+        classHealingFurry.Cooldown = 8;
+        classLightHeal.Priority = 10;
+        classBandage.Amplifier = 6;
+        classLightHeal.Amplifier = 10;
+
+        Abilities.add(classHealingFurry);
+        SortAbilities();
     }
 
     @Override
@@ -94,8 +103,17 @@ public class Priest extends Healer
     public void SetClassDrops()
     {
         super.SetClassDrops();
-        ItemStack glow = new ItemStack(Material.GLOWSTONE_DUST, 1);
-        classDrops.add(new ClassDrop(glow, true));
+        RemoveClassDrop(Material.WOOD_SWORD);
+    }
+
+    @Override
+    public void SelfDamageOther(EntityDamageByEntityEvent event)
+    {
+        if (classOwner.getItemInHand() == null
+                || classOwner.getItemInHand().getType() != Material.AIR)
+        {
+            event.setDamage(event.getDamage() + 6.0);
+        }
     }
 
     public void CheckAbilitiesToCast(Player player)

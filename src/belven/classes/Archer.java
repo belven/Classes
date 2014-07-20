@@ -20,25 +20,15 @@ import belven.classes.timedevents.BlockRestorer;
 
 public class Archer extends Class
 {
-
     public WebArrow classCripplingArrow;
     public FireTrap classFireTrap;
 
     public Archer(Player currentPlayer, ClassManager instance)
     {
-        plugin = instance;
-        classOwner = currentPlayer;
-        classCripplingArrow = new WebArrow(this, 0);
-        classFireTrap = new FireTrap(this, 1);
+        super(12, currentPlayer, instance);
         className = "Archer";
-
-        Damageable dcurrentPlayer = (Damageable) currentPlayer;
-        dcurrentPlayer.setMaxHealth(24.0);
-        dcurrentPlayer.setHealth(dcurrentPlayer.getMaxHealth());
-
-        Abilities.add(classFireTrap);
-        SortAbilities();
         SetClassDrops();
+        SetAbilities();
     }
 
     @Override
@@ -126,6 +116,15 @@ public class Archer extends Class
                     dcurrentLivingEntity.getMaxHealth()));
         }
 
+    }
+
+    @Override
+    public void SetAbilities()
+    {
+        classCripplingArrow = new WebArrow(this, 0, 0);
+        classFireTrap = new FireTrap(this, 1, 0);
+        Abilities.add(classFireTrap);
+        SortAbilities();
     }
 
 }

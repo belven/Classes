@@ -8,9 +8,9 @@ import belven.classes.resources.functions;
 
 public class SetAlight extends Ability
 {
-    public SetAlight(belven.classes.Class CurrentClass, int priority)
+    public SetAlight(belven.classes.Class CurrentClass, int priority, int amp)
     {
-        super(priority);
+        super(priority, amp);
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.FIREWORK_CHARGE, 1));
         abilitiyName = "Set Alight";

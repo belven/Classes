@@ -29,6 +29,7 @@ import belven.classes.Archer;
 import belven.classes.Assassin;
 import belven.classes.ClassManager;
 import belven.classes.Daemon;
+import belven.classes.events.AbilityUsed;
 import belven.classes.resources.functions;
 import belven.classes.timedevents.AbilityDelay;
 
@@ -74,6 +75,13 @@ public class PlayerListener implements Listener
     public void onPlayerLoginEvent(PlayerLoginEvent event)
     {
         plugin.AddClassToPlayer(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onAbilityUsed(AbilityUsed event)
+    {
+        plugin.CurrentPlayerClasses.get(event.GetPlayer()).AbilityUsed(
+                event.GetAbility());
     }
 
     @EventHandler

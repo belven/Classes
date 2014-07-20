@@ -6,9 +6,9 @@ import belven.arena.resources.functions;
 
 public class FeelTheBurn extends Ability
 {
-    public FeelTheBurn(belven.classes.Class CurrentClass, int priority)
+    public FeelTheBurn(belven.classes.Class CurrentClass, int priority, int amp)
     {
-        super(priority);
+        super(priority, amp);
         currentClass = CurrentClass;
         abilitiyName = "Feel The Burn";
     }

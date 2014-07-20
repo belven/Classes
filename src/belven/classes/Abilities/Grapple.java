@@ -14,9 +14,9 @@ import belven.classes.resources.functions;
 
 public class Grapple extends Ability
 {
-    public Grapple(Class CurrentClass, int priority)
+    public Grapple(Class CurrentClass, int priority, int amp)
     {
-        super(priority);
+        super(priority, amp);
         this.currentClass = CurrentClass;
         this.requirements.add(new ItemStack(Material.STRING));
         this.abilitiyName = "Grapple";
@@ -43,6 +43,7 @@ public class Grapple extends Ability
                 le.teleport(this.currentClass.classOwner);
             }
             currentClass.setAbilityOnCoolDown(this, 2);
+            RemoveItems();
             return true;
         }
 

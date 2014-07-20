@@ -21,17 +21,10 @@ public class Berserker extends Class
 
     public Berserker(Player currentPlayer, ClassManager instance)
     {
-        this.plugin = instance;
-        this.classOwner = currentPlayer;
+        super(30, currentPlayer, instance);
         this.className = "Berserker";
-        this.classGrapple = new Grapple(this, 1);
-        Damageable dcurrentLivingEntity = currentPlayer;
-        dcurrentLivingEntity.setMaxHealth(60.0D);
-        dcurrentLivingEntity.setHealth(dcurrentLivingEntity.getMaxHealth());
-
-        Abilities.add(classGrapple);
-        SortAbilities();
         SetClassDrops();
+        SetAbilities();
     }
 
     @Override
@@ -159,6 +152,15 @@ public class Berserker extends Class
                 }
             }
         }
+
+    }
+
+    @Override
+    public void SetAbilities()
+    {
+        this.classGrapple = new Grapple(this, 1, 0);
+        Abilities.add(classGrapple);
+        SortAbilities();
 
     }
 }

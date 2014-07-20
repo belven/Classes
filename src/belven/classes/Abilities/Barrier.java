@@ -13,9 +13,10 @@ public class Barrier extends Ability
 {
     public int radius = 0;
 
-    public Barrier(belven.classes.Class CurrentClass, int Radius, int priority)
+    public Barrier(belven.classes.Class CurrentClass, int Radius, int priority,
+            int amp)
     {
-        super(priority);
+        super(priority, amp);
         currentClass = CurrentClass;
         radius = Radius;
         inHandRequirements.add(Material.NETHER_STAR);

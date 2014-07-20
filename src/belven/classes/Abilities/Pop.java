@@ -13,9 +13,9 @@ public class Pop extends Ability
 {
     private int counter = 0;
 
-    public Pop(belven.classes.Class CurrentClass, int priority)
+    public Pop(belven.classes.Class CurrentClass, int priority, int amp)
     {
-        super(priority);
+        super(priority, amp);
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.FEATHER));
         inHandRequirements.add(Material.FEATHER);
@@ -69,6 +69,7 @@ public class Pop extends Ability
                 }
             }
         }
+        RemoveItems();
         return true;
     }
 }

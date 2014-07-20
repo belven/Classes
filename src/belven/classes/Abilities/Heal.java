@@ -9,9 +9,9 @@ import org.bukkit.potion.PotionEffectType;
 
 public class Heal extends Ability
 {
-    public Heal(belven.classes.Class CurrentClass, int priority)
+    public Heal(belven.classes.Class CurrentClass, int priority, int amp)
     {
-        super(priority);
+        super(priority, amp);
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.LAPIS_BLOCK, 1));
         abilitiyName = "Heal";
@@ -28,6 +28,7 @@ public class Heal extends Ability
 
             currentClass.classOwner.sendMessage("You healed "
                     + playerToHeal.getName());
+            RemoveItems();
             return true;
         }
 
@@ -36,7 +37,7 @@ public class Heal extends Ability
 
     public int Amplifier()
     {
-        return Math.round(currentClass.classOwner.getLevel() / 7);
+        return Math.round(currentClass.classOwner.getLevel() / Amplifier);
     }
 
 }
