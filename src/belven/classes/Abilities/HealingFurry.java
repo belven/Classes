@@ -53,7 +53,8 @@ public class HealingFurry extends Ability
 
     public int Amplifier()
     {
-        return Math.round(currentClass.classOwner.getLevel() / Amplifier);
+        return functions.abilityCap((double) Amplifier + 1,
+                (double) currentClass.classOwner.getLevel());
     }
 
 }

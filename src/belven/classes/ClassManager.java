@@ -145,6 +145,14 @@ public class ClassManager extends JavaPlugin
         {
             int level = Integer.valueOf(args[0]);
             player.setLevel(level);
+
+            String temp1 = String.valueOf(Math.log(player.getLevel()));
+            String temp2 = String.valueOf(Math.log10(player.getLevel()));
+            String temp3 = String.valueOf(Math.log1p(player.getLevel()));
+            
+            player.sendMessage(temp1);
+            player.sendMessage(temp2);
+            player.sendMessage(temp3);
             return true;
         }
         else if (commandSent.equalsIgnoreCase("bcarcher"))

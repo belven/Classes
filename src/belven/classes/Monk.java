@@ -1,15 +1,10 @@
 package belven.classes;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.HealingFurry;
-import belven.classes.resources.functions;
 
 public class Monk extends Healer
 {
@@ -25,32 +20,6 @@ public class Monk extends Healer
     }
 
     @Override
-    public void SelfCast(Player currentPlayer)
-    {
-        Player playerSelected;
-
-        if (classOwner.isSneaking())
-        {
-            CheckAbilitiesToCast(classOwner);
-        }
-        else
-        {
-            LivingEntity targetEntity = functions.findTargetPlayer(classOwner,
-                    150.0D);
-
-            if (targetEntity != null)
-            {
-                playerSelected = (Player) targetEntity;
-            }
-            else
-            {
-                playerSelected = classOwner;
-                CheckAbilitiesToCast(playerSelected);
-            }
-        }
-    }
-
-    @Override
     public void SetAbilities()
     {
         super.SetAbilities();
@@ -61,42 +30,11 @@ public class Monk extends Healer
 
         classHealingFurry.Cooldown = 8;
         classLightHeal.Priority = 10;
-        classBandage.Amplifier = 6;
-        classLightHeal.Amplifier = 10;
+        classBandage.Amplifier = 5;
+        classLightHeal.Amplifier = 2;
 
         Abilities.add(classHealingFurry);
         SortAbilities();
-    }
-
-    @Override
-    public void RightClickEntity(Entity currentEntity)
-    {
-        Player playerSelected;
-
-        if (classOwner.isSneaking())
-        {
-            CheckAbilitiesToCast(classOwner);
-        }
-        else if (currentEntity.getType() == EntityType.PLAYER)
-        {
-            playerSelected = (Player) currentEntity;
-            CheckAbilitiesToCast(playerSelected);
-        }
-        else
-        {
-            LivingEntity targetEntity = functions.findTargetPlayer(classOwner,
-                    150.0D);
-
-            if (targetEntity != null)
-            {
-                playerSelected = (Player) targetEntity;
-            }
-            else
-            {
-                playerSelected = classOwner;
-                CheckAbilitiesToCast(playerSelected);
-            }
-        }
     }
 
     @Override
@@ -113,29 +51,6 @@ public class Monk extends Healer
                 || classOwner.getItemInHand().getType() != Material.AIR)
         {
             event.setDamage(event.getDamage() + 6.0);
-        }
-    }
-
-    public void CheckAbilitiesToCast(Player player)
-    {
-        if (functions.isFood(classOwner.getItemInHand().getType()))
-        {
-            return;
-        }
-
-        for (Ability a : Abilities)
-        {
-            if (!a.onCooldown && a.HasRequirements(classOwner))
-            {
-                if (!a.PerformAbility(player))
-                {
-                    continue;
-                }
-                else if (a.shouldBreak)
-                {
-                    break;
-                }
-            }
         }
     }
 }

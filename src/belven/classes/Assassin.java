@@ -66,7 +66,7 @@ public class Assassin extends Class
             locationToTeleportTo.setX(locationToTeleportTo.getX() - 1);
         }
 
-        CanTeleportTo(locationToTeleportTo);
+        CanTeleportTo(locationToTeleportTo, mobLocation);
     }
 
     public boolean HasLineOfSight(Entity damagedEntity)
@@ -79,18 +79,33 @@ public class Assassin extends Class
         return false;
     }
 
-    public void CanTeleportTo(Location locationToTeleportTo)
+    public void CanTeleportTo(Location locationToTeleportTo,
+            Location mobLocation)
     {
+        for (int i = (int) locationToTeleportTo.getY(); i < locationToTeleportTo
+                .getY() + 20; i++)
+        {
+            if (locationToTeleportTo.getBlock().getType() == Material.AIR)
+            {
+                Location temp = functions.lookAt(locationToTeleportTo,
+                        mobLocation);
+                classOwner.teleport(temp);
+            }
+            else
+            {
+                locationToTeleportTo.setY(i);
+            }
+        }
 
-        if (locationToTeleportTo.getBlock().getType() == Material.AIR)
-        {
-            classOwner.teleport(locationToTeleportTo);
-        }
-        else
-        {
-            locationToTeleportTo.setY(locationToTeleportTo.getY() + 1);
-            CanTeleportTo(locationToTeleportTo);
-        }
+        // if (locationToTeleportTo.getBlock().getType() == Material.AIR)
+        // {
+        // classOwner.teleport(locationToTeleportTo);
+        // }
+        // else
+        // {
+        // locationToTeleportTo.setY(locationToTeleportTo.getY() + 1);
+        // CanTeleportTo(locationToTeleportTo);
+        // }
     }
 
     public void ToggleSneakEvent(PlayerToggleSneakEvent event)
@@ -150,11 +165,15 @@ public class Assassin extends Class
 
         functions.Heal(classOwner, 1);
 
+        if (functions.isAMeeleWeapon(classOwner.getItemInHand().getType()))
+        {
+            event.setDamage(event.getDamage() + 2);
+        }
+
         if (arrowEntity)
         {
             TeleportToTarget(damagedEntity);
         }
-
     }
 
     @Override

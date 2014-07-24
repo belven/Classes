@@ -27,6 +27,7 @@ public class SetAlight extends Ability
         }
 
         playerToBurn.setFireTicks(functions.SecondsToTicks(Amplifier));
+        currentClass.setAbilityOnCoolDown(this);
         return true;
     }
 

@@ -99,10 +99,17 @@ public class Healer extends Class
             else
             {
                 playerSelected = classOwner;
+            }
+
+            if (shouldHeal(classOwner, playerSelected))
+            {
                 CheckAbilitiesToCast(playerSelected);
             }
+            else
+            {
+                CheckAbilitiesToCast(classOwner);
+            }
         }
-
     }
 
     @Override
@@ -117,7 +124,15 @@ public class Healer extends Class
         else if (currentEntity.getType() == EntityType.PLAYER)
         {
             playerSelected = (Player) currentEntity;
-            CheckAbilitiesToCast(playerSelected);
+
+            if (shouldHeal(classOwner, playerSelected))
+            {
+                CheckAbilitiesToCast(playerSelected);
+            }
+            else
+            {
+                CheckAbilitiesToCast(classOwner);
+            }
         }
         else
         {
@@ -131,10 +146,37 @@ public class Healer extends Class
             else
             {
                 playerSelected = classOwner;
+            }
+
+            if (shouldHeal(classOwner, playerSelected))
+            {
                 CheckAbilitiesToCast(playerSelected);
+            }
+            else
+            {
+                CheckAbilitiesToCast(classOwner);
+            }
+        }
+    }
+
+    public boolean shouldHeal(Player self, Player target)
+    {
+        if (plugin.arenas != null && plugin.teams != null)
+        {
+            boolean selfInArena = plugin.arenas.IsPlayerInArena(self);
+            boolean targetInArena = plugin.arenas.IsPlayerInArena(target);
+
+            if (selfInArena && targetInArena)
+            {
+                return true;
+            }
+            else if (plugin.teams.isInSameTeam(self, target))
+            {
+                return true;
             }
         }
 
+        return false;
     }
 
     @Override
@@ -152,9 +194,9 @@ public class Healer extends Class
     @Override
     public void SetAbilities()
     {
-        classHeal = new Heal(this, 1, 7);
-        classLightHeal = new LightHeal(this, 2, 5);
-        classBandage = new Bandage(this, 0, 10);
+        classHeal = new Heal(this, 1, 3);
+        classLightHeal = new LightHeal(this, 2, 3);
+        classBandage = new Bandage(this, 0, 3);
         classBarrier = new Barrier(this, 6, 4, 10);
 
         Abilities.add(classBandage);
@@ -162,6 +204,5 @@ public class Healer extends Class
         Abilities.add(classHeal);
         Abilities.add(classLightHeal);
         SortAbilities();
-
     }
 }

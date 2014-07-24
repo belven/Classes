@@ -38,8 +38,8 @@ public abstract class Class
         Damageable dcurrentPlayer = (Damageable) currentPlayer;
         dcurrentPlayer.setMaxHealth(health * 2);
         dcurrentPlayer.setHealth(dcurrentPlayer.getMaxHealth());
-    }    
-    
+    }
+
     public final String getClassName()
     {
         return className;
@@ -142,7 +142,7 @@ public abstract class Class
 
     public void UltAbilityUsed(Ability currentAbility)
     {
-        setAbilityOnCoolDown(currentAbility, 120);
+        setAbilityOnCoolDown(currentAbility);
     }
 
     public void setAbilityOnCoolDown(Ability currentAbility, boolean sendMessage)
@@ -152,7 +152,7 @@ public abstract class Class
         currentAbility.onCooldown = true;
     }
 
-    public void setAbilityOnCoolDown(Ability currentAbility, int seconds)
+    public void setAbilityOnCoolDown(Ability currentAbility)
     {
         setAbilityOnCoolDown(currentAbility, false);
     }

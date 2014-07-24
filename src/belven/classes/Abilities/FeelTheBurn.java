@@ -17,6 +17,7 @@ public class FeelTheBurn extends Ability
     public boolean PerformAbility(Player playerToHeal)
     {
         functions.Heal(playerToHeal, 2);
+        currentClass.setAbilityOnCoolDown(this);
         return true;
     }
 

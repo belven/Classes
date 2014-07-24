@@ -48,7 +48,6 @@ public class Daemon extends Berserker
                 && classSetAlight.HasRequirements(classOwner))
         {
             classSetAlight.PerformAbility(classOwner);
-            setAbilityOnCoolDown(classSetAlight, 1);
         }
     }
 
@@ -81,7 +80,6 @@ public class Daemon extends Berserker
                     && classFeelTheBurn.HasRequirements(classOwner))
             {
                 classFeelTheBurn.PerformAbility(classOwner);
-                setAbilityOnCoolDown(classFeelTheBurn, 2);
             }
 
             classOwner.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,
@@ -100,6 +98,8 @@ public class Daemon extends Berserker
         super.SetAbilities();
         classFeelTheBurn = new FeelTheBurn(this, 1, 0);
         classSetAlight = new SetAlight(this, 2, 0);
+        classSetAlight.Cooldown = 1;
+        classFeelTheBurn.Cooldown = 2;
         SortAbilities();
     }
 

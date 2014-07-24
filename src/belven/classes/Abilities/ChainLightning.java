@@ -1,5 +1,7 @@
 package belven.classes.Abilities;
 
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -22,8 +24,8 @@ public class ChainLightning extends Ability
 
     public boolean PerformAbility(Location targetLocation)
     {
-        Entity[] entitiesToDamage = functions.getNearbyEntities(targetLocation,
-                12);
+        List<LivingEntity> entitiesToDamage = functions.getNearbyEntities(
+                targetLocation, 12);
 
         for (Entity e : entitiesToDamage)
         {

@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -19,14 +19,14 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.metadata.MetadataValue;
-import org.bukkit.projectiles.ProjectileSource;
 
-import belven.arena.blocks.ArenaBlock;
 import belven.classes.Archer;
 import belven.classes.Assassin;
+import belven.classes.Class;
 import belven.classes.ClassManager;
 import belven.classes.Daemon;
 import belven.classes.events.AbilityUsed;
@@ -75,6 +75,40 @@ public class PlayerListener implements Listener
     public void onPlayerLoginEvent(PlayerLoginEvent event)
     {
         plugin.AddClassToPlayer(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerMoveEvent(PlayerMoveEvent event)
+    {
+        Class pClass = plugin.CurrentPlayerClasses.get(event.getPlayer());
+        Block currentBlock = event.getTo().getBlock();
+        org.bukkit.Location upLoc = event.getTo();
+        upLoc.setY(upLoc.getY() + 1);
+
+        event.getPlayer().setWalkSpeed(.2F);
+        // Block blockBelow = currentBlock.getRelative(BlockFace.DOWN);
+
+        if (pClass.getClassName() == "Archer")
+        {
+            if (currentBlock.getType() == Material.WEB)
+            {
+                event.getPlayer().setWalkSpeed(1F);
+            }
+        }
+        // else if (pClass.getClassName() == "Daemon")
+        // {
+        // if (currentBlock.getType() == Material.LAVA)
+        // {
+        // event.setTo(upLoc);
+        // }
+        // }
+        // else if (pClass.getClassName() == "Assassin")
+        // {
+        // if (currentBlock.getType() == Material.WATER)
+        // {
+        // event.setTo(upLoc);
+        // }
+        // }
     }
 
     @EventHandler
@@ -200,36 +234,50 @@ public class PlayerListener implements Listener
         }
     }
 
-    @SuppressWarnings("deprecation")
     public void MobTakenDamage(EntityDamageByEntityEvent event)
     {
-        Entity damagerEntity = event.getDamager();
-        Player currentPlayer = null;
+        LivingEntity le = functions.GetDamager(event);
 
-        if (damagerEntity.getType() == EntityType.PLAYER)
+        if (le != null && le.getType() == EntityType.PLAYER)
         {
-            currentPlayer = (Player) damagerEntity;
-            // addPlayerToArena(currentPlayer, event.getEntity());
+            Player currentPlayer = (Player) le;
 
-            plugin.CurrentPlayerClasses.get(currentPlayer).SelfDamageOther(
-                    event);
-        }
-        else if (damagerEntity.getType() == EntityType.ARROW)
-        {
-            Arrow currentArrow = (Arrow) damagerEntity;
+            addPlayerToArena(currentPlayer, le);
 
-            ProjectileSource ps = currentArrow.getShooter();
-
-            if (ps instanceof Player)
+            if (plugin.CurrentPlayerClasses.containsKey(le))
             {
-                currentPlayer = (Player) ps;
-                // addPlayerToArena(currentPlayer, event.getEntity());
-
                 plugin.CurrentPlayerClasses.get(currentPlayer).SelfDamageOther(
                         event);
             }
 
+            // String damage = String.valueOf(event.getDamage());
+            // currentPlayer.sendMessage(damage);
         }
+
+        // if (damagerEntity.getType() == EntityType.PLAYER)
+        // {
+        // currentPlayer = (Player) damagerEntity;
+        // // addPlayerToArena(currentPlayer, event.getEntity());
+        //
+        // plugin.CurrentPlayerClasses.get(currentPlayer).SelfDamageOther(
+        // event);
+        // }
+        // else if (damagerEntity.getType() == EntityType.ARROW)
+        // {
+        // Arrow currentArrow = (Arrow) damagerEntity;
+        //
+        // ProjectileSource ps = currentArrow.getShooter();
+        //
+        // if (ps instanceof Player)
+        // {
+        // currentPlayer = (Player) ps;
+        // // addPlayerToArena(currentPlayer, event.getEntity());
+        //
+        // plugin.CurrentPlayerClasses.get(currentPlayer).SelfDamageOther(
+        // event);
+        // }
+        //
+        // }
         // else if (damagerEntity.getType() == EntityType.FIREBALL)
         // {
         // Projectile currentFireball = (Projectile) damagerEntity;
@@ -246,20 +294,20 @@ public class PlayerListener implements Listener
         // }
         // }
 
-        if (currentPlayer != null)
-        {
-            event.setDamage(functions.ScaleDamage(currentPlayer.getLevel(),
-                    event.getDamage(), 8));
-        }
-
-        if (event.getEntity() instanceof LivingEntity)
-        {
-            if (ScaleMobHealth(currentPlayer, (LivingEntity) event.getEntity(),
-                    event.getDamage()))
-            {
-                event.setDamage(0.0);
-            }
-        }
+        // if (currentPlayer != null)
+        // {
+        // event.setDamage(functions.ScaleDamage(currentPlayer.getLevel(),
+        // event.getDamage(), 8));
+        // }
+        //
+        // if (event.getEntity() instanceof LivingEntity)
+        // {
+        // if (ScaleMobHealth(currentPlayer, (LivingEntity) event.getEntity(),
+        // event.getDamage()))
+        // {
+        // event.setDamage(0.0);
+        // }
+        // }
     }
 
     public void addPlayerToArena(Player p, Entity e)
@@ -275,19 +323,8 @@ public class PlayerListener implements Listener
 
             List<String> arena = Arrays.asList(currentMetaData.get(0)
                     .asString().split(" "));
-
-            ArenaBlock currentArena = this.plugin.arenas
-                    .getArenaBlock((String) arena.get(0));
-
-            if (currentArena == null)
-            {
-                return;
-            }
-
-            if (!currentArena.arenaPlayers.contains(p))
-            {
-                currentArena.arenaPlayers.add(p);
-            }
+       
+            plugin.arenas.WarpToArena(p, arena.get(0));
         }
     }
 

@@ -7,6 +7,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import belven.classes.resources.functions;
+
 public class Heal extends Ability
 {
     public Heal(belven.classes.Class CurrentClass, int priority, int amp)
@@ -15,6 +17,7 @@ public class Heal extends Ability
         currentClass = CurrentClass;
         requirements.add(new ItemStack(Material.LAPIS_BLOCK, 1));
         abilitiyName = "Heal";
+        Cooldown = 10;
     }
 
     @Override
@@ -28,6 +31,8 @@ public class Heal extends Ability
 
             currentClass.classOwner.sendMessage("You healed "
                     + playerToHeal.getName());
+
+            currentClass.setAbilityOnCoolDown(this, true);
             RemoveItems();
             return true;
         }
@@ -37,7 +42,8 @@ public class Heal extends Ability
 
     public int Amplifier()
     {
-        return Math.round(currentClass.classOwner.getLevel() / Amplifier);
+        return functions.abilityCap((double) Amplifier,
+                (double) currentClass.classOwner.getLevel()) + 1;
     }
 
 }

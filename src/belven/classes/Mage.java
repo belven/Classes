@@ -120,7 +120,6 @@ public class Mage extends Class
             if (entityToStrike != null)
             {
                 classLightningStrike.PerformAbility(entityToStrike);
-                setAbilityOnCoolDown(classLightningStrike, 2);
             }
         }
     }
@@ -138,6 +137,8 @@ public class Mage extends Class
         classChainLightning = new ChainLightning(this, 2, 5);
         classLightningStrike = new LightningStrike(this, 3, 5);
         classPop = new Pop(this, 4, 5);
+
+        classLightningStrike.Cooldown = 2;
         Abilities.add(classFireball);
         Abilities.add(classChainLightning);
         Abilities.add(classLightningStrike);

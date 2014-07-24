@@ -13,6 +13,7 @@ import org.bukkit.potion.PotionType;
 import belven.classes.Abilities.LastResort;
 import belven.classes.Abilities.Retaliation;
 import belven.classes.resources.ClassDrop;
+import belven.classes.resources.functions;
 
 public class Warrior extends Class
 {
@@ -74,24 +75,33 @@ public class Warrior extends Class
         else if (!currentRetaliation.onCooldown && classOwner.isBlocking())
         {
             currentRetaliation.PerformAbility(event);
-            setAbilityOnCoolDown(currentRetaliation, 2);
         }
     }
 
     @Override
     public void SelfTakenDamage(EntityDamageEvent event)
     {
-        if (!currentRetaliation.onCooldown && classOwner.isBlocking())
+        Damageable dcurrentPlayer = classOwner;
+
+        if (!currentLastResort.onCooldown && dcurrentPlayer.getHealth() <= 5
+                && currentLastResort.HasRequirements(classOwner))
         {
-            currentRetaliation.PerformAbility(event);
-            setAbilityOnCoolDown(currentRetaliation, 2);
+            UltAbilityUsed(currentLastResort);
+            currentLastResort.PerformAbility();
         }
+        // else if (!currentRetaliation.onCooldown && classOwner.isBlocking())
+        // {
+        // currentRetaliation.PerformAbility(event);
+        // }
     }
 
     @Override
     public void SelfDamageOther(EntityDamageByEntityEvent event)
     {
-
+        if (functions.isAMeeleWeapon(classOwner.getItemInHand().getType()))
+        {
+            event.setDamage(event.getDamage() + 2);
+        }
     }
 
     @Override
@@ -99,6 +109,7 @@ public class Warrior extends Class
     {
         currentLastResort = new LastResort(this, 1, 5);
         currentRetaliation = new Retaliation(this, 2, 2);
+        currentRetaliation.Cooldown = 2;
         SortAbilities();
     }
 }

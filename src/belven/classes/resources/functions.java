@@ -1,9 +1,11 @@
 package belven.classes.resources;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -12,7 +14,6 @@ import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.MagmaCube;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Slime;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -55,16 +56,74 @@ public class functions
         return target;
     }
 
+    public static int abilityCap(double maxAmount, double currentLevel)
+    {
+        int tempCap = (int) (maxAmount * (currentLevel / getBaseMaxLevel()));
+
+        if (tempCap > maxAmount)
+        {
+            tempCap = (int) maxAmount;
+        }
+
+        return tempCap;
+    }
+
+    public static int averagePlayerLevel()
+    {
+        @SuppressWarnings("deprecation")
+        Player[] tempPlayers = Bukkit.getServer().getOnlinePlayers();
+
+        int AverageLevel = 0;
+        int totalLevel = 0;
+
+        for (Player p : tempPlayers)
+        {
+            totalLevel += p.getLevel();
+        }
+
+        AverageLevel = (totalLevel / tempPlayers.length);
+
+        return AverageLevel;
+    }
+
+    public static int getBaseMaxLevel()
+    {
+        int tempBase = (int) Math.round(averagePlayerLevel() * 1.2);
+
+        return tempBase < getMinMaxLevel() ? getMinMaxLevel() : tempBase;
+    }
+
+    public static int getMinMaxLevel()
+    {
+        return 60;
+    }
+
+    public static boolean isHealthLessThanOther(LivingEntity le1,
+            LivingEntity le2)
+    {
+        Damageable dPlayer = le1;
+        Damageable dOwner = le2;
+        double otherHealth = functions.entityCurrentHealthPercent(
+                dPlayer.getHealth(), dPlayer.getMaxHealth());
+
+        double selfHealth = functions.entityCurrentHealthPercent(
+                dOwner.getHealth(), dOwner.getMaxHealth());
+
+        return otherHealth < selfHealth;
+    }
+
     public static LivingEntity GetDamager(EntityDamageByEntityEvent event)
     {
         Entity damagerEntity = event.getDamager();
-        // LivingEntity le = null;
 
-        if (damagerEntity.getType() == EntityType.ARROW)
+        if (damagerEntity.getType() == EntityType.PLAYER)
+        {
+            return (LivingEntity) damagerEntity;
+        }
+        else if (damagerEntity.getType() == EntityType.ARROW)
         {
             // Arrow currentArrow = (Arrow) damagerEntity;
             // return currentArrow.getShooter();
-
             return null;
         }
         else if (damagerEntity.getType() == EntityType.FIREBALL)
@@ -73,7 +132,7 @@ public class functions
         }
         else
         {
-            return (LivingEntity) damagerEntity;
+            return null;
         }
     }
 
@@ -313,7 +372,9 @@ public class functions
     public static double damageToDo(double damageDone, double currentHealth,
             double maxHealth)
     {
-        return damageDone + damageDone / (currentHealth / maxHealth);
+        return damageDone
+                + (damageDone * (1 - entityCurrentHealthPercent(currentHealth,
+                        maxHealth)));
     }
 
     public static boolean deosPlayersInventoryContainAtLeast(Player p,
@@ -370,10 +431,10 @@ public class functions
                 .size()]);
     }
 
-    public static Entity[] getNearbyEntities(Location l, int radius)
+    public static List<LivingEntity> getNearbyEntities(Location l, int radius)
     {
         int chunkRadius = radius < 16 ? 1 : (radius - radius % 16) / 16;
-        HashSet<Entity> radiusEntities = new HashSet<Entity>();
+        List<LivingEntity> arrayOfLivingEntity = new ArrayList<LivingEntity>();
         for (int chX = 0 - chunkRadius; chX <= chunkRadius; chX++)
         {
             for (int chZ = 0 - chunkRadius; chZ <= chunkRadius; chZ++)
@@ -390,15 +451,15 @@ public class functions
                 for (int i = 0; i < j; i++)
                 {
                     Entity e = arrayOfEntity[i];
-                    if ((e.getLocation().distance(l) <= radius))
+                    if ((e.getLocation().distance(l) <= radius)
+                            && e instanceof LivingEntity)
                     {
-                        radiusEntities.add(e);
+                        arrayOfLivingEntity.add((LivingEntity) e);
                     }
                 }
             }
         }
-        return (Entity[]) radiusEntities.toArray(new Entity[radiusEntities
-                .size()]);
+        return arrayOfLivingEntity;
     }
 
     public static List<Block> getBlocksInRadius(Location l, int radius)
@@ -522,62 +583,6 @@ public class functions
         return false;
     }
 
-    public static boolean debuffs(PotionEffectType pet)
-    {
-        switch (pet.toString())
-        {
-        case "HUNGER":
-            return true;
-        case "BLINDNESS":
-            return true;
-        case "CONFUSION":
-            return true;
-        case "POISON":
-            return true;
-        case "SLOW":
-            return true;
-        case "SLOW_DIGGING":
-            return true;
-        case "WEAKNESS":
-            return true;
-        case "WITHER":
-            return true;
-        default:
-            return false;
-        }
-    }
-
-    public static boolean isNotInteractiveBlock(Material material)
-    {
-        switch (material.toString())
-        {
-        case "ENDER_CHEST":
-            return false;
-        case "MINECART":
-            return false;
-        case "WORKBENCH":
-            return false;
-        case "BED":
-            return false;
-        case "SIGN":
-            return false;
-        case "ANVIL":
-            return false;
-        case "CHEST":
-            return false;
-        case "LEVER":
-            return false;
-        case "FURNACE":
-            return false;
-        case "ENCHANTMENT_TABLE":
-            return false;
-        case "BUTTON":
-            return false;
-        default:
-            return true;
-        }
-    }
-
     public static ArrayList<ItemStack> getAllMeeleWeapons()
     {
         ArrayList<ItemStack> tempWeapons = new ArrayList<ItemStack>();
@@ -589,20 +594,71 @@ public class functions
         return tempWeapons;
     }
 
+    private final static List<EntityType> mobs = Arrays.asList(
+            EntityType.BLAZE, EntityType.CAVE_SPIDER, EntityType.CREEPER,
+            EntityType.ENDER_DRAGON, EntityType.ENDERMAN, EntityType.GHAST,
+            EntityType.MAGMA_CUBE, EntityType.PIG_ZOMBIE, EntityType.SKELETON,
+            EntityType.SPIDER, EntityType.SLIME, EntityType.WITCH,
+            EntityType.WITHER, EntityType.ZOMBIE);
+
+    public static boolean debuffs(PotionEffectType pet)
+    {
+        switch (pet.toString())
+        {
+        case "HUNGER":
+        case "BLINDNESS":
+        case "CONFUSION":
+        case "POISON":
+        case "SLOW":
+        case "SLOW_DIGGING":
+        case "WEAKNESS":
+        case "WITHER":
+            return true;
+
+        default:
+            return false;
+        }
+    }
+
+    public static boolean isNotInteractiveBlock(Material material)
+    {
+        switch (material.toString())
+        {
+        case "ENDER_CHEST":
+        case "MINECART":
+        case "WORKBENCH":
+        case "BED":
+        case "SIGN":
+        case "ANVIL":
+        case "CHEST":
+        case "LEVER":
+        case "FURNACE":
+        case "ENCHANTMENT_TABLE":
+        case "BUTTON":
+            return false;
+
+        default:
+            return true;
+        }
+    }
+
+    public static int SecondsToTicks(int seconds)
+    {
+        return seconds * 20;
+    }
+
     public static boolean isAMeeleWeapon(Material material)
     {
         switch (material.toString())
         {
+
         case "WOOD_SWORD":
-            return true;
         case "STONE_SWORD":
-            return true;
         case "DIAMOND_SWORD":
-            return true;
         case "IRON_SWORD":
-            return true;
         case "GOLD_SWORD":
             return true;
+
         default:
             return false;
         }
@@ -612,32 +668,22 @@ public class functions
     {
         switch (material.toString())
         {
+
         case "MUSHROOM_SOUP":
-            return true;
         case "GOLDEN_APPLE":
-            return true;
         case "COOKED_CHICKEN":
-            return true;
         case "ROTTEN_FLESH":
-            return true;
         case "RAW_CHICKEN":
-            return true;
         case "PORK":
-            return true;
         case "BREAD":
-            return true;
         case "MELON":
-            return true;
         case "COOKED_BEEF":
-            return true;
         case "RAW_BEEF":
-            return true;
         case "GOLDEN_CARROT":
-            return true;
         case "CARROT":
-            return true;
         case "COOKIE":
             return true;
+
         default:
             return false;
         }
@@ -646,99 +692,23 @@ public class functions
 
     public static boolean IsAMob(EntityType currentEntityType)
     {
-        if ((currentEntityType == EntityType.BLAZE)
-                || (currentEntityType == EntityType.CAVE_SPIDER)
-                || (currentEntityType == EntityType.CREEPER)
-                || (currentEntityType == EntityType.ENDER_DRAGON)
-                || (currentEntityType == EntityType.ENDERMAN)
-                || (currentEntityType == EntityType.GHAST)
-                || (currentEntityType == EntityType.MAGMA_CUBE)
-                || (currentEntityType == EntityType.PIG_ZOMBIE)
-                || (currentEntityType == EntityType.SKELETON)
-                || (currentEntityType == EntityType.SPIDER)
-                || (currentEntityType == EntityType.SLIME)
-                || (currentEntityType == EntityType.WITCH)
-                || (currentEntityType == EntityType.WITHER)
-                || (currentEntityType == EntityType.ZOMBIE))
-        {
-            return true;
-        }
-        return false;
-    }
 
-    public static int SecondsToTicks(int seconds)
-    {
-        return seconds * 20;
+        return mobs.contains(currentEntityType);
     }
 
     public static double MobMaxHealth(LivingEntity entity)
     {
-        if (entity.getType() == EntityType.ZOMBIE)
-        {
-            return 20.0D;
-        }
-        if (entity.getType() == EntityType.SKELETON)
-        {
-            return 20.0D;
-        }
-        if (entity.getType() == EntityType.SPIDER)
-        {
-            return 16.0D;
-        }
-        if (entity.getType() == EntityType.CREEPER)
-        {
-            return 20.0D;
-        }
-        if (entity.getType() == EntityType.WITHER)
-        {
-            return 300.0D;
-        }
-        if (entity.getType() == EntityType.BLAZE)
-        {
-            return 20.0D;
-        }
-        if (entity.getType() == EntityType.ENDERMAN)
-        {
-            return 40.0D;
-        }
-        if (entity.getType() == EntityType.CAVE_SPIDER)
-        {
-            return 12.0D;
-        }
-        if (entity.getType() == EntityType.GHAST)
-        {
-            return 10.0D;
-        }
-        if (entity.getType() == EntityType.MAGMA_CUBE)
-        {
-            MagmaCube MagmaCube = (MagmaCube) entity;
-            if (MagmaCube.getSize() == 4)
-            {
-                return 16.0D;
-            }
-            if (MagmaCube.getSize() == 2)
-            {
-                return 4.0D;
-            }
-            return 1.0D;
-        }
-        if (entity.getType() == EntityType.PIG_ZOMBIE)
-        {
-            return 20.0D;
-        }
-        if (entity.getType() == EntityType.SLIME)
-        {
-            Slime slime = (Slime) entity;
-            if (slime.getSize() == 4)
-            {
-                return 16.0D;
-            }
-            if (slime.getSize() == 2)
-            {
-                return 4.0D;
-            }
-            return 1.0D;
-        }
-        return 20.0D;
+
+        // -1 is for slime's
+        final double[] maxHP =
+        { 20.0, 12.0, 20.0, 200.0, 40.0, 10.0, -1, 20.0, 20.0, 16.0, -1, 26.0,
+                300.0, 20.0 };
+        final double[] slimeSize =
+        { 1.0, 4.0, 16.0 };
+
+        final double mhp = maxHP[mobs.indexOf(entity)];
+
+        return (mhp != -1) ? mhp : slimeSize[(int) (Math.log(((Slime) entity)
+                .getSize()) / Math.log(2))];
     }
 }

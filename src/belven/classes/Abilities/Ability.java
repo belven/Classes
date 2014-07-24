@@ -21,7 +21,7 @@ public class Ability
     public boolean onCooldown = false;
     public boolean shouldBreak = true;
     public int Priority = 0;
-    public int Amplifier = 0;
+    public int Amplifier = 5;
     public int Cooldown = 0;
 
     public Ability(int Priority, int amplifier)

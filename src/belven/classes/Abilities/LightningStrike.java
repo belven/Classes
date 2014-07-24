@@ -23,6 +23,8 @@ public class LightningStrike extends Ability
             entityDamaged.getWorld()
                     .strikeLightning(targetEntity.getLocation());
         }
+
+        currentClass.setAbilityOnCoolDown(this);
         return true;
     }
 }

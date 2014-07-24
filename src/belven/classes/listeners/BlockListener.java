@@ -3,17 +3,13 @@ package belven.classes.listeners;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Dispenser;
-import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import belven.classes.Archer;
 import belven.classes.ClassManager;
-import belven.classes.Healer;
-import belven.classes.Mage;
-import belven.classes.Monk;
-import belven.classes.Priest;
 
 public class BlockListener implements Listener
 {
@@ -32,9 +28,10 @@ public class BlockListener implements Listener
         Material mat = event.getBlock().getType();
 
         if (mat == Material.LAPIS_BLOCK
-                && (currentClass instanceof Mage
-                        || currentClass instanceof Healer
-                        || currentClass instanceof Priest || currentClass instanceof Monk))
+                && (currentClass.getClassName() == "Mage"
+                        || currentClass.getClassName() == "Healer"
+                        || currentClass.getClassName() == "Priest" || currentClass
+                        .getClassName() == "Monk"))
         {
             event.setCancelled(true);
         }

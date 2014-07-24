@@ -1,9 +1,12 @@
 package belven.classes.Abilities;
 
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
 import belven.classes.resources.functions;
@@ -25,8 +28,8 @@ public class Barrier extends Ability
 
     public boolean PerformAbility(Location targetLocation)
     {
-        Entity[] entitiesToDamage = functions.getNearbyEntities(targetLocation,
-                radius);
+        List<LivingEntity> entitiesToDamage = functions.getNearbyEntities(
+                targetLocation, radius);
 
         for (Entity e : entitiesToDamage)
         {

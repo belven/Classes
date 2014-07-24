@@ -1,7 +1,6 @@
 package belven.classes.Abilities;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -21,32 +20,32 @@ public class Bandage extends Ability
         inHandRequirements.add(Material.STICK);
         abilitiyName = "Bandage";
         shouldBreak = false;
+        Cooldown = 10;
     }
 
     @Override
     public boolean PerformAbility(Player targetPlayer)
     {
-        Damageable dPlayer = targetPlayer;
-
-        double health = functions.entityCurrentHealthPercent(
-                dPlayer.getHealth(), dPlayer.getMaxHealth());
-
-        if (health > 0.6)
+        if (functions.isHealthLessThanOther(currentClass.classOwner,
+                targetPlayer))
         {
-            targetPlayer.addPotionEffect(new PotionEffect(
-                    PotionEffectType.ABSORPTION, functions.SecondsToTicks(20),
-                    Amplifier()), true);
-            RemoveItems();
-            return true;
+            targetPlayer = currentClass.classOwner;
         }
-        return false;
 
+        targetPlayer.addPotionEffect(new PotionEffect(
+                PotionEffectType.ABSORPTION, functions.SecondsToTicks(20),
+                Amplifier()), true);
+
+        currentClass.setAbilityOnCoolDown(this, true);
+        RemoveItems();
+        return true;
     }
 
     @Override
     public int Amplifier()
     {
-        return Math.round(currentClass.classOwner.getLevel() / Amplifier);
+        return functions.abilityCap((double) Amplifier + 1,
+                (double) currentClass.classOwner.getLevel());
     }
 
 }

@@ -22,27 +22,26 @@ public class LightHeal extends Ability
     @Override
     public boolean PerformAbility(Player playerToHeal)
     {
-        // Damageable dPlayer = playerToHeal;
-        // double health = functions.entityCurrentHealthPercent(
-        // dPlayer.getHealth(), dPlayer.getMaxHealth());
-        //
-        // if (health > 0.5)
-        // {
+        if (functions.isHealthLessThanOther(currentClass.classOwner,
+                playerToHeal))
+        {
+            playerToHeal = currentClass.classOwner;
+        }
+
         playerToHeal.addPotionEffect(new PotionEffect(
                 PotionEffectType.REGENERATION, functions.SecondsToTicks(5),
-                Amplifier() > 4 ? 4 : Amplifier(), true));
+                Amplifier()), true);
 
         currentClass.classOwner.sendMessage("You healed "
                 + playerToHeal.getName());
         RemoveItems();
+
         return true;
-        // }
-        // return false;
     }
 
     public int Amplifier()
     {
-        int PlayerLevel = currentClass.classOwner.getLevel();
-        return PlayerLevel / Amplifier;
+        return functions.abilityCap((double) Amplifier + 1,
+                (double) currentClass.classOwner.getLevel());
     }
 }

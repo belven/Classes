@@ -34,6 +34,7 @@ public class Retaliation extends Ability
 
         Bukkit.getPluginManager().callEvent(new AbilityUsed(this));
 
+        currentClass.setAbilityOnCoolDown(this);
         return true;
     }
 
@@ -41,6 +42,7 @@ public class Retaliation extends Ability
     public boolean PerformAbility(EntityDamageEvent event)
     {
         event.setCancelled(true);
+        currentClass.setAbilityOnCoolDown(this);
         return true;
     }
 

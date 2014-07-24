@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
 
 import belven.classes.Abilities.Ability;
+import belven.classes.Abilities.DamageTrap;
 import belven.classes.Abilities.FireTrap;
 import belven.classes.Abilities.WebArrow;
 import belven.classes.resources.ClassDrop;
@@ -22,6 +23,7 @@ public class Archer extends Class
 {
     public WebArrow classCripplingArrow;
     public FireTrap classFireTrap;
+    public DamageTrap classDamageTrap;
 
     public Archer(Player currentPlayer, ClassManager instance)
     {
@@ -61,6 +63,7 @@ public class Archer extends Class
     public void SetClassDrops()
     {
         ItemStack redwool = new Wool(DyeColor.RED).toItemStack(2);
+        ItemStack graywool = new Wool(DyeColor.GRAY).toItemStack(2);
         ItemStack arrow = new ItemStack(Material.ARROW, 10);
         ItemStack bow = new ItemStack(Material.BOW);
         ItemStack snowBall = new ItemStack(Material.SNOW_BALL, 8);
@@ -69,6 +72,7 @@ public class Archer extends Class
         classDrops.add(new ClassDrop(bow, true));
 
         classDrops.add(new ClassDrop(redwool, 0, 30));
+        classDrops.add(new ClassDrop(graywool, 0, 30));
         classDrops.add(new ClassDrop(snowBall, 30, 50));
 
         classDrops.add(new ClassDrop(l_Boots(), 50, 100));
@@ -94,20 +98,21 @@ public class Archer extends Class
     @Override
     public void SelfDamageOther(EntityDamageByEntityEvent event)
     {
-        Entity damagedEntity = event.getEntity();
-        Location damagedEntityLocation = damagedEntity.getLocation();
-        damagedEntityLocation.setY(damagedEntityLocation.getY() + 1);
+        LivingEntity currentLivingEntity = functions.GetDamager(event);
+        Location damagedEntityLocation = event.getEntity().getLocation();
+        damagedEntityLocation.setY(damagedEntityLocation.getY());
 
-        if (classCripplingArrow.HasRequirements(classOwner)
-                && damagedEntityLocation.getBlock().getType() != Material.WEB)
+        if (classOwner.getItemInHand().getType() == Material.BOW)
         {
-            new BlockRestorer(damagedEntityLocation.getBlock(), Material.WEB)
-                    .runTaskLater(plugin, functions.SecondsToTicks(5));
-        }
+            if (classCripplingArrow.HasRequirements(classOwner)
+                    && damagedEntityLocation.getBlock().getType() != Material.WEB)
+            {
+                new BlockRestorer(damagedEntityLocation.getBlock(),
+                        Material.WEB).runTaskLater(plugin,
+                        functions.SecondsToTicks(5));
+            }
 
-        if (damagedEntity instanceof LivingEntity)
-        {
-            LivingEntity currentLivingEntity = (LivingEntity) damagedEntity;
+            event.setDamage(event.getDamage() + 10);
 
             Damageable dcurrentLivingEntity = (Damageable) currentLivingEntity;
 
@@ -115,7 +120,6 @@ public class Archer extends Class
                     dcurrentLivingEntity.getHealth(),
                     dcurrentLivingEntity.getMaxHealth()));
         }
-
     }
 
     @Override
@@ -123,7 +127,9 @@ public class Archer extends Class
     {
         classCripplingArrow = new WebArrow(this, 0, 0);
         classFireTrap = new FireTrap(this, 1, 0);
+        classDamageTrap = new DamageTrap(this, 1, 0);
         Abilities.add(classFireTrap);
+        Abilities.add(classDamageTrap);
         SortAbilities();
     }
 

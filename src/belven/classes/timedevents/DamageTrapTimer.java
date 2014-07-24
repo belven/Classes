@@ -5,48 +5,47 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import belven.classes.resources.functions;
 
-public class FireTrapTimer extends BukkitRunnable
+public class DamageTrapTimer extends BukkitRunnable
 {
     private Location blockLocation;
     private Material MaterialToRestore;
     private int trapRadius;
     private int maxDuration;
-    private int burnDuration;
+    private double level;
 
-    public FireTrapTimer(Block currentBlock, int duartion, int trapRadius)
+    public DamageTrapTimer(Block currentBlock, int trapRadius, int level)
     {
         blockLocation = currentBlock.getLocation();
         MaterialToRestore = currentBlock.getType();
         maxDuration = 20;
+        this.level = level;
         this.trapRadius = trapRadius;
-        burnDuration = duartion;
     }
 
-    public FireTrapTimer(Block currentBlock, int duartion)
+    public DamageTrapTimer(Block currentBlock, int level)
     {
-        this(currentBlock, duartion, 3);
+        this(currentBlock, 3, level);
     }
 
     @Override
     public void run()
     {
-        List<LivingEntity> entitiesToDamage = functions.getNearbyEntities(blockLocation,
-                trapRadius);
+        List<LivingEntity> entitiesToDamage = functions.getNearbyEntities(
+                blockLocation, trapRadius);
         maxDuration--;
 
         if (entitiesToDamage.size() > 0)
         {
-            for (Entity e : entitiesToDamage)
+            for (LivingEntity e : entitiesToDamage)
             {
                 if (e != null)
                 {
-                    e.setFireTicks(burnDuration);
+                    e.damage(level / 5);
                 }
             }
 
@@ -59,5 +58,4 @@ public class FireTrapTimer extends BukkitRunnable
             this.cancel();
         }
     }
-
 }

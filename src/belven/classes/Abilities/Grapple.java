@@ -42,7 +42,7 @@ public class Grapple extends Ability
             {
                 le.teleport(this.currentClass.classOwner);
             }
-            currentClass.setAbilityOnCoolDown(this, 2);
+            currentClass.setAbilityOnCoolDown(this);
             RemoveItems();
             return true;
         }

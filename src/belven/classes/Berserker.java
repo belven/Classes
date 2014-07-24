@@ -109,6 +109,11 @@ public class Berserker extends Class
     @Override
     public void SelfDamageOther(EntityDamageByEntityEvent event)
     {
+        if (functions.isAMeeleWeapon(classOwner.getItemInHand().getType()))
+        {
+            event.setDamage(event.getDamage() + 2);
+        }
+
         int mobCount = 0;
         for (Entity e : functions.getNearbyEntities(event.getEntity()
                 .getLocation(), 4))
@@ -126,7 +131,8 @@ public class Berserker extends Class
 
                 LivingEntity le = (LivingEntity) e;
 
-                if (le == this.classOwner)
+                if (le == this.classOwner
+                        && !functions.IsAMob(event.getEntityType()))
                 {
                     Damageable dPlayer = this.classOwner;
 
@@ -148,7 +154,6 @@ public class Berserker extends Class
 
                     le.damage(damageToDo);
                     // le.setLastDamageCause(ede);
-
                 }
             }
         }
