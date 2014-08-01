@@ -9,7 +9,6 @@ public class DEFAULT extends Class
     public DEFAULT(Player currentPlayer, ClassManager instance)
     {
         super(10, currentPlayer, instance);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
