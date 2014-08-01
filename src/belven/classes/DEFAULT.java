@@ -8,6 +8,7 @@ public class DEFAULT extends Class
 {
     public DEFAULT(Player currentPlayer, ClassManager instance)
     {
+    	// Test
         super(10, currentPlayer, instance);
     }
 
