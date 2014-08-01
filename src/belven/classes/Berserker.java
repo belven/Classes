@@ -10,10 +10,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import resources.EntityFunctions;
+import resources.Functions;
+import resources.MaterialFunctions;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.Grapple;
 import belven.classes.resources.ClassDrop;
-import belven.classes.resources.functions;
 
 public class Berserker extends Class
 {
@@ -39,7 +41,7 @@ public class Berserker extends Class
     @Override
     public void SelfCast(Player currentPlayer)
     {
-        if (functions.isFood(classOwner.getItemInHand().getType()))
+        if (MaterialFunctions.isFood(classOwner.getItemInHand().getType()))
         {
             return;
         }
@@ -63,7 +65,7 @@ public class Berserker extends Class
     @Override
     public void RightClickEntity(Entity currentEntity)
     {
-        if (functions.isFood(classOwner.getItemInHand().getType()))
+        if (MaterialFunctions.isFood(classOwner.getItemInHand().getType()))
         {
             return;
         }
@@ -89,8 +91,9 @@ public class Berserker extends Class
     {
         Damageable dPlayer = (Damageable) event.getEntity();
 
-        double healthPercent = 1.3 - functions.entityCurrentHealthPercent(
-                dPlayer.getHealth(), dPlayer.getMaxHealth());
+        double healthPercent = 1.3 - EntityFunctions
+                .entityCurrentHealthPercent(dPlayer.getHealth(),
+                        dPlayer.getMaxHealth());
 
         if (healthPercent > 1)
         {
@@ -98,24 +101,25 @@ public class Berserker extends Class
         }
 
         this.classOwner.addPotionEffect(new PotionEffect(
-                PotionEffectType.INCREASE_DAMAGE, functions.SecondsToTicks(2),
+                PotionEffectType.INCREASE_DAMAGE, Functions.SecondsToTicks(2),
                 (int) (2 * healthPercent)));
 
         this.classOwner.addPotionEffect(new PotionEffect(
                 PotionEffectType.DAMAGE_RESISTANCE,
-                functions.SecondsToTicks(2), (int) (3 * healthPercent)));
+                Functions.SecondsToTicks(2), (int) (3 * healthPercent)));
     }
 
     @Override
     public void SelfDamageOther(EntityDamageByEntityEvent event)
     {
-        if (functions.isAMeeleWeapon(classOwner.getItemInHand().getType()))
+        if (MaterialFunctions.isAMeeleWeapon(classOwner.getItemInHand()
+                .getType()))
         {
             event.setDamage(event.getDamage() + 2);
         }
 
         int mobCount = 0;
-        for (Entity e : functions.getNearbyEntities(event.getEntity()
+        for (Entity e : EntityFunctions.getNearbyEntities(event.getEntity()
                 .getLocation(), 4))
         {
             double damageToDo = event.getDamage() / 3.0D;
@@ -132,11 +136,11 @@ public class Berserker extends Class
                 LivingEntity le = (LivingEntity) e;
 
                 if (le == this.classOwner
-                        && !functions.IsAMob(event.getEntityType()))
+                        && !Functions.IsAMob(event.getEntityType()))
                 {
                     Damageable dPlayer = this.classOwner;
 
-                    double healthPercent = functions
+                    double healthPercent = EntityFunctions
                             .entityCurrentHealthPercent(dPlayer.getHealth(),
                                     dPlayer.getMaxHealth());
                     if (healthPercent > 0.2D)

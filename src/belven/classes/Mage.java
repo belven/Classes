@@ -11,13 +11,14 @@ import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
 
+import resources.EntityFunctions;
+import resources.Functions;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.ChainLightning;
 import belven.classes.Abilities.LightningStrike;
 import belven.classes.Abilities.MageFireball;
 import belven.classes.Abilities.Pop;
 import belven.classes.resources.ClassDrop;
-import belven.classes.resources.functions;
 
 public class Mage extends Class
 {
@@ -37,7 +38,7 @@ public class Mage extends Class
 
     public void CheckAbilitiesToCast()
     {
-        LivingEntity targetEntity = functions.findTargetEntity(classOwner,
+        LivingEntity targetEntity = EntityFunctions.findTargetEntity(classOwner,
                 150.0D);
 
         for (Ability a : Abilities)
@@ -115,7 +116,7 @@ public class Mage extends Class
         }
         else if (!classLightningStrike.onCooldown)
         {
-            Entity entityToStrike = functions.GetDamager(event);
+            Entity entityToStrike = Functions.GetDamager(event);
 
             if (entityToStrike != null)
             {

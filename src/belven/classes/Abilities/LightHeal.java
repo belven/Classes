@@ -6,7 +6,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import belven.classes.resources.functions;
+import resources.EntityFunctions;
+import resources.Functions;
 
 public class LightHeal extends Ability
 {
@@ -22,14 +23,14 @@ public class LightHeal extends Ability
     @Override
     public boolean PerformAbility(Player playerToHeal)
     {
-        if (functions.isHealthLessThanOther(currentClass.classOwner,
+        if (EntityFunctions.isHealthLessThanOther(currentClass.classOwner,
                 playerToHeal))
         {
             playerToHeal = currentClass.classOwner;
         }
 
         playerToHeal.addPotionEffect(new PotionEffect(
-                PotionEffectType.REGENERATION, functions.SecondsToTicks(5),
+                PotionEffectType.REGENERATION, Functions.SecondsToTicks(5),
                 Amplifier()), true);
 
         currentClass.classOwner.sendMessage("You healed "
@@ -41,7 +42,7 @@ public class LightHeal extends Ability
 
     public int Amplifier()
     {
-        return functions.abilityCap((double) Amplifier + 1,
+        return Functions.abilityCap((double) Amplifier + 1,
                 (double) currentClass.classOwner.getLevel());
     }
 }

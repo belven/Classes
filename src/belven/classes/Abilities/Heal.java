@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import belven.classes.resources.functions;
+import resources.Functions;
 
 public class Heal extends Ability
 {
@@ -42,7 +42,7 @@ public class Heal extends Ability
 
     public int Amplifier()
     {
-        return functions.abilityCap((double) Amplifier,
+        return Functions.abilityCap((double) Amplifier,
                 (double) currentClass.classOwner.getLevel()) + 1;
     }
 

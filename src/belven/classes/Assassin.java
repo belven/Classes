@@ -13,9 +13,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 
+import resources.Functions;
+import resources.MaterialFunctions;
 import belven.classes.Abilities.SoulDrain;
 import belven.classes.resources.ClassDrop;
-import belven.classes.resources.functions;
 
 public class Assassin extends Class
 {
@@ -87,7 +88,7 @@ public class Assassin extends Class
         {
             if (locationToTeleportTo.getBlock().getType() == Material.AIR)
             {
-                Location temp = functions.lookAt(locationToTeleportTo,
+                Location temp = Functions.lookAt(locationToTeleportTo,
                         mobLocation);
                 classOwner.teleport(temp);
             }
@@ -163,9 +164,9 @@ public class Assassin extends Class
         Entity damagedEntity = event.getEntity();
         boolean arrowEntity = (event.getDamager().getType() == EntityType.ARROW);
 
-        functions.Heal(classOwner, 1);
+        Functions.Heal(classOwner, 1);
 
-        if (functions.isAMeeleWeapon(classOwner.getItemInHand().getType()))
+        if (MaterialFunctions.isAMeeleWeapon(classOwner.getItemInHand().getType()))
         {
             event.setDamage(event.getDamage() + 2);
         }

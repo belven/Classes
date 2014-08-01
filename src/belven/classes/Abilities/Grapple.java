@@ -9,8 +9,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 
+import resources.EntityFunctions;
 import belven.classes.Class;
-import belven.classes.resources.functions;
 
 public class Grapple extends Ability
 {
@@ -29,7 +29,7 @@ public class Grapple extends Ability
         types.add(EntityType.BLAZE);
         types.add(EntityType.ZOMBIE);
 
-        List<LivingEntity> tempTargets = functions.findTargetEntityByType(
+        List<LivingEntity> tempTargets = EntityFunctions.findTargetEntityByType(
                 currentClass.classOwner, 50.0D, types,
                 currentClass.classOwner.getLevel() / 5 + 1);
 

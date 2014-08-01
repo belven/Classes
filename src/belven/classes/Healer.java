@@ -8,13 +8,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
+import resources.EntityFunctions;
+import resources.MaterialFunctions;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.Bandage;
 import belven.classes.Abilities.Barrier;
 import belven.classes.Abilities.Heal;
 import belven.classes.Abilities.LightHeal;
 import belven.classes.resources.ClassDrop;
-import belven.classes.resources.functions;
 
 public class Healer extends Class
 {
@@ -38,7 +39,7 @@ public class Healer extends Class
 
     public void CheckAbilitiesToCast(Player player)
     {
-        if (functions.isFood(classOwner.getItemInHand().getType()))
+        if (MaterialFunctions.isFood(classOwner.getItemInHand().getType()))
         {
             return;
         }
@@ -89,8 +90,8 @@ public class Healer extends Class
         }
         else
         {
-            LivingEntity targetEntity = functions.findTargetPlayer(classOwner,
-                    150.0D);
+            LivingEntity targetEntity = EntityFunctions.findTargetPlayer(
+                    classOwner, 150.0D);
 
             if (targetEntity != null)
             {
@@ -136,8 +137,8 @@ public class Healer extends Class
         }
         else
         {
-            LivingEntity targetEntity = functions.findTargetPlayer(classOwner,
-                    150.0D);
+            LivingEntity targetEntity = EntityFunctions.findTargetPlayer(
+                    classOwner, 150.0D);
 
             if (targetEntity != null)
             {

@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import belven.classes.resources.functions;
+import resources.Functions;
 
 public class SetAlight extends Ability
 {
@@ -26,7 +26,7 @@ public class SetAlight extends Ability
             Amplifier = 10;
         }
 
-        playerToBurn.setFireTicks(functions.SecondsToTicks(Amplifier));
+        playerToBurn.setFireTicks(Functions.SecondsToTicks(Amplifier));
         currentClass.setAbilityOnCoolDown(this);
         return true;
     }

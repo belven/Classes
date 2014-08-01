@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import belven.classes.resources.functions;
+import resources.Functions;
 
 public class LastResort extends Ability
 {
@@ -21,7 +21,7 @@ public class LastResort extends Ability
     public boolean PerformAbility()
     {
         currentClass.classOwner.addPotionEffect(
-                new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, functions
+                new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Functions
                         .SecondsToTicks(Amplifier()), 4), false);
         return true;
     }

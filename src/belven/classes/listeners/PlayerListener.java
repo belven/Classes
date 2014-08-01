@@ -24,13 +24,15 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.metadata.MetadataValue;
 
+import resources.EntityFunctions;
+import resources.Functions;
+import resources.MaterialFunctions;
 import belven.classes.Archer;
 import belven.classes.Assassin;
 import belven.classes.Class;
 import belven.classes.ClassManager;
 import belven.classes.Daemon;
 import belven.classes.events.AbilityUsed;
-import belven.classes.resources.functions;
 import belven.classes.timedevents.AbilityDelay;
 
 public class PlayerListener implements Listener
@@ -127,7 +129,7 @@ public class PlayerListener implements Listener
         if (plugin.CurrentPlayerClasses.get(event.getPlayer()).CanCast)
         {
             new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin,
-                    functions.SecondsToTicks(1));
+                    Functions.SecondsToTicks(1));
 
             plugin.CurrentPlayerClasses.get(currentPlayer).RightClickEntity(
                     currentEntity);
@@ -145,19 +147,19 @@ public class PlayerListener implements Listener
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK)
             {
                 Material blockMaterial = event.getClickedBlock().getType();
-                if (!functions.isNotInteractiveBlock(blockMaterial))
+                if (!MaterialFunctions.isNotInteractiveBlock(blockMaterial))
                 {
                     return;
                 }
                 else if (event.getItem() != null
-                        && !functions.isNotInteractiveBlock(event.getItem()
+                        && !MaterialFunctions.isNotInteractiveBlock(event.getItem()
                                 .getType()))
                 {
                     return;
                 }
             }
             else if (event.getItem() != null
-                    && !functions.isNotInteractiveBlock(event.getItem()
+                    && !MaterialFunctions.isNotInteractiveBlock(event.getItem()
                             .getType()))
             {
                 return;
@@ -166,7 +168,7 @@ public class PlayerListener implements Listener
             if (plugin.CurrentPlayerClasses.get(currentPlayer).CanCast)
             {
                 new AbilityDelay(currentPlayer, plugin).runTaskLater(plugin,
-                        functions.SecondsToTicks(1));
+                        Functions.SecondsToTicks(1));
 
                 plugin.CurrentPlayerClasses.get(currentPlayer).SelfCast(
                         currentPlayer);
@@ -180,7 +182,7 @@ public class PlayerListener implements Listener
         if (plugin.CurrentPlayerClasses.get(event.getPlayer()).CanCast)
         {
             new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin,
-                    functions.SecondsToTicks(1));
+                    Functions.SecondsToTicks(1));
 
             plugin.CurrentPlayerClasses.get(event.getPlayer())
                     .ToggleSneakEvent(event);
@@ -236,7 +238,7 @@ public class PlayerListener implements Listener
 
     public void MobTakenDamage(EntityDamageByEntityEvent event)
     {
-        LivingEntity le = functions.GetDamager(event);
+        LivingEntity le = Functions.GetDamager(event);
 
         if (le != null && le.getType() == EntityType.PLAYER)
         {
@@ -296,7 +298,7 @@ public class PlayerListener implements Listener
 
         // if (currentPlayer != null)
         // {
-        // event.setDamage(functions.ScaleDamage(currentPlayer.getLevel(),
+        // event.setDamage(Functions.ScaleDamage(currentPlayer.getLevel(),
         // event.getDamage(), 8));
         // }
         //
@@ -323,7 +325,7 @@ public class PlayerListener implements Listener
 
             List<String> arena = Arrays.asList(currentMetaData.get(0)
                     .asString().split(" "));
-       
+
             plugin.arenas.WarpToArena(p, arena.get(0));
         }
     }
@@ -333,7 +335,7 @@ public class PlayerListener implements Listener
     {
         if (player != null && mobToScale != null)
         {
-            double heathToscaleTo = functions.MobMaxHealth(mobToScale)
+            double heathToscaleTo = Functions.MobMaxHealth(mobToScale)
                     + (player.getLevel() * 1.2);
 
             if (heathToscaleTo > 380)
@@ -343,7 +345,7 @@ public class PlayerListener implements Listener
 
             Damageable dmobToScale = (Damageable) mobToScale;
 
-            double CurrentHealthPercent = functions.entityCurrentHealthPercent(
+            double CurrentHealthPercent = EntityFunctions.entityCurrentHealthPercent(
                     dmobToScale.getHealth(), dmobToScale.getMaxHealth());
 
             double damageToDo = (heathToscaleTo * (CurrentHealthPercent))

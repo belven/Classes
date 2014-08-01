@@ -10,10 +10,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 
+import resources.MaterialFunctions;
 import belven.classes.Abilities.LastResort;
 import belven.classes.Abilities.Retaliation;
 import belven.classes.resources.ClassDrop;
-import belven.classes.resources.functions;
 
 public class Warrior extends Class
 {
@@ -98,7 +98,8 @@ public class Warrior extends Class
     @Override
     public void SelfDamageOther(EntityDamageByEntityEvent event)
     {
-        if (functions.isAMeeleWeapon(classOwner.getItemInHand().getType()))
+        if (MaterialFunctions.isAMeeleWeapon(classOwner.getItemInHand()
+                .getType()))
         {
             event.setDamage(event.getDamage() + 2);
         }

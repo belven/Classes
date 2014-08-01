@@ -11,10 +11,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import resources.EntityFunctions;
+import resources.Functions;
 import belven.classes.Abilities.FeelTheBurn;
 import belven.classes.Abilities.SetAlight;
 import belven.classes.resources.ClassDrop;
-import belven.classes.resources.functions;
 
 public class Daemon extends Berserker
 {
@@ -34,7 +35,7 @@ public class Daemon extends Berserker
     {
         super.SelfDamageOther(event);
 
-        for (Entity e : functions.getNearbyEntities(event.getEntity()
+        for (Entity e : EntityFunctions.getNearbyEntities(event.getEntity()
                 .getLocation(), 4))
         {
             e.setFireTicks(classOwner.getFireTicks());
@@ -56,7 +57,7 @@ public class Daemon extends Berserker
     {
         Damageable dClassOwner = classOwner;
 
-        double healthPercent = functions.entityCurrentHealthPercent(
+        double healthPercent = EntityFunctions.entityCurrentHealthPercent(
                 dClassOwner.getHealth(), dClassOwner.getMaxHealth());
 
         if (event.getCause() == DamageCause.FIRE_TICK
@@ -83,7 +84,7 @@ public class Daemon extends Berserker
             }
 
             classOwner.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,
-                    functions.SecondsToTicks(Amplifier()), 3));
+                    Functions.SecondsToTicks(Amplifier()), 3));
         }
     }
 

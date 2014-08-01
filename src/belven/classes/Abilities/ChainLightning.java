@@ -8,7 +8,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
-import belven.classes.resources.functions;
+import resources.EntityFunctions;
 import belven.classes.timedevents.ChainLightningTimer;
 
 public class ChainLightning extends Ability
@@ -24,7 +24,7 @@ public class ChainLightning extends Ability
 
     public boolean PerformAbility(Location targetLocation)
     {
-        List<LivingEntity> entitiesToDamage = functions.getNearbyEntities(
+        List<LivingEntity> entitiesToDamage = EntityFunctions.getNearbyEntities(
                 targetLocation, 12);
 
         for (Entity e : entitiesToDamage)

@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import belven.classes.resources.functions;
+import resources.Functions;
 
 public class HealingFurry extends Ability
 {
@@ -22,7 +22,7 @@ public class HealingFurry extends Ability
     public boolean PerformAbility(Player playerToHeal)
     {
         PotionEffect pe = new PotionEffect(PotionEffectType.HEALTH_BOOST,
-                functions.SecondsToTicks(Amplifier() + 30), Amplifier(), true);
+                Functions.SecondsToTicks(Amplifier() + 30), Amplifier(), true);
 
         if (!onCooldown
                 && (!playerToHeal
@@ -53,7 +53,7 @@ public class HealingFurry extends Ability
 
     public int Amplifier()
     {
-        return functions.abilityCap((double) Amplifier + 1,
+        return Functions.abilityCap((double) Amplifier + 1,
                 (double) currentClass.classOwner.getLevel());
     }
 

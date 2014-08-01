@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
-import belven.classes.resources.functions;
+import resources.Functions;
 
 public class Cleanse extends Ability
 {
@@ -30,7 +30,7 @@ public class Cleanse extends Ability
         while (ActivePotionEffects.hasNext())
         {
             PotionEffect pe = ActivePotionEffects.next();
-            if (functions.debuffs(pe.getType()))
+            if (Functions.debuffs(pe.getType()))
             {
                 ActivePotionEffects.remove();
                 break;

@@ -16,10 +16,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.MetadataValue;
 
+import resources.Functions;
 import belven.arena.blocks.ArenaBlock;
 import belven.classes.ClassManager;
 import belven.classes.resources.ClassDrop;
-import belven.classes.resources.functions;
 
 public class MobListener implements Listener
 {
@@ -100,12 +100,12 @@ public class MobListener implements Listener
             for (ClassDrop cd : playerClass.classDrops)
             {
                 if (cd.alwaysGive
-                        || functions.isNumberBetween(ran, cd.lowChance,
+                        || Functions.isNumberBetween(ran, cd.lowChance,
                                 cd.highChance))
                 {
                     if (!cd.isArmor)
                     {
-                        functions.AddToInventory(p, cd.is);
+                        Functions.AddToInventory(p, cd.is);
                     }
                     else
                     {

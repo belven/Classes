@@ -9,7 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import belven.classes.resources.functions;
+import resources.EntityFunctions;
 
 public class FireTrapTimer extends BukkitRunnable
 {
@@ -36,7 +36,7 @@ public class FireTrapTimer extends BukkitRunnable
     @Override
     public void run()
     {
-        List<LivingEntity> entitiesToDamage = functions.getNearbyEntities(blockLocation,
+        List<LivingEntity> entitiesToDamage = EntityFunctions.getNearbyEntities(blockLocation,
                 trapRadius);
         maxDuration--;
 

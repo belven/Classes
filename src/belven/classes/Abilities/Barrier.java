@@ -9,7 +9,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
-import belven.classes.resources.functions;
+import resources.EntityFunctions;
 import belven.classes.timedevents.BarrierTimer;
 
 public class Barrier extends Ability
@@ -28,7 +28,7 @@ public class Barrier extends Ability
 
     public boolean PerformAbility(Location targetLocation)
     {
-        List<LivingEntity> entitiesToDamage = functions.getNearbyEntities(
+        List<LivingEntity> entitiesToDamage = EntityFunctions.getNearbyEntities(
                 targetLocation, radius);
 
         for (Entity e : entitiesToDamage)

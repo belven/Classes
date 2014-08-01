@@ -11,12 +11,12 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
 
+import resources.Functions;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.DamageTrap;
 import belven.classes.Abilities.FireTrap;
 import belven.classes.Abilities.WebArrow;
 import belven.classes.resources.ClassDrop;
-import belven.classes.resources.functions;
 import belven.classes.timedevents.BlockRestorer;
 
 public class Archer extends Class
@@ -98,7 +98,7 @@ public class Archer extends Class
     @Override
     public void SelfDamageOther(EntityDamageByEntityEvent event)
     {
-        LivingEntity currentLivingEntity = functions.GetDamager(event);
+        LivingEntity currentLivingEntity = Functions.GetDamager(event);
         Location damagedEntityLocation = event.getEntity().getLocation();
         damagedEntityLocation.setY(damagedEntityLocation.getY());
 
@@ -109,14 +109,14 @@ public class Archer extends Class
             {
                 new BlockRestorer(damagedEntityLocation.getBlock(),
                         Material.WEB).runTaskLater(plugin,
-                        functions.SecondsToTicks(5));
+                        Functions.SecondsToTicks(5));
             }
 
             event.setDamage(event.getDamage() + 10);
 
             Damageable dcurrentLivingEntity = (Damageable) currentLivingEntity;
 
-            event.setDamage(functions.damageToDo(event.getDamage(),
+            event.setDamage(Functions.damageToDo(event.getDamage(),
                     dcurrentLivingEntity.getHealth(),
                     dcurrentLivingEntity.getMaxHealth()));
         }

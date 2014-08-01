@@ -15,9 +15,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 
+import resources.Functions;
 import belven.classes.Abilities.Ability;
 import belven.classes.resources.ClassDrop;
-import belven.classes.resources.functions;
 import belven.classes.timedevents.AbilityCooldown;
 
 public abstract class Class
@@ -148,7 +148,7 @@ public abstract class Class
     public void setAbilityOnCoolDown(Ability currentAbility, boolean sendMessage)
     {
         new AbilityCooldown(currentAbility, sendMessage).runTaskLater(plugin,
-                functions.SecondsToTicks(currentAbility.Cooldown));
+                Functions.SecondsToTicks(currentAbility.Cooldown));
         currentAbility.onCooldown = true;
     }
 

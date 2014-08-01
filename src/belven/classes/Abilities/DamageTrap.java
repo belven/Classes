@@ -8,7 +8,7 @@ import org.bukkit.material.Wool;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import belven.classes.resources.functions;
+import resources.Functions;
 import belven.classes.timedevents.DamageTrapTimer;
 
 public class DamageTrap extends Ability
@@ -29,12 +29,12 @@ public class DamageTrap extends Ability
         {
             new DamageTrapTimer(targetLocation.getBlock(),
                     currentClass.classOwner.getLevel(), 6).runTaskTimer(
-                    currentClass.plugin, functions.SecondsToTicks(5),
-                    functions.SecondsToTicks(2));
+                    currentClass.plugin, Functions.SecondsToTicks(5),
+                    Functions.SecondsToTicks(2));
 
             targetLocation.getBlock().setType(Material.WOOL);
             currentClass.classOwner.addPotionEffect(new PotionEffect(
-                    PotionEffectType.SPEED, functions.SecondsToTicks(2), 3));
+                    PotionEffectType.SPEED, Functions.SecondsToTicks(2), 3));
             RemoveItems();
             return true;
         }

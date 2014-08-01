@@ -2,6 +2,8 @@ package belven.classes.resources;
 
 import org.bukkit.inventory.ItemStack;
 
+import resources.MaterialFunctions;
+
 public class ClassDrop
 {
     public ItemStack is;
@@ -14,7 +16,7 @@ public class ClassDrop
     {
         is = item;
         alwaysGive = give;
-        isArmor = functions.isArmor(is.getType());
+        isArmor = MaterialFunctions.isArmor(is.getType());
     }
 
     public ClassDrop(ItemStack item, int low, int high)
@@ -23,6 +25,6 @@ public class ClassDrop
         lowChance = low;
         highChance = high;
         alwaysGive = false;
-        isArmor = functions.isArmor(is.getType());
+        isArmor = MaterialFunctions.isArmor(is.getType());
     }
 }
