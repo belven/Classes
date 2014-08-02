@@ -14,7 +14,6 @@ import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 
 import resources.Functions;
-import resources.MaterialFunctions;
 import belven.classes.Abilities.SoulDrain;
 import belven.classes.resources.ClassDrop;
 
@@ -166,7 +165,7 @@ public class Assassin extends Class
 
         Functions.Heal(classOwner, 1);
 
-        if (MaterialFunctions.isAMeeleWeapon(classOwner.getItemInHand().getType()))
+        if (plugin.GetPlayerE(classOwner).MeleeWeaponInHand())
         {
             event.setDamage(event.getDamage() + 2);
         }
