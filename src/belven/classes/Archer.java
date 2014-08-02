@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
 
+import resources.EntityFunctions;
 import resources.Functions;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.DamageTrap;
@@ -98,7 +99,7 @@ public class Archer extends Class
     @Override
     public void SelfDamageOther(EntityDamageByEntityEvent event)
     {
-        LivingEntity currentLivingEntity = Functions.GetDamager(event);
+        LivingEntity currentLivingEntity = EntityFunctions.GetDamager(event);
         Location damagedEntityLocation = event.getEntity().getLocation();
         damagedEntityLocation.setY(damagedEntityLocation.getY());
 

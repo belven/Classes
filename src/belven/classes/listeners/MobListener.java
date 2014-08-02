@@ -100,7 +100,7 @@ public class MobListener implements Listener
             for (ClassDrop cd : playerClass.classDrops)
             {
                 if (cd.alwaysGive
-                        || Functions.isNumberBetween(ran, cd.lowChance,
+                        || Functions.numberBetween(ran, cd.lowChance,
                                 cd.highChance))
                 {
                     if (!cd.isArmor)

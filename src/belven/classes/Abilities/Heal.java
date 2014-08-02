@@ -1,7 +1,6 @@
 package belven.classes.Abilities;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -23,8 +22,7 @@ public class Heal extends Ability
     @Override
     public boolean PerformAbility(Player playerToHeal)
     {
-        Damageable dplayer = (Damageable) playerToHeal;
-        if (dplayer.getHealth() <= 10)
+        if (currentClass.plugin.GetPlayerE(playerToHeal).GetHealth() <= 10)
         {
             playerToHeal.addPotionEffect(new PotionEffect(
                     PotionEffectType.HEAL, 1, Amplifier()));

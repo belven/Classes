@@ -1,7 +1,6 @@
 package belven.classes;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -55,22 +54,15 @@ public class Daemon extends Berserker
     @Override
     public void SelfTakenDamage(EntityDamageEvent event)
     {
-        Damageable dClassOwner = classOwner;
-
-        double healthPercent = EntityFunctions.entityCurrentHealthPercent(
-                dClassOwner.getHealth(), dClassOwner.getMaxHealth());
+        double healthPercent = plugin.GetPlayerE(classOwner).GetHealthPercent();
 
         if (event.getCause() == DamageCause.FIRE_TICK
                 || event.getCause() == DamageCause.FIRE)
         {
-            for (PotionEffect pe : classOwner.getActivePotionEffects())
+
+            if (classOwner.hasPotionEffect(PotionEffectType.HUNGER))
             {
-                if (pe.getType() == PotionEffectType.HUNGER)
-                {
-                    classOwner.addPotionEffect(new PotionEffect(pe.getType(),
-                            1, pe.getAmplifier()), true);
-                    break;
-                }
+                classOwner.removePotionEffect(PotionEffectType.HUNGER);
             }
 
             if (healthPercent <= 0.15)
@@ -90,7 +82,7 @@ public class Daemon extends Berserker
 
     public int Amplifier()
     {
-        return Math.round(classOwner.getLevel() / 5) + 1;
+        return Functions.abilityCap(5, classOwner.getLevel()) + 1;
     }
 
     @Override

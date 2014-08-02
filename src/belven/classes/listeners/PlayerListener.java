@@ -20,6 +20,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.metadata.MetadataValue;
@@ -27,6 +28,7 @@ import org.bukkit.metadata.MetadataValue;
 import resources.EntityFunctions;
 import resources.Functions;
 import resources.MaterialFunctions;
+import resources.PlayerExtended;
 import belven.classes.Archer;
 import belven.classes.Assassin;
 import belven.classes.Class;
@@ -77,6 +79,14 @@ public class PlayerListener implements Listener
     public void onPlayerLoginEvent(PlayerLoginEvent event)
     {
         plugin.AddClassToPlayer(event.getPlayer());
+        plugin.PlayersE.put(event.getPlayer(),
+                new PlayerExtended(event.getPlayer()));
+    }
+
+    @EventHandler
+    public void onPlayerLoginEvent(PlayerQuitEvent event)
+    {
+        plugin.PlayersE.remove(event.getPlayer());
     }
 
     @EventHandler
@@ -152,8 +162,8 @@ public class PlayerListener implements Listener
                     return;
                 }
                 else if (event.getItem() != null
-                        && !MaterialFunctions.isNotInteractiveBlock(event.getItem()
-                                .getType()))
+                        && !MaterialFunctions.isNotInteractiveBlock(event
+                                .getItem().getType()))
                 {
                     return;
                 }
@@ -238,7 +248,7 @@ public class PlayerListener implements Listener
 
     public void MobTakenDamage(EntityDamageByEntityEvent event)
     {
-        LivingEntity le = Functions.GetDamager(event);
+        LivingEntity le = EntityFunctions.GetDamager(event);
 
         if (le != null && le.getType() == EntityType.PLAYER)
         {
@@ -255,61 +265,6 @@ public class PlayerListener implements Listener
             // String damage = String.valueOf(event.getDamage());
             // currentPlayer.sendMessage(damage);
         }
-
-        // if (damagerEntity.getType() == EntityType.PLAYER)
-        // {
-        // currentPlayer = (Player) damagerEntity;
-        // // addPlayerToArena(currentPlayer, event.getEntity());
-        //
-        // plugin.CurrentPlayerClasses.get(currentPlayer).SelfDamageOther(
-        // event);
-        // }
-        // else if (damagerEntity.getType() == EntityType.ARROW)
-        // {
-        // Arrow currentArrow = (Arrow) damagerEntity;
-        //
-        // ProjectileSource ps = currentArrow.getShooter();
-        //
-        // if (ps instanceof Player)
-        // {
-        // currentPlayer = (Player) ps;
-        // // addPlayerToArena(currentPlayer, event.getEntity());
-        //
-        // plugin.CurrentPlayerClasses.get(currentPlayer).SelfDamageOther(
-        // event);
-        // }
-        //
-        // }
-        // else if (damagerEntity.getType() == EntityType.FIREBALL)
-        // {
-        // Projectile currentFireball = (Projectile) damagerEntity;
-        // ProjectileSource ps = currentFireball.getShooter();
-        //
-        // if (currentFireball instanceof Fireball && ps instanceof Player)
-        // {
-        // currentPlayer = (Player) ps;
-        //
-        // if (plugin.CurrentPlayerClasses.get(currentPlayer) instanceof Mage)
-        // {
-        // event.setDamage(event.getDamage() + 10);
-        // }
-        // }
-        // }
-
-        // if (currentPlayer != null)
-        // {
-        // event.setDamage(Functions.ScaleDamage(currentPlayer.getLevel(),
-        // event.getDamage(), 8));
-        // }
-        //
-        // if (event.getEntity() instanceof LivingEntity)
-        // {
-        // if (ScaleMobHealth(currentPlayer, (LivingEntity) event.getEntity(),
-        // event.getDamage()))
-        // {
-        // event.setDamage(0.0);
-        // }
-        // }
     }
 
     public void addPlayerToArena(Player p, Entity e)
@@ -335,7 +290,7 @@ public class PlayerListener implements Listener
     {
         if (player != null && mobToScale != null)
         {
-            double heathToscaleTo = Functions.MobMaxHealth(mobToScale)
+            double heathToscaleTo = EntityFunctions.MobMaxHealth(mobToScale)
                     + (player.getLevel() * 1.2);
 
             if (heathToscaleTo > 380)
@@ -345,8 +300,9 @@ public class PlayerListener implements Listener
 
             Damageable dmobToScale = (Damageable) mobToScale;
 
-            double CurrentHealthPercent = EntityFunctions.entityCurrentHealthPercent(
-                    dmobToScale.getHealth(), dmobToScale.getMaxHealth());
+            double CurrentHealthPercent = EntityFunctions
+                    .entityCurrentHealthPercent(dmobToScale.getHealth(),
+                            dmobToScale.getMaxHealth());
 
             double damageToDo = (heathToscaleTo * (CurrentHealthPercent))
                     - DamageDone;
@@ -363,5 +319,4 @@ public class PlayerListener implements Listener
         }
         return false;
     }
-
 }

@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import resources.PlayerExtended;
 import belven.arena.ArenaManager;
 import belven.classes.events.ClassChangeEvent;
 import belven.classes.listeners.BlockListener;
@@ -30,6 +31,7 @@ public class ClassManager extends JavaPlugin
             .getPluginManager().getPlugin("BelvensTeams");
 
     public HashMap<Player, Class> CurrentPlayerClasses = new HashMap<Player, Class>();
+    public HashMap<Player, PlayerExtended> PlayersE = new HashMap<Player, PlayerExtended>();
 
     @SuppressWarnings("deprecation")
     @Override
@@ -48,6 +50,11 @@ public class ClassManager extends JavaPlugin
             }
         }
 
+    }
+
+    public PlayerExtended GetPlayerE(Player p)
+    {
+        return PlayersE.get(p);
     }
 
     public void AddClassToPlayer(Player playerToAdd)
@@ -149,7 +156,7 @@ public class ClassManager extends JavaPlugin
             String temp1 = String.valueOf(Math.log(player.getLevel()));
             String temp2 = String.valueOf(Math.log10(player.getLevel()));
             String temp3 = String.valueOf(Math.log1p(player.getLevel()));
-            
+
             player.sendMessage(temp1);
             player.sendMessage(temp2);
             player.sendMessage(temp3);

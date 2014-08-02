@@ -1,7 +1,6 @@
 package belven.classes;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -89,11 +88,8 @@ public class Berserker extends Class
     @Override
     public void SelfTakenDamage(EntityDamageByEntityEvent event)
     {
-        Damageable dPlayer = (Damageable) event.getEntity();
-
-        double healthPercent = 1.3 - EntityFunctions
-                .entityCurrentHealthPercent(dPlayer.getHealth(),
-                        dPlayer.getMaxHealth());
+        double healthPercent = plugin.GetPlayerE(classOwner)
+                .GetMissingHealthPercent();
 
         if (healthPercent > 1)
         {
@@ -112,8 +108,7 @@ public class Berserker extends Class
     @Override
     public void SelfDamageOther(EntityDamageByEntityEvent event)
     {
-        if (MaterialFunctions.isAMeeleWeapon(classOwner.getItemInHand()
-                .getType()))
+        if (plugin.GetPlayerE(classOwner).MeleeWeaponInHand())
         {
             event.setDamage(event.getDamage() + 2);
         }
@@ -136,14 +131,9 @@ public class Berserker extends Class
                 LivingEntity le = (LivingEntity) e;
 
                 if (le == this.classOwner
-                        && !Functions.IsAMob(event.getEntityType()))
+                        && !EntityFunctions.IsAMob(event.getEntityType()))
                 {
-                    Damageable dPlayer = this.classOwner;
-
-                    double healthPercent = EntityFunctions
-                            .entityCurrentHealthPercent(dPlayer.getHealth(),
-                                    dPlayer.getMaxHealth());
-                    if (healthPercent > 0.2D)
+                    if (plugin.GetPlayerE(classOwner).GetHealthPercent() > 0.2D)
                     {
                         le.damage(damageToDo);
                     }

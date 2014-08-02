@@ -5,6 +5,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import resources.EntityFunctions;
 import resources.Functions;
 import belven.classes.events.AbilityUsed;
 
@@ -20,7 +21,7 @@ public class Retaliation extends Ability
     @Override
     public boolean PerformAbility(EntityDamageByEntityEvent event)
     {
-        LivingEntity entityDamaged = Functions.GetDamager(event);
+        LivingEntity entityDamaged = EntityFunctions.GetDamager(event);
 
         if (entityDamaged != null)
         {
