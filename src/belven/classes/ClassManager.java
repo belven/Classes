@@ -30,7 +30,7 @@ public class ClassManager extends JavaPlugin
     public TeamManager teams = (TeamManager) Bukkit.getServer()
             .getPluginManager().getPlugin("BelvensTeams");
 
-    public HashMap<Player, Class> CurrentPlayerClasses = new HashMap<Player, Class>();
+    private HashMap<Player, Class> CurrentPlayerClasses = new HashMap<Player, Class>();
     public HashMap<Player, PlayerExtended> PlayersE = new HashMap<Player, PlayerExtended>();
 
     @SuppressWarnings("deprecation")
@@ -49,7 +49,6 @@ public class ClassManager extends JavaPlugin
                 AddClassToPlayer(currentPlayer);
             }
         }
-
     }
 
     public PlayerExtended GetPlayerE(Player p)
@@ -191,7 +190,7 @@ public class ClassManager extends JavaPlugin
             return false;
     }
 
-    public Class StringToClass(String className, Player player)
+    private Class StringToClass(String className, Player player)
     {
         switch (className.toLowerCase())
         {
@@ -218,6 +217,11 @@ public class ClassManager extends JavaPlugin
         default:
             return new DEFAULT(player, this);
         }
+    }
+
+    public Class GetClass(Player p)
+    {
+        return CurrentPlayerClasses.get(p);
     }
 
     public void SetClass(Player playerToChange, String classString)

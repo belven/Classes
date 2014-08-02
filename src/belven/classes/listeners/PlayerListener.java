@@ -92,7 +92,7 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event)
     {
-        Class pClass = plugin.CurrentPlayerClasses.get(event.getPlayer());
+        Class pClass = plugin.GetClass(event.getPlayer());
         Block currentBlock = event.getTo().getBlock();
         org.bukkit.Location upLoc = event.getTo();
         upLoc.setY(upLoc.getY() + 1);
@@ -126,8 +126,7 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onAbilityUsed(AbilityUsed event)
     {
-        plugin.CurrentPlayerClasses.get(event.GetPlayer()).AbilityUsed(
-                event.GetAbility());
+        plugin.GetClass(event.GetPlayer()).AbilityUsed(event.GetAbility());
     }
 
     @EventHandler
@@ -136,13 +135,12 @@ public class PlayerListener implements Listener
         Player currentPlayer = event.getPlayer();
         Entity currentEntity = event.getRightClicked();
 
-        if (plugin.CurrentPlayerClasses.get(event.getPlayer()).CanCast)
+        if (plugin.GetClass(event.getPlayer()).CanCast)
         {
             new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin,
                     Functions.SecondsToTicks(1));
 
-            plugin.CurrentPlayerClasses.get(currentPlayer).RightClickEntity(
-                    currentEntity);
+            plugin.GetClass(currentPlayer).RightClickEntity(currentEntity);
         }
     }
 
@@ -175,13 +173,12 @@ public class PlayerListener implements Listener
                 return;
             }
 
-            if (plugin.CurrentPlayerClasses.get(currentPlayer).CanCast)
+            if (plugin.GetClass(currentPlayer).CanCast)
             {
                 new AbilityDelay(currentPlayer, plugin).runTaskLater(plugin,
                         Functions.SecondsToTicks(1));
 
-                plugin.CurrentPlayerClasses.get(currentPlayer).SelfCast(
-                        currentPlayer);
+                plugin.GetClass(currentPlayer).SelfCast(currentPlayer);
             }
         }
     }
@@ -189,29 +186,28 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event)
     {
-        if (plugin.CurrentPlayerClasses.get(event.getPlayer()).CanCast)
+        if (plugin.GetClass(event.getPlayer()).CanCast)
         {
             new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin,
                     Functions.SecondsToTicks(1));
 
-            plugin.CurrentPlayerClasses.get(event.getPlayer())
-                    .ToggleSneakEvent(event);
+            plugin.GetClass(event.getPlayer()).ToggleSneakEvent(event);
         }
     }
 
     @EventHandler
     public void onPlayerVelocityEvent(PlayerVelocityEvent event)
     {
-        if (plugin.CurrentPlayerClasses.get(event.getPlayer()) instanceof Assassin)
+        if (plugin.GetClass(event.getPlayer()) instanceof Assassin)
         {
             event.setCancelled(true);
         }
-        else if (plugin.CurrentPlayerClasses.get(event.getPlayer()) instanceof Archer
+        else if (plugin.GetClass(event.getPlayer()) instanceof Archer
                 && event.getPlayer().getItemInHand().getType() == Material.BOW)
         {
             event.setCancelled(true);
         }
-        else if (plugin.CurrentPlayerClasses.get(event.getPlayer()) instanceof Daemon
+        else if (plugin.GetClass(event.getPlayer()) instanceof Daemon
                 && event.getPlayer().getFireTicks() > 0)
         {
             event.setCancelled(true);
@@ -225,8 +221,7 @@ public class PlayerListener implements Listener
         {
             Player damagedPlayer = (Player) event.getEntity();
 
-            plugin.CurrentPlayerClasses.get(damagedPlayer).SelfTakenDamage(
-                    event);
+            plugin.GetClass(damagedPlayer).SelfTakenDamage(event);
         }
         else
         {
@@ -241,8 +236,7 @@ public class PlayerListener implements Listener
         {
             Player damagedPlayer = (Player) event.getEntity();
 
-            plugin.CurrentPlayerClasses.get(damagedPlayer).SelfTakenDamage(
-                    event);
+            plugin.GetClass(damagedPlayer).SelfTakenDamage(event);
         }
     }
 
@@ -256,11 +250,7 @@ public class PlayerListener implements Listener
 
             addPlayerToArena(currentPlayer, le);
 
-            if (plugin.CurrentPlayerClasses.containsKey(le))
-            {
-                plugin.CurrentPlayerClasses.get(currentPlayer).SelfDamageOther(
-                        event);
-            }
+            plugin.GetClass(currentPlayer).SelfDamageOther(event);
 
             // String damage = String.valueOf(event.getDamage());
             // currentPlayer.sendMessage(damage);

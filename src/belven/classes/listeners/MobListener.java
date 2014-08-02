@@ -92,31 +92,28 @@ public class MobListener implements Listener
         int ran = randomGenerator.nextInt(99);
         PlayerInventory pInv = p.getInventory();
 
-        if (plugin.CurrentPlayerClasses.containsKey(p))
-        {
-            belven.classes.Class playerClass = plugin.CurrentPlayerClasses
-                    .get(p);
+        belven.classes.Class playerClass = plugin.GetClass(p);
 
-            for (ClassDrop cd : playerClass.classDrops)
+        for (ClassDrop cd : playerClass.classDrops)
+        {
+            if (cd.alwaysGive
+                    || Functions.isNumberBetween(ran, cd.lowChance,
+                            cd.highChance))
             {
-                if (cd.alwaysGive
-                        || Functions.isNumberBetween(ran, cd.lowChance,
-                                cd.highChance))
+                if (!cd.isArmor)
                 {
-                    if (!cd.isArmor)
+                    Functions.AddToInventory(p, cd.is);
+                }
+                else
+                {
+                    if (AddArmor(pInv, cd.is))
                     {
-                        Functions.AddToInventory(p, cd.is);
-                    }
-                    else
-                    {
-                        if (AddArmor(pInv, cd.is))
-                        {
-                            break;
-                        }
+                        break;
                     }
                 }
             }
         }
+
     }
 
     public boolean AddArmor(PlayerInventory pInv, ItemStack is)

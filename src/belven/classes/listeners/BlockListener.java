@@ -23,8 +23,7 @@ public class BlockListener implements Listener
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event)
     {
-        belven.classes.Class currentClass = plugin.CurrentPlayerClasses
-                .get(event.getPlayer().getName());
+        belven.classes.Class currentClass = plugin.GetClass(event.getPlayer());
         Material mat = event.getBlock().getType();
 
         if (mat == Material.LAPIS_BLOCK

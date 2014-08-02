@@ -8,19 +8,19 @@ import belven.classes.ClassManager;
 public class AbilityDelay extends BukkitRunnable
 {
     private Player currentPlayer;
-    private ClassManager currentPlugin;
+    private ClassManager plugin;
 
     public AbilityDelay(Player CurrentPlayer, ClassManager Plugin)
     {
         currentPlayer = CurrentPlayer;
-        currentPlugin = Plugin;
-        currentPlugin.CurrentPlayerClasses.get(currentPlayer).CanCast = false;
+        plugin = Plugin;
+        plugin.GetClass(currentPlayer).CanCast = false;
     }
 
     @Override
     public void run()
     {
-        currentPlugin.CurrentPlayerClasses.get(currentPlayer).CanCast = true;
+        plugin.GetClass(currentPlayer).CanCast = true;
         this.cancel();
     }
 
