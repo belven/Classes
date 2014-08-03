@@ -102,104 +102,57 @@ public class ClassManager extends JavaPlugin
         Player player = (Player) sender;
         String commandSent = cmd.getName();
 
-        if ((this.arenas != null) && (this.arenas.IsPlayerInArena(player)))
+        if (this.arenas.IsPlayerInArena(player) ? !this.arenas
+                .getArenaInIsPlayer(player).isActive : true)
         {
-            if (this.arenas.getArenaInIsPlayer(player).isActive)
+            // Class
+            if (commandSent.startsWith("bc"))
             {
-                return false;
-            }
-        }
+                StringBuilder sb = new StringBuilder(commandSent.toLowerCase());
+                sb.delete(0, 2);
+                sb.setCharAt(0, (char) (sb.charAt(0) - 32));
+                String s = sb.toString();
 
-        if (commandSent.equalsIgnoreCase("bchealer"))
-        {
-            this.SetClass(player, "Healer");
-            return true;
-        }
-        else if (commandSent.equalsIgnoreCase("bcdummy"))
-        {
-            Location playerLocation = player.getLocation();
-            playerLocation.setX(playerLocation.getX() + 3);
-            player.getWorld().spawnEntity(playerLocation, EntityType.ZOMBIE);
-
-            return true;
-        }
-        // else if (commandSent.equalsIgnoreCase("bcmage"))
-        // {
-        // this.SetClass(player, "Mage");
-        //
-        // return true;
-        // }
-        else if (commandSent.equalsIgnoreCase("bcwarrior"))
-        {
-            this.SetClass(player, "Warrior");
-            return true;
-        }
-        else if (commandSent.equalsIgnoreCase("bcmonk"))
-        {
-            this.SetClass(player, "Monk");
-            return true;
-        }
-        else if (commandSent.equalsIgnoreCase("bcpriest"))
-        {
-            this.SetClass(player, "Priest");
-            return true;
-        }
-        else if (commandSent.equalsIgnoreCase("bcdaemon"))
-        {
-            this.SetClass(player, "Daemon");
-            return true;
-        }
-        else if (commandSent.equalsIgnoreCase("bcberserker"))
-        {
-            this.SetClass(player, "Berserker");
-            return true;
-        }
-        else if (commandSent.equalsIgnoreCase("bcassassin"))
-        {
-            this.SetClass(player, "Assassin");
-            return true;
-        }
-        else if (commandSent.equalsIgnoreCase("setlevel"))
-        {
-            int level = Integer.valueOf(args[0]);
-            player.setLevel(level);
-
-            String temp1 = String.valueOf(Math.log(player.getLevel()));
-            String temp2 = String.valueOf(Math.log10(player.getLevel()));
-            String temp3 = String.valueOf(Math.log1p(player.getLevel()));
-
-            player.sendMessage(temp1);
-            player.sendMessage(temp2);
-            player.sendMessage(temp3);
-            return true;
-        }
-        else if (commandSent.equalsIgnoreCase("bcarcher"))
-        {
-            this.SetClass(player, "Archer");
-            return true;
-        }
-        else if (commandSent.equalsIgnoreCase("listclasses"))
-        {
-            Player[] currentPlayers = this.getServer().getOnlinePlayers();
-            for (Player currentPlayer : currentPlayers)
-            {
-                if (currentPlayer != null)
+                if (StrToRPGClass.containsKey(s))
                 {
-                    RPGClass currentClass = CurrentPlayerClasses
-                            .get(currentPlayer);
-                    player.sendMessage(currentPlayer.getName() + " is a "
-                            + currentClass.getClassName());
+                    SetClass(player, s);
                 }
+                return true;
             }
-            return true;
+
+            // Costume BC commands
+            switch (commandSent)
+            {
+
+            case "bcdummy":
+                Location playerLocation = player.getLocation();
+                playerLocation.setX(playerLocation.getX() + 3);
+                player.getWorld()
+                        .spawnEntity(playerLocation, EntityType.ZOMBIE);
+                return true;
+            case "setlevel":
+                int level = Integer.valueOf(args[0]);
+                player.setLevel(level);
+                return true;
+            case "listclasses":
+                Player[] currentPlayers = this.getServer().getOnlinePlayers();
+                for (Player currentPlayer : currentPlayers)
+                {
+                    if (currentPlayer != null)
+                    {
+                        RPGClass currentClass = CurrentPlayerClasses
+                                .get(currentPlayer);
+                        player.sendMessage(currentPlayer.getName() + " is a "
+                                + currentClass.getClassName());
+                    }
+                }
+                return true;
+            case "listabilities":
+                CurrentPlayerClasses.get(player).ListAbilities();
+                return true;
+            }
         }
-        else if (commandSent.equalsIgnoreCase("listabilities"))
-        {
-            CurrentPlayerClasses.get(player).ListAbilities();
-            return true;
-        }
-        else
-            return false;
+        return false;
     }
 
     private RPGClass StringToClass(String className, Player player)
