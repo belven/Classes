@@ -30,11 +30,11 @@ public abstract class RPGClass
     public List<ClassDrop> classDrops = new ArrayList<ClassDrop>();
     public boolean CanCast = true;
 
-    public RPGClass(double health, Player currentPlayer, ClassManager instance)
+    public RPGClass(double health, Player currentPlayer, ClassManager instance) 
     {
         plugin = instance;
         classOwner = currentPlayer;
-
+        
         Damageable dcurrentPlayer = (Damageable) currentPlayer;
         dcurrentPlayer.setMaxHealth(health * 2);
         dcurrentPlayer.setHealth(dcurrentPlayer.getMaxHealth());
