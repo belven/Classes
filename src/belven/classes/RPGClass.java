@@ -79,23 +79,10 @@ public abstract class RPGClass
 
     public void SortAbilities(List<Ability> tempAbilities)
     {
-        Collections.sort(tempAbilities, new Comparator<Ability>()
-        {
+        Collections.sort(tempAbilities, new Comparator<Ability>(){
             @Override
-            public int compare(Ability a1, Ability a2)
-            {
-                if (a1.Priority > a2.Priority)
-                {
-                    return 1;
-                }
-                else if (a1.Priority < a2.Priority)
-                {
-                    return -1;
-                }
-                else
-                {
-                    return 0;
-                }
+            public int compare(Ability a1, Ability a2){
+            	return Math.min(1, Math.max(-1, a1.Priority - a2.Priority));
             }
         });
     }
