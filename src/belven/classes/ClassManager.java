@@ -112,7 +112,6 @@ public class ClassManager extends JavaPlugin
                 sb.delete(0, 2);
                 sb.setCharAt(0, (char) (sb.charAt(0) - 32));
                 String s = sb.toString();
-
                 if (StrToRPGClass.containsKey(s))
                 {
                     SetClass(player, s);
