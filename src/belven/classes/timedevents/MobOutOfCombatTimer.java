@@ -4,6 +4,7 @@ import org.bukkit.entity.Damageable;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import resources.EntityFunctions;
 import resources.Functions;
 
 public class MobOutOfCombatTimer extends BukkitRunnable
@@ -35,7 +36,7 @@ public class MobOutOfCombatTimer extends BukkitRunnable
 
     private void ResetMaxHealth()
     {
-        currentEntity.setMaxHealth(Functions.MobMaxHealth(currentEntity));
+        currentEntity.setMaxHealth(EntityFunctions.MobMaxHealth(currentEntity));
     }
 
 }

@@ -131,7 +131,11 @@ public class Berserker extends Class
                 LivingEntity le = (LivingEntity) e;
 
                 if (le == this.classOwner
+<<<<<<< HEAD
                         && !Functions.IsAMob(event.getEntityType()))
+=======
+                        && !EntityFunctions.IsAMob(event.getEntityType()))
+>>>>>>> origin/master
                 {
                     if (plugin.GetPlayerE(classOwner).GetHealthPercent() > 0.2D)
                     {

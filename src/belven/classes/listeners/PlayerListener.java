@@ -92,7 +92,11 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event)
     {
+<<<<<<< HEAD
         Class pClass = plugin.GetClass(event.getPlayer());
+=======
+        Class pClass = plugin.CurrentPlayerClasses.get(event.getPlayer());
+>>>>>>> origin/master
         Block currentBlock = event.getTo().getBlock();
         org.bukkit.Location upLoc = event.getTo();
         upLoc.setY(upLoc.getY() + 1);
@@ -126,7 +130,12 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onAbilityUsed(AbilityUsed event)
     {
+<<<<<<< HEAD
         plugin.GetClass(event.GetPlayer()).AbilityUsed(event.GetAbility());
+=======
+        plugin.CurrentPlayerClasses.get(event.GetPlayer()).AbilityUsed(
+                event.GetAbility());
+>>>>>>> origin/master
     }
 
     @EventHandler
@@ -135,12 +144,21 @@ public class PlayerListener implements Listener
         Player currentPlayer = event.getPlayer();
         Entity currentEntity = event.getRightClicked();
 
+<<<<<<< HEAD
         if (plugin.GetClass(event.getPlayer()).CanCast)
+=======
+        if (plugin.CurrentPlayerClasses.get(event.getPlayer()).CanCast)
+>>>>>>> origin/master
         {
             new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin,
                     Functions.SecondsToTicks(1));
 
+<<<<<<< HEAD
             plugin.GetClass(currentPlayer).RightClickEntity(currentEntity);
+=======
+            plugin.CurrentPlayerClasses.get(currentPlayer).RightClickEntity(
+                    currentEntity);
+>>>>>>> origin/master
         }
     }
 
@@ -173,12 +191,21 @@ public class PlayerListener implements Listener
                 return;
             }
 
+<<<<<<< HEAD
             if (plugin.GetClass(currentPlayer).CanCast)
+=======
+            if (plugin.CurrentPlayerClasses.get(currentPlayer).CanCast)
+>>>>>>> origin/master
             {
                 new AbilityDelay(currentPlayer, plugin).runTaskLater(plugin,
                         Functions.SecondsToTicks(1));
 
+<<<<<<< HEAD
                 plugin.GetClass(currentPlayer).SelfCast(currentPlayer);
+=======
+                plugin.CurrentPlayerClasses.get(currentPlayer).SelfCast(
+                        currentPlayer);
+>>>>>>> origin/master
             }
         }
     }
@@ -186,28 +213,49 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event)
     {
+<<<<<<< HEAD
         if (plugin.GetClass(event.getPlayer()).CanCast)
+=======
+        if (plugin.CurrentPlayerClasses.get(event.getPlayer()).CanCast)
+>>>>>>> origin/master
         {
             new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin,
                     Functions.SecondsToTicks(1));
 
+<<<<<<< HEAD
             plugin.GetClass(event.getPlayer()).ToggleSneakEvent(event);
+=======
+            plugin.CurrentPlayerClasses.get(event.getPlayer())
+                    .ToggleSneakEvent(event);
+>>>>>>> origin/master
         }
     }
 
     @EventHandler
     public void onPlayerVelocityEvent(PlayerVelocityEvent event)
     {
+<<<<<<< HEAD
         if (plugin.GetClass(event.getPlayer()) instanceof Assassin)
         {
             event.setCancelled(true);
         }
         else if (plugin.GetClass(event.getPlayer()) instanceof Archer
+=======
+        if (plugin.CurrentPlayerClasses.get(event.getPlayer()) instanceof Assassin)
+        {
+            event.setCancelled(true);
+        }
+        else if (plugin.CurrentPlayerClasses.get(event.getPlayer()) instanceof Archer
+>>>>>>> origin/master
                 && event.getPlayer().getItemInHand().getType() == Material.BOW)
         {
             event.setCancelled(true);
         }
+<<<<<<< HEAD
         else if (plugin.GetClass(event.getPlayer()) instanceof Daemon
+=======
+        else if (plugin.CurrentPlayerClasses.get(event.getPlayer()) instanceof Daemon
+>>>>>>> origin/master
                 && event.getPlayer().getFireTicks() > 0)
         {
             event.setCancelled(true);
@@ -221,7 +269,12 @@ public class PlayerListener implements Listener
         {
             Player damagedPlayer = (Player) event.getEntity();
 
+<<<<<<< HEAD
             plugin.GetClass(damagedPlayer).SelfTakenDamage(event);
+=======
+            plugin.CurrentPlayerClasses.get(damagedPlayer).SelfTakenDamage(
+                    event);
+>>>>>>> origin/master
         }
         else
         {
@@ -236,13 +289,22 @@ public class PlayerListener implements Listener
         {
             Player damagedPlayer = (Player) event.getEntity();
 
+<<<<<<< HEAD
             plugin.GetClass(damagedPlayer).SelfTakenDamage(event);
+=======
+            plugin.CurrentPlayerClasses.get(damagedPlayer).SelfTakenDamage(
+                    event);
+>>>>>>> origin/master
         }
     }
 
     public void MobTakenDamage(EntityDamageByEntityEvent event)
     {
+<<<<<<< HEAD
         LivingEntity le = Functions.GetDamager(event);
+=======
+        LivingEntity le = EntityFunctions.GetDamager(event);
+>>>>>>> origin/master
 
         if (le != null && le.getType() == EntityType.PLAYER)
         {
@@ -250,7 +312,15 @@ public class PlayerListener implements Listener
 
             addPlayerToArena(currentPlayer, le);
 
+<<<<<<< HEAD
             plugin.GetClass(currentPlayer).SelfDamageOther(event);
+=======
+            if (plugin.CurrentPlayerClasses.containsKey(le))
+            {
+                plugin.CurrentPlayerClasses.get(currentPlayer).SelfDamageOther(
+                        event);
+            }
+>>>>>>> origin/master
 
             // String damage = String.valueOf(event.getDamage());
             // currentPlayer.sendMessage(damage);
@@ -280,7 +350,11 @@ public class PlayerListener implements Listener
     {
         if (player != null && mobToScale != null)
         {
+<<<<<<< HEAD
             double heathToscaleTo = Functions.MobMaxHealth(mobToScale)
+=======
+            double heathToscaleTo = EntityFunctions.MobMaxHealth(mobToScale)
+>>>>>>> origin/master
                     + (player.getLevel() * 1.2);
 
             if (heathToscaleTo > 380)

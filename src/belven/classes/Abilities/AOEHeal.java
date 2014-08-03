@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import resources.EntityFunctions;
 import resources.Functions;
 
 public class AOEHeal extends Ability
@@ -21,7 +22,7 @@ public class AOEHeal extends Ability
     @Override
     public boolean PerformAbility(Player playerToHeal)
     {
-        for (Player p : Functions.getNearbyPlayersNew(
+        for (Player p : EntityFunctions.getNearbyPlayersNew(
                 playerToHeal.getLocation(), Amplifier() + 8))
         {
             // p.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 1,

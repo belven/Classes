@@ -116,7 +116,7 @@ public class Mage extends Class
         }
         else if (!classLightningStrike.onCooldown)
         {
-            Entity entityToStrike = Functions.GetDamager(event);
+            Entity entityToStrike = EntityFunctions.GetDamager(event);
 
             if (entityToStrike != null)
             {
