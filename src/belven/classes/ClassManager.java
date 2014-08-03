@@ -32,6 +32,22 @@ public class ClassManager extends JavaPlugin
 
     private HashMap<Player, RPGClass> CurrentPlayerClasses = new HashMap<Player, RPGClass>();
     public HashMap<Player, PlayerExtended> PlayersE = new HashMap<Player, PlayerExtended>();
+    
+    private static HashMap<String, Class<? extends RPGClass>> StrToRPGClass = new HashMap<String, Class<? extends RPGClass>>();
+    
+    static{
+    	StrToRPGClass.put("healer", 	Healer.class);
+    	StrToRPGClass.put("mage",		DEFAULT.class);
+    	StrToRPGClass.put("assassin", 	Assassin.class);
+    	StrToRPGClass.put("archer", 	Archer.class);
+    	StrToRPGClass.put("monk", 		Monk.class);
+    	StrToRPGClass.put("daemon", 	Daemon.class);
+    	StrToRPGClass.put("priest", 	Priest.class);
+    	StrToRPGClass.put("warrior",	Warrior.class);
+    	StrToRPGClass.put("berserker",	Berserker.class);
+    	
+    }
+    
 
     @SuppressWarnings("deprecation")
     @Override
@@ -189,36 +205,13 @@ public class ClassManager extends JavaPlugin
 
     private RPGClass StringToClass(String className, Player player){
     	
-    	HashMap<String, java.lang.Class<RPGClass>> test = new HashMap();
-    	
-    	
-        switch (className.toLowerCase()){
+        try {
+        	return StrToRPGClass.get(className).getConstructor(Player.class, ClassManager.class).newInstance(player, this);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
         
-	        case "healer":
-	            return new Healer(player, this);
-	            // case "mage":
-	            // return new Mage(player, this);
-	        case "mage":
-	            return new DEFAULT(player, this);
-	        case "assassin":
-	            return new Assassin(player, this);
-	        case "archer":
-	            return new Archer(player, this);
-	        case "monk":
-	            return new Monk(player, this);
-	        case "daemon":
-	            return new Daemon(player, this);
-	        case "priest":
-	            return new Priest(player, this);
-	        case "warrior":
-	            return new Warrior(player, this);
-	        case "berserker":
-	            return new Berserker(player, this);
-	        default:
-	            return new DEFAULT(player, this);
-	            
-        }
-        
+		return new DEFAULT(player, this);
     }
 
     public RPGClass GetClass(Player p)
