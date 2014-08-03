@@ -32,22 +32,21 @@ public class ClassManager extends JavaPlugin
 
     private HashMap<Player, RPGClass> CurrentPlayerClasses = new HashMap<Player, RPGClass>();
     public HashMap<Player, PlayerExtended> PlayersE = new HashMap<Player, PlayerExtended>();
-    
+
     private static HashMap<String, Class<? extends RPGClass>> StrToRPGClass = new HashMap<String, Class<? extends RPGClass>>();
-    
-    static{
-    	StrToRPGClass.put("healer", 	Healer.class);
-    	StrToRPGClass.put("mage",		DEFAULT.class);
-    	StrToRPGClass.put("assassin", 	Assassin.class);
-    	StrToRPGClass.put("archer", 	Archer.class);
-    	StrToRPGClass.put("monk", 		Monk.class);
-    	StrToRPGClass.put("daemon", 	Daemon.class);
-    	StrToRPGClass.put("priest", 	Priest.class);
-    	StrToRPGClass.put("warrior",	Warrior.class);
-    	StrToRPGClass.put("berserker",	Berserker.class);
-    	
+
+    static
+    {
+        StrToRPGClass.put("Healer", Healer.class);
+        StrToRPGClass.put("Mage", DEFAULT.class);
+        StrToRPGClass.put("Assassin", Assassin.class);
+        StrToRPGClass.put("Archer", Archer.class);
+        StrToRPGClass.put("Monk", Monk.class);
+        StrToRPGClass.put("Daemon", Daemon.class);
+        StrToRPGClass.put("Priest", Priest.class);
+        StrToRPGClass.put("Warrior", Warrior.class);
+        StrToRPGClass.put("Berserker", Berserker.class);
     }
-    
 
     @SuppressWarnings("deprecation")
     @Override
@@ -62,7 +61,6 @@ public class ClassManager extends JavaPlugin
         {
             AddClassToPlayer(currentPlayer);
         }
-
     }
 
     public PlayerExtended GetPlayerE(Player p)
@@ -98,7 +96,8 @@ public class ClassManager extends JavaPlugin
     }
 
     @SuppressWarnings("deprecation")
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
+    public boolean onCommand(CommandSender sender, Command cmd, String label,
+            String[] args)
     {
         Player player = (Player) sender;
         String commandSent = cmd.getName();
@@ -203,15 +202,20 @@ public class ClassManager extends JavaPlugin
             return false;
     }
 
-    private RPGClass StringToClass(String className, Player player){
-    	
-        try {
-        	return StrToRPGClass.get(className).getConstructor(Player.class, ClassManager.class).newInstance(player, this);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-        
-		return new DEFAULT(player, this);
+    private RPGClass StringToClass(String className, Player player)
+    {
+        try
+        {
+            return StrToRPGClass.get(className)
+                    .getDeclaredConstructor(Player.class, ClassManager.class)
+                    .newInstance(player, this);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return new DEFAULT(player, this);
     }
 
     public RPGClass GetClass(Player p)
