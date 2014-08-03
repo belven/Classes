@@ -8,7 +8,7 @@ import resources.Functions;
 
 public class SetAlight extends Ability
 {
-    public SetAlight(belven.classes.Class CurrentClass, int priority, int amp)
+    public SetAlight(belven.classes.RPGClass CurrentClass, int priority, int amp)
     {
         super(priority, amp);
         currentClass = CurrentClass;

@@ -30,7 +30,7 @@ public class ClassManager extends JavaPlugin
     public TeamManager teams = (TeamManager) Bukkit.getServer()
             .getPluginManager().getPlugin("BelvensTeams");
 
-    private HashMap<Player, Class> CurrentPlayerClasses = new HashMap<Player, Class>();
+    private HashMap<Player, RPGClass> CurrentPlayerClasses = new HashMap<Player, RPGClass>();
     public HashMap<Player, PlayerExtended> PlayersE = new HashMap<Player, PlayerExtended>();
 
     @SuppressWarnings("deprecation")
@@ -82,8 +82,7 @@ public class ClassManager extends JavaPlugin
     }
 
     @SuppressWarnings("deprecation")
-    public boolean onCommand(CommandSender sender, Command cmd, String label,
-            String[] args)
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
         Player player = (Player) sender;
         String commandSent = cmd.getName();
@@ -171,7 +170,7 @@ public class ClassManager extends JavaPlugin
             {
                 if (currentPlayer != null)
                 {
-                    Class currentClass = CurrentPlayerClasses
+                    RPGClass currentClass = CurrentPlayerClasses
                             .get(currentPlayer);
                     player.sendMessage(currentPlayer.getName() + " is a "
                             + currentClass.getClassName());
@@ -188,36 +187,41 @@ public class ClassManager extends JavaPlugin
             return false;
     }
 
-    private Class StringToClass(String className, Player player)
-    {
-        switch (className.toLowerCase())
-        {
-        case "healer":
-            return new Healer(player, this);
-            // case "mage":
-            // return new Mage(player, this);
-        case "mage":
-            return new DEFAULT(player, this);
-        case "assassin":
-            return new Assassin(player, this);
-        case "archer":
-            return new Archer(player, this);
-        case "monk":
-            return new Monk(player, this);
-        case "daemon":
-            return new Daemon(player, this);
-        case "priest":
-            return new Priest(player, this);
-        case "warrior":
-            return new Warrior(player, this);
-        case "berserker":
-            return new Berserker(player, this);
-        default:
-            return new DEFAULT(player, this);
+    private RPGClass StringToClass(String className, Player player){
+    	
+    	HashMap<String, java.lang.Class<RPGClass>> test = new HashMap();
+    	
+    	
+        switch (className.toLowerCase()){
+        
+	        case "healer":
+	            return new Healer(player, this);
+	            // case "mage":
+	            // return new Mage(player, this);
+	        case "mage":
+	            return new DEFAULT(player, this);
+	        case "assassin":
+	            return new Assassin(player, this);
+	        case "archer":
+	            return new Archer(player, this);
+	        case "monk":
+	            return new Monk(player, this);
+	        case "daemon":
+	            return new Daemon(player, this);
+	        case "priest":
+	            return new Priest(player, this);
+	        case "warrior":
+	            return new Warrior(player, this);
+	        case "berserker":
+	            return new Berserker(player, this);
+	        default:
+	            return new DEFAULT(player, this);
+	            
         }
+        
     }
 
-    public Class GetClass(Player p)
+    public RPGClass GetClass(Player p)
     {
         return CurrentPlayerClasses.get(p);
     }

@@ -16,7 +16,7 @@ import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.Grapple;
 import belven.classes.resources.ClassDrop;
 
-public class Berserker extends Class
+public class Berserker extends RPGClass
 {
     public Grapple classGrapple;
 

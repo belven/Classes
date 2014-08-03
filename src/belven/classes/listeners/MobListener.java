@@ -92,12 +92,12 @@ public class MobListener implements Listener
         int ran = randomGenerator.nextInt(99);
         PlayerInventory pInv = p.getInventory();
 
-        belven.classes.Class playerClass = plugin.GetClass(p);
+        belven.classes.RPGClass playerClass = plugin.GetClass(p);
 
         for (ClassDrop cd : playerClass.classDrops)
         {
             if (cd.alwaysGive
-                    || Functions.isNumberBetween(ran, cd.lowChance,
+                    || Functions.numberBetween(ran, cd.lowChance,
                             cd.highChance))
             {
                 if (!cd.isArmor)

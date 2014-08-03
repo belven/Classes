@@ -16,7 +16,7 @@ public class Ability
 {
     List<ItemStack> requirements = new ArrayList<ItemStack>();
     List<Material> inHandRequirements = new ArrayList<Material>();
-    public belven.classes.Class currentClass;
+    public belven.classes.RPGClass currentClass;
     protected String abilitiyName = "";
     public boolean onCooldown = false;
     public boolean shouldBreak = true;

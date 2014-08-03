@@ -31,7 +31,7 @@ import resources.MaterialFunctions;
 import resources.PlayerExtended;
 import belven.classes.Archer;
 import belven.classes.Assassin;
-import belven.classes.Class;
+import belven.classes.RPGClass;
 import belven.classes.ClassManager;
 import belven.classes.Daemon;
 import belven.classes.events.AbilityUsed;
@@ -92,7 +92,7 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event)
     {
-        Class pClass = plugin.GetClass(event.getPlayer());
+        RPGClass pClass = plugin.GetClass(event.getPlayer());
         Block currentBlock = event.getTo().getBlock();
         org.bukkit.Location upLoc = event.getTo();
         upLoc.setY(upLoc.getY() + 1);

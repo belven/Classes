@@ -10,7 +10,7 @@ import belven.classes.events.AbilityUsed;
 
 public class Retaliation extends Ability
 {
-    public Retaliation(belven.classes.Class CurrentClass, int priority, int amp)
+    public Retaliation(belven.classes.RPGClass CurrentClass, int priority, int amp)
     {
         super(priority, amp);
         currentClass = CurrentClass;

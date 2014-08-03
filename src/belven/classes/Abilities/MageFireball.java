@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class MageFireball extends Ability
 {
-    public MageFireball(belven.classes.Class CurrentClass, int priority, int amp)
+    public MageFireball(belven.classes.RPGClass CurrentClass, int priority, int amp)
     {
         super(priority, amp);
         currentClass = CurrentClass;

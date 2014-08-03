@@ -9,7 +9,7 @@ import resources.Functions;
 
 public class LastResort extends Ability
 {
-    public LastResort(belven.classes.Class CurrentClass, int priority, int amp)
+    public LastResort(belven.classes.RPGClass CurrentClass, int priority, int amp)
     {
         super(priority, amp);
         currentClass = CurrentClass;

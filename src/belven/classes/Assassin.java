@@ -17,7 +17,7 @@ import resources.EntityFunctions;
 import belven.classes.Abilities.SoulDrain;
 import belven.classes.resources.ClassDrop;
 
-public class Assassin extends Class
+public class Assassin extends RPGClass
 {
     public Entity lastEntityConfused;
     private Block recallBlock;

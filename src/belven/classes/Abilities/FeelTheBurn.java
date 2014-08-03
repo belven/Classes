@@ -6,7 +6,7 @@ import resources.EntityFunctions;
 
 public class FeelTheBurn extends Ability
 {
-    public FeelTheBurn(belven.classes.Class CurrentClass, int priority, int amp)
+    public FeelTheBurn(belven.classes.RPGClass CurrentClass, int priority, int amp)
     {
         super(priority, amp);
         currentClass = CurrentClass;

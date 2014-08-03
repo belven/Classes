@@ -4,7 +4,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-public class DEFAULT extends Class
+public class DEFAULT extends RPGClass
 {
     public DEFAULT(Player currentPlayer, ClassManager instance)
     {

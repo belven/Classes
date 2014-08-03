@@ -8,7 +8,7 @@ public class ClassChangeEvent extends Event
 {
     private static final HandlerList handlers = new HandlerList();
 
-    private belven.classes.Class classChagedTo;
+    private belven.classes.RPGClass classChagedTo;
     private Player playerThatChanged;
 
     @Override
@@ -17,7 +17,7 @@ public class ClassChangeEvent extends Event
         return handlers;
     }
 
-    public ClassChangeEvent(belven.classes.Class classChagedTo,
+    public ClassChangeEvent(belven.classes.RPGClass classChagedTo,
             Player playerThatChanged)
     {
         this.classChagedTo = classChagedTo;
@@ -29,7 +29,7 @@ public class ClassChangeEvent extends Event
         return playerThatChanged;
     }
 
-    public belven.classes.Class GetNewClass()
+    public belven.classes.RPGClass GetNewClass()
     {
         return classChagedTo;
     }

@@ -11,7 +11,7 @@ import resources.Functions;
 
 public class Bandage extends Ability
 {
-    public Bandage(belven.classes.Class CurrentClass, int priority, int amp)
+    public Bandage(belven.classes.RPGClass CurrentClass, int priority, int amp)
     {
         super(priority, amp);
         currentClass = CurrentClass;

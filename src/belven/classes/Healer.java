@@ -17,7 +17,7 @@ import belven.classes.Abilities.Heal;
 import belven.classes.Abilities.LightHeal;
 import belven.classes.resources.ClassDrop;
 
-public class Healer extends Class
+public class Healer extends RPGClass
 {
     public Heal classHeal;
     public LightHeal classLightHeal;

@@ -20,7 +20,7 @@ import belven.classes.Abilities.WebArrow;
 import belven.classes.resources.ClassDrop;
 import belven.classes.timedevents.BlockRestorer;
 
-public class Archer extends Class
+public class Archer extends RPGClass
 {
     public WebArrow classCripplingArrow;
     public FireTrap classFireTrap;

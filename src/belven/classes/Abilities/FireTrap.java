@@ -13,7 +13,7 @@ import belven.classes.timedevents.FireTrapTimer;
 
 public class FireTrap extends Ability
 {
-    public FireTrap(belven.classes.Class CurrentClass, int priority, int amp)
+    public FireTrap(belven.classes.RPGClass CurrentClass, int priority, int amp)
     {
         super(priority, amp);
         currentClass = CurrentClass;

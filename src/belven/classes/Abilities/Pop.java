@@ -13,7 +13,7 @@ public class Pop extends Ability
 {
     private int counter = 0;
 
-    public Pop(belven.classes.Class CurrentClass, int priority, int amp)
+    public Pop(belven.classes.RPGClass CurrentClass, int priority, int amp)
     {
         super(priority, amp);
         currentClass = CurrentClass;

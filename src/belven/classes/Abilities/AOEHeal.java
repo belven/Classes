@@ -11,7 +11,7 @@ import resources.Functions;
 
 public class AOEHeal extends Ability
 {
-    public AOEHeal(belven.classes.Class CurrentClass, int priority, int amp)
+    public AOEHeal(belven.classes.RPGClass CurrentClass, int priority, int amp)
     {
         super(priority, amp);
         currentClass = CurrentClass;

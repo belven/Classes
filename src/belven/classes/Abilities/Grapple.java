@@ -10,11 +10,11 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 
 import resources.EntityFunctions;
-import belven.classes.Class;
+import belven.classes.RPGClass;
 
 public class Grapple extends Ability
 {
-    public Grapple(Class CurrentClass, int priority, int amp)
+    public Grapple(RPGClass CurrentClass, int priority, int amp)
     {
         super(priority, amp);
         this.currentClass = CurrentClass;

@@ -8,7 +8,7 @@ import org.bukkit.potion.PotionEffectType;
 
 public class SoulDrain extends Ability
 {
-    public SoulDrain(belven.classes.Class CurrentClass, int priority, int amp)
+    public SoulDrain(belven.classes.RPGClass CurrentClass, int priority, int amp)
     {
         super(priority, amp);
         currentClass = CurrentClass;

@@ -11,7 +11,7 @@ import resources.Functions;
 
 public class LightHeal extends Ability
 {
-    public LightHeal(belven.classes.Class CurrentClass, int priority, int amp)
+    public LightHeal(belven.classes.RPGClass CurrentClass, int priority, int amp)
     {
         super(priority, amp);
         currentClass = CurrentClass;

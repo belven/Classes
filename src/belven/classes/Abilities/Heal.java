@@ -10,7 +10,7 @@ import resources.Functions;
 
 public class Heal extends Ability
 {
-    public Heal(belven.classes.Class CurrentClass, int priority, int amp)
+    public Heal(belven.classes.RPGClass CurrentClass, int priority, int amp)
     {
         super(priority, amp);
         currentClass = CurrentClass;

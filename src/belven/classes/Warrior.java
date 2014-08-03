@@ -15,7 +15,7 @@ import belven.classes.Abilities.LastResort;
 import belven.classes.Abilities.Retaliation;
 import belven.classes.resources.ClassDrop;
 
-public class Warrior extends Class
+public class Warrior extends RPGClass
 {
     public LastResort currentLastResort;
     public Retaliation currentRetaliation;

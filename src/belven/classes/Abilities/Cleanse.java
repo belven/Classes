@@ -11,7 +11,7 @@ import resources.Functions;
 
 public class Cleanse extends Ability
 {
-    public Cleanse(belven.classes.Class CurrentClass, int priority, int amp)
+    public Cleanse(belven.classes.RPGClass CurrentClass, int priority, int amp)
     {
         super(priority, amp);
         currentClass = CurrentClass;

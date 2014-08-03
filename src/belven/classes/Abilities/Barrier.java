@@ -16,7 +16,7 @@ public class Barrier extends Ability
 {
     public int radius = 0;
 
-    public Barrier(belven.classes.Class CurrentClass, int Radius, int priority,
+    public Barrier(belven.classes.RPGClass CurrentClass, int Radius, int priority,
             int amp)
     {
         super(priority, amp);

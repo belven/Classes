@@ -13,7 +13,7 @@ import belven.classes.timedevents.DamageTrapTimer;
 
 public class DamageTrap extends Ability
 {
-    public DamageTrap(belven.classes.Class CurrentClass, int priority, int amp)
+    public DamageTrap(belven.classes.RPGClass CurrentClass, int priority, int amp)
     {
         super(priority, amp);
         currentClass = CurrentClass;

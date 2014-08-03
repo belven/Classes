@@ -19,7 +19,7 @@ import belven.classes.Abilities.MageFireball;
 import belven.classes.Abilities.Pop;
 import belven.classes.resources.ClassDrop;
 
-public class Mage extends Class
+public class Mage extends RPGClass
 {
     public MageFireball classFireball;
     public ChainLightning classChainLightning;

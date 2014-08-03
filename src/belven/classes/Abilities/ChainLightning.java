@@ -13,7 +13,7 @@ import belven.classes.timedevents.ChainLightningTimer;
 
 public class ChainLightning extends Ability
 {
-    public ChainLightning(belven.classes.Class CurrentClass, int priority,
+    public ChainLightning(belven.classes.RPGClass CurrentClass, int priority,
             int amp)
     {
         super(priority, amp);
