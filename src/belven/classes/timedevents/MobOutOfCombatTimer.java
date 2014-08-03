@@ -5,7 +5,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import resources.EntityFunctions;
-import resources.Functions;
 
 public class MobOutOfCombatTimer extends BukkitRunnable
 {

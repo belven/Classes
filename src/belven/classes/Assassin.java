@@ -13,11 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 
-<<<<<<< HEAD
-=======
 import resources.EntityFunctions;
->>>>>>> origin/master
-import resources.Functions;
 import belven.classes.Abilities.SoulDrain;
 import belven.classes.resources.ClassDrop;
 
@@ -91,11 +87,7 @@ public class Assassin extends Class
         {
             if (locationToTeleportTo.getBlock().getType() == Material.AIR)
             {
-<<<<<<< HEAD
-                Location temp = Functions.lookAt(locationToTeleportTo,
-=======
                 Location temp = EntityFunctions.lookAt(locationToTeleportTo,
->>>>>>> origin/master
                         mobLocation);
                 classOwner.teleport(temp);
             }
@@ -104,16 +96,6 @@ public class Assassin extends Class
                 locationToTeleportTo.setY(i);
             }
         }
-
-        // if (locationToTeleportTo.getBlock().getType() == Material.AIR)
-        // {
-        // classOwner.teleport(locationToTeleportTo);
-        // }
-        // else
-        // {
-        // locationToTeleportTo.setY(locationToTeleportTo.getY() + 1);
-        // CanTeleportTo(locationToTeleportTo);
-        // }
     }
 
     public void ToggleSneakEvent(PlayerToggleSneakEvent event)
@@ -171,12 +153,8 @@ public class Assassin extends Class
         Entity damagedEntity = event.getEntity();
         boolean arrowEntity = (event.getDamager().getType() == EntityType.ARROW);
 
-<<<<<<< HEAD
-        Functions.Heal(classOwner, 1);
-=======
         EntityFunctions.Heal(classOwner, 1);
->>>>>>> origin/master
-
+        
         if (plugin.GetPlayerE(classOwner).MeleeWeaponInHand())
         {
             event.setDamage(event.getDamage() + 2);

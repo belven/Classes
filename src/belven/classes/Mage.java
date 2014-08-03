@@ -12,7 +12,6 @@ import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
 
 import resources.EntityFunctions;
-import resources.Functions;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.ChainLightning;
 import belven.classes.Abilities.LightningStrike;

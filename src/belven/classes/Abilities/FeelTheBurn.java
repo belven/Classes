@@ -3,7 +3,6 @@ package belven.classes.Abilities;
 import org.bukkit.entity.Player;
 
 import resources.EntityFunctions;
-import resources.Functions;
 
 public class FeelTheBurn extends Ability
 {

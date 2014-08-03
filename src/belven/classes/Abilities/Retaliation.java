@@ -6,7 +6,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import resources.EntityFunctions;
-import resources.Functions;
 import belven.classes.events.AbilityUsed;
 
 public class Retaliation extends Ability
