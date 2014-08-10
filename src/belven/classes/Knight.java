@@ -1,11 +1,8 @@
 package belven.classes;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import belven.classes.Abilities.Ability;
-import belven.classes.resources.ClassDrop;
 
 public class Knight extends Warrior
 {
@@ -36,7 +33,7 @@ public class Knight extends Warrior
     public void SetClassDrops()
     {
         super.SetClassDrops();
-        ItemStack fire = new ItemStack(Material.FIREWORK_CHARGE, 2);
-        classDrops.add(new ClassDrop(fire, true));
+        // ItemStack fire = new ItemStack(Material.FIREWORK_CHARGE, 2);
+        // classDrops.add(new ClassDrop(fire, true));
     }
 }

@@ -3,6 +3,8 @@ package belven.classes;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -10,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
+import org.bukkit.util.BlockIterator;
 
 import resources.EntityFunctions;
 import resources.Functions;
@@ -67,33 +70,51 @@ public class Archer extends RPGClass
         ItemStack graywool = new Wool(DyeColor.GRAY).toItemStack(2);
         ItemStack arrow = new ItemStack(Material.ARROW, 10);
         ItemStack bow = new ItemStack(Material.BOW);
-        ItemStack snowBall = new ItemStack(Material.SNOW_BALL, 8);
+        ItemStack snowBall = new ItemStack(Material.SNOW_BALL, 2);
 
-        classDrops.add(new ClassDrop(arrow, true));
-        classDrops.add(new ClassDrop(bow, true));
+        classDrops.add(new ClassDrop(arrow, true, 30));
+        classDrops.add(new ClassDrop(bow, true, 1));
 
-        classDrops.add(new ClassDrop(redwool, 0, 30));
-        classDrops.add(new ClassDrop(graywool, 0, 30));
-        classDrops.add(new ClassDrop(snowBall, 30, 50));
+        classDrops.add(new ClassDrop(redwool, 0, 30, 5));
+        classDrops.add(new ClassDrop(graywool, 0, 30, 5));
+        classDrops.add(new ClassDrop(snowBall, 30, 50, 2));
 
-        classDrops.add(new ClassDrop(l_Boots(), 50, 100));
-        classDrops.add(new ClassDrop(l_ChestPlate(), 50, 100));
-        classDrops.add(new ClassDrop(l_Leggings(), 50, 100));
-        classDrops.add(new ClassDrop(l_Helmet(), 50, 100));
+        classDrops.add(new ClassDrop(l_Boots(), 50, 100, 1));
+        classDrops.add(new ClassDrop(l_ChestPlate(), 50, 100, 1));
+        classDrops.add(new ClassDrop(l_Leggings(), 50, 100, 1));
+        classDrops.add(new ClassDrop(l_Helmet(), 50, 100, 1));
 
     }
 
     @Override
     public void RightClickEntity(Entity currentEntity)
     {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void SelfTakenDamage(EntityDamageByEntityEvent event)
     {
+        LivingEntity le = EntityFunctions.GetDamager(event);
 
+        if (le != null)
+        {
+            BlockIterator bi = new BlockIterator(classOwner);
+            int count = 0;
+            Block b = null;
+
+            while (bi.hasNext() && count < 10)
+            {
+                b = bi.next().getRelative(BlockFace.UP);
+                count++;
+            }
+
+            if (b != null)
+            {
+                le.teleport(Functions.offsetLocation(b.getLocation(), 0.5, 0,
+                        0.5));
+            }
+        }
     }
 
     @Override

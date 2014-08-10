@@ -31,10 +31,10 @@ public class Berserker extends RPGClass
     @Override
     public void SetClassDrops()
     {
-        ItemStack string = new ItemStack(Material.STRING, 4);
+        ItemStack string = new ItemStack(Material.STRING);
         ItemStack sword = new ItemStack(Material.STONE_SWORD);
-        classDrops.add(new ClassDrop(string, true));
-        classDrops.add(new ClassDrop(sword, true));
+        classDrops.add(new ClassDrop(string, true, 2));
+        classDrops.add(new ClassDrop(sword, true, 1));
     }
 
     @Override
@@ -99,10 +99,6 @@ public class Berserker extends RPGClass
         this.classOwner.addPotionEffect(new PotionEffect(
                 PotionEffectType.INCREASE_DAMAGE, Functions.SecondsToTicks(2),
                 (int) (2 * healthPercent)));
-
-        this.classOwner.addPotionEffect(new PotionEffect(
-                PotionEffectType.DAMAGE_RESISTANCE,
-                Functions.SecondsToTicks(2), (int) (3 * healthPercent)));
     }
 
     @Override

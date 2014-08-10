@@ -97,12 +97,12 @@ public class MobListener implements Listener
         for (ClassDrop cd : playerClass.classDrops)
         {
             if (cd.alwaysGive
-                    || Functions.numberBetween(ran, cd.lowChance,
-                            cd.highChance))
+                    || Functions
+                            .numberBetween(ran, cd.lowChance, cd.highChance))
             {
                 if (!cd.isArmor)
                 {
-                    Functions.AddToInventory(p, cd.is);
+                    Functions.AddToInventory(p, cd.is, cd.maxAmount);
                 }
                 else
                 {

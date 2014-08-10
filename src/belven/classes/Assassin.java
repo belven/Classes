@@ -118,10 +118,10 @@ public class Assassin extends RPGClass
 
         ItemStack speed = new Potion(PotionType.SPEED, 2).toItemStack(1);
 
-        classDrops.add(new ClassDrop(bow, true));
-        classDrops.add(new ClassDrop(sword, true));
-        classDrops.add(new ClassDrop(arrow, true));
-        classDrops.add(new ClassDrop(speed, 0, 100));
+        classDrops.add(new ClassDrop(bow, true, 1));
+        classDrops.add(new ClassDrop(sword, true, 1));
+        classDrops.add(new ClassDrop(arrow, true, 30));
+        classDrops.add(new ClassDrop(speed, 0, 100, 1));
     }
 
     @Override
@@ -154,7 +154,7 @@ public class Assassin extends RPGClass
         boolean arrowEntity = (event.getDamager().getType() == EntityType.ARROW);
 
         EntityFunctions.Heal(classOwner, 1);
-        
+
         if (plugin.GetPlayerE(classOwner).MeleeWeaponInHand())
         {
             event.setDamage(event.getDamage() + 2);

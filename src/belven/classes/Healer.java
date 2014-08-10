@@ -68,15 +68,15 @@ public class Healer extends RPGClass
         ItemStack stick = new ItemStack(Material.STICK);
         ItemStack paper = new ItemStack(Material.PAPER);
 
-        classDrops.add(new ClassDrop(lapisBlock, true));
-        classDrops.add(new ClassDrop(woodSword, true));
-        classDrops.add(new ClassDrop(paper, 20, 40));
-        classDrops.add(new ClassDrop(stick, 20, 40));
+        classDrops.add(new ClassDrop(lapisBlock, true, 10));
+        classDrops.add(new ClassDrop(woodSword, true, 1));
+        classDrops.add(new ClassDrop(paper, 20, 40, 5));
+        classDrops.add(new ClassDrop(stick, 20, 40, 5));
 
-        classDrops.add(new ClassDrop(l_Boots(), 60, 100));
-        classDrops.add(new ClassDrop(l_ChestPlate(), 60, 100));
-        classDrops.add(new ClassDrop(l_Leggings(), 60, 100));
-        classDrops.add(new ClassDrop(l_Helmet(), 60, 100));
+        classDrops.add(new ClassDrop(l_Boots(), 60, 100, 1));
+        classDrops.add(new ClassDrop(l_ChestPlate(), 60, 100, 1));
+        classDrops.add(new ClassDrop(l_Leggings(), 60, 100, 1));
+        classDrops.add(new ClassDrop(l_Helmet(), 60, 100, 1));
     }
 
     @Override

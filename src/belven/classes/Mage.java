@@ -37,8 +37,8 @@ public class Mage extends RPGClass
 
     public void CheckAbilitiesToCast()
     {
-        LivingEntity targetEntity = EntityFunctions.findTargetEntity(classOwner,
-                150.0D);
+        LivingEntity targetEntity = EntityFunctions.findTargetEntity(
+                classOwner, 150.0D);
 
         for (Ability a : Abilities)
         {
@@ -84,14 +84,14 @@ public class Mage extends RPGClass
         ItemStack lapisBlock = new ItemStack(Material.LAPIS_BLOCK, 10);
         ItemStack feather = new ItemStack(Material.FEATHER, 2);
 
-        classDrops.add(new ClassDrop(lapisBlock, true));
-        classDrops.add(new ClassDrop(feather, 0, 20));
-        classDrops.add(new ClassDrop(firePot, 20, 40));
+        classDrops.add(new ClassDrop(lapisBlock, true, 20));
+        classDrops.add(new ClassDrop(feather, 0, 20, 5));
+        classDrops.add(new ClassDrop(firePot, 20, 40, 1));
 
-        classDrops.add(new ClassDrop(l_Boots(), 40, 100));
-        classDrops.add(new ClassDrop(l_ChestPlate(), 40, 100));
-        classDrops.add(new ClassDrop(l_Leggings(), 40, 100));
-        classDrops.add(new ClassDrop(l_Helmet(), 40, 100));
+        classDrops.add(new ClassDrop(l_Boots(), 40, 100, 1));
+        classDrops.add(new ClassDrop(l_ChestPlate(), 40, 100, 1));
+        classDrops.add(new ClassDrop(l_Leggings(), 40, 100, 1));
+        classDrops.add(new ClassDrop(l_Helmet(), 40, 100, 1));
     }
 
     @Override

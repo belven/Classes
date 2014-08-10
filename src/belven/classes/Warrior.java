@@ -8,8 +8,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
+import resources.Functions;
 import resources.MaterialFunctions;
 import belven.classes.Abilities.LastResort;
 import belven.classes.Abilities.Retaliation;
@@ -39,13 +42,13 @@ public class Warrior extends RPGClass
         ItemStack strength = new ItemStack(
                 new Potion(PotionType.STRENGTH, 2).toItemStack(1));
 
-        classDrops.add(new ClassDrop(bread, true));
-        classDrops.add(new ClassDrop(sword, true));
-        classDrops.add(new ClassDrop(strength, 0, 10));
-        classDrops.add(new ClassDrop(i_Boots(), true));
-        classDrops.add(new ClassDrop(i_ChestPlate(), true));
-        classDrops.add(new ClassDrop(i_Leggings(), true));
-        classDrops.add(new ClassDrop(i_Helmet(), true));
+        classDrops.add(new ClassDrop(bread, true, 5));
+        classDrops.add(new ClassDrop(sword, true, 1));
+        classDrops.add(new ClassDrop(strength, 0, 10, 1));
+        classDrops.add(new ClassDrop(i_Boots(), true, 1));
+        classDrops.add(new ClassDrop(i_ChestPlate(), true, 1));
+        classDrops.add(new ClassDrop(i_Leggings(), true, 1));
+        classDrops.add(new ClassDrop(i_Helmet(), true, 1));
     }
 
     @Override
@@ -65,6 +68,12 @@ public class Warrior extends RPGClass
     public void SelfTakenDamage(EntityDamageByEntityEvent event)
     {
         Damageable dcurrentPlayer = classOwner;
+
+        double healthPercent = plugin.GetPlayerE(classOwner).GetHealthPercent();
+
+        this.classOwner.addPotionEffect(new PotionEffect(
+                PotionEffectType.DAMAGE_RESISTANCE,
+                Functions.SecondsToTicks(3), (int) (4 * healthPercent)));
 
         if (!currentLastResort.onCooldown && dcurrentPlayer.getHealth() <= 5
                 && currentLastResort.HasRequirements(classOwner))

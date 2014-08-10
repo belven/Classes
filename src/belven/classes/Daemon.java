@@ -101,6 +101,6 @@ public class Daemon extends Berserker
     {
         super.SetClassDrops();
         ItemStack fire = new ItemStack(Material.FIREWORK_CHARGE, 2);
-        classDrops.add(new ClassDrop(fire, true));
+        classDrops.add(new ClassDrop(fire, true, 10));
     }
 }
