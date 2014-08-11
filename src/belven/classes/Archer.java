@@ -3,8 +3,6 @@ package belven.classes;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -12,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
-import org.bukkit.util.BlockIterator;
 
 import resources.EntityFunctions;
 import resources.Functions;
@@ -72,8 +69,8 @@ public class Archer extends RPGClass
         ItemStack bow = new ItemStack(Material.BOW);
         ItemStack snowBall = new ItemStack(Material.SNOW_BALL, 2);
 
-        classDrops.add(new ClassDrop(arrow, true, 30));
-        classDrops.add(new ClassDrop(bow, true, 1));
+        classDrops.add(new ClassDrop(arrow, true, 30, 3));
+        classDrops.add(new ClassDrop(bow, true, 1, 1));
 
         classDrops.add(new ClassDrop(redwool, 0, 30, 5));
         classDrops.add(new ClassDrop(graywool, 0, 30, 5));
@@ -95,26 +92,26 @@ public class Archer extends RPGClass
     @Override
     public void SelfTakenDamage(EntityDamageByEntityEvent event)
     {
-        LivingEntity le = EntityFunctions.GetDamager(event);
-
-        if (le != null)
-        {
-            BlockIterator bi = new BlockIterator(classOwner);
-            int count = 0;
-            Block b = null;
-
-            while (bi.hasNext() && count < 10)
-            {
-                b = bi.next().getRelative(BlockFace.UP);
-                count++;
-            }
-
-            if (b != null)
-            {
-                le.teleport(Functions.offsetLocation(b.getLocation(), 0.5, 0,
-                        0.5));
-            }
-        }
+        // LivingEntity le = EntityFunctions.GetDamager(event);
+        //
+        // if (le != null)
+        // {
+        // BlockIterator bi = new BlockIterator(classOwner);
+        // int count = 0;
+        // Block b = null;
+        //
+        // while (bi.hasNext() && count < 10)
+        // {
+        // b = bi.next().getRelative(BlockFace.UP);
+        // count++;
+        // }
+        //
+        // if (b != null)
+        // {
+        // le.teleport(Functions.offsetLocation(b.getLocation(), 0.5, 0,
+        // 0.5));
+        // }
+        // }
     }
 
     @Override

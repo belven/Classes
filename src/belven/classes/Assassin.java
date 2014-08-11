@@ -115,7 +115,6 @@ public class Assassin extends RPGClass
         ItemStack arrow = new ItemStack(Material.ARROW, 3);
         ItemStack sword = new ItemStack(Material.IRON_SWORD);
         ItemStack bow = new ItemStack(Material.BOW);
-
         ItemStack speed = new Potion(PotionType.SPEED, 2).toItemStack(1);
 
         classDrops.add(new ClassDrop(bow, true, 1));

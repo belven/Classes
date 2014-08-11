@@ -10,8 +10,10 @@ public class ClassDrop
     public int lowChance;
     public int highChance;
     public int maxAmount = 1;
+    public int wildernessAmount = 0;
     public boolean alwaysGive;
     public boolean isArmor;
+    public boolean isWilderness = false;
 
     public ClassDrop(ItemStack item, boolean give, int max)
     {
@@ -19,6 +21,22 @@ public class ClassDrop
         alwaysGive = give;
         isArmor = MaterialFunctions.isArmor(is.getType());
         maxAmount = max;
+    }
+
+    public ClassDrop(ItemStack item, boolean give, int max,
+            int wildernessQuantity)
+    {
+        this(item, give, max);
+        wildernessAmount = wildernessQuantity;
+        isWilderness = true;
+    }
+
+    public ClassDrop(ItemStack item, int low, int high, int max,
+            int wildernessQuantity)
+    {
+        this(item, low, high, max);
+        wildernessAmount = wildernessQuantity;
+        isWilderness = true;
     }
 
     public ClassDrop(ItemStack item, int low, int high, int max)

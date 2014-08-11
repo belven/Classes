@@ -43,7 +43,7 @@ public class Warrior extends RPGClass
                 new Potion(PotionType.STRENGTH, 2).toItemStack(1));
 
         classDrops.add(new ClassDrop(bread, true, 5));
-        classDrops.add(new ClassDrop(sword, true, 1));
+        classDrops.add(new ClassDrop(sword, true, 1, 1));
         classDrops.add(new ClassDrop(strength, 0, 10, 1));
         classDrops.add(new ClassDrop(i_Boots(), true, 1));
         classDrops.add(new ClassDrop(i_ChestPlate(), true, 1));

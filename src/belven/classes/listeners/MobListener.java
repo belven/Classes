@@ -1,21 +1,24 @@
 package belven.classes.listeners;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.MetadataValue;
 
+import resources.EntityFunctions;
 import resources.Functions;
 import belven.arena.blocks.ArenaBlock;
 import belven.classes.ClassManager;
@@ -48,17 +51,6 @@ public class MobListener implements Listener
     {
         Entity currentEntity = event.getEntity();
 
-        Iterator<ItemStack> drops = event.getDrops().iterator();
-
-        while (drops.hasNext())
-        {
-            ItemStack is = drops.next();
-            if (is.getMaxStackSize() == 1)
-            {
-                drops.remove();
-            }
-        }
-
         if (currentEntity.hasMetadata("ArenaMob"))
         {
             List<MetadataValue> currentMetaData = currentEntity
@@ -80,29 +72,57 @@ public class MobListener implements Listener
                 {
                     for (Player p : currentArena.arenaPlayers)
                     {
-                        GiveClassDrops(p);
+                        GiveClassDrops(p, false);
                     }
+                }
+            }
+        }
+        else
+        {
+            EntityDamageEvent cause = event.getEntity().getLastDamageCause();
+
+            if (cause instanceof EntityDamageByEntityEvent)
+            {
+                LivingEntity e = EntityFunctions
+                        .GetDamager((EntityDamageByEntityEvent) cause);
+
+                if (e.getType() == EntityType.PLAYER)
+                {
+                    Player p = (Player) e;
+
+                    for (ItemStack is : event.getDrops())
+                    {
+                        p.getInventory().addItem(is);
+                    }
+
+                    event.getDrops().clear();
+                    p.giveExp(event.getDroppedExp());
+                    event.setDroppedExp(0);
+                    GiveClassDrops(p, true);
                 }
             }
         }
     }
 
-    private void GiveClassDrops(Player p)
+    private void GiveClassDrops(Player p, boolean isWilderness)
     {
         int ran = randomGenerator.nextInt(99);
         PlayerInventory pInv = p.getInventory();
-
         belven.classes.RPGClass playerClass = plugin.GetClass(p);
 
         for (ClassDrop cd : playerClass.classDrops)
         {
             if (cd.alwaysGive
                     || Functions
-                            .numberBetween(ran, cd.lowChance, cd.highChance))
+                            .numberBetween(ran, cd.lowChance, cd.highChance)
+                    && (cd.isWilderness == isWilderness))
             {
                 if (!cd.isArmor)
                 {
-                    Functions.AddToInventory(p, cd.is, cd.maxAmount);
+                    ItemStack is = cd.is.clone();
+                    is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is
+                            .getAmount());
+                    Functions.AddToInventory(p, is, cd.maxAmount);
                 }
                 else
                 {

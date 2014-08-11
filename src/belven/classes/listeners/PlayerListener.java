@@ -1,6 +1,5 @@
 package belven.classes.listeners;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -29,11 +28,12 @@ import resources.EntityFunctions;
 import resources.Functions;
 import resources.MaterialFunctions;
 import resources.PlayerExtended;
+import belven.arena.blocks.ArenaBlock;
 import belven.classes.Archer;
 import belven.classes.Assassin;
-import belven.classes.RPGClass;
 import belven.classes.ClassManager;
 import belven.classes.Daemon;
+import belven.classes.RPGClass;
 import belven.classes.events.AbilityUsed;
 import belven.classes.timedevents.AbilityDelay;
 
@@ -98,7 +98,6 @@ public class PlayerListener implements Listener
         upLoc.setY(upLoc.getY() + 1);
 
         event.getPlayer().setWalkSpeed(.2F);
-        // Block blockBelow = currentBlock.getRelative(BlockFace.DOWN);
 
         if (pClass.getClassName() == "Archer")
         {
@@ -107,20 +106,6 @@ public class PlayerListener implements Listener
                 event.getPlayer().setWalkSpeed(1F);
             }
         }
-        // else if (pClass.getClassName() == "Daemon")
-        // {
-        // if (currentBlock.getType() == Material.LAVA)
-        // {
-        // event.setTo(upLoc);
-        // }
-        // }
-        // else if (pClass.getClassName() == "Assassin")
-        // {
-        // if (currentBlock.getType() == Material.WATER)
-        // {
-        // event.setTo(upLoc);
-        // }
-        // }
     }
 
     @EventHandler
@@ -250,9 +235,6 @@ public class PlayerListener implements Listener
             addPlayerToArena(currentPlayer, le);
 
             plugin.GetClass(currentPlayer).SelfDamageOther(event);
-
-            // String damage = String.valueOf(event.getDamage());
-            // currentPlayer.sendMessage(damage);
         }
     }
 
@@ -267,10 +249,18 @@ public class PlayerListener implements Listener
                 return;
             }
 
-            List<String> arena = Arrays.asList(currentMetaData.get(0)
-                    .asString().split(" "));
+            String arena = currentMetaData.get(0).asString().trim();
 
-            plugin.arenas.WarpToArena(p, arena.get(0));
+            if (plugin.arenas != null)
+            {
+                ArenaBlock currentArena = this.plugin.arenas
+                        .getArenaBlock(arena);
+
+                if (currentArena != null)
+                {
+                    plugin.arenas.WarpToArena(p, currentArena);
+                }
+            }
         }
     }
 
