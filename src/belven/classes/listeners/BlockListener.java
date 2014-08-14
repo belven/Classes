@@ -11,46 +11,38 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import belven.classes.Archer;
 import belven.classes.ClassManager;
 
-public class BlockListener implements Listener
-{
-    public ClassManager plugin;
+public class BlockListener implements Listener {
+	public ClassManager plugin;
 
-    public BlockListener(ClassManager instance)
-    {
-        plugin = instance;
-    }
+	public BlockListener(ClassManager instance) {
+		plugin = instance;
+	}
 
-    @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event)
-    {
-        belven.classes.RPGClass currentClass = plugin.GetClass(event.getPlayer());
-        Material mat = event.getBlock().getType();
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent event) {
+		belven.classes.RPGClass currentClass = plugin.GetClass(event
+				.getPlayer());
+		Material mat = event.getBlock().getType();
 
-        if (mat == Material.LAPIS_BLOCK
-                && (currentClass.getClassName() == "Mage"
-                        || currentClass.getClassName() == "Healer"
-                        || currentClass.getClassName() == "Priest" || currentClass
-                        .getClassName() == "Monk"))
-        {
-            event.setCancelled(true);
-        }
-        else if (mat == Material.WOOL && currentClass instanceof Archer)
-        {
-            event.setCancelled(true);
-        }
-    }
+		if (mat == Material.LAPIS_BLOCK
+				&& (currentClass.getClassName() == "Mage"
+						|| currentClass.getClassName() == "Healer"
+						|| currentClass.getClassName() == "Priest" || currentClass
+						.getClassName() == "Monk")) {
+			event.setCancelled(true);
+		} else if (mat == Material.WOOL && currentClass instanceof Archer) {
+			event.setCancelled(true);
+		}
+	}
 
-    @EventHandler
-    public void onBlockDispenseEvent(BlockDispenseEvent event)
-    {
-        Block tempblock = event.getBlock();
+	@EventHandler
+	public void onBlockDispenseEvent(BlockDispenseEvent event) {
+		Block tempblock = event.getBlock();
 
-        if (tempblock.getType() == Material.DISPENSER)
-        {
-            Dispenser tempDispenser = (Dispenser) tempblock.getState();
-            tempDispenser.getInventory().addItem(event.getItem().clone());
-        }
-        return;
-    }
-
+		if (tempblock.getType() == Material.DISPENSER) {
+			Dispenser tempDispenser = (Dispenser) tempblock.getState();
+			tempDispenser.getInventory().addItem(event.getItem().clone());
+		}
+		return;
+	}
 }

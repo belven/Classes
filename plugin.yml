@@ -64,6 +64,11 @@ commands:
       usage: /bcarcher 
       permission: BelvensClasses.bcarcher 
       permission-message: You don't have BelvensClasses.bcarcher
+   bcknight:
+      description: This will change your class to a knight
+      usage: /bcknight 
+      permission: BelvensClasses.bcknight 
+      permission-message: You don't have BelvensClasses.bcknight
    bcdummy:
       description: Spawns a dummy player entity
       usage: /bcdummy 
@@ -92,6 +97,7 @@ permissions:
             BelvensClasses.bcdaemon: true
             BelvensClasses.bcpriest: true
             BelvensClasses.bcmonk: true
+            BelvensClasses.bcknight: true
     BelvensClasses.listclasses:
         description: Lists all players and thier classes
         default: op
@@ -100,6 +106,9 @@ permissions:
         default: op
     BelvensClasses.bcberserker:
         description: This will change your class to a Berserker
+        default: true
+    BelvensClasses.bcknight:
+        description: This will change your class to a Knight
         default: true
     BelvensClasses.bcdaemon:
         description: This will change your class to a Daemon

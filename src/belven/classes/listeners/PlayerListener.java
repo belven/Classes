@@ -37,265 +37,203 @@ import belven.classes.RPGClass;
 import belven.classes.events.AbilityUsed;
 import belven.classes.timedevents.AbilityDelay;
 
-public class PlayerListener implements Listener
-{
-    private final ClassManager plugin;
+public class PlayerListener implements Listener {
+	private final ClassManager plugin;
 
-    public PlayerListener(ClassManager instance)
-    {
-        plugin = instance;
-    }
+	public PlayerListener(ClassManager instance) {
+		plugin = instance;
+	}
 
-    @EventHandler
-    public void onPlayerInteractEventSigns(PlayerInteractEvent event)
-    {
-        Sign currentSign;
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK)
-        {
-            if (event.getClickedBlock().getType() == Material.SIGN)
-            {
-                currentSign = (Sign) event.getClickedBlock();
+	@EventHandler
+	public void onPlayerInteractEventSigns(PlayerInteractEvent event) {
+		Sign currentSign;
+		if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+			if (event.getClickedBlock().getType() == Material.SIGN) {
+				currentSign = (Sign) event.getClickedBlock();
 
-                if (currentSign.getLine(0) != null
-                        && currentSign.getLine(0).contentEquals("[Class]"))
-                {
-                    plugin.SetClass(event.getPlayer(), currentSign.getLine(1));
-                }
-            }
-            else if (event.getClickedBlock().getType() == Material.WALL_SIGN)
-            {
-                currentSign = (Sign) event.getClickedBlock().getState();
+				if (currentSign.getLine(0) != null
+						&& currentSign.getLine(0).contentEquals("[Class]")) {
+					plugin.SetClass(event.getPlayer(), currentSign.getLine(1));
+				}
+			} else if (event.getClickedBlock().getType() == Material.WALL_SIGN) {
+				currentSign = (Sign) event.getClickedBlock().getState();
 
-                if (currentSign.getLine(0) != null
-                        && currentSign.getLine(0).contentEquals("[Class]"))
-                {
-                    plugin.SetClass(event.getPlayer(), currentSign.getLine(1));
-                }
-            }
-        }
-    }
+				if (currentSign.getLine(0) != null
+						&& currentSign.getLine(0).contentEquals("[Class]")) {
+					plugin.SetClass(event.getPlayer(), currentSign.getLine(1));
+				}
+			}
+		}
+	}
 
-    @EventHandler
-    public void onPlayerLoginEvent(PlayerLoginEvent event)
-    {
-        plugin.AddClassToPlayer(event.getPlayer());
-        plugin.PlayersE.put(event.getPlayer(),
-                new PlayerExtended(event.getPlayer()));
-    }
+	@EventHandler
+	public void onPlayerLoginEvent(PlayerLoginEvent event) {
+		plugin.AddClassToPlayer(event.getPlayer());
+		plugin.PlayersE.put(event.getPlayer(),
+				new PlayerExtended(event.getPlayer()));
+	}
 
-    @EventHandler
-    public void onPlayerLoginEvent(PlayerQuitEvent event)
-    {
-        plugin.PlayersE.remove(event.getPlayer());
-    }
+	@EventHandler
+	public void onPlayerLoginEvent(PlayerQuitEvent event) {
+		plugin.PlayersE.remove(event.getPlayer());
+	}
 
-    @EventHandler
-    public void onPlayerMoveEvent(PlayerMoveEvent event)
-    {
-        RPGClass pClass = plugin.GetClass(event.getPlayer());
-        Block currentBlock = event.getTo().getBlock();
-        org.bukkit.Location upLoc = event.getTo();
-        upLoc.setY(upLoc.getY() + 1);
+	@EventHandler
+	public void onPlayerMoveEvent(PlayerMoveEvent event) {
+		RPGClass pClass = plugin.GetClass(event.getPlayer());
+		Block currentBlock = event.getTo().getBlock();
+		org.bukkit.Location upLoc = event.getTo();
+		upLoc.setY(upLoc.getY() + 1);
 
-        event.getPlayer().setWalkSpeed(.2F);
+		event.getPlayer().setWalkSpeed(.2F);
 
-        if (pClass.getClassName() == "Archer")
-        {
-            if (currentBlock.getType() == Material.WEB)
-            {
-                event.getPlayer().setWalkSpeed(1F);
-            }
-        }
-    }
+		if (pClass.getClassName() == "Archer") {
+			if (currentBlock.getType() == Material.WEB) {
+				event.getPlayer().setWalkSpeed(1F);
+			}
+		}
+	}
 
-    @EventHandler
-    public void onAbilityUsed(AbilityUsed event)
-    {
-        plugin.GetClass(event.GetPlayer()).AbilityUsed(event.GetAbility());
-    }
+	@EventHandler
+	public void onAbilityUsed(AbilityUsed event) {
+		plugin.GetClass(event.GetPlayer()).AbilityUsed(event.GetAbility());
+	}
 
-    @EventHandler
-    public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event)
-    {
-        Player currentPlayer = event.getPlayer();
-        Entity currentEntity = event.getRightClicked();
+	@EventHandler
+	public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
+		Player currentPlayer = event.getPlayer();
+		Entity currentEntity = event.getRightClicked();
+		if (plugin.GetClass(event.getPlayer()).CanCast) {
+			new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin,
+					Functions.SecondsToTicks(1));
+			plugin.GetClass(currentPlayer).RightClickEntity(currentEntity);
+		}
+	}
 
-        if (plugin.GetClass(event.getPlayer()).CanCast)
-        {
-            new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin,
-                    Functions.SecondsToTicks(1));
+	@EventHandler
+	public void onPlayerInteractEvent(PlayerInteractEvent event) {
+		if (event.getAction() == Action.RIGHT_CLICK_AIR
+				|| event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+			Player currentPlayer = event.getPlayer();
 
-            plugin.GetClass(currentPlayer).RightClickEntity(currentEntity);
-        }
-    }
+			if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+				Material blockMaterial = event.getClickedBlock().getType();
+				if (!MaterialFunctions.isNotInteractiveBlock(blockMaterial)) {
+					return;
+				} else if (event.getItem() != null
+						&& !MaterialFunctions.isNotInteractiveBlock(event
+								.getItem().getType())) {
+					return;
+				}
+			} else if (event.getItem() != null
+					&& !MaterialFunctions.isNotInteractiveBlock(event.getItem()
+							.getType())) {
+				return;
+			}
 
-    @EventHandler
-    public void onPlayerInteractEvent(PlayerInteractEvent event)
-    {
-        if (event.getAction() == Action.RIGHT_CLICK_AIR
-                || event.getAction() == Action.RIGHT_CLICK_BLOCK)
-        {
-            Player currentPlayer = event.getPlayer();
+			if (plugin.GetClass(currentPlayer).CanCast) {
+				new AbilityDelay(currentPlayer, plugin).runTaskLater(plugin,
+						Functions.SecondsToTicks(1));
+				plugin.GetClass(currentPlayer).SelfCast(currentPlayer);
+			}
+		}
+	}
 
-            if (event.getAction() == Action.RIGHT_CLICK_BLOCK)
-            {
-                Material blockMaterial = event.getClickedBlock().getType();
-                if (!MaterialFunctions.isNotInteractiveBlock(blockMaterial))
-                {
-                    return;
-                }
-                else if (event.getItem() != null
-                        && !MaterialFunctions.isNotInteractiveBlock(event
-                                .getItem().getType()))
-                {
-                    return;
-                }
-            }
-            else if (event.getItem() != null
-                    && !MaterialFunctions.isNotInteractiveBlock(event.getItem()
-                            .getType()))
-            {
-                return;
-            }
+	@EventHandler
+	public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
+		if (plugin.GetClass(event.getPlayer()).CanCast) {
+			new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin,
+					Functions.SecondsToTicks(1));
+			plugin.GetClass(event.getPlayer()).ToggleSneakEvent(event);
+		}
+	}
 
-            if (plugin.GetClass(currentPlayer).CanCast)
-            {
-                new AbilityDelay(currentPlayer, plugin).runTaskLater(plugin,
-                        Functions.SecondsToTicks(1));
+	@EventHandler
+	public void onPlayerVelocityEvent(PlayerVelocityEvent event) {
+		if (plugin.GetClass(event.getPlayer()) instanceof Assassin) {
+			event.setCancelled(true);
+		} else if (plugin.GetClass(event.getPlayer()) instanceof Archer
+				&& event.getPlayer().getItemInHand().getType() == Material.BOW) {
+			event.setCancelled(true);
+		} else if (plugin.GetClass(event.getPlayer()) instanceof Daemon
+				&& event.getPlayer().getFireTicks() > 0) {
+			event.setCancelled(true);
+		}
+	}
 
-                plugin.GetClass(currentPlayer).SelfCast(currentPlayer);
-            }
-        }
-    }
+	@EventHandler
+	public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
+		if (event.getEntityType() == EntityType.PLAYER) {
+			Player damagedPlayer = (Player) event.getEntity();
+			plugin.GetClass(damagedPlayer).SelfTakenDamage(event);
+		} else {
+			MobTakenDamage(event);
+		}
+	}
 
-    @EventHandler
-    public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event)
-    {
-        if (plugin.GetClass(event.getPlayer()).CanCast)
-        {
-            new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin,
-                    Functions.SecondsToTicks(1));
+	@EventHandler
+	public void onEntityDamageEvent(EntityDamageEvent event) {
+		if (event.getEntityType() == EntityType.PLAYER) {
+			Player damagedPlayer = (Player) event.getEntity();
+			plugin.GetClass(damagedPlayer).SelfTakenDamage(event);
+		}
+	}
 
-            plugin.GetClass(event.getPlayer()).ToggleSneakEvent(event);
-        }
-    }
+	public void MobTakenDamage(EntityDamageByEntityEvent event) {
+		LivingEntity le = EntityFunctions.GetDamager(event);
+		if (le != null && le.getType() == EntityType.PLAYER) {
+			Player currentPlayer = (Player) le;
+			addPlayerToArena(currentPlayer, event.getEntity());
+			plugin.GetClass(currentPlayer).SelfDamageOther(event);
+		}
+	}
 
-    @EventHandler
-    public void onPlayerVelocityEvent(PlayerVelocityEvent event)
-    {
-        if (plugin.GetClass(event.getPlayer()) instanceof Assassin)
-        {
-            event.setCancelled(true);
-        }
-        else if (plugin.GetClass(event.getPlayer()) instanceof Archer
-                && event.getPlayer().getItemInHand().getType() == Material.BOW)
-        {
-            event.setCancelled(true);
-        }
-        else if (plugin.GetClass(event.getPlayer()) instanceof Daemon
-                && event.getPlayer().getFireTicks() > 0)
-        {
-            event.setCancelled(true);
-        }
-    }
+	public void addPlayerToArena(Player p, Entity e) {
+		if (e.hasMetadata("ArenaMob") && !plugin.arenas.IsPlayerInArena(p)) {
+			List<MetadataValue> currentMetaData = e.getMetadata("ArenaMob");
+			if (currentMetaData.size() == 0) {
+				return;
+			}
 
-    @EventHandler
-    public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event)
-    {
-        if (event.getEntityType() == EntityType.PLAYER)
-        {
-            Player damagedPlayer = (Player) event.getEntity();
+			String arena = currentMetaData.get(0).asString();
 
-            plugin.GetClass(damagedPlayer).SelfTakenDamage(event);
-        }
-        else
-        {
-            MobTakenDamage(event);
-        }
-    }
+			if (plugin.arenas != null) {
+				ArenaBlock currentArena = plugin.arenas.getArenaBlock(arena);
+				if (currentArena != null) {
+					plugin.arenas.WarpToArena(p, currentArena);
+				}
+			}
+		}
+	}
 
-    @EventHandler
-    public void onEntityDamageEvent(EntityDamageEvent event)
-    {
-        if (event.getEntityType() == EntityType.PLAYER)
-        {
-            Player damagedPlayer = (Player) event.getEntity();
-            plugin.GetClass(damagedPlayer).SelfTakenDamage(event);
-        }
-    }
+	public boolean ScaleMobHealth(Player player, LivingEntity mobToScale,
+			double DamageDone) {
+		if (player != null && mobToScale != null) {
+			double heathToscaleTo = EntityFunctions.MobMaxHealth(mobToScale)
+					+ (player.getLevel() * 1.2);
 
-    public void MobTakenDamage(EntityDamageByEntityEvent event)
-    {
-        LivingEntity le = EntityFunctions.GetDamager(event);
+			if (heathToscaleTo > 380) {
+				heathToscaleTo = 380;
+			}
 
-        if (le != null && le.getType() == EntityType.PLAYER)
-        {
-            Player currentPlayer = (Player) le;
+			Damageable dmobToScale = (Damageable) mobToScale;
 
-            addPlayerToArena(currentPlayer, le);
+			double CurrentHealthPercent = EntityFunctions
+					.entityCurrentHealthPercent(dmobToScale.getHealth(),
+							dmobToScale.getMaxHealth());
 
-            plugin.GetClass(currentPlayer).SelfDamageOther(event);
-        }
-    }
+			double damageToDo = (heathToscaleTo * (CurrentHealthPercent))
+					- DamageDone;
 
-    public void addPlayerToArena(Player p, Entity e)
-    {
-        if (e.hasMetadata("ArenaMob") && !plugin.arenas.IsPlayerInArena(p))
-        {
-            List<MetadataValue> currentMetaData = e.getMetadata("ArenaMob");
+			dmobToScale.setMaxHealth(heathToscaleTo);
 
-            if (currentMetaData.size() == 0)
-            {
-                return;
-            }
+			if (damageToDo < 0) {
+				damageToDo = 0;
+			}
 
-            String arena = currentMetaData.get(0).asString().trim();
-
-            if (plugin.arenas != null)
-            {
-                ArenaBlock currentArena = this.plugin.arenas
-                        .getArenaBlock(arena);
-
-                if (currentArena != null)
-                {
-                    plugin.arenas.WarpToArena(p, currentArena);
-                }
-            }
-        }
-    }
-
-    public boolean ScaleMobHealth(Player player, LivingEntity mobToScale,
-            double DamageDone)
-    {
-        if (player != null && mobToScale != null)
-        {
-            double heathToscaleTo = EntityFunctions.MobMaxHealth(mobToScale)
-                    + (player.getLevel() * 1.2);
-
-            if (heathToscaleTo > 380)
-            {
-                heathToscaleTo = 380;
-            }
-
-            Damageable dmobToScale = (Damageable) mobToScale;
-
-            double CurrentHealthPercent = EntityFunctions
-                    .entityCurrentHealthPercent(dmobToScale.getHealth(),
-                            dmobToScale.getMaxHealth());
-
-            double damageToDo = (heathToscaleTo * (CurrentHealthPercent))
-                    - DamageDone;
-
-            dmobToScale.setMaxHealth(heathToscaleTo);
-
-            if (damageToDo < 0)
-            {
-                damageToDo = 0;
-            }
-
-            mobToScale.setHealth(damageToDo);
-            return true;
-        }
-        return false;
-    }
+			mobToScale.setHealth(damageToDo);
+			return true;
+		}
+		return false;
+	}
 }

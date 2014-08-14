@@ -16,146 +16,117 @@ import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.Grapple;
 import belven.classes.resources.ClassDrop;
 
-public class Berserker extends RPGClass
-{
-    public Grapple classGrapple;
+public class Berserker extends RPGClass {
+	public Grapple classGrapple;
 
-    public Berserker(Player currentPlayer, ClassManager instance)
-    {
-        super(30, currentPlayer, instance);
-        this.className = "Berserker";
-        SetClassDrops();
-        SetAbilities();
-    }
+	public Berserker(Player currentPlayer, ClassManager instance) {
+		super(30, currentPlayer, instance);
+		this.className = "Berserker";
+		SetClassDrops();
+		SetAbilities();
+	}
 
-    @Override
-    public void SetClassDrops()
-    {
-        ItemStack string = new ItemStack(Material.STRING);
-        ItemStack sword = new ItemStack(Material.STONE_SWORD);
-        classDrops.add(new ClassDrop(string, true, 2, 1));
-        classDrops.add(new ClassDrop(sword, true, 1, 1));
-    }
+	@Override
+	public void SetClassDrops() {
+		ItemStack string = new ItemStack(Material.STRING);
+		ItemStack sword = new ItemStack(Material.STONE_SWORD);
+		classDrops.add(new ClassDrop(string, true, 2, 1));
+		classDrops.add(new ClassDrop(sword, true, 1, 1));
+	}
 
-    @Override
-    public void SelfCast(Player currentPlayer)
-    {
-        if (MaterialFunctions.isFood(classOwner.getItemInHand().getType()))
-        {
-            return;
-        }
+	@Override
+	public void SelfCast(Player currentPlayer) {
+		if (MaterialFunctions.isFood(classOwner.getItemInHand().getType())) {
+			return;
+		}
 
-        for (Ability a : Abilities)
-        {
-            if (!a.onCooldown && a.HasRequirements(classOwner))
-            {
-                if (!a.PerformAbility())
-                {
-                    continue;
-                }
-                else
-                {
-                    break;
-                }
-            }
-        }
-    }
+		for (Ability a : Abilities) {
+			if (!a.onCooldown && a.HasRequirements(classOwner)) {
+				if (!a.PerformAbility()) {
+					continue;
+				} else {
+					break;
+				}
+			}
+		}
+	}
 
-    @Override
-    public void RightClickEntity(Entity currentEntity)
-    {
-        if (MaterialFunctions.isFood(classOwner.getItemInHand().getType()))
-        {
-            return;
-        }
+	@Override
+	public void RightClickEntity(Entity currentEntity) {
+		if (MaterialFunctions.isFood(classOwner.getItemInHand().getType())) {
+			return;
+		}
 
-        for (Ability a : Abilities)
-        {
-            if (!a.onCooldown && a.HasRequirements(classOwner))
-            {
-                if (!a.PerformAbility())
-                {
-                    continue;
-                }
-                else
-                {
-                    break;
-                }
-            }
-        }
-    }
+		for (Ability a : Abilities) {
+			if (!a.onCooldown && a.HasRequirements(classOwner)) {
+				if (!a.PerformAbility()) {
+					continue;
+				} else {
+					break;
+				}
+			}
+		}
+	}
 
-    @Override
-    public void SelfTakenDamage(EntityDamageByEntityEvent event)
-    {
-        double healthPercent = plugin.GetPlayerE(classOwner)
-                .GetMissingHealthPercent();
+	@Override
+	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
+		double healthPercent = plugin.GetPlayerE(classOwner)
+				.GetMissingHealthPercent();
 
-        if (healthPercent > 1)
-        {
-            healthPercent = 1;
-        }
+		if (healthPercent > 1) {
+			healthPercent = 1;
+		}
 
-        this.classOwner.addPotionEffect(new PotionEffect(
-                PotionEffectType.INCREASE_DAMAGE, Functions.SecondsToTicks(2),
-                (int) (2 * healthPercent)));
-    }
+		this.classOwner.addPotionEffect(new PotionEffect(
+				PotionEffectType.INCREASE_DAMAGE, Functions.SecondsToTicks(2),
+				(int) (2 * healthPercent)));
+	}
 
-    @Override
-    public void SelfDamageOther(EntityDamageByEntityEvent event)
-    {
-        if (plugin.GetPlayerE(classOwner).MeleeWeaponInHand())
-        {
-            event.setDamage(event.getDamage() + 2);
-        }
+	@Override
+	public void SelfDamageOther(EntityDamageByEntityEvent event) {
+		if (plugin.GetPlayerE(classOwner).MeleeWeaponInHand()) {
+			event.setDamage(event.getDamage() + 2);
+		}
 
-        int mobCount = 0;
-        for (Entity e : EntityFunctions.getNearbyEntities(event.getEntity()
-                .getLocation(), 4))
-        {
-            double damageToDo = event.getDamage() / 3.0D;
+		int mobCount = 0;
+		for (Entity e : EntityFunctions.getNearbyEntities(event.getEntity()
+				.getLocation(), 4)) {
+			double damageToDo = event.getDamage() / 3.0D;
 
-            if (e instanceof LivingEntity)
-            {
-                mobCount++;
+			if (e instanceof LivingEntity) {
+				mobCount++;
 
-                if (mobCount >= this.classOwner.getLevel() / 3)
-                {
-                    break;
-                }
+				if (mobCount >= this.classOwner.getLevel() / 3) {
+					break;
+				}
 
-                LivingEntity le = (LivingEntity) e;
+				LivingEntity le = (LivingEntity) e;
 
-                if (le == this.classOwner
-                        && !EntityFunctions.IsAMob(event.getEntityType()))
-                {
-                    if (plugin.GetPlayerE(classOwner).GetHealthPercent() > 0.2D)
-                    {
-                        le.damage(damageToDo);
-                    }
-                }
-                else if (!(le instanceof Player))
-                {
-                    // HashMap<DamageModifier, Double> damageModifiers = new
-                    // HashMap<DamageModifier, Double>();
-                    //
-                    // EntityDamageEvent ede = new EntityDamageEvent(classOwner,
-                    // DamageCause.ENTITY_ATTACK, damageModifiers, null);
+				if (le == this.classOwner
+						&& !EntityFunctions.IsAMob(event.getEntityType())) {
+					if (plugin.GetPlayerE(classOwner).GetHealthPercent() > 0.2D) {
+						le.damage(damageToDo);
+					}
+				} else if (!(le instanceof Player)) {
+					// HashMap<DamageModifier, Double> damageModifiers = new
+					// HashMap<DamageModifier, Double>();
+					//
+					// EntityDamageEvent ede = new EntityDamageEvent(classOwner,
+					// DamageCause.ENTITY_ATTACK, damageModifiers, null);
 
-                    le.damage(damageToDo);
-                    // le.setLastDamageCause(ede);
-                }
-            }
-        }
+					le.damage(damageToDo);
+					// le.setLastDamageCause(ede);
+				}
+			}
+		}
 
-    }
+	}
 
-    @Override
-    public void SetAbilities()
-    {
-        this.classGrapple = new Grapple(this, 1, 0);
-        Abilities.add(classGrapple);
-        SortAbilities();
+	@Override
+	public void SetAbilities() {
+		this.classGrapple = new Grapple(this, 1, 0);
+		Abilities.add(classGrapple);
+		SortAbilities();
 
-    }
+	}
 }

@@ -186,13 +186,11 @@ public abstract class RPGClass
 
     public void SelfTakenDamage(EntityDamageEvent event)
     {
-        // TODO Auto-generated method stub
 
     }
 
     public void AbilityUsed(Ability ability)
     {
-        // TODO Auto-generated method stub
 
     }
 

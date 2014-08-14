@@ -18,108 +18,84 @@ import belven.classes.Abilities.LastResort;
 import belven.classes.Abilities.Retaliation;
 import belven.classes.resources.ClassDrop;
 
-public class Warrior extends RPGClass
-{
-    public LastResort currentLastResort;
-    public Retaliation currentRetaliation;
+public class Warrior extends RPGClass {
+	public LastResort currentLastResort;
+	public Retaliation currentRetaliation;
 
-    public Warrior(Player currentPlayer, ClassManager instance)
-    {
-        super(20, currentPlayer, instance);
-        className = "Warrior";
+	public Warrior(Player currentPlayer, ClassManager instance) {
+		super(20, currentPlayer, instance);
+		className = "Warrior";
 
-        SetClassDrops();
-        SetAbilities();
-    }
+		SetClassDrops();
+		SetAbilities();
+	}
 
-    @Override
-    public void SetClassDrops()
-    {
-        ItemStack bread = new ItemStack(Material.BREAD);
+	@Override
+	public void SetClassDrops() {
+		ItemStack bread = new ItemStack(Material.BREAD);
+		ItemStack sword = new ItemStack(Material.STONE_SWORD);
+		ItemStack strength = new ItemStack(
+				new Potion(PotionType.STRENGTH, 2).toItemStack(1));
+		classDrops.add(new ClassDrop(bread, true, 5));
+		classDrops.add(new ClassDrop(sword, true, 1, 1));
+		classDrops.add(new ClassDrop(strength, 0, 10, 1));
+		classDrops.add(new ClassDrop(i_Boots(), true, 1));
+		classDrops.add(new ClassDrop(i_ChestPlate(), true, 1));
+		classDrops.add(new ClassDrop(i_Leggings(), true, 1));
+		classDrops.add(new ClassDrop(i_Helmet(), true, 1));
+	}
 
-        ItemStack sword = new ItemStack(Material.STONE_SWORD);
+	@Override
+	public void SelfCast(Player currentPlayer) {
+	}
 
-        ItemStack strength = new ItemStack(
-                new Potion(PotionType.STRENGTH, 2).toItemStack(1));
+	@Override
+	public void RightClickEntity(Entity currentEntity) {
+	}
 
-        classDrops.add(new ClassDrop(bread, true, 5));
-        classDrops.add(new ClassDrop(sword, true, 1, 1));
-        classDrops.add(new ClassDrop(strength, 0, 10, 1));
-        classDrops.add(new ClassDrop(i_Boots(), true, 1));
-        classDrops.add(new ClassDrop(i_ChestPlate(), true, 1));
-        classDrops.add(new ClassDrop(i_Leggings(), true, 1));
-        classDrops.add(new ClassDrop(i_Helmet(), true, 1));
-    }
+	@Override
+	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
+		Damageable dcurrentPlayer = classOwner;
 
-    @Override
-    public void SelfCast(Player currentPlayer)
-    {
-        // TODO Auto-generated method stub
+		double healthPercent = plugin.GetPlayerE(classOwner).GetHealthPercent();
 
-    }
+		this.classOwner.addPotionEffect(new PotionEffect(
+				PotionEffectType.DAMAGE_RESISTANCE,
+				Functions.SecondsToTicks(3), (int) (4 * healthPercent)));
 
-    @Override
-    public void RightClickEntity(Entity currentEntity)
-    {
+		if (!currentLastResort.onCooldown && dcurrentPlayer.getHealth() <= 5
+				&& currentLastResort.HasRequirements(classOwner)) {
+			UltAbilityUsed(currentLastResort);
+			currentLastResort.PerformAbility();
+		} else if (!currentRetaliation.onCooldown && classOwner.isBlocking()) {
+			currentRetaliation.PerformAbility(event);
+		}
+	}
 
-    }
+	@Override
+	public void SelfTakenDamage(EntityDamageEvent event) {
+		Damageable dcurrentPlayer = classOwner;
 
-    @Override
-    public void SelfTakenDamage(EntityDamageByEntityEvent event)
-    {
-        Damageable dcurrentPlayer = classOwner;
+		if (!currentLastResort.onCooldown && dcurrentPlayer.getHealth() <= 5
+				&& currentLastResort.HasRequirements(classOwner)) {
+			UltAbilityUsed(currentLastResort);
+			currentLastResort.PerformAbility();
+		}
+	}
 
-        double healthPercent = plugin.GetPlayerE(classOwner).GetHealthPercent();
+	@Override
+	public void SelfDamageOther(EntityDamageByEntityEvent event) {
+		if (MaterialFunctions.isAMeeleWeapon(classOwner.getItemInHand()
+				.getType())) {
+			event.setDamage(event.getDamage() + 2);
+		}
+	}
 
-        this.classOwner.addPotionEffect(new PotionEffect(
-                PotionEffectType.DAMAGE_RESISTANCE,
-                Functions.SecondsToTicks(3), (int) (4 * healthPercent)));
-
-        if (!currentLastResort.onCooldown && dcurrentPlayer.getHealth() <= 5
-                && currentLastResort.HasRequirements(classOwner))
-        {
-            UltAbilityUsed(currentLastResort);
-            currentLastResort.PerformAbility();
-        }
-        else if (!currentRetaliation.onCooldown && classOwner.isBlocking())
-        {
-            currentRetaliation.PerformAbility(event);
-        }
-    }
-
-    @Override
-    public void SelfTakenDamage(EntityDamageEvent event)
-    {
-        Damageable dcurrentPlayer = classOwner;
-
-        if (!currentLastResort.onCooldown && dcurrentPlayer.getHealth() <= 5
-                && currentLastResort.HasRequirements(classOwner))
-        {
-            UltAbilityUsed(currentLastResort);
-            currentLastResort.PerformAbility();
-        }
-        // else if (!currentRetaliation.onCooldown && classOwner.isBlocking())
-        // {
-        // currentRetaliation.PerformAbility(event);
-        // }
-    }
-
-    @Override
-    public void SelfDamageOther(EntityDamageByEntityEvent event)
-    {
-        if (MaterialFunctions.isAMeeleWeapon(classOwner.getItemInHand()
-                .getType()))
-        {
-            event.setDamage(event.getDamage() + 2);
-        }
-    }
-
-    @Override
-    public void SetAbilities()
-    {
-        currentLastResort = new LastResort(this, 1, 5);
-        currentRetaliation = new Retaliation(this, 2, 2);
-        currentRetaliation.Cooldown = 2;
-        SortAbilities();
-    }
+	@Override
+	public void SetAbilities() {
+		currentLastResort = new LastResort(this, 1, 5);
+		currentRetaliation = new Retaliation(this, 2, 2);
+		currentRetaliation.Cooldown = 2;
+		SortAbilities();
+	}
 }

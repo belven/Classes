@@ -8,40 +8,33 @@ import org.bukkit.potion.PotionEffectType;
 
 import resources.Functions;
 
-public class Heal extends Ability
-{
-    public Heal(belven.classes.RPGClass CurrentClass, int priority, int amp)
-    {
-        super(priority, amp);
-        currentClass = CurrentClass;
-        requirements.add(new ItemStack(Material.LAPIS_BLOCK, 1));
-        abilitiyName = "Heal";
-        Cooldown = 10;
-    }
+public class Heal extends Ability {
+	public Heal(belven.classes.RPGClass CurrentClass, int priority, int amp) {
+		super(priority, amp);
+		currentClass = CurrentClass;
+		requirements.add(new ItemStack(Material.LAPIS_BLOCK, 1));
+		abilitiyName = "Heal";
+		Cooldown = 10;
+	}
 
-    @Override
-    public boolean PerformAbility(Player playerToHeal)
-    {
-        if (currentClass.plugin.GetPlayerE(playerToHeal).GetHealth() <= 10)
-        {
-            playerToHeal.addPotionEffect(new PotionEffect(
-                    PotionEffectType.HEAL, 1, Amplifier()));
+	@Override
+	public boolean PerformAbility(Player playerToHeal) {
+		if (currentClass.plugin.GetPlayerE(playerToHeal).GetHealth() <= 10) {
+			playerToHeal.addPotionEffect(new PotionEffect(
+					PotionEffectType.HEAL, 1, Amplifier()));
 
-            currentClass.classOwner.sendMessage("You healed "
-                    + playerToHeal.getName());
+			currentClass.classOwner.sendMessage("You healed "
+					+ playerToHeal.getName());
 
-            currentClass.setAbilityOnCoolDown(this, true);
-            RemoveItems();
-            return true;
-        }
+			currentClass.setAbilityOnCoolDown(this, true);
+			RemoveItems();
+			return true;
+		}
+		return false;
+	}
 
-        return false;
-    }
-
-    public int Amplifier()
-    {
-        return Functions.abilityCap((double) Amplifier,
-                (double) currentClass.classOwner.getLevel()) + 1;
-    }
-
+	public int Amplifier() {
+		return Functions.abilityCap((double) Amplifier,
+				(double) currentClass.classOwner.getLevel()) + 1;
+	}
 }
