@@ -194,4 +194,7 @@ public abstract class RPGClass
 
     }
 
+	public void OtherTakenDamage(EntityDamageByEntityEvent event) {		
+	}
+
 }

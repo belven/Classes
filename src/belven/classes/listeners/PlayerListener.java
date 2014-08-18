@@ -36,6 +36,7 @@ import belven.classes.Daemon;
 import belven.classes.RPGClass;
 import belven.classes.events.AbilityUsed;
 import belven.classes.timedevents.AbilityDelay;
+import belven.teams.Team;
 
 public class PlayerListener implements Listener {
 	private final ClassManager plugin;
@@ -164,10 +165,30 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
 		if (event.getEntityType() == EntityType.PLAYER) {
-			Player damagedPlayer = (Player) event.getEntity();
-			plugin.GetClass(damagedPlayer).SelfTakenDamage(event);
+			Player dp = (Player) event.getEntity();
+
+			if (plugin.arenas.IsPlayerInArena(dp)) {
+				ArenaBlock ab = plugin.arenas.getArenaInIsPlayer(dp);
+				for (Player p : ab.arenaPlayers) {
+					if (p != dp) {
+						plugin.GetClass(p).OtherTakenDamage(event);
+					}
+				}
+			} else if (plugin.teams.isInATeam(dp)) {
+				Team t = plugin.teams.getTeam(dp);
+				for (Player p : t.getMembers()) {
+					plugin.GetClass(p).OtherTakenDamage(event);
+				}
+			}
+
+			plugin.GetClass(dp).SelfTakenDamage(event);
 		} else {
-			MobTakenDamage(event);
+			LivingEntity le = EntityFunctions.GetDamager(event);
+			if (le != null && le.getType() == EntityType.PLAYER) {
+				Player currentPlayer = (Player) le;
+				addPlayerToArena(currentPlayer, event.getEntity());
+				plugin.GetClass(currentPlayer).SelfDamageOther(event);
+			}
 		}
 	}
 
@@ -176,15 +197,6 @@ public class PlayerListener implements Listener {
 		if (event.getEntityType() == EntityType.PLAYER) {
 			Player damagedPlayer = (Player) event.getEntity();
 			plugin.GetClass(damagedPlayer).SelfTakenDamage(event);
-		}
-	}
-
-	public void MobTakenDamage(EntityDamageByEntityEvent event) {
-		LivingEntity le = EntityFunctions.GetDamager(event);
-		if (le != null && le.getType() == EntityType.PLAYER) {
-			Player currentPlayer = (Player) le;
-			addPlayerToArena(currentPlayer, event.getEntity());
-			plugin.GetClass(currentPlayer).SelfDamageOther(event);
 		}
 	}
 

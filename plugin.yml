@@ -4,6 +4,11 @@ version: 1
 depend: [BelvensArenas, BelvensTeams]
 
 commands:
+   bc:
+      description: access to other bc commands
+      usage: /bchealer 
+      permission: BelvensClasses.bc
+      permission-message: You don't have BelvensClasses.bc
    bchealer:
       description: This will change your class to a healer
       usage: /bchealer 
@@ -84,6 +89,7 @@ permissions:
         description: Gives access to all of base classes
         children:
             BelvensClasses.bchealer: true
+            BelvensClasses.bc: true
             BelvensClasses.bcmage: true
             BelvensClasses.bcwarrior: true
             BelvensClasses.bcassassin: true
@@ -98,12 +104,15 @@ permissions:
             BelvensClasses.bcpriest: true
             BelvensClasses.bcmonk: true
             BelvensClasses.bcknight: true
+    BelvensClasses.bc:
+        description: Lists all players and thier classes
+        default: true
     BelvensClasses.listclasses:
         description: Lists all players and thier classes
-        default: op
+        default: true
     BelvensClasses.listabilities:
         description: Lists your classes abilities
-        default: op
+        default: true
     BelvensClasses.bcberserker:
         description: This will change your class to a Berserker
         default: true

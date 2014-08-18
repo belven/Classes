@@ -89,11 +89,11 @@ public class ClassManager extends JavaPlugin {
 	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String label,
 			String[] args) {
-		Player player = (Player) sender;
+		Player p = (Player) sender;
 		String commandSent = cmd.getName();
 
-		if (this.arenas.IsPlayerInArena(player) ? !this.arenas
-				.getArenaInIsPlayer(player).isActive : true) {
+		if (this.arenas.IsPlayerInArena(p) ? !this.arenas.getArenaInIsPlayer(p).isActive
+				: true) {
 			// Class
 			if (commandSent.startsWith("bc")) {
 				StringBuilder sb = new StringBuilder(commandSent.toLowerCase());
@@ -101,7 +101,7 @@ public class ClassManager extends JavaPlugin {
 				sb.setCharAt(0, (char) (sb.charAt(0) - 32));
 				String s = sb.toString();
 				if (StrToRPGClass.containsKey(s)) {
-					SetClass(player, s);
+					SetClass(p, s);
 				}
 				return true;
 			}
@@ -110,14 +110,13 @@ public class ClassManager extends JavaPlugin {
 			switch (commandSent) {
 
 			case "bcdummy":
-				Location playerLocation = player.getLocation();
+				Location playerLocation = p.getLocation();
 				playerLocation.setX(playerLocation.getX() + 3);
-				player.getWorld()
-						.spawnEntity(playerLocation, EntityType.ZOMBIE);
+				p.getWorld().spawnEntity(playerLocation, EntityType.ZOMBIE);
 				return true;
 			case "setlevel":
 				int level = Integer.valueOf(args[0]);
-				player.setLevel(level);
+				p.setLevel(level);
 				return true;
 			case "listclasses":
 				Player[] currentPlayers = this.getServer().getOnlinePlayers();
@@ -125,18 +124,23 @@ public class ClassManager extends JavaPlugin {
 					if (currentPlayer != null) {
 						RPGClass currentClass = CurrentPlayerClasses
 								.get(currentPlayer);
-						player.sendMessage(currentPlayer.getName() + " is a "
+						p.sendMessage(currentPlayer.getName() + " is a "
 								+ currentClass.getClassName());
 					}
 				}
 				return true;
 			case "listabilities":
-				CurrentPlayerClasses.get(player).ListAbilities();
+				CurrentPlayerClasses.get(p).ListAbilities();
 				return true;
 			}
 		}
 		return false;
 	}
+
+	// private void SpawnDummyPlayer(Player p) {
+	// Location l = p.getLocation();
+	// l.getWorld().spawnEntity(l, EntityType.PLAYER);
+	// }
 
 	private RPGClass StringToClass(String className, Player player) {
 		try {

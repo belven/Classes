@@ -110,12 +110,17 @@ public class Berserker extends RPGClass {
 				} else if (!(le instanceof Player)) {
 					// HashMap<DamageModifier, Double> damageModifiers = new
 					// HashMap<DamageModifier, Double>();
+					// damageModifiers.put(DamageModifier.BASE, damageToDo);
 					//
 					// EntityDamageEvent ede = new EntityDamageEvent(classOwner,
 					// DamageCause.ENTITY_ATTACK, damageModifiers, null);
 
+					// ede = new EntityDamageEvent(classOwner,
+					// DamageCause.ENTITY_ATTACK, damageToDo);
+
 					le.damage(damageToDo);
-					// le.setLastDamageCause(ede);
+					//le.setLastDamageCause(ede);
+
 				}
 			}
 		}

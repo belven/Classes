@@ -23,7 +23,7 @@ public class Warrior extends RPGClass {
 	public Retaliation currentRetaliation;
 
 	public Warrior(Player currentPlayer, ClassManager instance) {
-		super(20, currentPlayer, instance);
+		super(40, currentPlayer, instance);
 		className = "Warrior";
 
 		SetClassDrops();
@@ -54,14 +54,24 @@ public class Warrior extends RPGClass {
 	}
 
 	@Override
+	public void OtherTakenDamage(EntityDamageByEntityEvent event) {
+		Player p = (Player) event.getEntity();
+		double healthPercent = plugin.GetPlayerE(classOwner)
+				.GetMissingHealthPercent();
+
+		if (event.getDamage() > 0 && healthPercent > 0.1
+				&& p.getLocation().distance(classOwner.getLocation()) < 30) {
+			classOwner.damage(event.getDamage());
+			event.setDamage(0.0);
+			this.classOwner.addPotionEffect(new PotionEffect(
+					PotionEffectType.DAMAGE_RESISTANCE, Functions
+							.SecondsToTicks(3), (int) (4 * healthPercent)));
+		}
+	}
+
+	@Override
 	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
 		Damageable dcurrentPlayer = classOwner;
-
-		double healthPercent = plugin.GetPlayerE(classOwner).GetHealthPercent();
-
-		this.classOwner.addPotionEffect(new PotionEffect(
-				PotionEffectType.DAMAGE_RESISTANCE,
-				Functions.SecondsToTicks(3), (int) (4 * healthPercent)));
 
 		if (!currentLastResort.onCooldown && dcurrentPlayer.getHealth() <= 5
 				&& currentLastResort.HasRequirements(classOwner)) {
