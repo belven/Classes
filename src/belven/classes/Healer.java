@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 import resources.EntityFunctions;
 import resources.MaterialFunctions;
+import belven.arena.arenas.BaseArena.ArenaTypes;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.Bandage;
 import belven.classes.Abilities.Barrier;
@@ -128,8 +129,13 @@ public class Healer extends RPGClass {
 		if (plugin.arenas != null && plugin.teams != null) {
 			boolean selfInArena = plugin.arenas.IsPlayerInArena(self);
 			boolean targetInArena = plugin.arenas.IsPlayerInArena(target);
+			ArenaTypes arenaType = null;
+			
+			if (selfInArena) {
+				arenaType = plugin.arenas.getArenaInIsPlayer(self).type;
+			}
 
-			if (selfInArena && targetInArena) {
+			if (selfInArena && targetInArena && arenaType != ArenaTypes.PvP) {
 				return true;
 			} else if (plugin.teams.isInSameTeam(self, target)) {
 				return true;
