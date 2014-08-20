@@ -20,7 +20,7 @@ import org.bukkit.metadata.MetadataValue;
 
 import resources.EntityFunctions;
 import resources.Functions;
-import belven.arena.blocks.ArenaBlock;
+import belven.arena.arenas.BaseArena;
 import belven.classes.ClassManager;
 import belven.classes.resources.ClassDrop;
 
@@ -57,7 +57,7 @@ public class MobListener implements Listener {
 			String arena = currentMetaData.get(0).asString().trim();
 
 			if (plugin.arenas != null) {
-				ArenaBlock currentArena = this.plugin.arenas
+				BaseArena currentArena = this.plugin.arenas
 						.getArenaBlock(arena);
 
 				if (currentArena != null) {

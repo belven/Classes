@@ -28,7 +28,7 @@ import resources.EntityFunctions;
 import resources.Functions;
 import resources.MaterialFunctions;
 import resources.PlayerExtended;
-import belven.arena.blocks.ArenaBlock;
+import belven.arena.arenas.BaseArena;
 import belven.classes.Archer;
 import belven.classes.Assassin;
 import belven.classes.ClassManager;
@@ -168,7 +168,7 @@ public class PlayerListener implements Listener {
 			Player dp = (Player) event.getEntity();
 
 			if (plugin.arenas.IsPlayerInArena(dp)) {
-				ArenaBlock ab = plugin.arenas.getArenaInIsPlayer(dp);
+				BaseArena ab = plugin.arenas.getArenaInIsPlayer(dp);
 				for (Player p : ab.arenaPlayers) {
 					if (p != dp) {
 						plugin.GetClass(p).OtherTakenDamage(event);
@@ -210,7 +210,7 @@ public class PlayerListener implements Listener {
 			String arena = currentMetaData.get(0).asString();
 
 			if (plugin.arenas != null) {
-				ArenaBlock currentArena = plugin.arenas.getArenaBlock(arena);
+				BaseArena currentArena = plugin.arenas.getArenaBlock(arena);
 				if (currentArena != null) {
 					plugin.arenas.WarpToArena(p, currentArena);
 				}
