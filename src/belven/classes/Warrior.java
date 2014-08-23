@@ -65,11 +65,11 @@ public class Warrior extends RPGClass {
 		if (plugin.arenas != null && plugin.teams != null) {
 			ArenaManager a = plugin.arenas;
 			TeamManager t = plugin.teams;
-			
-			//we are in an arena and it's PvP
+
+			// we are in an arena and it's PvP
 			if (a.IsPlayerInArena(classOwner)
-					&& a.getArenaInIsPlayer(classOwner).type == ArenaTypes.PvP) {
-				//Player isn't an ally 
+					&& a.getArena(classOwner).type == ArenaTypes.PvP) {
+				// Player isn't an ally
 				if (!t.isInATeam(classOwner) || !t.isInSameTeam(classOwner, p)) {
 					return;
 				}
@@ -95,7 +95,7 @@ public class Warrior extends RPGClass {
 			UltAbilityUsed(currentLastResort);
 			currentLastResort.PerformAbility();
 		} else if (!currentRetaliation.onCooldown && classOwner.isBlocking()) {
-			currentRetaliation.PerformAbility(event);
+			currentRetaliation.PerformAbility();
 		}
 	}
 
@@ -121,8 +121,8 @@ public class Warrior extends RPGClass {
 	@Override
 	public void SetAbilities() {
 		currentLastResort = new LastResort(this, 1, 5);
-		currentRetaliation = new Retaliation(this, 2, 2);
-		currentRetaliation.Cooldown = 2;
+		currentRetaliation = new Retaliation(this, 2, 1);
+		currentRetaliation.Cooldown = 3;
 		SortAbilities();
 	}
 }

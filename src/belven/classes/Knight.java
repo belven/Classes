@@ -8,52 +8,41 @@ import org.bukkit.potion.PotionEffectType;
 import resources.Functions;
 import belven.classes.Abilities.Ability;
 
-public class Knight extends Warrior
-{
-    public Knight(Player currentPlayer, ClassManager instance)
-    {
-        super(currentPlayer, instance);
-        className = "Knight";
-        baseClassName = "Warrior";
-        SortAbilities();
-        SetClassDrops();
-    }
+public class Knight extends Warrior {
+	public Knight(Player currentPlayer, ClassManager instance) {
+		super(currentPlayer, instance);
+		className = "Knight";
+		baseClassName = "Warrior";
+		SortAbilities();
+		SetClassDrops();
+	}
 
-    public void SelfDamageOther(EntityDamageByEntityEvent event)
-    {
-        if (classOwner.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE))
-        {
-            classOwner.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
-        }
-    }
+	public void SelfDamageOther(EntityDamageByEntityEvent event) {
+		if (classOwner.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
+			classOwner.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
+		}
+	}
 
-    public void SelfTakenDamage(EntityDamageByEntityEvent event)
-    {
-        super.SelfTakenDamage(event);
-    }
+	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
+		super.SelfTakenDamage(event);
+	}
 
-    @Override
-    public void AbilityUsed(Ability ability)
-    {
-        if (ability == currentRetaliation)
-        {
-            classOwner.addPotionEffect(
-                    new PotionEffect(PotionEffectType.INCREASE_DAMAGE,
-                            Functions.SecondsToTicks(10), Functions.abilityCap(
-                                    3, classOwner.getLevel())), true);
-        }
-    }
+	@Override
+	public void AbilityUsed(Ability ability) {
+		if (ability == currentRetaliation) {
+			classOwner.addPotionEffect(
+					new PotionEffect(PotionEffectType.INCREASE_DAMAGE,
+							Functions.SecondsToTicks(10), Functions.abilityCap(
+									2, classOwner.getLevel())), true);
+		}
+	}
 
-    public int Amplifier()
-    {
-        return Math.round(classOwner.getLevel() / 5) + 1;
-    }
+	public int Amplifier() {
+		return Math.round(classOwner.getLevel() / 5) + 1;
+	}
 
-    @Override
-    public void SetClassDrops()
-    {
-        super.SetClassDrops();
-        // ItemStack fire = new ItemStack(Material.FIREWORK_CHARGE, 2);
-        // classDrops.add(new ClassDrop(fire, true));
-    }
+	@Override
+	public void SetClassDrops() {
+		super.SetClassDrops();
+	}
 }

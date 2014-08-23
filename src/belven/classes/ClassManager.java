@@ -92,7 +92,7 @@ public class ClassManager extends JavaPlugin {
 		Player p = (Player) sender;
 		String commandSent = cmd.getName();
 
-		if (this.arenas.IsPlayerInArena(p) ? !this.arenas.getArenaInIsPlayer(p).isActive
+		if (this.arenas.IsPlayerInArena(p) ? !this.arenas.getArena(p).isActive
 				: true) {
 			// Class
 			if (commandSent.startsWith("bc")) {

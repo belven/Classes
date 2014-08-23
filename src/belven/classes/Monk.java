@@ -21,12 +21,15 @@ public class Monk extends Healer {
 	public void SetAbilities() {
 		super.SetAbilities();
 		Abilities.remove(classHeal);
+
 		classHealingFurry = new HealingFurry(this, 0, 5);
 		classHealingFurry.Cooldown = 8;
-		classLightHeal.Priority = 10;
-		classBandage.Amplifier = 5;
-		classLightHeal.Amplifier = 2;
 		Abilities.add(classHealingFurry);
+
+		classLightHeal.Priority = 10;
+		classLightHeal.Amplifier = 2;
+
+		classBandage.Amplifier = 5;
 		SortAbilities();
 	}
 
@@ -39,8 +42,8 @@ public class Monk extends Healer {
 	@Override
 	public void SelfDamageOther(EntityDamageByEntityEvent event) {
 		if (classOwner.getItemInHand() == null
-				|| classOwner.getItemInHand().getType() != Material.AIR) {
-			event.setDamage(event.getDamage() + 6.0);
+				|| classOwner.getItemInHand().getType() == Material.AIR) {
+			event.setDamage(event.getDamage() + 10.0);
 		}
 	}
 }

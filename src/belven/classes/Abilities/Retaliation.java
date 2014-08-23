@@ -2,29 +2,33 @@ package belven.classes.Abilities;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import resources.EntityFunctions;
+import belven.classes.RPGClass;
 import belven.classes.events.AbilityUsed;
 
 public class Retaliation extends Ability {
-	public Retaliation(belven.classes.RPGClass CurrentClass, int priority,
-			int amp) {
+	public Retaliation(RPGClass CurrentClass, int priority, int amp) {
 		super(priority, amp);
 		currentClass = CurrentClass;
 		abilitiyName = "Retaliation";
 	}
 
 	@Override
-	public boolean PerformAbility(EntityDamageByEntityEvent event) {
-		LivingEntity entityDamaged = EntityFunctions.GetDamager(event);
+	public boolean PerformAbility() {
+		Player p = currentClass.classOwner;
+		EntityDamageEvent ldc = p.getLastDamageCause();
+		LivingEntity entityDamaged = EntityFunctions
+				.GetDamager((LivingEntity) p);
+		
 
 		if (entityDamaged != null) {
-			entityDamaged.damage(event.getDamage() * Amplifier());
-			event.setCancelled(true);
+			entityDamaged.damage(ldc.getDamage() * Amplifier());
+			EntityFunctions.Heal((LivingEntity) p, (int) ldc.getDamage());
 		} else {
-			event.setCancelled(true);
+			EntityFunctions.Heal((LivingEntity) p, (int) ldc.getDamage());
 		}
 		Bukkit.getPluginManager().callEvent(new AbilityUsed(this));
 		currentClass.setAbilityOnCoolDown(this);

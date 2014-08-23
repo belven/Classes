@@ -13,7 +13,7 @@ public class HealingFurry extends Ability {
 			int amp) {
 		super(priority, amp);
 		currentClass = CurrentClass;
-		requirements.add(new ItemStack(Material.LAPIS_BLOCK, 4));
+		requirements.add(new ItemStack(Material.LAPIS_BLOCK, 2));
 		abilitiyName = "Healing Furry";
 	}
 

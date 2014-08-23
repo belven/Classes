@@ -13,7 +13,7 @@ public class AOEHeal extends Ability {
 	public AOEHeal(belven.classes.RPGClass CurrentClass, int priority, int amp) {
 		super(priority, amp);
 		currentClass = CurrentClass;
-		requirements.add(new ItemStack(Material.LAPIS_BLOCK, 4));
+		requirements.add(new ItemStack(Material.LAPIS_BLOCK, 2));
 		abilitiyName = "AOE Heal";
 	}
 

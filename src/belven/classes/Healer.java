@@ -58,7 +58,7 @@ public class Healer extends RPGClass {
 		ItemStack stick = new ItemStack(Material.STICK);
 		ItemStack paper = new ItemStack(Material.PAPER);
 
-		classDrops.add(new ClassDrop(lapisBlock, true, 10, 1));
+		classDrops.add(new ClassDrop(lapisBlock, true, 20, 1));
 		classDrops.add(new ClassDrop(woodSword, true, 1));
 		classDrops.add(new ClassDrop(paper, 20, 40, 5, 1));
 		classDrops.add(new ClassDrop(stick, 20, 40, 5, 1));
@@ -130,9 +130,9 @@ public class Healer extends RPGClass {
 			boolean selfInArena = plugin.arenas.IsPlayerInArena(self);
 			boolean targetInArena = plugin.arenas.IsPlayerInArena(target);
 			ArenaTypes arenaType = null;
-			
+
 			if (selfInArena) {
-				arenaType = plugin.arenas.getArenaInIsPlayer(self).type;
+				arenaType = plugin.arenas.getArena(self).type;
 			}
 
 			if (selfInArena && targetInArena && arenaType != ArenaTypes.PvP) {

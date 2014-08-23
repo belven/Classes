@@ -168,7 +168,7 @@ public class PlayerListener implements Listener {
 			Player dp = (Player) event.getEntity();
 
 			if (plugin.arenas.IsPlayerInArena(dp)) {
-				BaseArena ab = plugin.arenas.getArenaInIsPlayer(dp);
+				BaseArena ab = plugin.arenas.getArena(dp);
 				for (Player p : ab.arenaPlayers) {
 					if (p != dp) {
 						plugin.GetClass(p).OtherTakenDamage(event);
