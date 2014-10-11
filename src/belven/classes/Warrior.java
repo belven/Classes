@@ -18,7 +18,7 @@ import belven.arena.ArenaManager;
 import belven.arena.arenas.BaseArena.ArenaTypes;
 import belven.classes.Abilities.LastResort;
 import belven.classes.Abilities.Retaliation;
-import belven.classes.resources.ClassDrop;
+import resources.ClassDrop;
 import belven.teams.TeamManager;
 
 public class Warrior extends RPGClass {

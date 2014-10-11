@@ -16,7 +16,7 @@ import belven.classes.Abilities.Bandage;
 import belven.classes.Abilities.Barrier;
 import belven.classes.Abilities.Heal;
 import belven.classes.Abilities.LightHeal;
-import belven.classes.resources.ClassDrop;
+import resources.ClassDrop;
 
 public class Healer extends RPGClass {
 	public Heal classHeal;

@@ -22,7 +22,7 @@ import resources.EntityFunctions;
 import resources.Functions;
 import belven.arena.arenas.BaseArena;
 import belven.classes.ClassManager;
-import belven.classes.resources.ClassDrop;
+import resources.ClassDrop;
 
 public class MobListener implements Listener {
 	private final ClassManager plugin;

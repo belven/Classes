@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 import resources.Functions;
 import belven.classes.Abilities.Ability;
-import belven.classes.resources.ClassDrop;
+import resources.ClassDrop;
 import belven.classes.timedevents.AbilityCooldown;
 
 public abstract class RPGClass

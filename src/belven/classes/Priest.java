@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 
 import belven.classes.Abilities.AOEHeal;
 import belven.classes.Abilities.Cleanse;
-import belven.classes.resources.ClassDrop;
+import resources.ClassDrop;
 
 public class Priest extends Healer {
 	public AOEHeal classAOEHeal;

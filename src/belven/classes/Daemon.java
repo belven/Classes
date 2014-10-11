@@ -14,7 +14,7 @@ import resources.EntityFunctions;
 import resources.Functions;
 import belven.classes.Abilities.FeelTheBurn;
 import belven.classes.Abilities.SetAlight;
-import belven.classes.resources.ClassDrop;
+import resources.ClassDrop;
 
 public class Daemon extends Berserker {
 	public FeelTheBurn classFeelTheBurn;

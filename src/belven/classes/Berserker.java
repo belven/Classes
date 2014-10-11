@@ -2,6 +2,7 @@ package belven.classes;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -14,7 +15,7 @@ import resources.Functions;
 import resources.MaterialFunctions;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.Grapple;
-import belven.classes.resources.ClassDrop;
+import resources.ClassDrop;
 
 public class Berserker extends RPGClass {
 	public Grapple classGrapple;
@@ -73,10 +74,6 @@ public class Berserker extends RPGClass {
 		double healthPercent = plugin.GetPlayerE(classOwner)
 				.GetMissingHealthPercent();
 
-		if (healthPercent > 1) {
-			healthPercent = 1;
-		}
-
 		this.classOwner.addPotionEffect(new PotionEffect(
 				PotionEffectType.INCREASE_DAMAGE, Functions.SecondsToTicks(2),
 				(int) (2 * healthPercent)));
@@ -96,7 +93,7 @@ public class Berserker extends RPGClass {
 			if (e instanceof LivingEntity) {
 				mobCount++;
 
-				if (mobCount >= this.classOwner.getLevel() / 3) {
+				if (mobCount >= 3) {
 					break;
 				}
 
@@ -107,19 +104,17 @@ public class Berserker extends RPGClass {
 					if (plugin.GetPlayerE(classOwner).GetHealthPercent() > 0.2D) {
 						le.damage(damageToDo);
 					}
-				} else if (!(le instanceof Player)) {
+				} else if (le.getType() != EntityType.PLAYER) {
 					// HashMap<DamageModifier, Double> damageModifiers = new
 					// HashMap<DamageModifier, Double>();
 					// damageModifiers.put(DamageModifier.BASE, damageToDo);
-					//
-					// EntityDamageEvent ede = new EntityDamageEvent(classOwner,
-					// DamageCause.ENTITY_ATTACK, damageModifiers, null);
-
-					// ede = new EntityDamageEvent(classOwner,
-					// DamageCause.ENTITY_ATTACK, damageToDo);
+					// EntityDamageByEntityEvent ede = new
+					// EntityDamageByEntityEvent(
+					// classOwner, le, DamageCause.ENTITY_ATTACK,
+					// damageModifiers, null);
+					// le.setLastDamageCause(ede);
 
 					le.damage(damageToDo);
-					//le.setLastDamageCause(ede);
 
 				}
 			}

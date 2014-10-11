@@ -17,7 +17,7 @@ import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.DamageTrap;
 import belven.classes.Abilities.FireTrap;
 import belven.classes.Abilities.WebArrow;
-import belven.classes.resources.ClassDrop;
+import resources.ClassDrop;
 import belven.classes.timedevents.BlockRestorer;
 
 public class Archer extends RPGClass {

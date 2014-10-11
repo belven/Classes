@@ -119,15 +119,15 @@ public class PlayerListener implements Listener {
 
 			if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 				Material blockMaterial = event.getClickedBlock().getType();
-				if (!MaterialFunctions.isNotInteractiveBlock(blockMaterial)) {
+				if (MaterialFunctions.isInteractiveBlock(blockMaterial)) {
 					return;
 				} else if (event.getItem() != null
-						&& !MaterialFunctions.isNotInteractiveBlock(event
-								.getItem().getType())) {
+						&& MaterialFunctions.isInteractiveBlock(event.getItem()
+								.getType())) {
 					return;
 				}
 			} else if (event.getItem() != null
-					&& !MaterialFunctions.isNotInteractiveBlock(event.getItem()
+					&& MaterialFunctions.isInteractiveBlock(event.getItem()
 							.getType())) {
 				return;
 			}
