@@ -18,11 +18,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.MetadataValue;
 
+import resources.ClassDrop;
 import resources.EntityFunctions;
 import resources.Functions;
+import belven.arena.MDM;
 import belven.arena.arenas.BaseArena;
 import belven.classes.ClassManager;
-import resources.ClassDrop;
 
 public class MobListener implements Listener {
 	private final ClassManager plugin;
@@ -45,25 +46,15 @@ public class MobListener implements Listener {
 	@EventHandler
 	public void onEntityDeathEvent(EntityDeathEvent event) {
 		Entity currentEntity = event.getEntity();
+		List<MetadataValue> currentMetaData = MDM.getMetaData(MDM.ArenaMob,
+				currentEntity);
 
-		if (currentEntity.hasMetadata("ArenaMob")) {
-			List<MetadataValue> currentMetaData = currentEntity
-					.getMetadata("ArenaMob");
+		if (plugin.arenas != null && currentMetaData != null) {
+			BaseArena currentArena = (BaseArena) currentMetaData.get(0).value();
 
-			if (currentMetaData.size() == 0) {
-				return;
-			}
-
-			String arena = currentMetaData.get(0).asString().trim();
-
-			if (plugin.arenas != null) {
-				BaseArena currentArena = this.plugin.arenas
-						.getArenaBlock(arena);
-
-				if (currentArena != null) {
-					for (Player p : currentArena.arenaPlayers) {
-						GiveClassDrops(p, false);
-					}
+			if (currentArena != null) {
+				for (Player p : currentArena.arenaPlayers) {
+					GiveClassDrops(p, false);
 				}
 			}
 		} else {
@@ -98,7 +89,7 @@ public class MobListener implements Listener {
 			if (cd.alwaysGive
 					|| Functions
 							.numberBetween(ran, cd.lowChance, cd.highChance)
-					&& (cd.isWilderness == isWilderness)) {
+					&& cd.isWilderness == isWilderness) {
 				if (!cd.isArmor) {
 					ItemStack is = cd.is.clone();
 					is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is

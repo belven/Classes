@@ -28,6 +28,7 @@ import resources.EntityFunctions;
 import resources.Functions;
 import resources.MaterialFunctions;
 import resources.PlayerExtended;
+import belven.arena.MDM;
 import belven.arena.arenas.BaseArena;
 import belven.classes.Archer;
 import belven.classes.Assassin;
@@ -201,19 +202,12 @@ public class PlayerListener implements Listener {
 	}
 
 	public void addPlayerToArena(Player p, Entity e) {
-		if (e.hasMetadata("ArenaMob") && !plugin.arenas.IsPlayerInArena(p)) {
-			List<MetadataValue> currentMetaData = e.getMetadata("ArenaMob");
-			if (currentMetaData.size() == 0) {
-				return;
-			}
+		List<MetadataValue> currentMetaData = MDM.getMetaData(MDM.ArenaMob, e);
 
-			String arena = currentMetaData.get(0).asString();
-
-			if (plugin.arenas != null) {
-				BaseArena currentArena = plugin.arenas.getArenaBlock(arena);
-				if (currentArena != null) {
-					plugin.arenas.WarpToArena(p, currentArena);
-				}
+		if (currentMetaData != null && !plugin.arenas.IsPlayerInArena(p)) {
+			BaseArena currentArena = (BaseArena) currentMetaData.get(0).value();
+			if (currentArena != null) {
+				plugin.arenas.WarpToArena(p, currentArena);
 			}
 		}
 	}
@@ -222,19 +216,19 @@ public class PlayerListener implements Listener {
 			double DamageDone) {
 		if (player != null && mobToScale != null) {
 			double heathToscaleTo = EntityFunctions.MobMaxHealth(mobToScale)
-					+ (player.getLevel() * 1.2);
+					+ player.getLevel() * 1.2;
 
 			if (heathToscaleTo > 380) {
 				heathToscaleTo = 380;
 			}
 
-			Damageable dmobToScale = (Damageable) mobToScale;
+			Damageable dmobToScale = mobToScale;
 
 			double CurrentHealthPercent = EntityFunctions
 					.entityCurrentHealthPercent(dmobToScale.getHealth(),
 							dmobToScale.getMaxHealth());
 
-			double damageToDo = (heathToscaleTo * (CurrentHealthPercent))
+			double damageToDo = heathToscaleTo * CurrentHealthPercent
 					- DamageDone;
 
 			dmobToScale.setMaxHealth(heathToscaleTo);
