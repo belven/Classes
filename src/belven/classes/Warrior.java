@@ -37,8 +37,7 @@ public class Warrior extends RPGClass {
 	public void SetClassDrops() {
 		ItemStack bread = new ItemStack(Material.BREAD);
 		ItemStack sword = new ItemStack(Material.STONE_SWORD);
-		ItemStack strength = new ItemStack(
-				new Potion(PotionType.STRENGTH, 2).toItemStack(1));
+		ItemStack strength = new ItemStack(new Potion(PotionType.STRENGTH, 2).toItemStack(1));
 		classDrops.add(new ClassDrop(bread, true, 5));
 		classDrops.add(new ClassDrop(sword, true, 1, 1));
 		classDrops.add(new ClassDrop(strength, 0, 10, 1));
@@ -59,16 +58,14 @@ public class Warrior extends RPGClass {
 	@Override
 	public void OtherTakenDamage(EntityDamageByEntityEvent event) {
 		Player p = (Player) event.getEntity();
-		double healthPercent = plugin.GetPlayerE(classOwner)
-				.GetMissingHealthPercent();
+		double healthPercent = plugin.GetPlayerE(classOwner).GetMissingHealthPercent();
 
 		if (plugin.arenas != null && plugin.teams != null) {
 			ArenaManager a = plugin.arenas;
 			TeamManager t = plugin.teams;
 
 			// we are in an arena and it's PvP
-			if (a.IsPlayerInArena(classOwner)
-					&& a.getArena(classOwner).type == ArenaTypes.PvP) {
+			if (a.IsPlayerInArena(classOwner) && a.getArena(classOwner).type == ArenaTypes.PvP) {
 				// Player isn't an ally
 				if (!t.isInATeam(classOwner) || !t.isInSameTeam(classOwner, p)) {
 					return;
@@ -76,13 +73,11 @@ public class Warrior extends RPGClass {
 			}
 		}
 
-		if (event.getDamage() > 0 && healthPercent > 0.1
-				&& p.getLocation().distance(classOwner.getLocation()) < 30) {
+		if (event.getDamage() > 0 && healthPercent > 0.1 && p.getLocation().distance(classOwner.getLocation()) < 30) {
 			classOwner.damage(event.getDamage());
 			event.setDamage(0.0);
-			this.classOwner.addPotionEffect(new PotionEffect(
-					PotionEffectType.DAMAGE_RESISTANCE, Functions
-							.SecondsToTicks(3), (int) (4 * healthPercent)));
+			this.classOwner.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Functions
+					.SecondsToTicks(3), (int) (4 * healthPercent)));
 		}
 	}
 
@@ -112,8 +107,7 @@ public class Warrior extends RPGClass {
 
 	@Override
 	public void SelfDamageOther(EntityDamageByEntityEvent event) {
-		if (MaterialFunctions.isAMeeleWeapon(classOwner.getItemInHand()
-				.getType())) {
+		if (MaterialFunctions.isAMeeleWeapon(classOwner.getItemInHand().getType())) {
 			event.setDamage(event.getDamage() + 2);
 		}
 	}

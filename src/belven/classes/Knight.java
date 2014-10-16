@@ -30,10 +30,8 @@ public class Knight extends Warrior {
 	@Override
 	public void AbilityUsed(Ability ability) {
 		if (ability == currentRetaliation) {
-			classOwner.addPotionEffect(
-					new PotionEffect(PotionEffectType.INCREASE_DAMAGE,
-							Functions.SecondsToTicks(10), Functions.abilityCap(
-									2, classOwner.getLevel())), true);
+			classOwner.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Functions.SecondsToTicks(10),
+					Functions.abilityCap(2, classOwner.getLevel())), true);
 		}
 	}
 

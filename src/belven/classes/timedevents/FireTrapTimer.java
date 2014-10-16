@@ -32,8 +32,7 @@ public class FireTrapTimer extends BukkitRunnable {
 
 	@Override
 	public void run() {
-		List<LivingEntity> entitiesToDamage = EntityFunctions
-				.getNearbyEntities(blockLocation, trapRadius);
+		List<LivingEntity> entitiesToDamage = EntityFunctions.getNearbyEntities(blockLocation, trapRadius);
 		maxDuration--;
 
 		if (entitiesToDamage.size() > 0) {

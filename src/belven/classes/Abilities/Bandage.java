@@ -24,13 +24,11 @@ public class Bandage extends Ability {
 
 	@Override
 	public boolean PerformAbility(Player targetPlayer) {
-		if (EntityFunctions.isHealthLessThanOther(currentClass.classOwner,
-				targetPlayer)) {
+		if (EntityFunctions.isHealthLessThanOther(currentClass.classOwner, targetPlayer)) {
 			targetPlayer = currentClass.classOwner;
 		}
 
-		targetPlayer.addPotionEffect(new PotionEffect(
-				PotionEffectType.ABSORPTION, Functions.SecondsToTicks(20),
+		targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, Functions.SecondsToTicks(20),
 				Amplifier()), true);
 
 		currentClass.setAbilityOnCoolDown(this, true);
@@ -40,8 +38,7 @@ public class Bandage extends Ability {
 
 	@Override
 	public int Amplifier() {
-		return Functions.abilityCap((double) Amplifier + 1,
-				(double) currentClass.classOwner.getLevel());
+		return Functions.abilityCap((double) Amplifier + 1, (double) currentClass.classOwner.getLevel());
 	}
 
 }

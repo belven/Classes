@@ -24,10 +24,8 @@ public class ClassManager extends JavaPlugin {
 	private final BlockListener blockListener = new BlockListener(this);
 	private final MobListener mobListener = new MobListener(this);
 
-	public ArenaManager arenas = (ArenaManager) Bukkit.getServer()
-			.getPluginManager().getPlugin("BelvensArenas");
-	public TeamManager teams = (TeamManager) Bukkit.getServer()
-			.getPluginManager().getPlugin("BelvensTeams");
+	public ArenaManager arenas = (ArenaManager) Bukkit.getServer().getPluginManager().getPlugin("BelvensArenas");
+	public TeamManager teams = (TeamManager) Bukkit.getServer().getPluginManager().getPlugin("BelvensTeams");
 
 	private HashMap<Player, RPGClass> CurrentPlayerClasses = new HashMap<Player, RPGClass>();
 	public HashMap<Player, PlayerExtended> PlayersE = new HashMap<Player, PlayerExtended>();
@@ -71,29 +69,24 @@ public class ClassManager extends JavaPlugin {
 		if (!this.getConfig().contains(PlayerName)) {
 			SetClass(playerToAdd, "DEFAULT");
 		} else {
-			String classString = this.getConfig().getString(
-					PlayerName + ".Class");
+			String classString = this.getConfig().getString(PlayerName + ".Class");
 
 			if (classString != null) {
 				if (CurrentPlayerClasses.get(playerToAdd) == null)
 
-					CurrentPlayerClasses.put(playerToAdd,
-							StringToClass(classString, playerToAdd));
+					CurrentPlayerClasses.put(playerToAdd, StringToClass(classString, playerToAdd));
 			}
 
-			this.getServer().broadcastMessage(
-					PlayerName + " was given class " + classString);
+			this.getServer().broadcastMessage(PlayerName + " was given class " + classString);
 		}
 	}
 
 	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command cmd, String label,
-			String[] args) {
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		Player p = (Player) sender;
 		String commandSent = cmd.getName();
 
-		if (this.arenas.IsPlayerInArena(p) ? !this.arenas.getArena(p).isActive
-				: true) {
+		if (this.arenas.IsPlayerInArena(p) ? !this.arenas.getArena(p).isActive : true) {
 			// Class
 			if (commandSent.startsWith("bc")) {
 				StringBuilder sb = new StringBuilder(commandSent.toLowerCase());
@@ -122,10 +115,8 @@ public class ClassManager extends JavaPlugin {
 				Player[] currentPlayers = this.getServer().getOnlinePlayers();
 				for (Player currentPlayer : currentPlayers) {
 					if (currentPlayer != null) {
-						RPGClass currentClass = CurrentPlayerClasses
-								.get(currentPlayer);
-						p.sendMessage(currentPlayer.getName() + " is a "
-								+ currentClass.getClassName());
+						RPGClass currentClass = CurrentPlayerClasses.get(currentPlayer);
+						p.sendMessage(currentPlayer.getName() + " is a " + currentClass.getClassName());
 					}
 				}
 				return true;
@@ -144,8 +135,7 @@ public class ClassManager extends JavaPlugin {
 
 	private RPGClass StringToClass(String className, Player player) {
 		try {
-			return StrToRPGClass.get(className)
-					.getDeclaredConstructor(Player.class, ClassManager.class)
+			return StrToRPGClass.get(className).getDeclaredConstructor(Player.class, ClassManager.class)
 					.newInstance(player, this);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -166,12 +156,10 @@ public class ClassManager extends JavaPlugin {
 		playerToChange.sendMessage(PlayerName + " is class " + classString);
 
 		saveConfig();
-		CurrentPlayerClasses.put(playerToChange,
-				StringToClass(classString, playerToChange));
+		CurrentPlayerClasses.put(playerToChange, StringToClass(classString, playerToChange));
 
 		Bukkit.getPluginManager().callEvent(
-				new ClassChangeEvent(CurrentPlayerClasses.get(playerToChange),
-						playerToChange));
+				new ClassChangeEvent(CurrentPlayerClasses.get(playerToChange), playerToChange));
 	}
 
 	@Override

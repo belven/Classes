@@ -9,8 +9,7 @@ import org.bukkit.potion.PotionEffectType;
 import resources.Functions;
 
 public class HealingFurry extends Ability {
-	public HealingFurry(belven.classes.RPGClass CurrentClass, int priority,
-			int amp) {
+	public HealingFurry(belven.classes.RPGClass CurrentClass, int priority, int amp) {
 		super(priority, amp);
 		currentClass = CurrentClass;
 		requirements.add(new ItemStack(Material.LAPIS_BLOCK, 2));
@@ -19,16 +18,13 @@ public class HealingFurry extends Ability {
 
 	@Override
 	public boolean PerformAbility(Player playerToHeal) {
-		PotionEffect pe = new PotionEffect(PotionEffectType.HEALTH_BOOST,
-				Functions.SecondsToTicks(Amplifier() + 30), Amplifier(), true);
+		PotionEffect pe = new PotionEffect(PotionEffectType.HEALTH_BOOST, Functions.SecondsToTicks(Amplifier() + 30),
+				Amplifier(), true);
 
-		if (!onCooldown
-				&& (!playerToHeal
-						.hasPotionEffect(PotionEffectType.HEALTH_BOOST))) {
+		if (!onCooldown && (!playerToHeal.hasPotionEffect(PotionEffectType.HEALTH_BOOST))) {
 			playerToHeal.addPotionEffect(pe, false);
 
-			currentClass.classOwner.sendMessage("You boosted  "
-					+ playerToHeal.getName() + "s max health");
+			currentClass.classOwner.sendMessage("You boosted  " + playerToHeal.getName() + "s max health");
 			currentClass.setAbilityOnCoolDown(this, true);
 			RemoveItems();
 			return true;
@@ -46,7 +42,6 @@ public class HealingFurry extends Ability {
 	}
 
 	public int Amplifier() {
-		return Functions.abilityCap((double) Amplifier + 1,
-				(double) currentClass.classOwner.getLevel());
+		return Functions.abilityCap((double) Amplifier + 1, (double) currentClass.classOwner.getLevel());
 	}
 }

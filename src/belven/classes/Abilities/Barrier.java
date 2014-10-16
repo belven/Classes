@@ -15,8 +15,7 @@ import belven.classes.timedevents.BarrierTimer;
 public class Barrier extends Ability {
 	public int radius = 0;
 
-	public Barrier(belven.classes.RPGClass CurrentClass, int Radius,
-			int priority, int amp) {
+	public Barrier(belven.classes.RPGClass CurrentClass, int Radius, int priority, int amp) {
 		super(priority, amp);
 		currentClass = CurrentClass;
 		radius = Radius;
@@ -25,8 +24,7 @@ public class Barrier extends Ability {
 	}
 
 	public boolean PerformAbility(Location targetLocation) {
-		List<LivingEntity> entitiesToDamage = EntityFunctions
-				.getNearbyEntities(targetLocation, radius);
+		List<LivingEntity> entitiesToDamage = EntityFunctions.getNearbyEntities(targetLocation, radius);
 
 		for (Entity e : entitiesToDamage) {
 			if (e != null && e.getType() != EntityType.PLAYER) {

@@ -15,8 +15,7 @@ public class ClassChangeEvent extends Event {
 		return handlers;
 	}
 
-	public ClassChangeEvent(belven.classes.RPGClass classChagedTo,
-			Player playerThatChanged) {
+	public ClassChangeEvent(belven.classes.RPGClass classChagedTo, Player playerThatChanged) {
 		this.classChagedTo = classChagedTo;
 		this.playerThatChanged = playerThatChanged;
 	}

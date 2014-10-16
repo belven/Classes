@@ -20,11 +20,9 @@ public class Heal extends Ability {
 	@Override
 	public boolean PerformAbility(Player playerToHeal) {
 		if (currentClass.plugin.GetPlayerE(playerToHeal).GetHealth() <= 10) {
-			playerToHeal.addPotionEffect(new PotionEffect(
-					PotionEffectType.HEAL, 1, Amplifier()));
+			playerToHeal.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 1, Amplifier()));
 
-			currentClass.classOwner.sendMessage("You healed "
-					+ playerToHeal.getName());
+			currentClass.classOwner.sendMessage("You healed " + playerToHeal.getName());
 
 			currentClass.setAbilityOnCoolDown(this, true);
 			RemoveItems();
@@ -34,7 +32,6 @@ public class Heal extends Ability {
 	}
 
 	public int Amplifier() {
-		return Functions.abilityCap((double) Amplifier,
-				(double) currentClass.classOwner.getLevel()) + 1;
+		return Functions.abilityCap((double) Amplifier, (double) currentClass.classOwner.getLevel()) + 1;
 	}
 }

@@ -21,8 +21,7 @@ public class Cleanse extends Ability {
 	public boolean PerformAbility(Player playerToHeal) {
 		playerToHeal.setFireTicks(0);
 
-		Iterator<PotionEffect> ActivePotionEffects = playerToHeal
-				.getActivePotionEffects().iterator();
+		Iterator<PotionEffect> ActivePotionEffects = playerToHeal.getActivePotionEffects().iterator();
 
 		while (ActivePotionEffects.hasNext()) {
 			PotionEffect pe = ActivePotionEffects.next();

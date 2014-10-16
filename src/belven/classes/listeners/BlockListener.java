@@ -20,15 +20,12 @@ public class BlockListener implements Listener {
 
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
-		belven.classes.RPGClass currentClass = plugin.GetClass(event
-				.getPlayer());
+		belven.classes.RPGClass currentClass = plugin.GetClass(event.getPlayer());
 		Material mat = event.getBlock().getType();
 
 		if (mat == Material.LAPIS_BLOCK
-				&& (currentClass.getClassName() == "Mage"
-						|| currentClass.getClassName() == "Healer"
-						|| currentClass.getClassName() == "Priest" || currentClass
-						.getClassName() == "Monk")) {
+				&& (currentClass.getClassName() == "Mage" || currentClass.getClassName() == "Healer"
+						|| currentClass.getClassName() == "Priest" || currentClass.getClassName() == "Monk")) {
 			event.setCancelled(true);
 		} else if (mat == Material.WOOL && currentClass instanceof Archer) {
 			event.setCancelled(true);

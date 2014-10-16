@@ -12,8 +12,7 @@ import resources.EntityFunctions;
 import belven.classes.timedevents.ChainLightningTimer;
 
 public class ChainLightning extends Ability {
-	public ChainLightning(belven.classes.RPGClass CurrentClass, int priority,
-			int amp) {
+	public ChainLightning(belven.classes.RPGClass CurrentClass, int priority, int amp) {
 		super(priority, amp);
 		currentClass = CurrentClass;
 		inHandRequirements.add(Material.NETHER_STAR);
@@ -21,12 +20,10 @@ public class ChainLightning extends Ability {
 	}
 
 	public boolean PerformAbility(Location targetLocation) {
-		List<LivingEntity> entitiesToDamage = EntityFunctions
-				.getNearbyEntities(targetLocation, 12);
+		List<LivingEntity> entitiesToDamage = EntityFunctions.getNearbyEntities(targetLocation, 12);
 
 		for (Entity e : entitiesToDamage) {
-			if (e != null && e instanceof LivingEntity
-					&& e.getType() != EntityType.PLAYER) {
+			if (e != null && e instanceof LivingEntity && e.getType() != EntityType.PLAYER) {
 				e.getWorld().strikeLightning(e.getLocation());
 			}
 		}

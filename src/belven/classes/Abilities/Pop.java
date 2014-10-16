@@ -28,10 +28,8 @@ public class Pop extends Ability {
 			for (int chZ = 0 - chunkRadius; chZ <= chunkRadius; chZ++) {
 				int x = (int) l.getX(), y = (int) l.getY(), z = (int) l.getZ();
 
-				for (Entity e : new Location(l.getWorld(), x + (chX * 16), y, z
-						+ (chZ * 16)).getChunk().getEntities()) {
-					if (e.getLocation().distance(l) <= radius
-							&& e.getLocation().getBlock() != l.getBlock())
+				for (Entity e : new Location(l.getWorld(), x + (chX * 16), y, z + (chZ * 16)).getChunk().getEntities()) {
+					if (e.getLocation().distance(l) <= radius && e.getLocation().getBlock() != l.getBlock())
 						radiusEntities.add(e);
 				}
 			}
@@ -44,8 +42,7 @@ public class Pop extends Ability {
 
 		for (Entity e : entitiesToDamage) {
 			if (e != null && e.getType() != EntityType.PLAYER) {
-				Vector vectorToUse = currentClass.classOwner.getLocation()
-						.getDirection();
+				Vector vectorToUse = currentClass.classOwner.getLocation().getDirection();
 				vectorToUse.setY(vectorToUse.getY() + 1);
 				e.setVelocity(vectorToUse);
 				counter++;

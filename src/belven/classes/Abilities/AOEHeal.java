@@ -19,12 +19,11 @@ public class AOEHeal extends Ability {
 
 	@Override
 	public boolean PerformAbility(Player playerToHeal) {
-		for (Player p : EntityFunctions.getNearbyPlayersNew(
-				playerToHeal.getLocation(), Amplifier() + 8)) {
+		for (Player p : EntityFunctions.getNearbyPlayersNew(playerToHeal.getLocation(), Amplifier() + 8)) {
 			// p.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 1,
 			// Amplifier()));
-			p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,
-					Functions.SecondsToTicks(5), Amplifier(), true));
+			p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Functions.SecondsToTicks(5), Amplifier(),
+					true));
 		}
 
 		currentClass.setAbilityOnCoolDown(this, true);
@@ -34,7 +33,6 @@ public class AOEHeal extends Ability {
 	}
 
 	public int Amplifier() {
-		return Functions.abilityCap((double) Amplifier + 1,
-				(double) currentClass.classOwner.getLevel());
+		return Functions.abilityCap((double) Amplifier + 1, (double) currentClass.classOwner.getLevel());
 	}
 }

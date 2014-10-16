@@ -11,16 +11,19 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
+import resources.ClassDrop;
 import resources.EntityFunctions;
 import belven.classes.Abilities.SoulDrain;
-import resources.ClassDrop;
+import belven.classes.Abilities.Stealth;
 
 public class Assassin extends RPGClass {
 	public Entity lastEntityConfused;
 	private Block recallBlock;
 	private SoulDrain classSoulDrain;
+	private Stealth classStealth;
 
 	public Assassin(Player currentPlayer, ClassManager instance) {
 		super(12, currentPlayer, instance);
@@ -65,13 +68,10 @@ public class Assassin extends RPGClass {
 		return false;
 	}
 
-	public void CanTeleportTo(Location locationToTeleportTo,
-			Location mobLocation) {
-		for (int i = (int) locationToTeleportTo.getY(); i < locationToTeleportTo
-				.getY() + 20; i++) {
+	public void CanTeleportTo(Location locationToTeleportTo, Location mobLocation) {
+		for (int i = (int) locationToTeleportTo.getY(); i < locationToTeleportTo.getY() + 20; i++) {
 			if (locationToTeleportTo.getBlock().getType() == Material.AIR) {
-				Location temp = EntityFunctions.lookAt(locationToTeleportTo,
-						mobLocation);
+				Location temp = EntityFunctions.lookAt(locationToTeleportTo, mobLocation);
 				classOwner.teleport(temp);
 			} else {
 				locationToTeleportTo.setY(i);
@@ -79,6 +79,7 @@ public class Assassin extends RPGClass {
 		}
 	}
 
+	@Override
 	public void ToggleSneakEvent(PlayerToggleSneakEvent event) {
 		if (event.isSneaking() && recallBlock != null) {
 			Location recallLocation = recallBlock.getLocation();
@@ -108,8 +109,7 @@ public class Assassin extends RPGClass {
 
 	@Override
 	public void RightClickEntity(Entity currentEntity) {
-		if (!classSoulDrain.onCooldown
-				&& classOwner.getItemInHand().getType() == Material.NETHER_STAR) {
+		if (!classSoulDrain.onCooldown && classOwner.getItemInHand().getType() == Material.NETHER_STAR) {
 			classSoulDrain.PerformAbility(currentEntity);
 			UltAbilityUsed(classSoulDrain);
 		}
@@ -123,23 +123,35 @@ public class Assassin extends RPGClass {
 	@Override
 	public void SelfDamageOther(EntityDamageByEntityEvent event) {
 		Entity damagedEntity = event.getEntity();
-		boolean arrowEntity = (event.getDamager().getType() == EntityType.ARROW);
+		boolean arrowEntity = event.getDamager().getType() == EntityType.ARROW;
 
-		EntityFunctions.Heal(classOwner, 1);
-
-		if (plugin.GetPlayerE(classOwner).MeleeWeaponInHand()) {
-			event.setDamage(event.getDamage() + 2);
+		if (classOwner.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
+			event.setDamage(event.getDamage() + 10);
+			classOwner.removePotionEffect(PotionEffectType.INVISIBILITY);
+			classOwner.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
 		}
 
-		if (arrowEntity) {
+		if (!arrowEntity) {
+			event.setDamage(event.getDamage() + 10);
+
+			if (!classStealth.onCooldown) {
+				classStealth.PerformAbility();
+				TeleportToTarget(damagedEntity);
+			}
+		} else {
 			TeleportToTarget(damagedEntity);
 		}
+
+		EntityFunctions.Heal(classOwner, (int) event.getDamage());
 	}
 
 	@Override
 	public void SetAbilities() {
+		classStealth = new Stealth(this, 1, 1);
 		classSoulDrain = new SoulDrain(this, 1, 0);
 		Abilities.add(classSoulDrain);
+		Abilities.add(classStealth);
+		classStealth.Cooldown = 3;
 		SortAbilities();
 	}
 }

@@ -41,8 +41,7 @@ public class Monk extends Healer {
 
 	@Override
 	public void SelfDamageOther(EntityDamageByEntityEvent event) {
-		if (classOwner.getItemInHand() == null
-				|| classOwner.getItemInHand().getType() == Material.AIR) {
+		if (classOwner.getItemInHand() == null || classOwner.getItemInHand().getType() == Material.AIR) {
 			event.setDamage(event.getDamage() + 10.0);
 		}
 	}

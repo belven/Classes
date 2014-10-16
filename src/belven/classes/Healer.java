@@ -76,8 +76,7 @@ public class Healer extends RPGClass {
 		if (classOwner.isSneaking()) {
 			CheckAbilitiesToCast(classOwner);
 		} else {
-			LivingEntity targetEntity = EntityFunctions.findTargetPlayer(
-					classOwner, 150.0D);
+			LivingEntity targetEntity = EntityFunctions.findTargetPlayer(classOwner, 150.0D);
 
 			if (targetEntity != null) {
 				playerSelected = (Player) targetEntity;
@@ -108,8 +107,7 @@ public class Healer extends RPGClass {
 				CheckAbilitiesToCast(classOwner);
 			}
 		} else {
-			LivingEntity targetEntity = EntityFunctions.findTargetPlayer(
-					classOwner, 150.0D);
+			LivingEntity targetEntity = EntityFunctions.findTargetPlayer(classOwner, 150.0D);
 
 			if (targetEntity != null) {
 				playerSelected = (Player) targetEntity;

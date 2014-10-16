@@ -111,8 +111,7 @@ public class Archer extends RPGClass {
 		if (classOwner.getItemInHand().getType() == Material.BOW) {
 			if (classCripplingArrow.HasRequirements(classOwner)
 					&& damagedEntityLocation.getBlock().getType() != Material.WEB) {
-				new BlockRestorer(damagedEntityLocation.getBlock(),
-						Material.WEB).runTaskLater(plugin,
+				new BlockRestorer(damagedEntityLocation.getBlock(), Material.WEB).runTaskLater(plugin,
 						Functions.SecondsToTicks(5));
 			}
 
@@ -120,8 +119,7 @@ public class Archer extends RPGClass {
 
 			Damageable dcurrentLivingEntity = (Damageable) currentLivingEntity;
 
-			event.setDamage(Functions.damageToDo(event.getDamage(),
-					dcurrentLivingEntity.getHealth(),
+			event.setDamage(Functions.damageToDo(event.getDamage(), dcurrentLivingEntity.getHealth(),
 					dcurrentLivingEntity.getMaxHealth()));
 		}
 	}

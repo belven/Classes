@@ -53,15 +53,13 @@ public class PlayerListener implements Listener {
 			if (event.getClickedBlock().getType() == Material.SIGN) {
 				currentSign = (Sign) event.getClickedBlock();
 
-				if (currentSign.getLine(0) != null
-						&& currentSign.getLine(0).contentEquals("[Class]")) {
+				if (currentSign.getLine(0) != null && currentSign.getLine(0).contentEquals("[Class]")) {
 					plugin.SetClass(event.getPlayer(), currentSign.getLine(1));
 				}
 			} else if (event.getClickedBlock().getType() == Material.WALL_SIGN) {
 				currentSign = (Sign) event.getClickedBlock().getState();
 
-				if (currentSign.getLine(0) != null
-						&& currentSign.getLine(0).contentEquals("[Class]")) {
+				if (currentSign.getLine(0) != null && currentSign.getLine(0).contentEquals("[Class]")) {
 					plugin.SetClass(event.getPlayer(), currentSign.getLine(1));
 				}
 			}
@@ -71,8 +69,7 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onPlayerLoginEvent(PlayerLoginEvent event) {
 		plugin.AddClassToPlayer(event.getPlayer());
-		plugin.PlayersE.put(event.getPlayer(),
-				new PlayerExtended(event.getPlayer()));
+		plugin.PlayersE.put(event.getPlayer(), new PlayerExtended(event.getPlayer()));
 	}
 
 	@EventHandler
@@ -106,36 +103,29 @@ public class PlayerListener implements Listener {
 		Player currentPlayer = event.getPlayer();
 		Entity currentEntity = event.getRightClicked();
 		if (plugin.GetClass(event.getPlayer()).CanCast) {
-			new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin,
-					Functions.SecondsToTicks(1));
+			new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin, Functions.SecondsToTicks(1));
 			plugin.GetClass(currentPlayer).RightClickEntity(currentEntity);
 		}
 	}
 
 	@EventHandler
 	public void onPlayerInteractEvent(PlayerInteractEvent event) {
-		if (event.getAction() == Action.RIGHT_CLICK_AIR
-				|| event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+		if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			Player currentPlayer = event.getPlayer();
 
 			if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 				Material blockMaterial = event.getClickedBlock().getType();
 				if (MaterialFunctions.isInteractiveBlock(blockMaterial)) {
 					return;
-				} else if (event.getItem() != null
-						&& MaterialFunctions.isInteractiveBlock(event.getItem()
-								.getType())) {
+				} else if (event.getItem() != null && MaterialFunctions.isInteractiveBlock(event.getItem().getType())) {
 					return;
 				}
-			} else if (event.getItem() != null
-					&& MaterialFunctions.isInteractiveBlock(event.getItem()
-							.getType())) {
+			} else if (event.getItem() != null && MaterialFunctions.isInteractiveBlock(event.getItem().getType())) {
 				return;
 			}
 
 			if (plugin.GetClass(currentPlayer).CanCast) {
-				new AbilityDelay(currentPlayer, plugin).runTaskLater(plugin,
-						Functions.SecondsToTicks(1));
+				new AbilityDelay(currentPlayer, plugin).runTaskLater(plugin, Functions.SecondsToTicks(1));
 				plugin.GetClass(currentPlayer).SelfCast(currentPlayer);
 			}
 		}
@@ -144,8 +134,7 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
 		if (plugin.GetClass(event.getPlayer()).CanCast) {
-			new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin,
-					Functions.SecondsToTicks(1));
+			new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin, Functions.SecondsToTicks(1));
 			plugin.GetClass(event.getPlayer()).ToggleSneakEvent(event);
 		}
 	}
@@ -157,8 +146,7 @@ public class PlayerListener implements Listener {
 		} else if (plugin.GetClass(event.getPlayer()) instanceof Archer
 				&& event.getPlayer().getItemInHand().getType() == Material.BOW) {
 			event.setCancelled(true);
-		} else if (plugin.GetClass(event.getPlayer()) instanceof Daemon
-				&& event.getPlayer().getFireTicks() > 0) {
+		} else if (plugin.GetClass(event.getPlayer()) instanceof Daemon && event.getPlayer().getFireTicks() > 0) {
 			event.setCancelled(true);
 		}
 	}
@@ -212,11 +200,9 @@ public class PlayerListener implements Listener {
 		}
 	}
 
-	public boolean ScaleMobHealth(Player player, LivingEntity mobToScale,
-			double DamageDone) {
+	public boolean ScaleMobHealth(Player player, LivingEntity mobToScale, double DamageDone) {
 		if (player != null && mobToScale != null) {
-			double heathToscaleTo = EntityFunctions.MobMaxHealth(mobToScale)
-					+ player.getLevel() * 1.2;
+			double heathToscaleTo = EntityFunctions.MobMaxHealth(mobToScale) + player.getLevel() * 1.2;
 
 			if (heathToscaleTo > 380) {
 				heathToscaleTo = 380;
@@ -224,12 +210,10 @@ public class PlayerListener implements Listener {
 
 			Damageable dmobToScale = mobToScale;
 
-			double CurrentHealthPercent = EntityFunctions
-					.entityCurrentHealthPercent(dmobToScale.getHealth(),
-							dmobToScale.getMaxHealth());
+			double CurrentHealthPercent = EntityFunctions.entityCurrentHealthPercent(dmobToScale.getHealth(),
+					dmobToScale.getMaxHealth());
 
-			double damageToDo = heathToscaleTo * CurrentHealthPercent
-					- DamageDone;
+			double damageToDo = heathToscaleTo * CurrentHealthPercent - DamageDone;
 
 			dmobToScale.setMaxHealth(heathToscaleTo);
 

@@ -20,9 +20,7 @@ public class Retaliation extends Ability {
 	public boolean PerformAbility() {
 		Player p = currentClass.classOwner;
 		EntityDamageEvent ldc = p.getLastDamageCause();
-		LivingEntity entityDamaged = EntityFunctions
-				.GetDamager((LivingEntity) p);
-		
+		LivingEntity entityDamaged = EntityFunctions.GetDamager((LivingEntity) p);
 
 		if (entityDamaged != null) {
 			entityDamaged.damage(ldc.getDamage() * Amplifier());

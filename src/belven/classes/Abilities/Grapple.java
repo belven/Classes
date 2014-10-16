@@ -24,8 +24,7 @@ public class Grapple extends Ability {
 
 	public boolean PerformAbility() {
 
-		List<LivingEntity> tempTargets = EntityFunctions.findAllTargets(
-				currentClass.classOwner, 50.0D);
+		List<LivingEntity> tempTargets = EntityFunctions.findAllTargets(currentClass.classOwner, 50.0D);
 
 		if (tempTargets != null && tempTargets.size() > 0) {
 			Location l = this.currentClass.classOwner.getLocation();

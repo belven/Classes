@@ -20,23 +20,19 @@ public class LightHeal extends Ability {
 
 	@Override
 	public boolean PerformAbility(Player playerToHeal) {
-		if (EntityFunctions.isHealthLessThanOther(currentClass.classOwner,
-				playerToHeal)) {
+		if (EntityFunctions.isHealthLessThanOther(currentClass.classOwner, playerToHeal)) {
 			playerToHeal = currentClass.classOwner;
 		}
 
-		playerToHeal.addPotionEffect(new PotionEffect(
-				PotionEffectType.REGENERATION, Functions.SecondsToTicks(5),
+		playerToHeal.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Functions.SecondsToTicks(5),
 				Amplifier()), true);
 
-		currentClass.classOwner.sendMessage("You healed "
-				+ playerToHeal.getName());
+		currentClass.classOwner.sendMessage("You healed " + playerToHeal.getName());
 		RemoveItems();
 		return true;
 	}
 
 	public int Amplifier() {
-		return Functions.abilityCap((double) Amplifier + 1,
-				(double) currentClass.classOwner.getLevel());
+		return Functions.abilityCap((double) Amplifier + 1, (double) currentClass.classOwner.getLevel());
 	}
 }

@@ -34,8 +34,7 @@ public class Mage extends RPGClass {
 	}
 
 	public void CheckAbilitiesToCast() {
-		LivingEntity targetEntity = EntityFunctions.findTargetEntity(
-				classOwner, 150.0D);
+		LivingEntity targetEntity = EntityFunctions.findTargetEntity(classOwner, 150.0D);
 
 		for (Ability a : Abilities) {
 			if (!a.onCooldown && a.HasRequirements(classOwner)) {
@@ -47,8 +46,7 @@ public class Mage extends RPGClass {
 			}
 		}
 
-		if (!classChainLightning.onCooldown
-				&& classChainLightning.HasRequirements(classOwner)) {
+		if (!classChainLightning.onCooldown && classChainLightning.HasRequirements(classOwner)) {
 			classChainLightning.PerformAbility();
 
 			UltAbilityUsed(classChainLightning);
@@ -63,8 +61,7 @@ public class Mage extends RPGClass {
 
 	@Override
 	public void SetClassDrops() {
-		ItemStack firePot = new Potion(PotionType.FIRE_RESISTANCE, 2)
-				.toItemStack(1);
+		ItemStack firePot = new Potion(PotionType.FIRE_RESISTANCE, 2).toItemStack(1);
 
 		ItemStack lapisBlock = new ItemStack(Material.LAPIS_BLOCK, 10);
 		ItemStack feather = new ItemStack(Material.FEATHER, 2);

@@ -71,11 +71,9 @@ public class Berserker extends RPGClass {
 
 	@Override
 	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
-		double healthPercent = plugin.GetPlayerE(classOwner)
-				.GetMissingHealthPercent();
+		double healthPercent = plugin.GetPlayerE(classOwner).GetMissingHealthPercent();
 
-		this.classOwner.addPotionEffect(new PotionEffect(
-				PotionEffectType.INCREASE_DAMAGE, Functions.SecondsToTicks(2),
+		this.classOwner.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Functions.SecondsToTicks(2),
 				(int) (2 * healthPercent)));
 	}
 
@@ -86,8 +84,7 @@ public class Berserker extends RPGClass {
 		}
 
 		int mobCount = 0;
-		for (Entity e : EntityFunctions.getNearbyEntities(event.getEntity()
-				.getLocation(), 4)) {
+		for (Entity e : EntityFunctions.getNearbyEntities(event.getEntity().getLocation(), 4)) {
 			double damageToDo = event.getDamage() / 3.0D;
 
 			if (e instanceof LivingEntity) {
@@ -99,8 +96,7 @@ public class Berserker extends RPGClass {
 
 				LivingEntity le = (LivingEntity) e;
 
-				if (le == this.classOwner
-						&& !EntityFunctions.IsAMob(event.getEntityType())) {
+				if (le == this.classOwner && !EntityFunctions.IsAMob(event.getEntityType())) {
 					if (plugin.GetPlayerE(classOwner).GetHealthPercent() > 0.2D) {
 						le.damage(damageToDo);
 					}

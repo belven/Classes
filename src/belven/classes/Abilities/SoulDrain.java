@@ -17,8 +17,7 @@ public class SoulDrain extends Ability {
 	public boolean PerformAbility(Entity targetEntity) {
 		if (targetEntity instanceof LivingEntity
 				&& currentClass.classOwner.getItemInHand().getType() == Material.NETHER_STAR) {
-			((LivingEntity) targetEntity).addPotionEffect(new PotionEffect(
-					PotionEffectType.HEAL, 1, Amplifier()));
+			((LivingEntity) targetEntity).addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 1, Amplifier()));
 			return true;
 		}
 		return false;

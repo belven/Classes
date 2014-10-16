@@ -23,14 +23,12 @@ public class FireTrap extends Ability {
 
 	public boolean PerformAbility(Location targetLocation) {
 		if (targetLocation.getBlock().getType() != Material.WOOL) {
-			new FireTrapTimer(targetLocation.getBlock(),
-					Functions.SecondsToTicks(Amplifier()), 4).runTaskTimer(
-					currentClass.plugin, Functions.SecondsToTicks(5),
-					Functions.SecondsToTicks(2));
+			new FireTrapTimer(targetLocation.getBlock(), Functions.SecondsToTicks(Amplifier()), 4).runTaskTimer(
+					currentClass.plugin, Functions.SecondsToTicks(5), Functions.SecondsToTicks(2));
 
 			targetLocation.getBlock().setType(Material.WOOL);
-			currentClass.classOwner.addPotionEffect(new PotionEffect(
-					PotionEffectType.SPEED, Functions.SecondsToTicks(2), 3));
+			currentClass.classOwner.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Functions
+					.SecondsToTicks(2), 3));
 
 			RemoveItems();
 			return true;

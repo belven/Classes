@@ -50,8 +50,7 @@ public class Ability {
 		Inventory playerInventory = playerToCheck.getInventory();
 
 		if (inHandRequirements.size() > 0) {
-			if (!inHandRequirements.contains(playerToCheck.getItemInHand()
-					.getType())) {
+			if (!inHandRequirements.contains(playerToCheck.getItemInHand().getType())) {
 				return false;
 			} else if (requirements.size() == 0) {
 				return true;

@@ -46,8 +46,7 @@ public class MobListener implements Listener {
 	@EventHandler
 	public void onEntityDeathEvent(EntityDeathEvent event) {
 		Entity currentEntity = event.getEntity();
-		List<MetadataValue> currentMetaData = MDM.getMetaData(MDM.ArenaMob,
-				currentEntity);
+		List<MetadataValue> currentMetaData = MDM.getMetaData(MDM.ArenaMob, currentEntity);
 
 		if (plugin.arenas != null && currentMetaData != null) {
 			BaseArena currentArena = (BaseArena) currentMetaData.get(0).value();
@@ -61,8 +60,7 @@ public class MobListener implements Listener {
 			EntityDamageEvent cause = event.getEntity().getLastDamageCause();
 
 			if (cause instanceof EntityDamageByEntityEvent) {
-				LivingEntity e = EntityFunctions
-						.GetDamager((EntityDamageByEntityEvent) cause);
+				LivingEntity e = EntityFunctions.GetDamager((EntityDamageByEntityEvent) cause);
 
 				if (e.getType() == EntityType.PLAYER) {
 					Player p = (Player) e;
@@ -86,14 +84,11 @@ public class MobListener implements Listener {
 		belven.classes.RPGClass playerClass = plugin.GetClass(p);
 
 		for (ClassDrop cd : playerClass.classDrops) {
-			if (cd.alwaysGive
-					|| Functions
-							.numberBetween(ran, cd.lowChance, cd.highChance)
+			if (cd.alwaysGive || Functions.numberBetween(ran, cd.lowChance, cd.highChance)
 					&& cd.isWilderness == isWilderness) {
 				if (!cd.isArmor) {
 					ItemStack is = cd.is.clone();
-					is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is
-							.getAmount());
+					is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is.getAmount());
 					Functions.AddToInventory(p, is, cd.maxAmount);
 				} else {
 					if (AddArmor(pInv, cd.is)) {
@@ -106,20 +101,16 @@ public class MobListener implements Listener {
 	}
 
 	public boolean AddArmor(PlayerInventory pInv, ItemStack is) {
-		if (is.getType().name().contains("CHEST")
-				&& pInv.getChestplate() == null) {
+		if (is.getType().name().contains("CHEST") && pInv.getChestplate() == null) {
 			pInv.setChestplate(is);
 			return true;
-		} else if (is.getType().name().contains("LEGGINGS")
-				&& pInv.getLeggings() == null) {
+		} else if (is.getType().name().contains("LEGGINGS") && pInv.getLeggings() == null) {
 			pInv.setLeggings(is);
 			return true;
-		} else if (is.getType().name().contains("HELMET")
-				&& pInv.getHelmet() == null) {
+		} else if (is.getType().name().contains("HELMET") && pInv.getHelmet() == null) {
 			pInv.setHelmet(is);
 			return true;
-		} else if (is.getType().name().contains("BOOTS")
-				&& pInv.getBoots() == null) {
+		} else if (is.getType().name().contains("BOOTS") && pInv.getBoots() == null) {
 			pInv.setBoots(is);
 			return true;
 		}
