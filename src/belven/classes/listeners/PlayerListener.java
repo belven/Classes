@@ -1,7 +1,5 @@
 package belven.classes.listeners;
 
-import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -22,13 +20,11 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
-import org.bukkit.metadata.MetadataValue;
 
 import resources.EntityFunctions;
 import resources.Functions;
 import resources.MaterialFunctions;
 import resources.PlayerExtended;
-import belven.arena.MDM;
 import belven.arena.arenas.BaseArena;
 import belven.classes.Archer;
 import belven.classes.Assassin;
@@ -175,7 +171,6 @@ public class PlayerListener implements Listener {
 			LivingEntity le = EntityFunctions.GetDamager(event);
 			if (le != null && le.getType() == EntityType.PLAYER) {
 				Player currentPlayer = (Player) le;
-				addPlayerToArena(currentPlayer, event.getEntity());
 				plugin.GetClass(currentPlayer).SelfDamageOther(event);
 			}
 		}
@@ -186,17 +181,6 @@ public class PlayerListener implements Listener {
 		if (event.getEntityType() == EntityType.PLAYER) {
 			Player damagedPlayer = (Player) event.getEntity();
 			plugin.GetClass(damagedPlayer).SelfTakenDamage(event);
-		}
-	}
-
-	public void addPlayerToArena(Player p, Entity e) {
-		List<MetadataValue> currentMetaData = MDM.getMetaData(MDM.ArenaMob, e);
-
-		if (currentMetaData != null && !plugin.arenas.IsPlayerInArena(p)) {
-			BaseArena currentArena = (BaseArena) currentMetaData.get(0).value();
-			if (currentArena != null) {
-				plugin.arenas.WarpToArena(p, currentArena);
-			}
 		}
 	}
 

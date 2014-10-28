@@ -65,11 +65,6 @@ public class MobListener implements Listener {
 				if (e.getType() == EntityType.PLAYER) {
 					Player p = (Player) e;
 
-					for (ItemStack is : event.getDrops()) {
-						p.getInventory().addItem(is);
-					}
-
-					event.getDrops().clear();
 					p.giveExp(event.getDroppedExp());
 					event.setDroppedExp(0);
 					GiveClassDrops(p, true);
