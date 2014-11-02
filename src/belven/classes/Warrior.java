@@ -12,13 +12,13 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
+import resources.ClassDrop;
 import resources.Functions;
 import resources.MaterialFunctions;
 import belven.arena.ArenaManager;
 import belven.arena.arenas.BaseArena.ArenaTypes;
 import belven.classes.Abilities.LastResort;
 import belven.classes.Abilities.Retaliation;
-import resources.ClassDrop;
 import belven.teams.TeamManager;
 
 public class Warrior extends RPGClass {
@@ -65,7 +65,7 @@ public class Warrior extends RPGClass {
 			TeamManager t = plugin.teams;
 
 			// we are in an arena and it's PvP
-			if (a.IsPlayerInArena(classOwner) && a.getArena(classOwner).type == ArenaTypes.PvP) {
+			if (a.IsPlayerInArena(classOwner) && a.getArena(classOwner).getType() == ArenaTypes.PvP) {
 				// Player isn't an ally
 				if (!t.isInATeam(classOwner) || !t.isInSameTeam(classOwner, p)) {
 					return;

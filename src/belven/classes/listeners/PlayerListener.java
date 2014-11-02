@@ -154,7 +154,7 @@ public class PlayerListener implements Listener {
 
 			if (plugin.arenas.IsPlayerInArena(dp)) {
 				BaseArena ab = plugin.arenas.getArena(dp);
-				for (Player p : ab.arenaPlayers) {
+				for (Player p : ab.getArenaPlayers()) {
 					if (p != dp) {
 						plugin.GetClass(p).OtherTakenDamage(event);
 					}
@@ -167,13 +167,14 @@ public class PlayerListener implements Listener {
 			}
 
 			plugin.GetClass(dp).SelfTakenDamage(event);
-		} else {
-			LivingEntity le = EntityFunctions.GetDamager(event);
-			if (le != null && le.getType() == EntityType.PLAYER) {
-				Player currentPlayer = (Player) le;
-				plugin.GetClass(currentPlayer).SelfDamageOther(event);
-			}
+
 		}
+		LivingEntity le = EntityFunctions.GetDamager(event);
+		if (le != null && le.getType() == EntityType.PLAYER) {
+			Player currentPlayer = (Player) le;
+			plugin.GetClass(currentPlayer).SelfDamageOther(event);
+		}
+
 	}
 
 	@EventHandler

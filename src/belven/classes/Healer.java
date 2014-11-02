@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
+import resources.ClassDrop;
 import resources.EntityFunctions;
 import resources.MaterialFunctions;
 import belven.arena.arenas.BaseArena.ArenaTypes;
@@ -16,7 +17,6 @@ import belven.classes.Abilities.Bandage;
 import belven.classes.Abilities.Barrier;
 import belven.classes.Abilities.Heal;
 import belven.classes.Abilities.LightHeal;
-import resources.ClassDrop;
 
 public class Healer extends RPGClass {
 	public Heal classHeal;
@@ -130,7 +130,7 @@ public class Healer extends RPGClass {
 			ArenaTypes arenaType = null;
 
 			if (selfInArena) {
-				arenaType = plugin.arenas.getArena(self).type;
+				arenaType = plugin.arenas.getArena(self).getType();
 			}
 
 			if (selfInArena && targetInArena && arenaType != ArenaTypes.PvP) {

@@ -33,10 +33,9 @@ public class Assassin extends RPGClass {
 	}
 
 	public void TeleportToTarget(Entity currentEntity) {
-		Location mobLocation = currentEntity.getLocation();
-		Location playerLocation = classOwner.getLocation();
-		Location locationToTeleportTo = currentEntity.getLocation();
-		Location recallLocation = classOwner.getLocation();
+		Location mobLocation = currentEntity.getLocation(), locationToTeleportTo = currentEntity.getLocation();
+		Location playerLocation = classOwner.getLocation(), recallLocation = classOwner.getLocation();
+
 		recallLocation.setY(recallLocation.getY() - 1);
 		recallBlock = recallLocation.getBlock();
 
@@ -73,6 +72,7 @@ public class Assassin extends RPGClass {
 			if (locationToTeleportTo.getBlock().getType() == Material.AIR) {
 				Location temp = EntityFunctions.lookAt(locationToTeleportTo, mobLocation);
 				classOwner.teleport(temp);
+				break;
 			} else {
 				locationToTeleportTo.setY(i);
 			}

@@ -22,6 +22,7 @@ public class Grapple extends Ability {
 		this.abilitiyName = "Grapple";
 	}
 
+	@Override
 	public boolean PerformAbility() {
 
 		List<LivingEntity> tempTargets = EntityFunctions.findAllTargets(currentClass.classOwner, 50.0D);
@@ -58,7 +59,7 @@ public class Grapple extends Ability {
 			ArenaTypes arenaType = null;
 
 			if (selfInArena) {
-				arenaType = plugin.arenas.getArena(self).type;
+				arenaType = plugin.arenas.getArena(self).getType();
 			}
 
 			if (selfInArena && targetInArena && arenaType != ArenaTypes.PvP) {

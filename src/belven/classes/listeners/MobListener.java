@@ -52,7 +52,7 @@ public class MobListener implements Listener {
 			BaseArena currentArena = (BaseArena) currentMetaData.get(0).value();
 
 			if (currentArena != null) {
-				for (Player p : currentArena.arenaPlayers) {
+				for (Player p : currentArena.getArenaPlayers()) {
 					GiveClassDrops(p, false);
 				}
 			}

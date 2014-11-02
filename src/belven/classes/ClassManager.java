@@ -1,13 +1,20 @@
 package belven.classes;
 
+import java.io.File;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -34,7 +41,7 @@ public class ClassManager extends JavaPlugin {
 
 	static {
 		StrToRPGClass.put("Healer", Healer.class);
-		StrToRPGClass.put("Mage", DEFAULT.class);
+		StrToRPGClass.put("Mage", Mage.class);
 		StrToRPGClass.put("Assassin", Assassin.class);
 		StrToRPGClass.put("Archer", Archer.class);
 		StrToRPGClass.put("Monk", Monk.class);
@@ -43,6 +50,7 @@ public class ClassManager extends JavaPlugin {
 		StrToRPGClass.put("Warrior", Warrior.class);
 		StrToRPGClass.put("Knight", Knight.class);
 		StrToRPGClass.put("Berserker", Berserker.class);
+		StrToRPGClass.put("Default", DEFAULT.class);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -72,31 +80,44 @@ public class ClassManager extends JavaPlugin {
 			String classString = this.getConfig().getString(PlayerName + ".Class");
 
 			if (classString != null) {
-				if (CurrentPlayerClasses.get(playerToAdd) == null)
-
+				if (CurrentPlayerClasses.get(playerToAdd) == null) {
 					CurrentPlayerClasses.put(playerToAdd, StringToClass(classString, playerToAdd));
+				}
 			}
 
 			this.getServer().broadcastMessage(PlayerName + " was given class " + classString);
 		}
 	}
 
+	@Override
 	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		Player p = (Player) sender;
 		String commandSent = cmd.getName();
 
-		if (this.arenas.IsPlayerInArena(p) ? !this.arenas.getArena(p).isActive : true) {
+		if (this.arenas.IsPlayerInArena(p) ? !this.arenas.getArena(p).isActive() : true) {
 			// Class
 			if (commandSent.startsWith("bc")) {
-				StringBuilder sb = new StringBuilder(commandSent.toLowerCase());
-				sb.delete(0, 2);
-				sb.setCharAt(0, (char) (sb.charAt(0) - 32));
-				String s = sb.toString();
-				if (StrToRPGClass.containsKey(s)) {
-					SetClass(p, s);
+
+				if (args.length == 0) {
+					StringBuilder sb = new StringBuilder(commandSent.toLowerCase());
+					sb.delete(0, 2);
+					sb.setCharAt(0, (char) (sb.charAt(0) - 32));
+					String s = sb.toString();
+					if (StrToRPGClass.containsKey(s)) {
+						SetClass(p, s);
+					}
+					return true;
+				} else {
+					switch (args[0]) {
+					case "help":
+						giveHelpBook(p);
+						return true;
+					case "lac":
+						listAvailableClasses(p);
+						return true;
+					}
 				}
-				return true;
 			}
 
 			// Costume BC commands
@@ -128,10 +149,46 @@ public class ClassManager extends JavaPlugin {
 		return false;
 	}
 
-	// private void SpawnDummyPlayer(Player p) {
-	// Location l = p.getLocation();
-	// l.getWorld().spawnEntity(l, EntityType.PLAYER);
-	// }
+	private void listAvailableClasses(Player p) {
+		String classes = "Available classes: ";
+		for (String s : StrToRPGClass.keySet()) {
+			classes += s + ", ";
+		}
+
+		p.sendMessage(classes);
+	}
+
+	private void giveHelpBook(Player p) {
+		RPGClass rpgClass = GetClass(p);
+
+		if (rpgClass != null && rpgClass.getClass() != DEFAULT.class) {
+			ItemStack is = new ItemStack(Material.WRITTEN_BOOK);
+			is.setItemMeta(getBookAtPath(is, "Class Books." + rpgClass.getClassName()));
+			p.getInventory().addItem(is);
+		}
+
+	}
+
+	public BookMeta getBookAtPath(ItemStack is, String path) {
+		BookMeta meta = (BookMeta) is.getItemMeta();
+		File ymlFile = new File(getDataFolder(), "Class Books.yml");
+		YamlConfiguration loadedFile = YamlConfiguration.loadConfiguration(ymlFile);
+
+		ConfigurationSection conf = loadedFile.getConfigurationSection(path);
+
+		if (conf == null) {
+			return meta;
+		}
+
+		meta.setTitle(conf.getString("Title"));
+
+		if (conf.contains("Pages")) {
+			for (Entry<String, Object> s : conf.getConfigurationSection("Pages").getValues(true).entrySet()) {
+				meta.addPage((String) s.getValue());
+			}
+		}
+		return meta;
+	}
 
 	private RPGClass StringToClass(String className, Player player) {
 		try {
