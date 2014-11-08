@@ -23,9 +23,9 @@ import org.bukkit.event.player.PlayerVelocityEvent;
 
 import resources.EntityFunctions;
 import resources.Functions;
+import resources.Group;
 import resources.MaterialFunctions;
 import resources.PlayerExtended;
-import belven.arena.arenas.BaseArena;
 import belven.classes.Archer;
 import belven.classes.Assassin;
 import belven.classes.ClassManager;
@@ -33,7 +33,6 @@ import belven.classes.Daemon;
 import belven.classes.RPGClass;
 import belven.classes.events.AbilityUsed;
 import belven.classes.timedevents.AbilityDelay;
-import belven.teams.Team;
 
 public class PlayerListener implements Listener {
 	private final ClassManager plugin;
@@ -151,24 +150,16 @@ public class PlayerListener implements Listener {
 	public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
 		if (event.getEntityType() == EntityType.PLAYER) {
 			Player dp = (Player) event.getEntity();
+			Group playerGroup = plugin.getGroup(dp);
 
-			if (plugin.arenas.IsPlayerInArena(dp)) {
-				BaseArena ab = plugin.arenas.getArena(dp);
-				for (Player p : ab.getArenaPlayers()) {
-					if (p != dp) {
-						plugin.GetClass(p).OtherTakenDamage(event);
-					}
-				}
-			} else if (plugin.teams.isInATeam(dp)) {
-				Team t = plugin.teams.getTeam(dp);
-				for (Player p : t.getMembers()) {
+			if (playerGroup != null) {
+				for (Player p : playerGroup.getPlayers()) {
 					plugin.GetClass(p).OtherTakenDamage(event);
 				}
 			}
-
 			plugin.GetClass(dp).SelfTakenDamage(event);
-
 		}
+
 		LivingEntity le = EntityFunctions.GetDamager(event);
 		if (le != null && le.getType() == EntityType.PLAYER) {
 			Player currentPlayer = (Player) le;

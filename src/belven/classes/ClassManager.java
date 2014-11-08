@@ -1,7 +1,9 @@
 package belven.classes;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
@@ -18,21 +20,22 @@ import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import resources.Group;
 import resources.PlayerExtended;
-import belven.arena.ArenaManager;
 import belven.classes.events.ClassChangeEvent;
 import belven.classes.listeners.BlockListener;
 import belven.classes.listeners.MobListener;
 import belven.classes.listeners.PlayerListener;
-import belven.teams.TeamManager;
 
 public class ClassManager extends JavaPlugin {
 	private final PlayerListener newplayerListener = new PlayerListener(this);
 	private final BlockListener blockListener = new BlockListener(this);
 	private final MobListener mobListener = new MobListener(this);
 
-	public ArenaManager arenas = (ArenaManager) Bukkit.getServer().getPluginManager().getPlugin("BelvensArenas");
-	public TeamManager teams = (TeamManager) Bukkit.getServer().getPluginManager().getPlugin("BelvensTeams");
+	// public ArenaManager arenas = (ArenaManager)
+	// Bukkit.getServer().getPluginManager().getPlugin("BelvensArenas");
+	// public TeamManager teams = (TeamManager)
+	// Bukkit.getServer().getPluginManager().getPlugin("BelvensTeams");
 
 	private HashMap<Player, RPGClass> CurrentPlayerClasses = new HashMap<Player, RPGClass>();
 	public HashMap<Player, PlayerExtended> PlayersE = new HashMap<Player, PlayerExtended>();
@@ -95,57 +98,58 @@ public class ClassManager extends JavaPlugin {
 		Player p = (Player) sender;
 		String commandSent = cmd.getName();
 
-		if (this.arenas.IsPlayerInArena(p) ? !this.arenas.getArena(p).isActive() : true) {
-			// Class
-			if (commandSent.startsWith("bc")) {
+		// if (this.arenas.IsPlayerInArena(p) ?
+		// !this.arenas.getArena(p).isActive() : true) {
+		// Class
+		if (commandSent.startsWith("bc")) {
 
-				if (args.length == 0) {
-					StringBuilder sb = new StringBuilder(commandSent.toLowerCase());
-					sb.delete(0, 2);
-					sb.setCharAt(0, (char) (sb.charAt(0) - 32));
-					String s = sb.toString();
-					if (StrToRPGClass.containsKey(s)) {
-						SetClass(p, s);
-					}
+			if (args.length == 0) {
+				StringBuilder sb = new StringBuilder(commandSent.toLowerCase());
+				sb.delete(0, 2);
+				sb.setCharAt(0, (char) (sb.charAt(0) - 32));
+				String s = sb.toString();
+				if (StrToRPGClass.containsKey(s)) {
+					SetClass(p, s);
+				}
+				return true;
+			} else {
+				switch (args[0]) {
+				case "help":
+					giveHelpBook(p);
 					return true;
-				} else {
-					switch (args[0]) {
-					case "help":
-						giveHelpBook(p);
-						return true;
-					case "lac":
-						listAvailableClasses(p);
-						return true;
-					}
+				case "lac":
+					listAvailableClasses(p);
+					return true;
 				}
-			}
-
-			// Costume BC commands
-			switch (commandSent) {
-
-			case "bcdummy":
-				Location playerLocation = p.getLocation();
-				playerLocation.setX(playerLocation.getX() + 3);
-				p.getWorld().spawnEntity(playerLocation, EntityType.ZOMBIE);
-				return true;
-			case "setlevel":
-				int level = Integer.valueOf(args[0]);
-				p.setLevel(level);
-				return true;
-			case "listclasses":
-				Player[] currentPlayers = this.getServer().getOnlinePlayers();
-				for (Player currentPlayer : currentPlayers) {
-					if (currentPlayer != null) {
-						RPGClass currentClass = CurrentPlayerClasses.get(currentPlayer);
-						p.sendMessage(currentPlayer.getName() + " is a " + currentClass.getClassName());
-					}
-				}
-				return true;
-			case "listabilities":
-				CurrentPlayerClasses.get(p).ListAbilities();
-				return true;
 			}
 		}
+
+		// Costume BC commands
+		switch (commandSent) {
+
+		case "bcdummy":
+			Location playerLocation = p.getLocation();
+			playerLocation.setX(playerLocation.getX() + 3);
+			p.getWorld().spawnEntity(playerLocation, EntityType.ZOMBIE);
+			return true;
+		case "setlevel":
+			int level = Integer.valueOf(args[0]);
+			p.setLevel(level);
+			return true;
+		case "listclasses":
+			Player[] currentPlayers = this.getServer().getOnlinePlayers();
+			for (Player currentPlayer : currentPlayers) {
+				if (currentPlayer != null) {
+					RPGClass currentClass = CurrentPlayerClasses.get(currentPlayer);
+					p.sendMessage(currentPlayer.getName() + " is a " + currentClass.getClassName());
+				}
+			}
+			return true;
+		case "listabilities":
+			CurrentPlayerClasses.get(p).ListAbilities();
+			return true;
+		}
+		// }
 		return false;
 	}
 
@@ -167,6 +171,93 @@ public class ClassManager extends JavaPlugin {
 			p.getInventory().addItem(is);
 		}
 
+	}
+
+	public boolean isAlly(Player p1, Player p2) {
+		Group p1Arena = (Group) p1.getMetadata("InArena").get(0).value();
+		Group p2Arena = (Group) p2.getMetadata("InArena").get(0).value();
+		Group p1Team = (Group) p1.getMetadata("InTeam").get(0).value();
+		Group p2Team = (Group) p2.getMetadata("InTeam").get(0).value();
+
+		boolean selfInArena = p1Arena != null;
+		boolean targetInArena = p2Arena != null;
+		boolean isPvP = false;
+
+		if (selfInArena) {
+			isPvP = p1Arena.isPvP();
+		}
+
+		if (selfInArena && targetInArena && !isPvP) {
+			return true;
+		} else if (p1Team != null && p2Team != null && p1Team.getName().equals(p2Team.getName())) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public List<Player> getArenaAllies(Player p) {
+		Group playerGroup = null;
+		List<Player> players = new ArrayList<>();
+
+		if (p.hasMetadata("InArena")) {
+
+			playerGroup = (Group) p.getMetadata("InArena").get(0).value();
+
+			if (playerGroup.isPvP()) {
+				for (Player otherP : playerGroup.getPlayers()) {
+					if (inSameTeam(p, otherP)) {
+						players.add(otherP);
+					}
+				}
+				return players;
+			} else {
+				return playerGroup.getPlayers();
+			}
+		}
+		return new ArrayList<Player>();
+	}
+
+	public boolean inSameTeam(Player p1, Player p2) {
+		Group p1Team = (Group) p1.getMetadata("InTeam").get(0).value();
+		Group p2Team = (Group) p2.getMetadata("InTeam").get(0).value();
+
+		if (p1Team != null && p2Team != null && p1Team.getName().equals(p2Team.getName())) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public Group getAllyGroup(Player p) {
+		Group playerGroup = null;
+
+		if (p.hasMetadata("InArena")) {
+
+			playerGroup = (Group) p.getMetadata("InArena").get(0).value();
+
+			if (playerGroup.isPvP()) {
+				return null;
+			}
+		}
+
+		if (playerGroup == null && p.hasMetadata("InTeam")) {
+			playerGroup = (Group) p.getMetadata("InTeam").get(0).value();
+		}
+
+		return playerGroup;
+	}
+
+	public Group getGroup(Player p) {
+		Group playerGroup = null;
+
+		if (p.hasMetadata("InArena")) {
+			playerGroup = (Group) p.getMetadata("InArena").get(0).value();
+		} else if (p.hasMetadata("InTeam")) {
+			playerGroup = (Group) p.getMetadata("InTeam").get(0).value();
+		}
+
+		return playerGroup;
 	}
 
 	public BookMeta getBookAtPath(ItemStack is, String path) {

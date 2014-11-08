@@ -15,11 +15,8 @@ import org.bukkit.potion.PotionType;
 import resources.ClassDrop;
 import resources.Functions;
 import resources.MaterialFunctions;
-import belven.arena.ArenaManager;
-import belven.arena.arenas.BaseArena.ArenaTypes;
 import belven.classes.Abilities.LastResort;
 import belven.classes.Abilities.Retaliation;
-import belven.teams.TeamManager;
 
 public class Warrior extends RPGClass {
 	public LastResort currentLastResort;
@@ -60,18 +57,19 @@ public class Warrior extends RPGClass {
 		Player p = (Player) event.getEntity();
 		double healthPercent = plugin.GetPlayerE(classOwner).GetMissingHealthPercent();
 
-		if (plugin.arenas != null && plugin.teams != null) {
-			ArenaManager a = plugin.arenas;
-			TeamManager t = plugin.teams;
-
-			// we are in an arena and it's PvP
-			if (a.IsPlayerInArena(classOwner) && a.getArena(classOwner).getType() == ArenaTypes.PvP) {
-				// Player isn't an ally
-				if (!t.isInATeam(classOwner) || !t.isInSameTeam(classOwner, p)) {
-					return;
-				}
-			}
-		}
+		// if (plugin.arenas != null && plugin.teams != null) {
+		// ArenaManager a = plugin.arenas;
+		// TeamManager t = plugin.teams;
+		//
+		// // we are in an arena and it's PvP
+		// if (a.IsPlayerInArena(classOwner) && a.getArena(classOwner).getType()
+		// == ArenaTypes.PvP) {
+		// // Player isn't an ally
+		// if (!t.isInATeam(classOwner) || !t.isInSameTeam(classOwner, p)) {
+		// return;
+		// }
+		// }
+		// }
 
 		if (event.getDamage() > 0 && healthPercent > 0.1 && p.getLocation().distance(classOwner.getLocation()) < 30) {
 			classOwner.damage(event.getDamage());

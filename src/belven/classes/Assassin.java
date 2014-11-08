@@ -2,7 +2,6 @@ package belven.classes;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -20,8 +19,6 @@ import belven.classes.Abilities.SoulDrain;
 import belven.classes.Abilities.Stealth;
 
 public class Assassin extends RPGClass {
-	public Entity lastEntityConfused;
-	private Block recallBlock;
 	private SoulDrain classSoulDrain;
 	private Stealth classStealth;
 
@@ -37,7 +34,7 @@ public class Assassin extends RPGClass {
 		Location playerLocation = classOwner.getLocation(), recallLocation = classOwner.getLocation();
 
 		recallLocation.setY(recallLocation.getY() - 1);
-		recallBlock = recallLocation.getBlock();
+		// recallBlock = recallLocation.getBlock();
 
 		if (HasLineOfSight(currentEntity)) {
 			if (playerLocation.getZ() < mobLocation.getZ()) {
@@ -81,12 +78,12 @@ public class Assassin extends RPGClass {
 
 	@Override
 	public void ToggleSneakEvent(PlayerToggleSneakEvent event) {
-		if (event.isSneaking() && recallBlock != null) {
-			Location recallLocation = recallBlock.getLocation();
-			recallLocation.setY(recallLocation.getY() + 1);
-			classOwner.teleport(recallLocation);
-			recallBlock = null;
-		}
+		// if (event.isSneaking() && recallBlock != null) {
+		// Location recallLocation = recallBlock.getLocation();
+		// recallLocation.setY(recallLocation.getY() + 1);
+		// classOwner.teleport(recallLocation);
+		// recallBlock = null;
+		// }
 	}
 
 	@Override
@@ -128,7 +125,6 @@ public class Assassin extends RPGClass {
 		if (classOwner.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
 			event.setDamage(event.getDamage() + 10);
 			classOwner.removePotionEffect(PotionEffectType.INVISIBILITY);
-			classOwner.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
 		}
 
 		if (!arrowEntity) {
@@ -136,7 +132,6 @@ public class Assassin extends RPGClass {
 
 			if (!classStealth.onCooldown) {
 				classStealth.PerformAbility();
-				TeleportToTarget(damagedEntity);
 			}
 		} else {
 			TeleportToTarget(damagedEntity);

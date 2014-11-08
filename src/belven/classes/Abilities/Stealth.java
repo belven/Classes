@@ -16,8 +16,6 @@ public class Stealth extends Ability {
 	public boolean PerformAbility() {
 		currentClass.classOwner.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Functions
 				.SecondsToTicks(6), 1));
-		currentClass.classOwner.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Functions
-				.SecondsToTicks(6), 5));
 		currentClass.setAbilityOnCoolDown(this, true);
 		return true;
 	}

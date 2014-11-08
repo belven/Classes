@@ -10,8 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import resources.EntityFunctions;
-import belven.arena.arenas.BaseArena.ArenaTypes;
-import belven.classes.ClassManager;
 import belven.classes.RPGClass;
 
 public class Grapple extends Ability {
@@ -50,25 +48,25 @@ public class Grapple extends Ability {
 	}
 
 	public boolean shouldPull(Player target) {
-		Player self = currentClass.classOwner;
-		ClassManager plugin = currentClass.plugin;
+		// Player self = currentClass.classOwner;
+		// ClassManager plugin = currentClass.plugin;
 
-		if (plugin.arenas != null && plugin.teams != null) {
-			boolean selfInArena = plugin.arenas.IsPlayerInArena(self);
-			boolean targetInArena = plugin.arenas.IsPlayerInArena(target);
-			ArenaTypes arenaType = null;
+		// if (plugin.arenas != null && plugin.teams != null) {
+		// boolean selfInArena = plugin.arenas.IsPlayerInArena(self);
+		// boolean targetInArena = plugin.arenas.IsPlayerInArena(target);
+		// ArenaTypes arenaType = null;
+		//
+		// if (selfInArena) {
+		// arenaType = plugin.arenas.getArena(self).getType();
+		// }
+		//
+		// if (selfInArena && targetInArena && arenaType != ArenaTypes.PvP) {
+		// return true;
+		// } else if (plugin.teams.isInSameTeam(self, target)) {
+		// return true;
+		// }
+		// }
 
-			if (selfInArena) {
-				arenaType = plugin.arenas.getArena(self).getType();
-			}
-
-			if (selfInArena && targetInArena && arenaType != ArenaTypes.PvP) {
-				return true;
-			} else if (plugin.teams.isInSameTeam(self, target)) {
-				return true;
-			}
-		}
-
-		return false;
+		return true;
 	}
 }

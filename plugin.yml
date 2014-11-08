@@ -1,7 +1,7 @@
 name: BelvensClasses
 main: belven.classes.ClassManager
 version: 1
-depend: [BelvensArenas, BelvensTeams]
+depend: [Resources]
 
 commands:
    bc:

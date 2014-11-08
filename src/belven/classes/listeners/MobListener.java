@@ -21,8 +21,6 @@ import org.bukkit.metadata.MetadataValue;
 import resources.ClassDrop;
 import resources.EntityFunctions;
 import resources.Functions;
-import belven.arena.MDM;
-import belven.arena.arenas.BaseArena;
 import belven.classes.ClassManager;
 
 public class MobListener implements Listener {
@@ -46,15 +44,27 @@ public class MobListener implements Listener {
 	@EventHandler
 	public void onEntityDeathEvent(EntityDeathEvent event) {
 		Entity currentEntity = event.getEntity();
-		List<MetadataValue> currentMetaData = MDM.getMetaData(MDM.ArenaMob, currentEntity);
+		Entity damager = currentEntity.getLastDamageCause().getEntity();
 
-		if (plugin.arenas != null && currentMetaData != null) {
-			BaseArena currentArena = (BaseArena) currentMetaData.get(0).value();
+		MetadataValue data = currentEntity.getMetadata("ArenaMob").size() > 0 ? currentEntity.getMetadata("ArenaMob")
+				.get(0) : null;
+		Object currentMetaData = data != null ? data.value() : null;
 
-			if (currentArena != null) {
-				for (Player p : currentArena.getArenaPlayers()) {
-					GiveClassDrops(p, false);
+		if (currentMetaData != null && damager.getType() == EntityType.PLAYER) {
+			try {
+				if (currentMetaData.getClass().getField("name") != null) {
+					String name = (String) currentMetaData.getClass().getField("name").get(currentMetaData);
+					Player damagerP = (Player) damager;
+
+					if (plugin.getGroup(damagerP).getName() == name) {
+						for (Player p : plugin.getArenaAllies(damagerP)) {
+							GiveClassDrops(p, false);
+						}
+					}
 				}
+			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		} else {
 			EntityDamageEvent cause = event.getEntity().getLastDamageCause();

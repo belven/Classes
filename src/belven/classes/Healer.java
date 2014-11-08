@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import resources.ClassDrop;
 import resources.EntityFunctions;
 import resources.MaterialFunctions;
-import belven.arena.arenas.BaseArena.ArenaTypes;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.Bandage;
 import belven.classes.Abilities.Barrier;
@@ -84,7 +83,7 @@ public class Healer extends RPGClass {
 				playerSelected = classOwner;
 			}
 
-			if (shouldHeal(classOwner, playerSelected)) {
+			if (plugin.isAlly(classOwner, playerSelected)) {
 				CheckAbilitiesToCast(playerSelected);
 			} else {
 				CheckAbilitiesToCast(classOwner);
@@ -101,7 +100,7 @@ public class Healer extends RPGClass {
 		} else if (currentEntity.getType() == EntityType.PLAYER) {
 			playerSelected = (Player) currentEntity;
 
-			if (shouldHeal(classOwner, playerSelected)) {
+			if (plugin.isAlly(classOwner, playerSelected)) {
 				CheckAbilitiesToCast(playerSelected);
 			} else {
 				CheckAbilitiesToCast(classOwner);
@@ -115,32 +114,12 @@ public class Healer extends RPGClass {
 				playerSelected = classOwner;
 			}
 
-			if (shouldHeal(classOwner, playerSelected)) {
+			if (plugin.isAlly(classOwner, playerSelected)) {
 				CheckAbilitiesToCast(playerSelected);
 			} else {
 				CheckAbilitiesToCast(classOwner);
 			}
 		}
-	}
-
-	public boolean shouldHeal(Player self, Player target) {
-		if (plugin.arenas != null && plugin.teams != null) {
-			boolean selfInArena = plugin.arenas.IsPlayerInArena(self);
-			boolean targetInArena = plugin.arenas.IsPlayerInArena(target);
-			ArenaTypes arenaType = null;
-
-			if (selfInArena) {
-				arenaType = plugin.arenas.getArena(self).getType();
-			}
-
-			if (selfInArena && targetInArena && arenaType != ArenaTypes.PvP) {
-				return true;
-			} else if (plugin.teams.isInSameTeam(self, target)) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	@Override
