@@ -16,11 +16,11 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.metadata.MetadataValue;
 
 import resources.ClassDrop;
 import resources.EntityFunctions;
 import resources.Functions;
+import resources.Group;
 import belven.classes.ClassManager;
 
 public class MobListener implements Listener {
@@ -36,35 +36,32 @@ public class MobListener implements Listener {
 
 	@EventHandler
 	public void onProjectileLaunchEvent(ProjectileLaunchEvent event) {
-		if (event.getEntity().getType() == EntityType.FIREBALL) {
-			event.setCancelled(true);
-		}
+		// if (event.getEntity().getType() == EntityType.FIREBALL) {
+		// event.setCancelled(true);
+		// }
 	}
 
 	@EventHandler
 	public void onEntityDeathEvent(EntityDeathEvent event) {
 		Entity currentEntity = event.getEntity();
-		Entity damager = currentEntity.getLastDamageCause().getEntity();
+		EntityDamageEvent lastDamage = event.getEntity().getLastDamageCause();
 
-		MetadataValue data = currentEntity.getMetadata("ArenaMob").size() > 0 ? currentEntity.getMetadata("ArenaMob")
-				.get(0) : null;
-		Object currentMetaData = data != null ? data.value() : null;
+		if (!(lastDamage instanceof EntityDamageByEntityEvent)) {
+			return;
+		}
 
-		if (currentMetaData != null && damager.getType() == EntityType.PLAYER) {
-			try {
-				if (currentMetaData.getClass().getField("name") != null) {
-					String name = (String) currentMetaData.getClass().getField("name").get(currentMetaData);
-					Player damagerP = (Player) damager;
+		Entity damager = EntityFunctions.GetDamager((EntityDamageByEntityEvent) lastDamage);
+		Object data = currentEntity.getMetadata("ArenaMob").get(0).value();
 
-					if (plugin.getGroup(damagerP).getName() == name) {
-						for (Player p : plugin.getArenaAllies(damagerP)) {
-							GiveClassDrops(p, false);
-						}
-					}
+		if (damager.getType() == EntityType.PLAYER) {
+			Group g = (Group) data;
+			String name = g.getName();
+			Player damagerP = (Player) damager;
+
+			if (plugin.getGroup(damagerP).getName().equals(name)) {
+				for (Player p : plugin.getArenaAllies(damagerP)) {
+					GiveClassDrops(p, false);
 				}
-			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		} else {
 			EntityDamageEvent cause = event.getEntity().getLastDamageCause();
