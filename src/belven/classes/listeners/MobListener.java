@@ -51,9 +51,13 @@ public class MobListener implements Listener {
 		}
 
 		Entity damager = EntityFunctions.GetDamager((EntityDamageByEntityEvent) lastDamage);
-		Object data = currentEntity.getMetadata("ArenaMob").get(0).value();
+		Object data = null;
 
-		if (damager.getType() == EntityType.PLAYER) {
+		if (currentEntity.hasMetadata("ArenaMob")) {
+			data = currentEntity.getMetadata("ArenaMob").get(0).value();
+		}
+
+		if (data != null && damager.getType() == EntityType.PLAYER) {
 			Group g = (Group) data;
 			String name = g.getName();
 			Player damagerP = (Player) damager;

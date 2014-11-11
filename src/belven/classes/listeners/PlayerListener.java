@@ -150,11 +150,13 @@ public class PlayerListener implements Listener {
 	public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
 		if (event.getEntityType() == EntityType.PLAYER) {
 			Player dp = (Player) event.getEntity();
-			Group playerGroup = plugin.getGroup(dp);
+			Group playerGroup = plugin.getAllyGroup(dp);
 
 			if (playerGroup != null) {
 				for (Player p : playerGroup.getPlayers()) {
-					plugin.GetClass(p).OtherTakenDamage(event);
+					if (dp != p) {
+						plugin.GetClass(p).OtherTakenDamage(event);
+					}
 				}
 			}
 			plugin.GetClass(dp).SelfTakenDamage(event);
