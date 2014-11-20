@@ -1,5 +1,6 @@
 package belven.classes;
 
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -7,6 +8,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Dye;
 
 import resources.ClassDrop;
 import resources.EntityFunctions;
@@ -52,7 +54,10 @@ public class Healer extends RPGClass {
 
 	@Override
 	public void SetClassDrops() {
-		ItemStack lapisBlock = new ItemStack(Material.LAPIS_BLOCK, 6);
+		Dye dye = new Dye();
+		dye.setColor(DyeColor.BLUE);
+		ItemStack lapisBlock = dye.toItemStack(6);
+
 		ItemStack woodSword = new ItemStack(Material.WOOD_SWORD);
 		ItemStack stick = new ItemStack(Material.STICK);
 		ItemStack paper = new ItemStack(Material.PAPER);
@@ -135,7 +140,7 @@ public class Healer extends RPGClass {
 	@Override
 	public void SetAbilities() {
 		classHeal = new Heal(this, 1, 3);
-		classLightHeal = new LightHeal(this, 2, 3);
+		classLightHeal = new LightHeal(this, 2, 12);
 		classBandage = new Bandage(this, 0, 3);
 		classBarrier = new Barrier(this, 6, 4, 10);
 

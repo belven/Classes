@@ -1,5 +1,7 @@
 package belven.classes.listeners;
 
+import java.util.Iterator;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -153,8 +155,11 @@ public class PlayerListener implements Listener {
 			Group playerGroup = plugin.getAllyGroup(dp);
 
 			if (playerGroup != null) {
-				for (Player p : playerGroup.getPlayers()) {
-					if (dp != p) {
+				Iterator<Player> iter = playerGroup.getPlayers().iterator();
+
+				while (iter.hasNext()) {
+					Player p = iter.next();
+					if (dp != p && p != null) {
 						plugin.GetClass(p).OtherTakenDamage(event);
 					}
 				}

@@ -1,8 +1,8 @@
 package belven.classes.Abilities;
 
-import org.bukkit.Material;
+import org.bukkit.DyeColor;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Dye;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -11,8 +11,12 @@ import resources.Functions;
 public class HealingFurry extends Ability {
 	public HealingFurry(belven.classes.RPGClass CurrentClass, int priority, int amp) {
 		super(priority, amp);
+
+		Dye dye = new Dye();
+		dye.setColor(DyeColor.BLUE);
+		requirements.add(dye.toItemStack(2));
+
 		currentClass = CurrentClass;
-		requirements.add(new ItemStack(Material.LAPIS_BLOCK, 2));
 		abilitiyName = "Healing Furry";
 	}
 
@@ -21,7 +25,7 @@ public class HealingFurry extends Ability {
 		PotionEffect pe = new PotionEffect(PotionEffectType.HEALTH_BOOST, Functions.SecondsToTicks(Amplifier() + 30),
 				Amplifier(), true);
 
-		if (!onCooldown && (!playerToHeal.hasPotionEffect(PotionEffectType.HEALTH_BOOST))) {
+		if (!onCooldown && !playerToHeal.hasPotionEffect(PotionEffectType.HEALTH_BOOST)) {
 			playerToHeal.addPotionEffect(pe, false);
 
 			currentClass.classOwner.sendMessage("You boosted  " + playerToHeal.getName() + "s max health");
@@ -41,7 +45,8 @@ public class HealingFurry extends Ability {
 		return false;
 	}
 
+	@Override
 	public int Amplifier() {
-		return Functions.abilityCap((double) Amplifier + 1, (double) currentClass.classOwner.getLevel());
+		return Functions.abilityCap((double) Amplifier + 1, currentClass.classOwner.getLevel());
 	}
 }

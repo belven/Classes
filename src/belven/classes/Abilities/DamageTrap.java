@@ -3,8 +3,7 @@ package belven.classes.Abilities;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Wool;
+import org.bukkit.material.Dye;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -15,12 +14,16 @@ public class DamageTrap extends Ability {
 	public DamageTrap(belven.classes.RPGClass CurrentClass, int priority, int amp) {
 		super(priority, amp);
 		currentClass = CurrentClass;
-		ItemStack redwool = new Wool(DyeColor.GRAY).toItemStack(1);
-		requirements.add(redwool);
-		inHandRequirements.add(Material.WOOL);
+		Dye dye = new Dye();
+		dye.setColor(DyeColor.GRAY);
+		requirements.add(dye.toItemStack(2));
+
+		inHandRequirements.add(Material.INK_SACK);
+
 		abilitiyName = "Damage Trap";
 	}
 
+	@Override
 	public boolean PerformAbility(Location targetLocation) {
 		if (targetLocation.getBlock().getType() != Material.WOOL) {
 			new DamageTrapTimer(targetLocation.getBlock(), currentClass.classOwner.getLevel(), 6).runTaskTimer(
@@ -40,6 +43,6 @@ public class DamageTrap extends Ability {
 
 	@Override
 	public int Amplifier() {
-		return (int) ((currentClass.classOwner.getLevel() / 3) + 2);
+		return currentClass.classOwner.getLevel() / 3 + 2;
 	}
 }

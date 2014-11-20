@@ -174,23 +174,31 @@ public class ClassManager extends JavaPlugin {
 	}
 
 	public boolean isAlly(Player p1, Player p2) {
-		Group p1Arena = (Group) p1.getMetadata("InArena").get(0).value();
-		Group p2Arena = (Group) p2.getMetadata("InArena").get(0).value();
-		Group p1Team = (Group) p1.getMetadata("InTeam").get(0).value();
-		Group p2Team = (Group) p2.getMetadata("InTeam").get(0).value();
-
-		boolean selfInArena = p1Arena != null;
-		boolean targetInArena = p2Arena != null;
-		boolean isPvP = false;
-
-		if (selfInArena) {
-			isPvP = p1Arena.isPvP();
+		if (p1 == p2) {
+			return true;
 		}
 
-		if (selfInArena && targetInArena && !isPvP) {
-			return true;
-		} else if (p1Team != null && p2Team != null && p1Team.getName().equals(p2Team.getName())) {
-			return true;
+		try {
+			Group p1Arena = (Group) p1.getMetadata("InArena").get(0).value();
+			Group p2Arena = (Group) p2.getMetadata("InArena").get(0).value();
+			Group p1Team = (Group) p1.getMetadata("InTeam").get(0).value();
+			Group p2Team = (Group) p2.getMetadata("InTeam").get(0).value();
+
+			boolean selfInArena = p1Arena != null;
+			boolean targetInArena = p2Arena != null;
+			boolean isPvP = false;
+
+			if (selfInArena) {
+				isPvP = p1Arena.isPvP();
+			}
+
+			if (selfInArena && targetInArena && !isPvP) {
+				return true;
+			} else if (p1Team != null && p2Team != null && p1Team.getName().equals(p2Team.getName())) {
+				return true;
+			}
+		} catch (IndexOutOfBoundsException e) {
+			return false;
 		}
 
 		return false;

@@ -25,8 +25,8 @@ public class Cleanse extends Ability {
 
 		while (ActivePotionEffects.hasNext()) {
 			PotionEffect pe = ActivePotionEffects.next();
-			if (Functions.debuffs(pe.getType())) {
-				ActivePotionEffects.remove();
+			if (Functions.debuffs(pe.getType()) && playerToHeal.hasPotionEffect(pe.getType())) {
+				playerToHeal.removePotionEffect(pe.getType());
 				break;
 			}
 		}
@@ -35,6 +35,7 @@ public class Cleanse extends Ability {
 		return true;
 	}
 
+	@Override
 	public int Amplifier() {
 		return Math.round(currentClass.classOwner.getLevel() / 7);
 	}

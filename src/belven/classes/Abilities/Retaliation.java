@@ -20,14 +20,12 @@ public class Retaliation extends Ability {
 	public boolean PerformAbility() {
 		Player p = currentClass.classOwner;
 		EntityDamageEvent ldc = p.getLastDamageCause();
-		LivingEntity entityDamaged = EntityFunctions.GetDamager((LivingEntity) p);
+		LivingEntity entityDamaged = EntityFunctions.GetDamager(p);
 
 		if (entityDamaged != null) {
 			entityDamaged.damage(ldc.getDamage() * Amplifier());
-			EntityFunctions.Heal((LivingEntity) p, (int) ldc.getDamage());
-		} else {
-			EntityFunctions.Heal((LivingEntity) p, (int) ldc.getDamage());
 		}
+
 		Bukkit.getPluginManager().callEvent(new AbilityUsed(this));
 		currentClass.setAbilityOnCoolDown(this);
 		return true;

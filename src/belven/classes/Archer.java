@@ -9,15 +9,15 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Wool;
+import org.bukkit.material.Dye;
 
+import resources.ClassDrop;
 import resources.EntityFunctions;
 import resources.Functions;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.DamageTrap;
 import belven.classes.Abilities.FireTrap;
 import belven.classes.Abilities.WebArrow;
-import resources.ClassDrop;
 import belven.classes.timedevents.BlockRestorer;
 
 public class Archer extends RPGClass {
@@ -53,8 +53,14 @@ public class Archer extends RPGClass {
 
 	@Override
 	public void SetClassDrops() {
-		ItemStack redwool = new Wool(DyeColor.RED).toItemStack(2);
-		ItemStack graywool = new Wool(DyeColor.GRAY).toItemStack(2);
+		Dye dye = new Dye();
+		dye.setColor(DyeColor.RED);
+		ItemStack redwool = dye.toItemStack(2);
+
+		dye = new Dye();
+		dye.setColor(DyeColor.GRAY);
+		ItemStack graywool = dye.toItemStack(2);
+
 		ItemStack arrow = new ItemStack(Material.ARROW, 10);
 		ItemStack bow = new ItemStack(Material.BOW);
 		ItemStack snowBall = new ItemStack(Material.SNOW_BALL, 2);
@@ -117,7 +123,7 @@ public class Archer extends RPGClass {
 
 			event.setDamage(event.getDamage() + 10);
 
-			Damageable dcurrentLivingEntity = (Damageable) currentLivingEntity;
+			Damageable dcurrentLivingEntity = currentLivingEntity;
 
 			event.setDamage(Functions.damageToDo(event.getDamage(), dcurrentLivingEntity.getHealth(),
 					dcurrentLivingEntity.getMaxHealth()));

@@ -3,10 +3,9 @@ package belven.classes.Abilities;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import resources.Functions;
+import belven.classes.timedevents.HealTimer;
 
 public class Heal extends Ability {
 	public Heal(belven.classes.RPGClass CurrentClass, int priority, int amp) {
@@ -19,8 +18,11 @@ public class Heal extends Ability {
 
 	@Override
 	public boolean PerformAbility(Player playerToHeal) {
-		if (currentClass.plugin.GetPlayerE(playerToHeal).GetHealth() <= 10) {
-			playerToHeal.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 1, Amplifier()));
+		if (currentClass.plugin.GetPlayerE(playerToHeal).GetHealthPercent() <= 0.3) {
+			// playerToHeal.addPotionEffect(new
+			// PotionEffect(PotionEffectType.HEAL, 1, Amplifier()));
+
+			new HealTimer(currentClass.plugin, 0.4, playerToHeal);
 
 			currentClass.classOwner.sendMessage("You healed " + playerToHeal.getName());
 
@@ -31,7 +33,8 @@ public class Heal extends Ability {
 		return false;
 	}
 
+	@Override
 	public int Amplifier() {
-		return Functions.abilityCap((double) Amplifier, (double) currentClass.classOwner.getLevel()) + 1;
+		return Functions.abilityCap(Amplifier, currentClass.classOwner.getLevel()) + 1;
 	}
 }

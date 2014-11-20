@@ -19,7 +19,8 @@ public class ChainLightning extends Ability {
 		abilitiyName = "Chain Lightning";
 	}
 
-	public boolean PerformAbility(Location targetLocation) {
+	@Override
+	public synchronized boolean PerformAbility(Location targetLocation) {
 		List<LivingEntity> entitiesToDamage = EntityFunctions.getNearbyEntities(targetLocation, 12);
 
 		for (Entity e : entitiesToDamage) {

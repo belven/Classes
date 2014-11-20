@@ -11,6 +11,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Dye;
+import org.bukkit.material.Wool;
 
 public class Ability {
 	List<ItemStack> requirements = new ArrayList<ItemStack>();
@@ -45,21 +47,40 @@ public class Ability {
 		return 0;
 	}
 
-	public boolean HasRequirements(Player playerToCheck) {
-		int checksRequired = 0;
-		Inventory playerInventory = playerToCheck.getInventory();
-
+	public boolean hasInHandReq(Player p) {
 		if (inHandRequirements.size() > 0) {
-			if (!inHandRequirements.contains(playerToCheck.getItemInHand().getType())) {
+			Material type = p.getItemInHand().getType();
+
+			if (!inHandRequirements.contains(type)) {
 				return false;
-			} else if (requirements.size() == 0) {
-				return true;
 			}
+
+			for (ItemStack is : requirements) {
+				if (is.getType() == type && hasSameItemData(is, p.getItemInHand())) {
+					return true;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	public boolean HasRequirements(Player p) {
+		int checksRequired = 0;
+		Inventory playerInventory = p.getInventory();
+
+		if (!hasInHandReq(p)) {
+			return false;
 		}
 
 		for (ItemStack is : requirements) {
 			if (playerInventory.containsAtLeast(is, is.getAmount())) {
-				checksRequired++;
+				for (ItemStack iis : playerInventory) {
+
+					if (iis != null && is != null && iis.getType() == is.getType() && hasSameItemData(is, iis)) {
+						checksRequired++;
+					}
+				}
 			}
 		}
 
@@ -69,23 +90,34 @@ public class Ability {
 		return false;
 	}
 
+	private boolean hasSameItemData(ItemStack is, ItemStack iis) {
+		if (is.getType() == Material.INK_SACK) {
+			return ((Dye) is.getData()).getColor() == ((Dye) iis.getData()).getColor();
+		} else if (is.getType() == Material.WOOL) {
+			return ((Wool) is.getData()).getColor() == ((Wool) iis.getData()).getColor();
+		}
+
+		return true;
+	}
+
 	@SuppressWarnings("deprecation")
 	public void RemoveItems() {
-		ItemStack tempStack;
 		Inventory playerInventory = currentClass.classOwner.getInventory();
-
 		int positionID;
+
 		for (ItemStack is : requirements) {
-			if (is.getType() != Material.NETHER_STAR) {
-				positionID = playerInventory.first(is.getType());
+			for (ItemStack iis : playerInventory) {
+				if (iis != null && is != null && iis.getType() == is.getType() && hasSameItemData(is, iis)) {
+					positionID = playerInventory.first(is.getType());
 
-				tempStack = playerInventory.getItem(positionID);
-
-				if (tempStack.getAmount() > is.getAmount()) {
-					tempStack.setAmount(tempStack.getAmount() - is.getAmount());
-				} else {
-					tempStack.setType(Material.AIR);
-					playerInventory.setItem(positionID, tempStack);
+					if (is.getType() != Material.NETHER_STAR) {
+						if (iis.getAmount() > is.getAmount()) {
+							iis.setAmount(iis.getAmount() - is.getAmount());
+						} else {
+							iis.setType(Material.AIR);
+							playerInventory.setItem(positionID, iis);
+						}
+					}
 				}
 			}
 		}

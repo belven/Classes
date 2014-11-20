@@ -1,5 +1,6 @@
 package belven.classes;
 
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -7,17 +8,18 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Dye;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
 
+import resources.ClassDrop;
 import resources.EntityFunctions;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.ChainLightning;
 import belven.classes.Abilities.LightningStrike;
 import belven.classes.Abilities.MageFireball;
 import belven.classes.Abilities.Pop;
-import resources.ClassDrop;
 
 public class Mage extends RPGClass {
 	public MageFireball classFireball;
@@ -63,7 +65,10 @@ public class Mage extends RPGClass {
 	public void SetClassDrops() {
 		ItemStack firePot = new Potion(PotionType.FIRE_RESISTANCE, 2).toItemStack(1);
 
-		ItemStack lapisBlock = new ItemStack(Material.LAPIS_BLOCK, 10);
+		Dye dye = new Dye();
+		dye.setColor(DyeColor.BLUE);
+		ItemStack lapisBlock = dye.toItemStack(10);
+
 		ItemStack feather = new ItemStack(Material.FEATHER, 2);
 
 		classDrops.add(new ClassDrop(lapisBlock, true, 20));
