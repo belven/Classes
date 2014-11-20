@@ -6,9 +6,7 @@ import org.bukkit.block.Dispenser;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 
-import belven.classes.Archer;
 import belven.classes.ClassManager;
 
 public class BlockListener implements Listener {
@@ -16,20 +14,6 @@ public class BlockListener implements Listener {
 
 	public BlockListener(ClassManager instance) {
 		plugin = instance;
-	}
-
-	@EventHandler
-	public void onBlockPlace(BlockPlaceEvent event) {
-		belven.classes.RPGClass currentClass = plugin.GetClass(event.getPlayer());
-		Material mat = event.getBlock().getType();
-
-		if (mat == Material.LAPIS_BLOCK
-				&& (currentClass.getClassName() == "Mage" || currentClass.getClassName() == "Healer"
-						|| currentClass.getClassName() == "Priest" || currentClass.getClassName() == "Monk")) {
-			event.setCancelled(true);
-		} else if (mat == Material.WOOL && currentClass instanceof Archer) {
-			event.setCancelled(true);
-		}
 	}
 
 	@EventHandler
