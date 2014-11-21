@@ -27,7 +27,7 @@ public class Monk extends Healer {
 		Abilities.add(classHealingFurry);
 
 		classLightHeal.Priority = 10;
-		classLightHeal.Amplifier = 15;
+		classLightHeal.Amplifier = 10;
 
 		classBandage.Amplifier = 5;
 		SortAbilities();

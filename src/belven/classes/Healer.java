@@ -140,7 +140,7 @@ public class Healer extends RPGClass {
 	@Override
 	public void SetAbilities() {
 		classHeal = new Heal(this, 1, 3);
-		classLightHeal = new LightHeal(this, 2, 12);
+		classLightHeal = new LightHeal(this, 2, 8);
 		classBandage = new Bandage(this, 0, 3);
 		classBarrier = new Barrier(this, 6, 4, 10);
 

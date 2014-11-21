@@ -178,27 +178,39 @@ public class ClassManager extends JavaPlugin {
 			return true;
 		}
 
-		try {
-			Group p1Arena = (Group) p1.getMetadata("InArena").get(0).value();
-			Group p2Arena = (Group) p2.getMetadata("InArena").get(0).value();
-			Group p1Team = (Group) p1.getMetadata("InTeam").get(0).value();
-			Group p2Team = (Group) p2.getMetadata("InTeam").get(0).value();
+		Group p1Arena = null;
+		Group p2Arena = null;
+		Group p1Team = null;
+		Group p2Team = null;
 
-			boolean selfInArena = p1Arena != null;
-			boolean targetInArena = p2Arena != null;
-			boolean isPvP = false;
+		if (p1.hasMetadata("InArena")) {
+			p1Arena = (Group) p1.getMetadata("InArena").get(0).value();
+		}
 
-			if (selfInArena) {
-				isPvP = p1Arena.isPvP();
-			}
+		if (p2.hasMetadata("InArena")) {
+			p2Arena = (Group) p2.getMetadata("InArena").get(0).value();
+		}
 
-			if (selfInArena && targetInArena && !isPvP) {
-				return true;
-			} else if (p1Team != null && p2Team != null && p1Team.getName().equals(p2Team.getName())) {
-				return true;
-			}
-		} catch (IndexOutOfBoundsException e) {
-			return false;
+		if (p1.hasMetadata("InTeam")) {
+			p1Team = (Group) p1.getMetadata("InTeam").get(0).value();
+		}
+
+		if (p2.hasMetadata("InTeam")) {
+			p2Team = (Group) p2.getMetadata("InTeam").get(0).value();
+		}
+
+		boolean selfInArena = p1Arena != null;
+		boolean targetInArena = p2Arena != null;
+		boolean isPvP = false;
+
+		if (selfInArena) {
+			isPvP = p1Arena.isPvP();
+		}
+
+		if (selfInArena && targetInArena && !isPvP) {
+			return true;
+		} else if (p1Team != null && p2Team != null && p1Team.getName().equals(p2Team.getName())) {
+			return true;
 		}
 
 		return false;

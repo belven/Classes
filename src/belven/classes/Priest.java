@@ -4,9 +4,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import resources.ClassDrop;
 import belven.classes.Abilities.AOEHeal;
 import belven.classes.Abilities.Cleanse;
-import resources.ClassDrop;
 
 public class Priest extends Healer {
 	public AOEHeal classAOEHeal;
@@ -14,8 +14,9 @@ public class Priest extends Healer {
 
 	public Priest(Player currentPlayer, ClassManager instance) {
 		super(8, currentPlayer, instance);
-		classAOEHeal = new AOEHeal(this, 0, 3);
+		classAOEHeal = new AOEHeal(this, 0, 12);
 		classCleanse = new Cleanse(this, 3, 3);
+		classLightHeal.Amplifier = 12;
 		className = "Priest";
 		baseClassName = "Healer";
 		classAOEHeal.Cooldown = 8;
