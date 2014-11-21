@@ -2,6 +2,8 @@ package belven.classes.timedevents;
 
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import resources.Functions;
@@ -12,13 +14,26 @@ public class HealTimer extends BukkitRunnable {
 	private Damageable target = null;
 	private int HealTimes = 1;
 	private int count = 0;
+	private Plugin plugin;
 
 	public HealTimer(ClassManager cm, double perCentHeal, LivingEntity target, int HealTimes, int period) {
 		this.perCentHeal = perCentHeal;
 		this.target = target;
 		this.HealTimes = HealTimes;
+		this.plugin = cm;
 
-		this.runTaskTimer(cm, 0, Functions.SecondsToTicks(period));
+		if (target.hasMetadata("HealTimer")) {
+			HealTimer otherHealing = (HealTimer) target.getMetadata("HealTimer").get(0).value();
+			otherHealing.renewHealing(this);
+		} else {
+			target.setMetadata("HealTimer", new FixedMetadataValue(cm, this));
+			this.runTaskTimer(cm, 0, Functions.SecondsToTicks(period));
+		}
+	}
+
+	public synchronized void renewHealing(HealTimer ht) {
+		int times = (int) Math.round(ht.HealTimes * 0.4);
+		this.HealTimes += times;
 	}
 
 	public HealTimer(ClassManager cm, double perCentHeal, LivingEntity target) {
@@ -32,6 +47,9 @@ public class HealTimer extends BukkitRunnable {
 		if (count < HealTimes) {
 			heal();
 		} else {
+			if (target.hasMetadata("HealTimer")) {
+				target.removeMetadata("HealTimer", plugin);
+			}
 			this.cancel();
 		}
 	}

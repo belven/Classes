@@ -2,7 +2,6 @@ package belven.classes;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -10,12 +9,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import resources.ClassDrop;
 import resources.EntityFunctions;
 import resources.Functions;
 import resources.MaterialFunctions;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.Grapple;
-import resources.ClassDrop;
 
 public class Berserker extends RPGClass {
 	public Grapple classGrapple;
@@ -79,16 +78,11 @@ public class Berserker extends RPGClass {
 
 	@Override
 	public void SelfDamageOther(EntityDamageByEntityEvent event) {
-		if (plugin.GetPlayerE(classOwner).MeleeWeaponInHand()) {
-			event.setDamage(event.getDamage() + 2);
-		}
-
 		int mobCount = 0;
 		for (Entity e : EntityFunctions.getNearbyEntities(event.getEntity().getLocation(), 4)) {
 			double damageToDo = event.getDamage() / 3.0D;
 
 			if (e instanceof LivingEntity) {
-				mobCount++;
 
 				if (mobCount >= 3) {
 					break;
@@ -96,23 +90,19 @@ public class Berserker extends RPGClass {
 
 				LivingEntity le = (LivingEntity) e;
 
-				if (le == this.classOwner && !EntityFunctions.IsAMob(event.getEntityType())) {
-					if (plugin.GetPlayerE(classOwner).GetHealthPercent() > 0.2D) {
-						le.damage(damageToDo);
-					}
-				} else if (le.getType() != EntityType.PLAYER) {
-					// HashMap<DamageModifier, Double> damageModifiers = new
-					// HashMap<DamageModifier, Double>();
-					// damageModifiers.put(DamageModifier.BASE, damageToDo);
-					// EntityDamageByEntityEvent ede = new
-					// EntityDamageByEntityEvent(
-					// classOwner, le, DamageCause.ENTITY_ATTACK,
-					// damageModifiers, null);
-					// le.setLastDamageCause(ede);
-
+				if (le != this.classOwner) {
 					le.damage(damageToDo);
-
+					mobCount++;
 				}
+
+				// HashMap<DamageModifier, Double> damageModifiers = new
+				// HashMap<DamageModifier, Double>();
+				// damageModifiers.put(DamageModifier.BASE, damageToDo);
+				// EntityDamageByEntityEvent ede = new
+				// EntityDamageByEntityEvent(
+				// classOwner, le, DamageCause.ENTITY_ATTACK,
+				// damageModifiers, null);
+				// le.setLastDamageCause(ede);
 			}
 		}
 
