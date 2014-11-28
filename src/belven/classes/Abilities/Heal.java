@@ -17,7 +17,13 @@ public class Heal extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility(Player playerToHeal) {
+	public boolean PerformAbility() {
+		Player playerToHeal = currentClass.getTargetPlayer(30, currentClass.classOwner);
+
+		if (playerToHeal == null) {
+			return false;
+		}
+
 		if (currentClass.plugin.GetPlayerE(playerToHeal).GetHealthPercent() <= 0.3) {
 			// playerToHeal.addPotionEffect(new
 			// PotionEffect(PotionEffectType.HEAL, 1, Amplifier()));

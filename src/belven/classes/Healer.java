@@ -43,7 +43,7 @@ public class Healer extends RPGClass {
 
 		for (Ability a : Abilities) {
 			if (!a.onCooldown && a.HasRequirements(classOwner)) {
-				if (!a.PerformAbility(player)) {
+				if (!a.PerformAbility()) {
 					continue;
 				} else if (a.shouldBreak) {
 					break;

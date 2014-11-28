@@ -23,7 +23,13 @@ public class Bandage extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility(Player targetPlayer) {
+	public boolean PerformAbility() {
+		Player targetPlayer = currentClass.getTargetPlayer(30, currentClass.classOwner);
+
+		if (targetPlayer == null) {
+			return false;
+		}
+
 		if (EntityFunctions.isHealthLessThanOther(currentClass.classOwner, targetPlayer)) {
 			targetPlayer = currentClass.classOwner;
 		}
@@ -38,7 +44,7 @@ public class Bandage extends Ability {
 
 	@Override
 	public int Amplifier() {
-		return Functions.abilityCap((double) Amplifier + 1, (double) currentClass.classOwner.getLevel());
+		return Functions.abilityCap((double) Amplifier + 1, currentClass.classOwner.getLevel());
 	}
 
 }

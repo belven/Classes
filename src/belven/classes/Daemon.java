@@ -10,11 +10,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import resources.ClassDrop;
 import resources.EntityFunctions;
 import resources.Functions;
 import belven.classes.Abilities.FeelTheBurn;
 import belven.classes.Abilities.SetAlight;
-import resources.ClassDrop;
 
 public class Daemon extends Berserker {
 	public FeelTheBurn classFeelTheBurn;
@@ -28,6 +28,7 @@ public class Daemon extends Berserker {
 		SetAbilities();
 	}
 
+	@Override
 	public void SelfDamageOther(EntityDamageByEntityEvent event) {
 		super.SelfDamageOther(event);
 
@@ -36,10 +37,11 @@ public class Daemon extends Berserker {
 		}
 	}
 
+	@Override
 	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
 		super.SelfTakenDamage(event);
 		if (!classSetAlight.onCooldown && classSetAlight.HasRequirements(classOwner)) {
-			classSetAlight.PerformAbility(classOwner);
+			classSetAlight.PerformAbility();
 		}
 	}
 
@@ -56,7 +58,7 @@ public class Daemon extends Berserker {
 			if (healthPercent <= 0.15) {
 				event.setDamage(0.0);
 			} else if (!classFeelTheBurn.onCooldown && classFeelTheBurn.HasRequirements(classOwner)) {
-				classFeelTheBurn.PerformAbility(classOwner);
+				classFeelTheBurn.PerformAbility();
 			}
 
 			classOwner.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Functions.SecondsToTicks(Amplifier()),

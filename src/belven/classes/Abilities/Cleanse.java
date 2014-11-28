@@ -18,7 +18,13 @@ public class Cleanse extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility(Player playerToHeal) {
+	public boolean PerformAbility() {
+		Player playerToHeal = currentClass.getTargetPlayer(30, currentClass.classOwner);
+
+		if (playerToHeal == null) {
+			return false;
+		}
+
 		playerToHeal.setFireTicks(0);
 
 		Iterator<PotionEffect> ActivePotionEffects = playerToHeal.getActivePotionEffects().iterator();

@@ -1,7 +1,5 @@
 package belven.classes.Abilities;
 
-import org.bukkit.entity.Player;
-
 import resources.EntityFunctions;
 
 public class FeelTheBurn extends Ability {
@@ -12,8 +10,8 @@ public class FeelTheBurn extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility(Player playerToHeal) {
-		EntityFunctions.Heal(playerToHeal, 2);
+	public boolean PerformAbility() {
+		EntityFunctions.Heal(currentClass.classOwner, 2);
 		currentClass.setAbilityOnCoolDown(this);
 		return true;
 	}

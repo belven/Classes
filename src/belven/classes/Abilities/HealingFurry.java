@@ -21,7 +21,13 @@ public class HealingFurry extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility(Player playerToHeal) {
+	public boolean PerformAbility() {
+		Player playerToHeal = currentClass.getTargetPlayer(30, currentClass.classOwner);
+
+		if (playerToHeal == null) {
+			return false;
+		}
+
 		PotionEffect pe = new PotionEffect(PotionEffectType.HEALTH_BOOST, Functions.SecondsToTicks(Amplifier() + 30),
 				Amplifier(), true);
 

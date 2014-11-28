@@ -32,13 +32,6 @@ public class Retaliation extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility(EntityDamageEvent event) {
-		event.setCancelled(true);
-		currentClass.setAbilityOnCoolDown(this);
-		return true;
-	}
-
-	@Override
 	public int Amplifier() {
 		return Amplifier;
 	}

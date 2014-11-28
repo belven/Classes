@@ -1,6 +1,5 @@
 package belven.classes.Abilities;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
 public class LightningStrike extends Ability {
@@ -11,12 +10,14 @@ public class LightningStrike extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility(Entity targetEntity) {
-		if (targetEntity instanceof LivingEntity) {
-			LivingEntity entityDamaged = (LivingEntity) targetEntity;
+	public boolean PerformAbility() {
+		LivingEntity targetEntity = currentClass.getTarget(30, currentClass.classOwner);
 
-			entityDamaged.getWorld().strikeLightning(targetEntity.getLocation());
+		if (targetEntity == null) {
+			return false;
 		}
+		LivingEntity entityDamaged = targetEntity;
+		entityDamaged.getWorld().strikeLightning(targetEntity.getLocation());
 		currentClass.setAbilityOnCoolDown(this);
 		return true;
 	}

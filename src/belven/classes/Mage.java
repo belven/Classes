@@ -44,34 +44,6 @@ public class Mage extends RPGClass {
 				}
 			}
 		}
-
-		// LivingEntity targetEntity =
-		// EntityFunctions.findTargetEntity(classOwner, 150.0D);
-		//
-		// for (Ability a : Abilities) {
-		// if (!a.onCooldown && a.HasRequirements(classOwner)) {
-		// if (!a.PerformAbility() || targetEntity != null &&
-		// !a.PerformAbility(targetEntity.getLocation())) {
-		// continue;
-		// } else if (a.shouldBreak) {
-		// break;
-		// }
-		// }
-		// }
-
-		// if (!classChainLightning.onCooldown &&
-		// classChainLightning.HasRequirements(classOwner)) {
-		// classChainLightning.PerformAbility();
-		//
-		// UltAbilityUsed(classChainLightning);
-		// } else if (classPop.HasRequirements(classOwner)) {
-		// if (targetEntity != null) {
-		// classPop.PerformAbility(targetEntity.getLocation());
-		// }
-		// } else if (classFireball.HasRequirements(classOwner)) {
-		// classFireball.PerformAbility();
-		// }
-
 	}
 
 	@Override
@@ -111,7 +83,7 @@ public class Mage extends RPGClass {
 		} else if (!classLightningStrike.onCooldown) {
 			Entity entityToStrike = EntityFunctions.GetDamager(event);
 			if (entityToStrike != null) {
-				classLightningStrike.PerformAbility(entityToStrike);
+				classLightningStrike.PerformAbility();
 			}
 		}
 	}

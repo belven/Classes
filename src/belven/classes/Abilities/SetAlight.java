@@ -1,7 +1,6 @@
 package belven.classes.Abilities;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import resources.Functions;
@@ -15,18 +14,19 @@ public class SetAlight extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility(Player playerToBurn) {
+	public boolean PerformAbility() {
 		int Amplifier = Amplifier();
 
 		if (Amplifier > 10) {
 			Amplifier = 10;
 		}
 
-		playerToBurn.setFireTicks(Functions.SecondsToTicks(Amplifier));
+		currentClass.classOwner.setFireTicks(Functions.SecondsToTicks(Amplifier));
 		currentClass.setAbilityOnCoolDown(this);
 		return true;
 	}
 
+	@Override
 	public int Amplifier() {
 		return Math.round(currentClass.classOwner.getLevel() / 5) + 2;
 	}

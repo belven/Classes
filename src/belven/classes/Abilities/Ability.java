@@ -3,12 +3,8 @@ package belven.classes.Abilities;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Dye;
@@ -34,14 +30,13 @@ public class Ability {
 		return false;
 	}
 
-	public boolean PerformAbility(Player targetPlayer) {
-		return false;
-	}
-
-	public boolean PerformAbility(Entity targetEntity) {
-		return false;
-
-	}
+	// public boolean PerformAbility(Player targetPlayer) {
+	// return false;
+	// }
+	//
+	// public boolean PerformAbility(Entity targetEntity) {
+	// return false;
+	// }
 
 	public int Amplifier() {
 		return 0;
@@ -143,15 +138,15 @@ public class Ability {
 		return requirements;
 	}
 
-	public boolean PerformAbility(EntityDamageByEntityEvent event) {
-		return false;
-	}
-
-	public boolean PerformAbility(EntityDamageEvent event) {
-		return false;
-	}
-
-	public boolean PerformAbility(Location location) {
-		return false;
-	}
+	// public boolean PerformAbility(EntityDamageByEntityEvent event) {
+	// return false;
+	// }
+	//
+	// public boolean PerformAbility(EntityDamageEvent event) {
+	// return false;
+	// }
+	//
+	// public boolean PerformAbility(Location location) {
+	// return false;
+	// }
 }

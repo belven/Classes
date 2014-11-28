@@ -107,7 +107,7 @@ public class Assassin extends RPGClass {
 	@Override
 	public void RightClickEntity(Entity currentEntity) {
 		if (!classSoulDrain.onCooldown && classOwner.getItemInHand().getType() == Material.NETHER_STAR) {
-			classSoulDrain.PerformAbility(currentEntity);
+			classSoulDrain.PerformAbility();
 			UltAbilityUsed(classSoulDrain);
 		}
 	}

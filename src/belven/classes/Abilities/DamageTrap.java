@@ -24,7 +24,8 @@ public class DamageTrap extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility(Location targetLocation) {
+	public boolean PerformAbility() {
+		Location targetLocation = currentClass.classOwner.getLocation();
 		if (targetLocation.getBlock().getType() != Material.WOOL) {
 			new DamageTrapTimer(targetLocation.getBlock(), currentClass.classOwner.getLevel(), 6).runTaskTimer(
 					currentClass.plugin, Functions.SecondsToTicks(5), Functions.SecondsToTicks(2));

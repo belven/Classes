@@ -9,15 +9,17 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 
+import resources.ClassDrop;
+import resources.EntityFunctions;
 import resources.Functions;
 import belven.classes.Abilities.Ability;
-import resources.ClassDrop;
 import belven.classes.timedevents.AbilityCooldown;
 
 public abstract class RPGClass {
@@ -26,6 +28,7 @@ public abstract class RPGClass {
 	public ClassManager plugin;
 	protected String className = "";
 	protected String baseClassName = "";
+	protected LivingEntity target;
 	public List<ClassDrop> classDrops = new ArrayList<ClassDrop>();
 	public boolean CanCast = true;
 
@@ -33,9 +36,18 @@ public abstract class RPGClass {
 		plugin = instance;
 		classOwner = currentPlayer;
 
-		Damageable dcurrentPlayer = (Damageable) currentPlayer;
+		Damageable dcurrentPlayer = currentPlayer;
 		dcurrentPlayer.setMaxHealth(health * 2);
 		dcurrentPlayer.setHealth(dcurrentPlayer.getMaxHealth());
+	}
+
+	public LivingEntity getTarget(int radius, Player p) {
+		return EntityFunctions.findTargetEntity(p, radius);
+	}
+
+	public Player getTargetPlayer(int radius, Player p) {
+		return EntityFunctions.findTargetPlayer(p, radius);
+
 	}
 
 	public final String getClassName() {

@@ -42,7 +42,7 @@ public class Archer extends RPGClass {
 		trapLocation.setY(trapLocation.getY() - 1);
 		for (Ability a : Abilities) {
 			if (!a.onCooldown && a.HasRequirements(classOwner)) {
-				if (!a.PerformAbility(trapLocation)) {
+				if (!a.PerformAbility()) {
 					continue;
 				} else {
 					break;

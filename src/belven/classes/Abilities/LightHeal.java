@@ -22,7 +22,12 @@ public class LightHeal extends Ability {
 	}
 
 	@Override
-	public synchronized boolean PerformAbility(Player playerToHeal) {
+	public synchronized boolean PerformAbility() {
+		Player playerToHeal = currentClass.getTargetPlayer(30, currentClass.classOwner);
+
+		if (playerToHeal == null) {
+			return false;
+		}
 		if (EntityFunctions.isHealthLessThanOther(currentClass.classOwner, playerToHeal)) {
 			playerToHeal = currentClass.classOwner;
 		}

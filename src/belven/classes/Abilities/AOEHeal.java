@@ -21,8 +21,8 @@ public class AOEHeal extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility(Player playerToHeal) {
-		for (Player p : EntityFunctions.getNearbyPlayersNew(playerToHeal.getLocation(), Amplifier() + 8)) {
+	public boolean PerformAbility() {
+		for (Player p : EntityFunctions.getNearbyPlayersNew(currentClass.classOwner.getLocation(), Amplifier() + 8)) {
 			if (currentClass.plugin.isAlly(p, currentClass.classOwner)) {
 				new HealTimer(currentClass.plugin, Amplifier() / 100.0, p, 5, 1);
 			}
