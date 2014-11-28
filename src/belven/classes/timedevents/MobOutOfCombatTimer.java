@@ -12,13 +12,13 @@ public class MobOutOfCombatTimer extends BukkitRunnable {
 
 	public MobOutOfCombatTimer(LivingEntity CurrentEntity) {
 		currentEntity = CurrentEntity;
-		Damageable dCurrentEntity = (Damageable) CurrentEntity;
+		Damageable dCurrentEntity = CurrentEntity;
 		healthFromDamage = (int) dCurrentEntity.getHealth();
 	}
 
 	@Override
 	public void run() {
-		Damageable dCurrentEntity = (Damageable) currentEntity;
+		Damageable dCurrentEntity = currentEntity;
 		if (currentEntity.isDead()) {
 			this.cancel();
 		} else if (dCurrentEntity.getHealth() == healthFromDamage) {

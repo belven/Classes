@@ -1,7 +1,6 @@
 name: BelvensClasses
 main: belven.classes.ClassManager
 version: 1
-depend: [Resources]
 
 commands:
    bc:

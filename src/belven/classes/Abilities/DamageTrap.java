@@ -16,7 +16,7 @@ public class DamageTrap extends Ability {
 		currentClass = CurrentClass;
 		Dye dye = new Dye();
 		dye.setColor(DyeColor.GRAY);
-		requirements.add(dye.toItemStack(2));
+		requirements.add(dye.toItemStack(1));
 
 		inHandRequirements.add(Material.INK_SACK);
 

@@ -107,7 +107,7 @@ public class PlayerListener implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerInteractEvent(PlayerInteractEvent event) {
+	public synchronized void onPlayerInteractEvent(PlayerInteractEvent event) {
 		if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			Player currentPlayer = event.getPlayer();
 
@@ -150,7 +150,7 @@ public class PlayerListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
+	public synchronized void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
 		if (event.getEntityType() == EntityType.PLAYER) {
 			Player dp = (Player) event.getEntity();
 			Group playerGroup = plugin.getAllyGroup(dp);

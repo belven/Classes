@@ -2,7 +2,6 @@ package belven.classes;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import belven.classes.Abilities.HealingFurry;
 
@@ -39,10 +38,4 @@ public class Monk extends Healer {
 		RemoveClassDrop(Material.WOOD_SWORD);
 	}
 
-	@Override
-	public void SelfDamageOther(EntityDamageByEntityEvent event) {
-		if (classOwner.getItemInHand() == null || classOwner.getItemInHand().getType() == Material.AIR) {
-			event.setDamage(event.getDamage() + 10.0);
-		}
-	}
 }

@@ -4,7 +4,6 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
@@ -36,29 +35,43 @@ public class Mage extends RPGClass {
 	}
 
 	public void CheckAbilitiesToCast() {
-		LivingEntity targetEntity = EntityFunctions.findTargetEntity(classOwner, 150.0D);
-
 		for (Ability a : Abilities) {
 			if (!a.onCooldown && a.HasRequirements(classOwner)) {
-				if (!a.PerformAbility(targetEntity.getLocation())) {
+				if (!a.PerformAbility()) {
 					continue;
-				} else {
+				} else if (a.shouldBreak) {
 					break;
 				}
 			}
 		}
 
-		if (!classChainLightning.onCooldown && classChainLightning.HasRequirements(classOwner)) {
-			classChainLightning.PerformAbility();
+		// LivingEntity targetEntity =
+		// EntityFunctions.findTargetEntity(classOwner, 150.0D);
+		//
+		// for (Ability a : Abilities) {
+		// if (!a.onCooldown && a.HasRequirements(classOwner)) {
+		// if (!a.PerformAbility() || targetEntity != null &&
+		// !a.PerformAbility(targetEntity.getLocation())) {
+		// continue;
+		// } else if (a.shouldBreak) {
+		// break;
+		// }
+		// }
+		// }
 
-			UltAbilityUsed(classChainLightning);
-		} else if (classPop.HasRequirements(classOwner)) {
-			if (targetEntity != null) {
-				classPop.PerformAbility(targetEntity.getLocation());
-			}
-		} else if (classFireball.HasRequirements(classOwner)) {
-			classFireball.PerformAbility();
-		}
+		// if (!classChainLightning.onCooldown &&
+		// classChainLightning.HasRequirements(classOwner)) {
+		// classChainLightning.PerformAbility();
+		//
+		// UltAbilityUsed(classChainLightning);
+		// } else if (classPop.HasRequirements(classOwner)) {
+		// if (targetEntity != null) {
+		// classPop.PerformAbility(targetEntity.getLocation());
+		// }
+		// } else if (classFireball.HasRequirements(classOwner)) {
+		// classFireball.PerformAbility();
+		// }
+
 	}
 
 	@Override
@@ -110,8 +123,8 @@ public class Mage extends RPGClass {
 
 	@Override
 	public void SetAbilities() {
-		classFireball = new MageFireball(this, 1, 5);
-		classChainLightning = new ChainLightning(this, 2, 5);
+		classFireball = new MageFireball(this, 2, 5);
+		classChainLightning = new ChainLightning(this, 1, 10);
 		classLightningStrike = new LightningStrike(this, 3, 5);
 		classPop = new Pop(this, 4, 5);
 

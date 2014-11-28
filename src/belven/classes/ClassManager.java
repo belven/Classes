@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -277,7 +278,7 @@ public class ClassManager extends JavaPlugin {
 			playerGroup = (Group) p.getMetadata("InTeam").get(0).value();
 		}
 
-		return playerGroup;
+		return playerGroup != null ? playerGroup : new Group(new ArrayList<Player>(), UUID.randomUUID().toString());
 	}
 
 	public BookMeta getBookAtPath(ItemStack is, String path) {
@@ -312,7 +313,7 @@ public class ClassManager extends JavaPlugin {
 	}
 
 	public RPGClass GetClass(Player p) {
-		return CurrentPlayerClasses.get(p);
+		return CurrentPlayerClasses.get(p) != null ? CurrentPlayerClasses.get(p) : new DEFAULT(p, this);
 	}
 
 	public void SetClass(Player playerToChange, String classString) {

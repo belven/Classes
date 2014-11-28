@@ -14,7 +14,6 @@ import org.bukkit.potion.PotionType;
 
 import resources.ClassDrop;
 import resources.Functions;
-import resources.MaterialFunctions;
 import belven.classes.Abilities.LastResort;
 import belven.classes.Abilities.Retaliation;
 
@@ -57,20 +56,6 @@ public class Warrior extends RPGClass {
 		Player p = (Player) event.getEntity();
 		double healthPercent = plugin.GetPlayerE(classOwner).GetMissingHealthPercent();
 
-		// if (plugin.arenas != null && plugin.teams != null) {
-		// ArenaManager a = plugin.arenas;
-		// TeamManager t = plugin.teams;
-		//
-		// // we are in an arena and it's PvP
-		// if (a.IsPlayerInArena(classOwner) && a.getArena(classOwner).getType()
-		// == ArenaTypes.PvP) {
-		// // Player isn't an ally
-		// if (!t.isInATeam(classOwner) || !t.isInSameTeam(classOwner, p)) {
-		// return;
-		// }
-		// }
-		// }
-
 		if (event.getDamage() > 0 && healthPercent > 0.1 && p.getLocation().distance(classOwner.getLocation()) < 30) {
 			classOwner.damage(event.getDamage());
 			event.setDamage(0.0);
@@ -104,17 +89,16 @@ public class Warrior extends RPGClass {
 	}
 
 	@Override
-	public void SelfDamageOther(EntityDamageByEntityEvent event) {
-		if (MaterialFunctions.isAMeeleWeapon(classOwner.getItemInHand().getType())) {
-			event.setDamage(event.getDamage() + 2);
-		}
-	}
-
-	@Override
 	public void SetAbilities() {
 		currentLastResort = new LastResort(this, 1, 5);
 		currentRetaliation = new Retaliation(this, 2, 1);
 		currentRetaliation.Cooldown = 3;
 		SortAbilities();
+	}
+
+	@Override
+	public void SelfDamageOther(EntityDamageByEntityEvent event) {
+		// TODO Auto-generated method stub
+
 	}
 }

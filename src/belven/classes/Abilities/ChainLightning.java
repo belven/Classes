@@ -1,14 +1,8 @@
 package belven.classes.Abilities;
 
-import java.util.List;
-
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.ItemStack;
 
-import resources.EntityFunctions;
 import belven.classes.timedevents.ChainLightningTimer;
 
 public class ChainLightning extends Ability {
@@ -16,24 +10,16 @@ public class ChainLightning extends Ability {
 		super(priority, amp);
 		currentClass = CurrentClass;
 		inHandRequirements.add(Material.NETHER_STAR);
+		requirements.add(new ItemStack(Material.NETHER_STAR));
 		abilitiyName = "Chain Lightning";
-	}
-
-	@Override
-	public synchronized boolean PerformAbility(Location targetLocation) {
-		List<LivingEntity> entitiesToDamage = EntityFunctions.getNearbyEntities(targetLocation, 12);
-
-		for (Entity e : entitiesToDamage) {
-			if (e != null && e instanceof LivingEntity && e.getType() != EntityType.PLAYER) {
-				e.getWorld().strikeLightning(e.getLocation());
-			}
-		}
-		return true;
+		Cooldown = 120;
 	}
 
 	@Override
 	public boolean PerformAbility() {
+		currentClass.classOwner.sendMessage(abilitiyName + " has been used!");
 		new ChainLightningTimer(this).runTaskTimer(currentClass.plugin, 0, 10);
+		currentClass.UltAbilityUsed(this);
 		return true;
 	}
 }

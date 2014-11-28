@@ -36,7 +36,7 @@ public class Healer extends RPGClass {
 		this(8, currentPlayer, instance);
 	}
 
-	public void CheckAbilitiesToCast(Player player) {
+	public synchronized void CheckAbilitiesToCast(Player player) {
 		if (MaterialFunctions.isFood(classOwner.getItemInHand().getType())) {
 			return;
 		}

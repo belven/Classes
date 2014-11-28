@@ -17,7 +17,7 @@ public class FireTrap extends Ability {
 
 		Dye dye = new Dye();
 		dye.setColor(DyeColor.RED);
-		requirements.add(dye.toItemStack(2));
+		requirements.add(dye.toItemStack(1));
 
 		inHandRequirements.add(Material.INK_SACK);
 		abilitiyName = "Fire Trap";

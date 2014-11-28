@@ -121,8 +121,6 @@ public class Archer extends RPGClass {
 						Functions.SecondsToTicks(5));
 			}
 
-			event.setDamage(event.getDamage() + 10);
-
 			Damageable dcurrentLivingEntity = currentLivingEntity;
 
 			event.setDamage(Functions.damageToDo(event.getDamage(), dcurrentLivingEntity.getHealth(),

@@ -123,13 +123,10 @@ public class Assassin extends RPGClass {
 		boolean arrowEntity = event.getDamager().getType() == EntityType.ARROW;
 
 		if (classOwner.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-			event.setDamage(event.getDamage() + 10);
 			classOwner.removePotionEffect(PotionEffectType.INVISIBILITY);
 		}
 
 		if (!arrowEntity) {
-			event.setDamage(event.getDamage() + 10);
-
 			if (!classStealth.onCooldown) {
 				classStealth.PerformAbility();
 			}
@@ -137,7 +134,7 @@ public class Assassin extends RPGClass {
 			TeleportToTarget(damagedEntity);
 		}
 
-		EntityFunctions.Heal(classOwner, (int) event.getDamage());
+		EntityFunctions.Heal(classOwner, 1);
 	}
 
 	@Override

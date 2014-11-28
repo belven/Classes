@@ -60,6 +60,8 @@ public class Ability {
 					return true;
 				}
 			}
+
+			return false;
 		}
 
 		return true;
@@ -92,9 +94,9 @@ public class Ability {
 
 	private boolean hasSameItemData(ItemStack is, ItemStack iis) {
 		if (is.getType() == Material.INK_SACK) {
-			return ((Dye) is.getData()).getColor() == ((Dye) iis.getData()).getColor();
+			return ((Dye) is.getData()).getColor().equals(((Dye) iis.getData()).getColor());
 		} else if (is.getType() == Material.WOOL) {
-			return ((Wool) is.getData()).getColor() == ((Wool) iis.getData()).getColor();
+			return ((Wool) is.getData()).getColor().equals(((Wool) iis.getData()).getColor());
 		}
 
 		return true;
@@ -103,25 +105,34 @@ public class Ability {
 	@SuppressWarnings("deprecation")
 	public void RemoveItems() {
 		Inventory playerInventory = currentClass.classOwner.getInventory();
-		int positionID;
 
 		for (ItemStack is : requirements) {
 			for (ItemStack iis : playerInventory) {
 				if (iis != null && is != null && iis.getType() == is.getType() && hasSameItemData(is, iis)) {
-					positionID = playerInventory.first(is.getType());
 
 					if (is.getType() != Material.NETHER_STAR) {
+
 						if (iis.getAmount() > is.getAmount()) {
 							iis.setAmount(iis.getAmount() - is.getAmount());
 						} else {
-							iis.setType(Material.AIR);
-							playerInventory.setItem(positionID, iis);
+							playerInventory.remove(is);
 						}
 					}
 				}
 			}
 		}
 		currentClass.classOwner.updateInventory();
+	}
+
+	public void removeItem(Inventory inv, ItemStack is) {
+		for (int i = 0; i < inv.getSize(); i++) {
+			if (inv.getItem(i) != null && inv.getItem(i).getType() == is.getType()
+					&& hasSameItemData(inv.getItem(i), is)) {
+				inv.getItem(i).setType(Material.AIR);
+				inv.setItem(i, inv.getItem(i));
+			}
+		}
+
 	}
 
 	public String GetAbilityName() {
