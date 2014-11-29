@@ -72,7 +72,6 @@ public class Daemon extends Berserker {
 
 	@Override
 	public void SetAbilities() {
-		super.SetAbilities();
 		classFeelTheBurn = new FeelTheBurn(this, 1, 0);
 		classSetAlight = new SetAlight(this, 2, 0);
 		classSetAlight.Cooldown = 1;
@@ -82,7 +81,6 @@ public class Daemon extends Berserker {
 
 	@Override
 	public void SetClassDrops() {
-		super.SetClassDrops();
 		ItemStack fire = new ItemStack(Material.FIREWORK_CHARGE, 2);
 		classDrops.add(new ClassDrop(fire, true, 10, 1));
 	}

@@ -17,12 +17,14 @@ public class Knight extends Warrior {
 		SetClassDrops();
 	}
 
+	@Override
 	public void SelfDamageOther(EntityDamageByEntityEvent event) {
 		if (classOwner.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
 			classOwner.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
 		}
 	}
 
+	@Override
 	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
 		super.SelfTakenDamage(event);
 	}
@@ -41,6 +43,5 @@ public class Knight extends Warrior {
 
 	@Override
 	public void SetClassDrops() {
-		super.SetClassDrops();
 	}
 }

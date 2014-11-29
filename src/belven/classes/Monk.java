@@ -18,7 +18,6 @@ public class Monk extends Healer {
 
 	@Override
 	public void SetAbilities() {
-		super.SetAbilities();
 		Abilities.remove(classHeal);
 
 		classHealingFurry = new HealingFurry(this, 0, 5);
@@ -34,7 +33,6 @@ public class Monk extends Healer {
 
 	@Override
 	public void SetClassDrops() {
-		super.SetClassDrops();
 		RemoveClassDrop(Material.WOOD_SWORD);
 	}
 

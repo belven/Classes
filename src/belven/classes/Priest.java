@@ -14,6 +14,14 @@ public class Priest extends Healer {
 
 	public Priest(Player currentPlayer, ClassManager instance) {
 		super(8, currentPlayer, instance);
+		SortAbilities();
+		SetClassDrops();
+		SetAbilities();
+	}
+
+	@Override
+	public void SetAbilities() {
+		Abilities.remove(classHeal);
 		classAOEHeal = new AOEHeal(this, 0, 12);
 		classCleanse = new Cleanse(this, 3, 3);
 		classLightHeal.Amplifier = 12;
@@ -24,12 +32,10 @@ public class Priest extends Healer {
 		Abilities.add(classCleanse);
 		Abilities.remove(classBandage);
 		SortAbilities();
-		SetClassDrops();
 	}
 
 	@Override
 	public void SetClassDrops() {
-		super.SetClassDrops();
 		ItemStack glow = new ItemStack(Material.GLOWSTONE_DUST, 1);
 		classDrops.add(new ClassDrop(glow, true, 10));
 	}

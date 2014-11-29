@@ -1,8 +1,8 @@
 package belven.classes.Abilities;
 
-import org.bukkit.Material;
+import org.bukkit.DyeColor;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Dye;
 
 import resources.Functions;
 import belven.classes.timedevents.HealTimer;
@@ -11,7 +11,11 @@ public class Heal extends Ability {
 	public Heal(belven.classes.RPGClass CurrentClass, int priority, int amp) {
 		super(priority, amp);
 		currentClass = CurrentClass;
-		requirements.add(new ItemStack(Material.LAPIS_BLOCK, 1));
+
+		Dye dye = new Dye();
+		dye.setColor(DyeColor.BLUE);
+		requirements.add(dye.toItemStack(1));
+
 		abilitiyName = "Heal";
 		Cooldown = 10;
 	}
@@ -25,9 +29,6 @@ public class Heal extends Ability {
 		}
 
 		if (currentClass.plugin.GetPlayerE(playerToHeal).GetHealthPercent() <= 0.3) {
-			// playerToHeal.addPotionEffect(new
-			// PotionEffect(PotionEffectType.HEAL, 1, Amplifier()));
-
 			new HealTimer(currentClass.plugin, 0.4, playerToHeal);
 
 			currentClass.classOwner.sendMessage("You healed " + playerToHeal.getName());

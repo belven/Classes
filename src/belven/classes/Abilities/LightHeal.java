@@ -25,16 +25,17 @@ public class LightHeal extends Ability {
 	public synchronized boolean PerformAbility() {
 		Player playerToHeal = currentClass.targetPlayer;
 
-		if (playerToHeal == null) {
+		if (playerToHeal == null || onCooldown) {
 			return false;
 		}
+
 		if (EntityFunctions.isHealthLessThanOther(currentClass.classOwner, playerToHeal)) {
 			playerToHeal = currentClass.classOwner;
 		}
 
 		new HealTimer(currentClass.plugin, Amplifier() / 100.0, playerToHeal, 5, 1);
 
-		currentClass.classOwner.sendMessage("You healed " + playerToHeal.getName());
+		currentClass.classOwner.sendMessage(abilitiyName + ": You healed " + playerToHeal.getName());
 
 		currentClass.setAbilityOnCoolDown(this);
 		RemoveItems();
