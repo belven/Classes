@@ -28,7 +28,8 @@ public abstract class RPGClass {
 	public ClassManager plugin;
 	protected String className = "";
 	protected String baseClassName = "";
-	protected LivingEntity target;
+	public LivingEntity targetLE;
+	public Player targetPlayer;
 	public List<ClassDrop> classDrops = new ArrayList<ClassDrop>();
 	public boolean CanCast = true;
 

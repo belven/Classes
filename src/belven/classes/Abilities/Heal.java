@@ -18,7 +18,7 @@ public class Heal extends Ability {
 
 	@Override
 	public boolean PerformAbility() {
-		Player playerToHeal = currentClass.getTargetPlayer(30, currentClass.classOwner);
+		Player playerToHeal = currentClass.targetPlayer;
 
 		if (playerToHeal == null) {
 			return false;

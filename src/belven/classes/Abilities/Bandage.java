@@ -24,7 +24,7 @@ public class Bandage extends Ability {
 
 	@Override
 	public boolean PerformAbility() {
-		Player targetPlayer = currentClass.getTargetPlayer(30, currentClass.classOwner);
+		Player targetPlayer = currentClass.targetPlayer;
 
 		if (targetPlayer == null) {
 			return false;
@@ -32,6 +32,17 @@ public class Bandage extends Ability {
 
 		if (EntityFunctions.isHealthLessThanOther(currentClass.classOwner, targetPlayer)) {
 			targetPlayer = currentClass.classOwner;
+		}
+
+		if (targetPlayer.hasPotionEffect(PotionEffectType.ABSORPTION)) {
+			for (PotionEffect e : targetPlayer.getActivePotionEffects()) {
+				if (e.getType() == PotionEffectType.ABSORPTION) {
+
+					// This is the sort of thing I'm aiming for
+					// if(((Absorption)e).getBonusHealth() > someNumber)
+					// etc
+				}
+			}
 		}
 
 		targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, Functions.SecondsToTicks(20),

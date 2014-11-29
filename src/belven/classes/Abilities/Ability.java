@@ -19,7 +19,7 @@ public class Ability {
 	public boolean shouldBreak = true;
 	public int Priority = 0;
 	public int Amplifier = 5;
-	public int Cooldown = 0;
+	public int Cooldown = 1;
 
 	public Ability(int Priority, int amplifier) {
 		this.Priority = Priority;
@@ -29,14 +29,6 @@ public class Ability {
 	public boolean PerformAbility() {
 		return false;
 	}
-
-	// public boolean PerformAbility(Player targetPlayer) {
-	// return false;
-	// }
-	//
-	// public boolean PerformAbility(Entity targetEntity) {
-	// return false;
-	// }
 
 	public int Amplifier() {
 		return 0;
@@ -137,16 +129,4 @@ public class Ability {
 	public List<ItemStack> GetAbilityRequirements() {
 		return requirements;
 	}
-
-	// public boolean PerformAbility(EntityDamageByEntityEvent event) {
-	// return false;
-	// }
-	//
-	// public boolean PerformAbility(EntityDamageEvent event) {
-	// return false;
-	// }
-	//
-	// public boolean PerformAbility(Location location) {
-	// return false;
-	// }
 }

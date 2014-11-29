@@ -23,7 +23,7 @@ public class LightHeal extends Ability {
 
 	@Override
 	public synchronized boolean PerformAbility() {
-		Player playerToHeal = currentClass.getTargetPlayer(30, currentClass.classOwner);
+		Player playerToHeal = currentClass.targetPlayer;
 
 		if (playerToHeal == null) {
 			return false;
@@ -35,6 +35,8 @@ public class LightHeal extends Ability {
 		new HealTimer(currentClass.plugin, Amplifier() / 100.0, playerToHeal, 5, 1);
 
 		currentClass.classOwner.sendMessage("You healed " + playerToHeal.getName());
+
+		currentClass.setAbilityOnCoolDown(this);
 		RemoveItems();
 		return true;
 	}
