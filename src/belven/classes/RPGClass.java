@@ -16,11 +16,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import resources.ClassDrop;
-import resources.EntityFunctions;
-import resources.Functions;
 import belven.classes.Abilities.Ability;
 import belven.classes.timedevents.AbilityCooldown;
+import belven.resources.ClassDrop;
+import belven.resources.EntityFunctions;
+import belven.resources.Functions;
 
 public abstract class RPGClass {
 	public ArrayList<Ability> Abilities = new ArrayList<Ability>();
@@ -32,6 +32,7 @@ public abstract class RPGClass {
 	public Player targetPlayer;
 	public List<ClassDrop> classDrops = new ArrayList<ClassDrop>();
 	public boolean CanCast = true;
+	public boolean abilitiesSet = false;
 
 	public RPGClass(double health, Player currentPlayer, ClassManager instance) {
 		plugin = instance;
@@ -59,7 +60,7 @@ public abstract class RPGClass {
 
 	}
 
-	public void RemoveClassDrop(Material m) {
+	public synchronized void RemoveClassDrop(Material m) {
 		Iterator<ClassDrop> tempDrops = classDrops.iterator();
 
 		while (tempDrops.hasNext()) {

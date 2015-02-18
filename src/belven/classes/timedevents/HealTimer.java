@@ -6,8 +6,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import resources.Functions;
 import belven.classes.ClassManager;
+import belven.resources.Functions;
 
 public class HealTimer extends BukkitRunnable {
 	private double perCentHeal = 0.0;

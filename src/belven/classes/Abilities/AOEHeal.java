@@ -4,9 +4,9 @@ import org.bukkit.DyeColor;
 import org.bukkit.entity.Player;
 import org.bukkit.material.Dye;
 
-import resources.EntityFunctions;
-import resources.Functions;
 import belven.classes.timedevents.HealTimer;
+import belven.resources.EntityFunctions;
+import belven.resources.Functions;
 
 public class AOEHeal extends Ability {
 	public AOEHeal(belven.classes.RPGClass CurrentClass, int priority, int amp) {
@@ -15,7 +15,7 @@ public class AOEHeal extends Ability {
 
 		Dye dye = new Dye();
 		dye.setColor(DyeColor.BLUE);
-		requirements.add(dye.toItemStack(2));
+		requirements.add(dye.toItemStack(1));
 
 		abilitiyName = "AOE Heal";
 	}

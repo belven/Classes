@@ -3,7 +3,7 @@ package belven.classes.Abilities;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import resources.Functions;
+import belven.resources.Functions;
 
 public class SetAlight extends Ability {
 	public SetAlight(belven.classes.RPGClass CurrentClass, int priority, int amp) {

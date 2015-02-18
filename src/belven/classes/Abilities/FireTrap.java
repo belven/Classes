@@ -7,8 +7,8 @@ import org.bukkit.material.Dye;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import resources.Functions;
 import belven.classes.timedevents.FireTrapTimer;
+import belven.resources.Functions;
 
 public class FireTrap extends Ability {
 	public FireTrap(belven.classes.RPGClass CurrentClass, int priority, int amp) {

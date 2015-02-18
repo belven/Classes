@@ -6,10 +6,10 @@ import org.bukkit.material.Dye;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import resources.Functions;
+import belven.resources.Functions;
 
-public class HealingFurry extends Ability {
-	public HealingFurry(belven.classes.RPGClass CurrentClass, int priority, int amp) {
+public class BolsterHealth extends Ability {
+	public BolsterHealth(belven.classes.RPGClass CurrentClass, int priority, int amp) {
 		super(priority, amp);
 
 		Dye dye = new Dye();
@@ -17,7 +17,7 @@ public class HealingFurry extends Ability {
 		requirements.add(dye.toItemStack(2));
 
 		currentClass = CurrentClass;
-		abilitiyName = "Healing Furry";
+		abilitiyName = "Bolster Health";
 	}
 
 	@Override

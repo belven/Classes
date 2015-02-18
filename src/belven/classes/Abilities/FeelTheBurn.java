@@ -1,6 +1,6 @@
 package belven.classes.Abilities;
 
-import resources.EntityFunctions;
+import belven.resources.EntityFunctions;
 
 public class FeelTheBurn extends Ability {
 	public FeelTheBurn(belven.classes.RPGClass CurrentClass, int priority, int amp) {

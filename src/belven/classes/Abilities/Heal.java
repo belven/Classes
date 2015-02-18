@@ -4,8 +4,8 @@ import org.bukkit.DyeColor;
 import org.bukkit.entity.Player;
 import org.bukkit.material.Dye;
 
-import resources.Functions;
 import belven.classes.timedevents.HealTimer;
+import belven.resources.Functions;
 
 public class Heal extends Ability {
 	public Heal(belven.classes.RPGClass CurrentClass, int priority, int amp) {

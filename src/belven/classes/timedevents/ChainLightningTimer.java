@@ -10,10 +10,10 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import resources.EntityFunctions;
-import resources.Functions;
 import belven.classes.RPGClass;
 import belven.classes.Abilities.ChainLightning;
+import belven.resources.EntityFunctions;
+import belven.resources.Functions;
 
 public class ChainLightningTimer extends BukkitRunnable {
 	private RPGClass currentClass;

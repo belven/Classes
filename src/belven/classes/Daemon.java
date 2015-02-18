@@ -10,11 +10,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import resources.ClassDrop;
-import resources.EntityFunctions;
-import resources.Functions;
 import belven.classes.Abilities.FeelTheBurn;
 import belven.classes.Abilities.SetAlight;
+import belven.resources.ClassDrop;
+import belven.resources.EntityFunctions;
+import belven.resources.Functions;
 
 public class Daemon extends Berserker {
 	public FeelTheBurn classFeelTheBurn;
@@ -72,6 +72,7 @@ public class Daemon extends Berserker {
 
 	@Override
 	public void SetAbilities() {
+		super.SetAbilities();
 		classFeelTheBurn = new FeelTheBurn(this, 1, 0);
 		classSetAlight = new SetAlight(this, 2, 0);
 		classSetAlight.Cooldown = 1;

@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import resources.Functions;
+import belven.resources.Functions;
 
 public class LastResort extends Ability {
 	public LastResort(belven.classes.RPGClass CurrentClass, int priority, int amp) {

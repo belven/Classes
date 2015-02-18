@@ -4,7 +4,7 @@ import org.bukkit.entity.Damageable;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import resources.EntityFunctions;
+import belven.resources.EntityFunctions;
 
 public class MobOutOfCombatTimer extends BukkitRunnable {
 	private LivingEntity currentEntity;

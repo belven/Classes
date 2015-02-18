@@ -24,11 +24,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 
-import resources.EntityFunctions;
-import resources.Functions;
-import resources.Group;
-import resources.MaterialFunctions;
-import resources.PlayerExtended;
 import belven.classes.Archer;
 import belven.classes.Assassin;
 import belven.classes.ClassManager;
@@ -36,6 +31,11 @@ import belven.classes.Daemon;
 import belven.classes.RPGClass;
 import belven.classes.events.AbilityUsed;
 import belven.classes.timedevents.AbilityDelay;
+import belven.resources.EntityFunctions;
+import belven.resources.Functions;
+import belven.resources.Group;
+import belven.resources.MaterialFunctions;
+import belven.resources.PlayerExtended;
 
 public class PlayerListener implements Listener {
 	private final ClassManager plugin;
@@ -130,7 +130,7 @@ public class PlayerListener implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
+	public synchronized void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
 		if (plugin.GetClass(event.getPlayer()).CanCast) {
 			new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin, Functions.SecondsToTicks(1));
 			plugin.GetClass(event.getPlayer()).ToggleSneakEvent(event);
@@ -138,7 +138,7 @@ public class PlayerListener implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerVelocityEvent(PlayerVelocityEvent event) {
+	public synchronized void onPlayerVelocityEvent(PlayerVelocityEvent event) {
 		if (plugin.GetClass(event.getPlayer()) instanceof Assassin) {
 			event.setCancelled(true);
 		} else if (plugin.GetClass(event.getPlayer()) instanceof Archer
@@ -177,14 +177,14 @@ public class PlayerListener implements Listener {
 	}
 
 	@EventHandler
-	public void onEntityDamageEvent(EntityDamageEvent event) {
+	public synchronized void onEntityDamageEvent(EntityDamageEvent event) {
 		if (event.getEntityType() == EntityType.PLAYER) {
 			Player damagedPlayer = (Player) event.getEntity();
 			plugin.GetClass(damagedPlayer).SelfTakenDamage(event);
 		}
 	}
 
-	public boolean ScaleMobHealth(Player player, LivingEntity mobToScale, double DamageDone) {
+	public synchronized boolean ScaleMobHealth(Player player, LivingEntity mobToScale, double DamageDone) {
 		if (player != null && mobToScale != null) {
 			double heathToscaleTo = EntityFunctions.MobMaxHealth(mobToScale) + player.getLevel() * 1.2;
 

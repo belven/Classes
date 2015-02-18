@@ -5,8 +5,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import resources.Functions;
 import belven.classes.Abilities.Ability;
+import belven.resources.Functions;
 
 public class Knight extends Warrior {
 	public Knight(Player currentPlayer, ClassManager instance) {

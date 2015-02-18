@@ -13,10 +13,10 @@ import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import resources.ClassDrop;
-import resources.EntityFunctions;
 import belven.classes.Abilities.SoulDrain;
 import belven.classes.Abilities.Stealth;
+import belven.resources.ClassDrop;
+import belven.resources.EntityFunctions;
 
 public class Assassin extends RPGClass {
 	private SoulDrain classSoulDrain;
@@ -139,11 +139,14 @@ public class Assassin extends RPGClass {
 
 	@Override
 	public void SetAbilities() {
-		classStealth = new Stealth(this, 1, 1);
-		classSoulDrain = new SoulDrain(this, 1, 0);
-		Abilities.add(classSoulDrain);
-		Abilities.add(classStealth);
-		classStealth.Cooldown = 3;
-		SortAbilities();
+		if (!abilitiesSet) {
+			classStealth = new Stealth(this, 1, 1);
+			classSoulDrain = new SoulDrain(this, 1, 0);
+			Abilities.add(classSoulDrain);
+			Abilities.add(classStealth);
+			classStealth.Cooldown = 3;
+			SortAbilities();
+			abilitiesSet = true;
+		}
 	}
 }

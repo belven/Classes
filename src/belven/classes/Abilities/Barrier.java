@@ -9,8 +9,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
-import resources.EntityFunctions;
 import belven.classes.timedevents.BarrierTimer;
+import belven.resources.EntityFunctions;
 
 public class Barrier extends Ability {
 	public int radius = 0;

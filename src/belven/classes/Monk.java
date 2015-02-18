@@ -3,10 +3,10 @@ package belven.classes;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import belven.classes.Abilities.HealingFurry;
+import belven.classes.Abilities.BolsterHealth;
 
 public class Monk extends Healer {
-	public HealingFurry classHealingFurry;
+	public BolsterHealth classBolsterHealth;
 
 	public Monk(Player currentPlayer, ClassManager instance) {
 		super(12, currentPlayer, instance);
@@ -17,12 +17,13 @@ public class Monk extends Healer {
 	}
 
 	@Override
-	public void SetAbilities() {
+	public synchronized void SetAbilities() {
+		super.SetAbilities();
 		Abilities.remove(classHeal);
 
-		classHealingFurry = new HealingFurry(this, 0, 5);
-		classHealingFurry.Cooldown = 8;
-		Abilities.add(classHealingFurry);
+		classBolsterHealth = new BolsterHealth(this, 0, 5);
+		classBolsterHealth.Cooldown = 8;
+		Abilities.add(classBolsterHealth);
 
 		classLightHeal.Priority = 10;
 		classLightHeal.Amplifier = 10;
@@ -33,6 +34,7 @@ public class Monk extends Healer {
 
 	@Override
 	public void SetClassDrops() {
+		super.SetClassDrops();
 		RemoveClassDrop(Material.WOOD_SWORD);
 	}
 

@@ -8,7 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import resources.EntityFunctions;
+import belven.resources.EntityFunctions;
 
 public class DamageTrapTimer extends BukkitRunnable {
 	private Location blockLocation;

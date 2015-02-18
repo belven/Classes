@@ -13,15 +13,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import resources.ClassDrop;
-import resources.EntityFunctions;
-import resources.Functions;
-import resources.Group;
 import belven.classes.ClassManager;
+import belven.resources.ClassDrop;
+import belven.resources.EntityFunctions;
+import belven.resources.Functions;
+import belven.resources.Group;
 
 public class MobListener implements Listener {
 	private final ClassManager plugin;
@@ -35,14 +34,7 @@ public class MobListener implements Listener {
 	}
 
 	@EventHandler
-	public void onProjectileLaunchEvent(ProjectileLaunchEvent event) {
-		// if (event.getEntity().getType() == EntityType.FIREBALL) {
-		// event.setCancelled(true);
-		// }
-	}
-
-	@EventHandler
-	public void onEntityDeathEvent(EntityDeathEvent event) {
+	public synchronized void onEntityDeathEvent(EntityDeathEvent event) {
 		Entity currentEntity = event.getEntity();
 		EntityDamageEvent lastDamage = event.getEntity().getLastDamageCause();
 
@@ -84,7 +76,7 @@ public class MobListener implements Listener {
 		}
 	}
 
-	private void GiveClassDrops(Player p, boolean isWilderness) {
+	private synchronized void GiveClassDrops(Player p, boolean isWilderness) {
 		int ran = randomGenerator.nextInt(99);
 		PlayerInventory pInv = p.getInventory();
 		belven.classes.RPGClass playerClass = plugin.GetClass(p);
@@ -96,17 +88,15 @@ public class MobListener implements Listener {
 					ItemStack is = cd.is.clone();
 					is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is.getAmount());
 					Functions.AddToInventory(p, is, cd.maxAmount);
-				} else {
-					if (AddArmor(pInv, cd.is)) {
-						break;
-					}
+				} else if (AddArmor(pInv, cd.is)) {
+					break;
 				}
 			}
 		}
 
 	}
 
-	public boolean AddArmor(PlayerInventory pInv, ItemStack is) {
+	public synchronized boolean AddArmor(PlayerInventory pInv, ItemStack is) {
 		if (is.getType().name().contains("CHEST") && pInv.getChestplate() == null) {
 			pInv.setChestplate(is);
 			return true;

@@ -3,7 +3,7 @@ package belven.classes.Abilities;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import resources.Functions;
+import belven.resources.Functions;
 
 public class Stealth extends Ability {
 	public Stealth(belven.classes.RPGClass CurrentClass, int priority, int amp) {

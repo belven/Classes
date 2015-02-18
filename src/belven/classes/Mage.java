@@ -12,13 +12,13 @@ import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
 
-import resources.ClassDrop;
-import resources.EntityFunctions;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.ChainLightning;
 import belven.classes.Abilities.LightningStrike;
 import belven.classes.Abilities.MageFireball;
 import belven.classes.Abilities.Pop;
+import belven.resources.ClassDrop;
+import belven.resources.EntityFunctions;
 
 public class Mage extends RPGClass {
 	public MageFireball classFireball;
@@ -95,16 +95,19 @@ public class Mage extends RPGClass {
 
 	@Override
 	public void SetAbilities() {
-		classFireball = new MageFireball(this, 2, 5);
-		classChainLightning = new ChainLightning(this, 1, 10);
-		classLightningStrike = new LightningStrike(this, 3, 5);
-		classPop = new Pop(this, 4, 5);
+		if (!abilitiesSet) {
+			classFireball = new MageFireball(this, 2, 5);
+			classChainLightning = new ChainLightning(this, 1, 10);
+			classLightningStrike = new LightningStrike(this, 3, 5);
+			classPop = new Pop(this, 4, 5);
 
-		classLightningStrike.Cooldown = 2;
-		Abilities.add(classFireball);
-		Abilities.add(classChainLightning);
-		Abilities.add(classLightningStrike);
-		Abilities.add(classPop);
-		SortAbilities();
+			classLightningStrike.Cooldown = 2;
+			Abilities.add(classFireball);
+			Abilities.add(classChainLightning);
+			Abilities.add(classLightningStrike);
+			Abilities.add(classPop);
+			SortAbilities();
+			abilitiesSet = true;
+		}
 	}
 }

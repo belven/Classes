@@ -2,6 +2,7 @@ package belven.classes;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -21,22 +22,17 @@ import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import resources.Group;
-import resources.PlayerExtended;
 import belven.classes.events.ClassChangeEvent;
 import belven.classes.listeners.BlockListener;
 import belven.classes.listeners.MobListener;
 import belven.classes.listeners.PlayerListener;
+import belven.resources.Group;
+import belven.resources.PlayerExtended;
 
 public class ClassManager extends JavaPlugin {
 	private final PlayerListener newplayerListener = new PlayerListener(this);
 	private final BlockListener blockListener = new BlockListener(this);
 	private final MobListener mobListener = new MobListener(this);
-
-	// public ArenaManager arenas = (ArenaManager)
-	// Bukkit.getServer().getPluginManager().getPlugin("BelvensArenas");
-	// public TeamManager teams = (TeamManager)
-	// Bukkit.getServer().getPluginManager().getPlugin("BelvensTeams");
 
 	private HashMap<Player, RPGClass> CurrentPlayerClasses = new HashMap<Player, RPGClass>();
 	public HashMap<Player, PlayerExtended> PlayersE = new HashMap<Player, PlayerExtended>();
@@ -138,7 +134,7 @@ public class ClassManager extends JavaPlugin {
 			p.setLevel(level);
 			return true;
 		case "listclasses":
-			Player[] currentPlayers = this.getServer().getOnlinePlayers();
+			Collection<? extends Player> currentPlayers = this.getServer().getOnlinePlayers();
 			for (Player currentPlayer : currentPlayers) {
 				if (currentPlayer != null) {
 					RPGClass currentClass = CurrentPlayerClasses.get(currentPlayer);
@@ -240,8 +236,16 @@ public class ClassManager extends JavaPlugin {
 	}
 
 	public boolean inSameTeam(Player p1, Player p2) {
-		Group p1Team = (Group) p1.getMetadata("InTeam").get(0).value();
-		Group p2Team = (Group) p2.getMetadata("InTeam").get(0).value();
+		Group p1Team = null;
+		Group p2Team = null;
+
+		if (p1.hasMetadata("InTeam")) {
+			p1Team = (Group) p1.getMetadata("InTeam").get(0).value();
+		}
+
+		if (p2.hasMetadata("InTeam")) {
+			p2Team = (Group) p2.getMetadata("InTeam").get(0).value();
+		}
 
 		if (p1Team != null && p2Team != null && p1Team.getName().equals(p2Team.getName())) {
 			return true;

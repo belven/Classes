@@ -10,14 +10,14 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Dye;
 
-import resources.ClassDrop;
-import resources.EntityFunctions;
-import resources.MaterialFunctions;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.Bandage;
 import belven.classes.Abilities.Barrier;
 import belven.classes.Abilities.Heal;
 import belven.classes.Abilities.LightHeal;
+import belven.resources.ClassDrop;
+import belven.resources.EntityFunctions;
+import belven.resources.MaterialFunctions;
 
 public class Healer extends RPGClass {
 	public Heal classHeal;
@@ -29,7 +29,7 @@ public class Healer extends RPGClass {
 		super(Health, currentPlayer, instance);
 		className = "Healer";
 		SetAbilities();
-		SetClassDrops();
+		this.SetClassDrops();
 	}
 
 	public Healer(Player currentPlayer, ClassManager instance) {
@@ -140,16 +140,19 @@ public class Healer extends RPGClass {
 	}
 
 	@Override
-	public void SetAbilities() {
-		classHeal = new Heal(this, 1, 3);
-		classLightHeal = new LightHeal(this, 2, 8);
-		classBandage = new Bandage(this, 0, 3);
-		classBarrier = new Barrier(this, 6, 4, 10);
+	public synchronized void SetAbilities() {
+		if (!abilitiesSet) {
+			classHeal = new Heal(this, 1, 3);
+			classLightHeal = new LightHeal(this, 2, 8);
+			classBandage = new Bandage(this, 0, 3);
+			classBarrier = new Barrier(this, 6, 4, 10);
 
-		Abilities.add(classBandage);
-		Abilities.add(classBarrier);
-		Abilities.add(classHeal);
-		Abilities.add(classLightHeal);
-		SortAbilities();
+			Abilities.add(classBandage);
+			Abilities.add(classBarrier);
+			Abilities.add(classHeal);
+			Abilities.add(classLightHeal);
+			SortAbilities();
+			abilitiesSet = true;
+		}
 	}
 }

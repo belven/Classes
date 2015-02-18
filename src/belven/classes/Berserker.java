@@ -9,12 +9,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import resources.ClassDrop;
-import resources.EntityFunctions;
-import resources.Functions;
-import resources.MaterialFunctions;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.Grapple;
+import belven.resources.ClassDrop;
+import belven.resources.EntityFunctions;
+import belven.resources.Functions;
+import belven.resources.MaterialFunctions;
 
 public class Berserker extends RPGClass {
 	public Grapple classGrapple;
@@ -110,9 +110,12 @@ public class Berserker extends RPGClass {
 
 	@Override
 	public void SetAbilities() {
-		this.classGrapple = new Grapple(this, 1, 0);
-		Abilities.add(classGrapple);
-		SortAbilities();
+		if (!abilitiesSet) {
+			this.classGrapple = new Grapple(this, 1, 0);
+			Abilities.add(classGrapple);
+			SortAbilities();
+			abilitiesSet = true;
+		}
 
 	}
 }

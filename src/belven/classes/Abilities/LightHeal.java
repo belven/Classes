@@ -4,9 +4,9 @@ import org.bukkit.DyeColor;
 import org.bukkit.entity.Player;
 import org.bukkit.material.Dye;
 
-import resources.EntityFunctions;
-import resources.Functions;
 import belven.classes.timedevents.HealTimer;
+import belven.resources.EntityFunctions;
+import belven.resources.Functions;
 
 public class LightHeal extends Ability {
 	public LightHeal(belven.classes.RPGClass CurrentClass, int priority, int amp) {
@@ -35,7 +35,7 @@ public class LightHeal extends Ability {
 
 		new HealTimer(currentClass.plugin, Amplifier() / 100.0, playerToHeal, 5, 1);
 
-		currentClass.classOwner.sendMessage(abilitiyName + ": You healed " + playerToHeal.getName());
+		currentClass.classOwner.sendMessage("You healed " + playerToHeal.getName());
 
 		currentClass.setAbilityOnCoolDown(this);
 		RemoveItems();

@@ -11,14 +11,14 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Dye;
 
-import resources.ClassDrop;
-import resources.EntityFunctions;
-import resources.Functions;
 import belven.classes.Abilities.Ability;
 import belven.classes.Abilities.DamageTrap;
 import belven.classes.Abilities.FireTrap;
 import belven.classes.Abilities.WebArrow;
 import belven.classes.timedevents.BlockRestorer;
+import belven.resources.ClassDrop;
+import belven.resources.EntityFunctions;
+import belven.resources.Functions;
 
 public class Archer extends RPGClass {
 	public WebArrow classCripplingArrow;
@@ -86,26 +86,6 @@ public class Archer extends RPGClass {
 
 	@Override
 	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
-		// LivingEntity le = EntityFunctions.GetDamager(event);
-		//
-		// if (le != null)
-		// {
-		// BlockIterator bi = new BlockIterator(classOwner);
-		// int count = 0;
-		// Block b = null;
-		//
-		// while (bi.hasNext() && count < 10)
-		// {
-		// b = bi.next().getRelative(BlockFace.UP);
-		// count++;
-		// }
-		//
-		// if (b != null)
-		// {
-		// le.teleport(Functions.offsetLocation(b.getLocation(), 0.5, 0,
-		// 0.5));
-		// }
-		// }
 	}
 
 	@Override
@@ -130,12 +110,16 @@ public class Archer extends RPGClass {
 
 	@Override
 	public void SetAbilities() {
-		classCripplingArrow = new WebArrow(this, 0, 0);
-		classFireTrap = new FireTrap(this, 1, 0);
-		classDamageTrap = new DamageTrap(this, 1, 0);
-		Abilities.add(classFireTrap);
-		Abilities.add(classDamageTrap);
-		SortAbilities();
+		if (!abilitiesSet) {
+			classCripplingArrow = new WebArrow(this, 0, 0);
+			classFireTrap = new FireTrap(this, 1, 0);
+			classDamageTrap = new DamageTrap(this, 1, 0);
+			Abilities.add(classFireTrap);
+			Abilities.add(classDamageTrap);
+			SortAbilities();
+
+			abilitiesSet = true;
+		}
 	}
 
 }

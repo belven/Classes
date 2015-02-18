@@ -12,10 +12,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import resources.ClassDrop;
-import resources.Functions;
 import belven.classes.Abilities.LastResort;
 import belven.classes.Abilities.Retaliation;
+import belven.resources.ClassDrop;
+import belven.resources.Functions;
 
 public class Warrior extends RPGClass {
 	public LastResort currentLastResort;
@@ -90,10 +90,13 @@ public class Warrior extends RPGClass {
 
 	@Override
 	public void SetAbilities() {
-		currentLastResort = new LastResort(this, 1, 5);
-		currentRetaliation = new Retaliation(this, 2, 1);
-		currentRetaliation.Cooldown = 3;
-		SortAbilities();
+		if (!abilitiesSet) {
+			currentLastResort = new LastResort(this, 1, 5);
+			currentRetaliation = new Retaliation(this, 2, 1);
+			currentRetaliation.Cooldown = 3;
+			SortAbilities();
+			abilitiesSet = true;
+		}
 	}
 
 	@Override
