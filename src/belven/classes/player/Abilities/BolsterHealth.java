@@ -6,8 +6,8 @@ import org.bukkit.material.Dye;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import belven.classes.RPGClass;
 import belven.classes.Abilities.Ability;
-import belven.classes.player.RPGClass;
 import belven.resources.Functions;
 
 public class BolsterHealth extends Ability {

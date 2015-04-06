@@ -1,4 +1,4 @@
-package belven.classes.player;
+package belven.classes;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +16,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import belven.classes.ClassManager;
 import belven.classes.Abilities.Ability;
 import belven.classes.timedevents.AbilityCooldown;
 import belven.resources.ClassDrop;
@@ -81,6 +80,11 @@ public abstract class RPGClass {
 		for (Ability a : abilities) {
 			classOwner.sendMessage(a.GetAbilityName());
 		}
+	}
+
+	public void AddAbility(Ability ability, int cooldown) {
+		abilities.add(ability);
+		ability.cooldown = cooldown;
 	}
 
 	public void SortAbilities() {

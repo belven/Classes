@@ -14,6 +14,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import belven.classes.ClassManager;
+import belven.classes.RPGClass;
 import belven.classes.player.Abilities.SoulDrain;
 import belven.classes.player.Abilities.Stealth;
 import belven.resources.ClassDrop;

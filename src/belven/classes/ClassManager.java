@@ -30,14 +30,12 @@ import belven.classes.listeners.PlayerListener;
 import belven.classes.player.Archer;
 import belven.classes.player.Assassin;
 import belven.classes.player.Berserker;
-import belven.classes.player.DEFAULT;
 import belven.classes.player.Daemon;
 import belven.classes.player.Healer;
 import belven.classes.player.Knight;
 import belven.classes.player.Mage;
 import belven.classes.player.Monk;
 import belven.classes.player.Priest;
-import belven.classes.player.RPGClass;
 import belven.classes.player.Warrior;
 import belven.resources.Group;
 import belven.resources.PlayerExtended;
@@ -47,7 +45,7 @@ public class ClassManager extends JavaPlugin {
 	private final BlockListener blockListener = new BlockListener(this);
 	private final MobListener mobListener = new MobListener(this);
 
-	private HashMap<LivingEntity, RPGClass> CurrentPlayerClasses = new HashMap<LivingEntity, RPGClass>();
+	private HashMap<LivingEntity, RPGClass> currentPlayerClasses = new HashMap<LivingEntity, RPGClass>();
 	public HashMap<Player, PlayerExtended> PlayersE = new HashMap<Player, PlayerExtended>();
 
 	private static HashMap<String, Class<? extends RPGClass>> StrToRPGClass = new HashMap<String, Class<? extends RPGClass>>();
@@ -92,8 +90,8 @@ public class ClassManager extends JavaPlugin {
 			String classString = this.getConfig().getString(PlayerName + ".Class");
 
 			if (classString != null) {
-				if (CurrentPlayerClasses.get(playerToAdd) == null) {
-					CurrentPlayerClasses.put(playerToAdd, StringToClass(classString, playerToAdd));
+				if (currentPlayerClasses.get(playerToAdd) == null) {
+					currentPlayerClasses.put(playerToAdd, StringToClass(classString, playerToAdd));
 				}
 			}
 
@@ -148,13 +146,13 @@ public class ClassManager extends JavaPlugin {
 			Collection<? extends Player> currentPlayers = this.getServer().getOnlinePlayers();
 			for (Player currentPlayer : currentPlayers) {
 				if (currentPlayer != null) {
-					RPGClass currentClass = CurrentPlayerClasses.get(currentPlayer);
+					RPGClass currentClass = currentPlayerClasses.get(currentPlayer);
 					p.sendMessage(currentPlayer.getName() + " is a " + currentClass.getClassName());
 				}
 			}
 			return true;
 		case "listabilities":
-			CurrentPlayerClasses.get(p).ListAbilities();
+			currentPlayerClasses.get(p).ListAbilities();
 			return true;
 		}
 		// }
@@ -328,7 +326,11 @@ public class ClassManager extends JavaPlugin {
 	}
 
 	public RPGClass GetClass(Player p) {
-		return CurrentPlayerClasses.get(p) != null ? CurrentPlayerClasses.get(p) : new DEFAULT(p, this);
+		return currentPlayerClasses.get(p) != null ? currentPlayerClasses.get(p) : new DEFAULT(p, this);
+	}
+
+	public void SetClass(LivingEntity le, RPGClass newClass) {
+		currentPlayerClasses.put(le, newClass);
 	}
 
 	public void SetClass(Player playerToChange, String classString) {
@@ -340,10 +342,10 @@ public class ClassManager extends JavaPlugin {
 		playerToChange.sendMessage(PlayerName + " is class " + classString);
 
 		saveConfig();
-		CurrentPlayerClasses.put(playerToChange, StringToClass(classString, playerToChange));
+		SetClass(playerToChange, StringToClass(classString, playerToChange));
 
 		Bukkit.getPluginManager().callEvent(
-				new ClassChangeEvent(CurrentPlayerClasses.get(playerToChange), playerToChange));
+				new ClassChangeEvent(currentPlayerClasses.get(playerToChange), playerToChange));
 	}
 
 	@Override

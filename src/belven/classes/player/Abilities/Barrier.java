@@ -16,7 +16,7 @@ import belven.resources.EntityFunctions;
 public class Barrier extends Ability {
 	public int radius = 0;
 
-	public Barrier(belven.classes.player.RPGClass cc, int Radius, int priority, int amp) {
+	public Barrier(belven.classes.RPGClass cc, int Radius, int priority, int amp) {
 		super(cc, priority, amp);
 
 		radius = Radius;

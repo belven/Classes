@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Dye;
 
 import belven.classes.ClassManager;
+import belven.classes.RPGClass;
 import belven.classes.Abilities.Ability;
 import belven.classes.player.Abilities.DamageTrap;
 import belven.classes.player.Abilities.FireTrap;

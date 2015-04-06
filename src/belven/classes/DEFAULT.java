@@ -1,10 +1,8 @@
-package belven.classes.player;
+package belven.classes;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-
-import belven.classes.ClassManager;
 
 public class DEFAULT extends RPGClass {
 	public DEFAULT(Player currentPlayer, ClassManager instance) {

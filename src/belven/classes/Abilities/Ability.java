@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Dye;
 import org.bukkit.material.Wool;
 
-import belven.classes.player.RPGClass;
+import belven.classes.RPGClass;
 
 public class Ability {
 	protected List<ItemStack> requirements = new ArrayList<ItemStack>();

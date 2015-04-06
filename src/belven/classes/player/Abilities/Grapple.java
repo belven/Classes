@@ -9,8 +9,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import belven.classes.RPGClass;
 import belven.classes.Abilities.Ability;
-import belven.classes.player.RPGClass;
 import belven.resources.EntityFunctions;
 
 public class Grapple extends Ability {

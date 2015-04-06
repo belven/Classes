@@ -11,6 +11,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import belven.classes.ClassManager;
+import belven.classes.RPGClass;
 import belven.classes.Abilities.Ability;
 import belven.classes.player.Abilities.Grapple;
 import belven.resources.ClassDrop;

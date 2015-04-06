@@ -10,7 +10,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import belven.classes.player.RPGClass;
+import belven.classes.RPGClass;
 import belven.classes.player.Abilities.ChainLightning;
 import belven.resources.EntityFunctions;
 import belven.resources.Functions;

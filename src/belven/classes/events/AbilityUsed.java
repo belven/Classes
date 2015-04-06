@@ -32,7 +32,7 @@ public class AbilityUsed extends Event {
 		return a.currentClass.getPlayer();
 	}
 
-	public belven.classes.player.RPGClass GetClass() {
+	public belven.classes.RPGClass GetClass() {
 		return a.currentClass;
 	}
 }

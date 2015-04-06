@@ -10,6 +10,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -17,6 +18,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import belven.classes.ClassManager;
+import belven.classes.mob.KnightBoss;
+import belven.classes.mob.Sapper;
+import belven.classes.mob.Warrior;
 import belven.resources.ClassDrop;
 import belven.resources.EntityFunctions;
 import belven.resources.Functions;
@@ -31,6 +35,22 @@ public class MobListener implements Listener {
 
 	public MobListener(ClassManager instance) {
 		plugin = instance;
+	}
+
+	@EventHandler
+	public void onCreatureSpawnEvent(CreatureSpawnEvent event) {
+		if (EntityFunctions.IsAMob(event.getEntityType())) {
+			LivingEntity le = event.getEntity();
+			int rand = new Random().nextInt(99);
+
+			if (le.hasMetadata("ArenaBoss")) {
+				plugin.SetClass(le, new KnightBoss(le.getMaxHealth() / 2, le, plugin));
+			} else if (Functions.numberBetween(rand, 10, 20)) {
+				plugin.SetClass(le, new Warrior(le.getMaxHealth() / 2, le, plugin));
+			} else { // if (Functions.numberBetween(rand, 20, 30)) {
+				plugin.SetClass(le, new Sapper(le.getMaxHealth() / 2, le, plugin));
+			}
+		}
 	}
 
 	@EventHandler
@@ -79,7 +99,7 @@ public class MobListener implements Listener {
 	private synchronized void GiveClassDrops(Player p, boolean isWilderness) {
 		int ran = randomGenerator.nextInt(99);
 		PlayerInventory pInv = p.getInventory();
-		belven.classes.player.RPGClass playerClass = plugin.GetClass(p);
+		belven.classes.RPGClass playerClass = plugin.GetClass(p);
 
 		for (ClassDrop cd : playerClass.classDrops) {
 			if (cd.alwaysGive || Functions.numberBetween(ran, cd.lowChance, cd.highChance)

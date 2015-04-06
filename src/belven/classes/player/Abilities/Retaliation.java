@@ -5,9 +5,9 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import belven.classes.RPGClass;
 import belven.classes.Abilities.Ability;
 import belven.classes.events.AbilityUsed;
-import belven.classes.player.RPGClass;
 import belven.resources.EntityFunctions;
 
 public class Retaliation extends Ability {

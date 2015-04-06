@@ -7,7 +7,7 @@ import org.bukkit.event.HandlerList;
 public class ClassChangeEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 
-	private belven.classes.player.RPGClass classChagedTo;
+	private belven.classes.RPGClass classChagedTo;
 	private Player playerThatChanged;
 
 	@Override
@@ -15,7 +15,7 @@ public class ClassChangeEvent extends Event {
 		return handlers;
 	}
 
-	public ClassChangeEvent(belven.classes.player.RPGClass classChagedTo, Player playerThatChanged) {
+	public ClassChangeEvent(belven.classes.RPGClass classChagedTo, Player playerThatChanged) {
 		this.classChagedTo = classChagedTo;
 		this.playerThatChanged = playerThatChanged;
 	}
@@ -24,7 +24,7 @@ public class ClassChangeEvent extends Event {
 		return playerThatChanged;
 	}
 
-	public belven.classes.player.RPGClass GetNewClass() {
+	public belven.classes.RPGClass GetNewClass() {
 		return classChagedTo;
 	}
 }

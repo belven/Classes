@@ -13,6 +13,7 @@ import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
 
 import belven.classes.ClassManager;
+import belven.classes.RPGClass;
 import belven.classes.Abilities.Ability;
 import belven.classes.player.Abilities.ChainLightning;
 import belven.classes.player.Abilities.LightningStrike;

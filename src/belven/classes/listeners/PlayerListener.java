@@ -25,11 +25,11 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 
 import belven.classes.ClassManager;
+import belven.classes.RPGClass;
 import belven.classes.events.AbilityUsed;
 import belven.classes.player.Archer;
 import belven.classes.player.Assassin;
 import belven.classes.player.Daemon;
-import belven.classes.player.RPGClass;
 import belven.classes.timedevents.AbilityDelay;
 import belven.resources.EntityFunctions;
 import belven.resources.Functions;

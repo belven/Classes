@@ -9,8 +9,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import belven.classes.RPGClass;
 import belven.classes.Abilities.Ability;
-import belven.classes.player.RPGClass;
 
 public class Pop extends Ability {
 	private int counter = 0;

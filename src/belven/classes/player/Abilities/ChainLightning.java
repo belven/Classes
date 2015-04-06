@@ -3,8 +3,8 @@ package belven.classes.player.Abilities;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import belven.classes.RPGClass;
 import belven.classes.Abilities.Ability;
-import belven.classes.player.RPGClass;
 import belven.classes.timedevents.ChainLightningTimer;
 
 public class ChainLightning extends Ability {
