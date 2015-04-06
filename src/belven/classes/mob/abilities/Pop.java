@@ -1,6 +1,7 @@
 package belven.classes.mob.abilities;
 
 import org.bukkit.Location;
+import org.bukkit.event.Event;
 
 import belven.classes.abilities.Ability;
 import belven.classes.mob.MobClass;
@@ -15,7 +16,7 @@ public class Pop extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility() {
+	public boolean PerformAbility(Event e) {
 		if (currentClass.targetLE != null) {
 			Location l = currentClass.targetLE.getLocation();
 			l = Functions.offsetLocation(l, 0, 1, 0);

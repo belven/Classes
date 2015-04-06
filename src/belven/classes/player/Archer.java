@@ -7,7 +7,10 @@ import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Dye;
 
@@ -35,16 +38,16 @@ public class Archer extends RPGClass {
 	}
 
 	@Override
-	public void SelfCast(Player currentPlayer) {
-		CheckAbilitiesToCast(currentPlayer);
+	public void SelfCast(PlayerInteractEvent event, Player currentPlayer) {
+		CheckAbilitiesToCast(currentPlayer, event);
 	}
 
-	private void CheckAbilitiesToCast(Entity currentEntity) {
+	private void CheckAbilitiesToCast(Entity currentEntity, Event event) {
 		Location trapLocation = classOwner.getLocation();
 		trapLocation.setY(trapLocation.getY() - 1);
 		for (Ability a : abilities) {
 			if (!a.onCooldown && a.HasRequirements()) {
-				if (!a.PerformAbility()) {
+				if (!a.PerformAbility(event)) {
 					continue;
 				} else {
 					break;
@@ -78,11 +81,6 @@ public class Archer extends RPGClass {
 		classDrops.add(new ClassDrop(l_ChestPlate(), 50, 100, 1));
 		classDrops.add(new ClassDrop(l_Leggings(), 50, 100, 1));
 		classDrops.add(new ClassDrop(l_Helmet(), 50, 100, 1));
-
-	}
-
-	@Override
-	public void RightClickEntity(Entity currentEntity) {
 
 	}
 
@@ -121,6 +119,12 @@ public class Archer extends RPGClass {
 
 			abilitiesSet = true;
 		}
+	}
+
+	@Override
+	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

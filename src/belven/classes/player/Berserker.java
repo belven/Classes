@@ -6,6 +6,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -38,31 +40,14 @@ public class Berserker extends RPGClass {
 	}
 
 	@Override
-	public void SelfCast(Player currentPlayer) {
+	public void SelfCast(PlayerInteractEvent event, Player currentPlayer) {
 		if (MaterialFunctions.isFood(getPlayer().getItemInHand().getType())) {
 			return;
 		}
 
 		for (Ability a : abilities) {
 			if (!a.onCooldown && a.HasRequirements()) {
-				if (!a.PerformAbility()) {
-					continue;
-				} else {
-					break;
-				}
-			}
-		}
-	}
-
-	@Override
-	public void RightClickEntity(Entity currentEntity) {
-		if (MaterialFunctions.isFood(getPlayer().getItemInHand().getType())) {
-			return;
-		}
-
-		for (Ability a : abilities) {
-			if (!a.onCooldown && a.HasRequirements()) {
-				if (!a.PerformAbility()) {
+				if (!a.PerformAbility(event)) {
 					continue;
 				} else {
 					break;
@@ -120,6 +105,24 @@ public class Berserker extends RPGClass {
 			abilities.add(classGrapple);
 			SortAbilities();
 			abilitiesSet = true;
+		}
+
+	}
+
+	@Override
+	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
+		if (MaterialFunctions.isFood(getPlayer().getItemInHand().getType())) {
+			return;
+		}
+
+		for (Ability a : abilities) {
+			if (!a.onCooldown && a.HasRequirements()) {
+				if (!a.PerformAbility(event)) {
+					continue;
+				} else {
+					break;
+				}
+			}
 		}
 
 	}

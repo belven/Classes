@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.Event;
 import org.bukkit.util.Vector;
 
 import belven.classes.abilities.Ability;
@@ -41,7 +42,7 @@ public class Barrier extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility() {
+	public boolean PerformAbility(Event e) {
 		new BarrierTimer(this).runTaskTimer(currentClass.plugin, 0, 10);
 		currentClass.UltAbilityUsed(this);
 		currentClass.getPlayer().sendMessage("You used " + GetAbilityName());

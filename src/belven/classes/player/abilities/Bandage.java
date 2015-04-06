@@ -2,6 +2,7 @@ package belven.classes.player.abilities;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -25,7 +26,7 @@ public class Bandage extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility() {
+	public boolean PerformAbility(Event e) {
 		Player targetPlayer = currentClass.targetPlayer;
 
 		if (targetPlayer == null) {
@@ -37,8 +38,8 @@ public class Bandage extends Ability {
 		}
 
 		if (targetPlayer.hasPotionEffect(PotionEffectType.ABSORPTION)) {
-			for (PotionEffect e : targetPlayer.getActivePotionEffects()) {
-				if (e.getType() == PotionEffectType.ABSORPTION) {
+			for (PotionEffect ef : targetPlayer.getActivePotionEffects()) {
+				if (ef.getType() == PotionEffectType.ABSORPTION) {
 
 					// This is the sort of thing I'm aiming for
 					// if(((Absorption)e).getBonusHealth() > someNumber)

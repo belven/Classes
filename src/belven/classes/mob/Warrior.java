@@ -4,6 +4,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import belven.classes.ClassManager;
 import belven.classes.abilities.Ability;
@@ -20,7 +22,7 @@ public class Warrior extends MobClass {
 	}
 
 	@Override
-	public void SelfCast(Player currentPlayer) {
+	public void SelfCast(PlayerInteractEvent event, Player currentPlayer) {
 
 	}
 
@@ -28,12 +30,6 @@ public class Warrior extends MobClass {
 	public void SetAbilities() {
 		abilities.add(new Pop(this, 10, 1));
 		abilities.add(new Cleave(this, 1, 1));
-	}
-
-	@Override
-	public void RightClickEntity(Entity currentEntity) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -47,12 +43,18 @@ public class Warrior extends MobClass {
 		targetLE = (LivingEntity) event.getEntity();
 		for (Ability a : abilities) {
 			if (!a.onCooldown) {
-				if (!a.PerformAbility()) {
+				if (!a.PerformAbility(event)) {
 					continue;
 				} else if (a.shouldBreak) {
 					break;
 				}
 			}
 		}
+	}
+
+	@Override
+	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
+		// TODO Auto-generated method stub
+
 	}
 }

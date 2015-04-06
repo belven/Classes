@@ -2,6 +2,7 @@ package belven.classes.player.abilities;
 
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.Event;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -16,7 +17,7 @@ public class SoulDrain extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility() {
+	public boolean PerformAbility(Event e) {
 		LivingEntity targetEntity = currentClass.getTarget(30, currentClass.getPlayer());
 
 		if (targetEntity == null) {

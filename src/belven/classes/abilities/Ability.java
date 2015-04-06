@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Dye;
@@ -13,6 +14,7 @@ import org.bukkit.material.Wool;
 import belven.classes.RPGClass;
 
 public class Ability {
+	public List<Event> events = new ArrayList<>();
 	protected List<ItemStack> requirements = new ArrayList<ItemStack>();
 	protected List<Material> inHandRequirements = new ArrayList<Material>();
 
@@ -32,7 +34,12 @@ public class Ability {
 		this.currentClass = cc;
 	}
 
-	public boolean PerformAbility() {
+	public Ability(RPGClass cc, int Priority, int amplifier, List<Event> events) {
+		this(cc, Priority, amplifier);
+		this.events = events;
+	}
+
+	public boolean PerformAbility(Event e) {
 		return false;
 	}
 

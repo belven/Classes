@@ -42,7 +42,7 @@ public class Daemon extends Berserker {
 	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
 		super.SelfTakenDamage(event);
 		if (!classSetAlight.onCooldown && classSetAlight.HasRequirements()) {
-			classSetAlight.PerformAbility();
+			classSetAlight.PerformAbility(event);
 		}
 	}
 
@@ -59,7 +59,7 @@ public class Daemon extends Berserker {
 			if (healthPercent <= 0.15) {
 				event.setDamage(0.0);
 			} else if (!classFeelTheBurn.onCooldown && classFeelTheBurn.HasRequirements()) {
-				classFeelTheBurn.PerformAbility();
+				classFeelTheBurn.PerformAbility(event);
 			}
 
 			classOwner.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Functions.SecondsToTicks(Amplifier()),

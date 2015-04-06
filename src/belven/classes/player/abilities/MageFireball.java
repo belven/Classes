@@ -2,6 +2,7 @@ package belven.classes.player.abilities;
 
 import org.bukkit.DyeColor;
 import org.bukkit.entity.Fireball;
+import org.bukkit.event.Event;
 import org.bukkit.material.Dye;
 
 import belven.classes.RPGClass;
@@ -20,7 +21,7 @@ public class MageFireball extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility() {
+	public boolean PerformAbility(Event e) {
 		currentClass.getPlayer().launchProjectile(Fireball.class);
 		RemoveItems();
 		return true;

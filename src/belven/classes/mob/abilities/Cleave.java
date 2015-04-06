@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.Event;
 
 import belven.classes.abilities.Ability;
 import belven.classes.mob.MobClass;
@@ -18,8 +19,8 @@ public class Cleave extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility() {
-		List<LivingEntity> entities = EntityFunctions.getNearbyEntities(currentClass.getPlayer().getLocation(), 2);
+	public boolean PerformAbility(Event e) {
+		List<LivingEntity> entities = EntityFunctions.getNearbyEntities(currentClass.classOwner.getLocation(), 2);
 
 		for (LivingEntity le : entities) {
 			if (le.getType() == EntityType.PLAYER) {

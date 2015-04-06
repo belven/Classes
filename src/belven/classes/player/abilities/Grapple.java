@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
 import belven.classes.RPGClass;
@@ -21,7 +22,7 @@ public class Grapple extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility() {
+	public boolean PerformAbility(Event e) {
 
 		List<LivingEntity> tempTargets = EntityFunctions.findAllTargets(currentClass.getPlayer(), 50.0D);
 

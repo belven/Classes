@@ -6,6 +6,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
@@ -46,11 +48,7 @@ public class Warrior extends RPGClass {
 	}
 
 	@Override
-	public void SelfCast(Player currentPlayer) {
-	}
-
-	@Override
-	public void RightClickEntity(Entity currentEntity) {
+	public void SelfCast(PlayerInteractEvent event, Player currentPlayer) {
 	}
 
 	@Override
@@ -72,9 +70,9 @@ public class Warrior extends RPGClass {
 
 		if (!currentLastResort.onCooldown && dcurrentPlayer.getHealth() <= 5 && currentLastResort.HasRequirements()) {
 			UltAbilityUsed(currentLastResort);
-			currentLastResort.PerformAbility();
+			currentLastResort.PerformAbility(event);
 		} else if (!currentRetaliation.onCooldown && getPlayer().isBlocking()) {
-			currentRetaliation.PerformAbility();
+			currentRetaliation.PerformAbility(event);
 		}
 	}
 
@@ -84,7 +82,7 @@ public class Warrior extends RPGClass {
 
 		if (!currentLastResort.onCooldown && dcurrentPlayer.getHealth() <= 5 && currentLastResort.HasRequirements()) {
 			UltAbilityUsed(currentLastResort);
-			currentLastResort.PerformAbility();
+			currentLastResort.PerformAbility(event);
 		}
 	}
 
@@ -101,7 +99,11 @@ public class Warrior extends RPGClass {
 
 	@Override
 	public void SelfDamageOther(EntityDamageByEntityEvent event) {
-		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
 
 	}
 }

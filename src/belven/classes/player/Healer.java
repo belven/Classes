@@ -6,7 +6,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Dye;
 
@@ -38,7 +41,7 @@ public class Healer extends RPGClass {
 		this(8, currentPlayer, instance);
 	}
 
-	public synchronized void CheckAbilitiesToCast(Player player) {
+	public synchronized void CheckAbilitiesToCast(Player player, Event event) {
 		targetLE = player;
 		targetPlayer = player;
 		if (MaterialFunctions.isFood(getPlayer().getItemInHand().getType())) {
@@ -47,7 +50,7 @@ public class Healer extends RPGClass {
 
 		for (Ability a : abilities) {
 			if (!a.onCooldown && a.HasRequirements()) {
-				if (!a.PerformAbility()) {
+				if (!a.PerformAbility(event)) {
 					continue;
 				} else if (a.shouldBreak) {
 					break;
@@ -78,11 +81,11 @@ public class Healer extends RPGClass {
 	}
 
 	@Override
-	public void SelfCast(Player currentPlayer) {
+	public void SelfCast(PlayerInteractEvent event, Player currentPlayer) {
 		Player playerSelected;
 
 		if (getPlayer().isSneaking()) {
-			CheckAbilitiesToCast(getPlayer());
+			CheckAbilitiesToCast(getPlayer(), event);
 		} else {
 			LivingEntity targetEntity = EntityFunctions.findTargetPlayer(getPlayer(), 150.0D);
 
@@ -93,40 +96,9 @@ public class Healer extends RPGClass {
 			}
 
 			if (plugin.isAlly(getPlayer(), playerSelected)) {
-				CheckAbilitiesToCast(playerSelected);
+				CheckAbilitiesToCast(playerSelected, event);
 			} else {
-				CheckAbilitiesToCast(getPlayer());
-			}
-		}
-	}
-
-	@Override
-	public void RightClickEntity(Entity currentEntity) {
-		Player playerSelected;
-
-		if (getPlayer().isSneaking()) {
-			CheckAbilitiesToCast(getPlayer());
-		} else if (currentEntity.getType() == EntityType.PLAYER) {
-			playerSelected = (Player) currentEntity;
-
-			if (plugin.isAlly(getPlayer(), playerSelected)) {
-				CheckAbilitiesToCast(playerSelected);
-			} else {
-				CheckAbilitiesToCast(getPlayer());
-			}
-		} else {
-			LivingEntity targetEntity = EntityFunctions.findTargetPlayer(getPlayer(), 150.0D);
-
-			if (targetEntity != null) {
-				playerSelected = (Player) targetEntity;
-			} else {
-				playerSelected = getPlayer();
-			}
-
-			if (plugin.isAlly(getPlayer(), playerSelected)) {
-				CheckAbilitiesToCast(playerSelected);
-			} else {
-				CheckAbilitiesToCast(getPlayer());
+				CheckAbilitiesToCast(getPlayer(), event);
 			}
 		}
 	}
@@ -155,6 +127,37 @@ public class Healer extends RPGClass {
 			abilities.add(classLightHeal);
 			SortAbilities();
 			abilitiesSet = true;
+		}
+	}
+
+	@Override
+	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
+		Player playerSelected;
+
+		if (getPlayer().isSneaking()) {
+			CheckAbilitiesToCast(getPlayer(), event);
+		} else if (currentEntity.getType() == EntityType.PLAYER) {
+			playerSelected = (Player) currentEntity;
+
+			if (plugin.isAlly(getPlayer(), playerSelected)) {
+				CheckAbilitiesToCast(playerSelected, event);
+			} else {
+				CheckAbilitiesToCast(getPlayer(), event);
+			}
+		} else {
+			LivingEntity targetEntity = EntityFunctions.findTargetPlayer(getPlayer(), 150.0D);
+
+			if (targetEntity != null) {
+				playerSelected = (Player) targetEntity;
+			} else {
+				playerSelected = getPlayer();
+			}
+
+			if (plugin.isAlly(getPlayer(), playerSelected)) {
+				CheckAbilitiesToCast(playerSelected, event);
+			} else {
+				CheckAbilitiesToCast(getPlayer(), event);
+			}
 		}
 	}
 }

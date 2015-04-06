@@ -1,5 +1,6 @@
 package belven.classes.mob.abilities;
 
+import org.bukkit.event.Event;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -15,9 +16,9 @@ public class SelfProtection extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility() {
+	public boolean PerformAbility(Event e) {
 		if (currentClass.targetLE != null) {
-			currentClass.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Functions
+			currentClass.classOwner.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Functions
 					.SecondsToTicks(5), amplifier));
 			currentClass.setAbilityOnCoolDown(this);
 			return true;

@@ -1,6 +1,7 @@
 package belven.classes.player.abilities;
 
 import org.bukkit.Material;
+import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
 import belven.classes.RPGClass;
@@ -18,7 +19,7 @@ public class ChainLightning extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility() {
+	public boolean PerformAbility(Event e) {
 		currentClass.getPlayer().sendMessage(abilitiyName + " has been used!");
 		new ChainLightningTimer(this).runTaskTimer(currentClass.plugin, 0, 10);
 		currentClass.UltAbilityUsed(this);

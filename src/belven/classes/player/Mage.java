@@ -5,7 +5,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Dye;
 import org.bukkit.potion.Potion;
@@ -36,10 +39,10 @@ public class Mage extends RPGClass {
 		SetClassDrops();
 	}
 
-	public void CheckAbilitiesToCast() {
+	public void CheckAbilitiesToCast(Event event) {
 		for (Ability a : abilities) {
 			if (!a.onCooldown && a.HasRequirements()) {
-				if (!a.PerformAbility()) {
+				if (!a.PerformAbility(event)) {
 					continue;
 				} else if (a.shouldBreak) {
 					break;
@@ -69,13 +72,8 @@ public class Mage extends RPGClass {
 	}
 
 	@Override
-	public void SelfCast(Player currentPlayer) {
-		CheckAbilitiesToCast();
-	}
-
-	@Override
-	public void RightClickEntity(Entity currentEntity) {
-		CheckAbilitiesToCast();
+	public void SelfCast(PlayerInteractEvent event, Player currentPlayer) {
+		CheckAbilitiesToCast(event);
 	}
 
 	@Override
@@ -85,7 +83,7 @@ public class Mage extends RPGClass {
 		} else if (!classLightningStrike.onCooldown) {
 			Entity entityToStrike = EntityFunctions.GetDamager(event);
 			if (entityToStrike != null) {
-				classLightningStrike.PerformAbility();
+				classLightningStrike.PerformAbility(event);
 			}
 		}
 	}
@@ -111,5 +109,10 @@ public class Mage extends RPGClass {
 			SortAbilities();
 			abilitiesSet = true;
 		}
+	}
+
+	@Override
+	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
+		CheckAbilitiesToCast(event);
 	}
 }

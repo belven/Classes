@@ -1,5 +1,6 @@
 package belven.classes.mob.abilities;
 
+import org.bukkit.event.Event;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -15,7 +16,7 @@ public class Slow extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility() {
+	public boolean PerformAbility(Event e) {
 		if (currentClass.targetLE != null) {
 			currentClass.targetLE.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Functions.SecondsToTicks(3),
 					amplifier));

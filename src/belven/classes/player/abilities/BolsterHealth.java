@@ -2,6 +2,7 @@ package belven.classes.player.abilities;
 
 import org.bukkit.DyeColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.material.Dye;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -22,7 +23,7 @@ public class BolsterHealth extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility() {
+	public boolean PerformAbility(Event e) {
 		Player playerToHeal = currentClass.targetPlayer;
 
 		if (playerToHeal == null) {

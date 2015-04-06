@@ -3,6 +3,7 @@ package belven.classes.player.abilities;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.event.Event;
 import org.bukkit.material.Dye;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -26,15 +27,15 @@ public class DamageTrap extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility() {
+	public boolean PerformAbility(Event e) {
 		Location targetLocation = currentClass.getPlayer().getLocation();
 		if (targetLocation.getBlock().getType() != Material.WOOL) {
 			new DamageTrapTimer(targetLocation.getBlock(), currentClass.getPlayer().getLevel(), 6).runTaskTimer(
 					currentClass.plugin, Functions.SecondsToTicks(5), Functions.SecondsToTicks(2));
 
 			targetLocation.getBlock().setType(Material.WOOL);
-			currentClass.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Functions
-					.SecondsToTicks(2), 3));
+			currentClass.getPlayer().addPotionEffect(
+					new PotionEffect(PotionEffectType.SPEED, Functions.SecondsToTicks(2), 3));
 			RemoveItems();
 			return true;
 		} else {

@@ -1,6 +1,7 @@
 package belven.classes.player.abilities;
 
 import org.bukkit.Material;
+import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
 import belven.classes.RPGClass;
@@ -16,7 +17,7 @@ public class SetAlight extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility() {
+	public boolean PerformAbility(Event e) {
 		int Amplifier = Amplifier();
 
 		if (Amplifier > 10) {

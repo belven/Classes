@@ -4,6 +4,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import belven.classes.ClassManager;
 import belven.classes.abilities.Ability;
@@ -21,7 +23,7 @@ public class KnightBoss extends MobClass {
 	}
 
 	@Override
-	public void SelfCast(Player currentPlayer) {
+	public void SelfCast(PlayerInteractEvent event, Player currentPlayer) {
 
 	}
 
@@ -30,12 +32,6 @@ public class KnightBoss extends MobClass {
 		AddAbility(new Pop(this, 2, 1), 5);
 		AddAbility(new Cleave(this, 1, 2), 5);
 		AddAbility(new SelfProtection(this, 3, 4), 10);
-	}
-
-	@Override
-	public void RightClickEntity(Entity currentEntity) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -49,12 +45,18 @@ public class KnightBoss extends MobClass {
 		targetLE = (LivingEntity) event.getEntity();
 		for (Ability a : abilities) {
 			if (!a.onCooldown) {
-				if (!a.PerformAbility()) {
+				if (!a.PerformAbility(event)) {
 					continue;
 				} else if (a.shouldBreak) {
 					break;
 				}
 			}
 		}
+	}
+
+	@Override
+	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
+		// TODO Auto-generated method stub
+
 	}
 }

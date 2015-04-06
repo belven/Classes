@@ -1,5 +1,7 @@
 package belven.classes.mob.abilities;
 
+import org.bukkit.event.Event;
+
 import belven.classes.abilities.Ability;
 import belven.classes.mob.MobClass;
 import belven.resources.EntityFunctions;
@@ -12,10 +14,10 @@ public class StealLife extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility() {
+	public boolean PerformAbility(Event e) {
 		if (currentClass.targetLE != null) {
 			EntityFunctions.Heal(currentClass.targetLE, -amplifier);
-			EntityFunctions.Heal(currentClass.getPlayer(), amplifier);
+			EntityFunctions.Heal(currentClass.classOwner, amplifier);
 			return true;
 		}
 		return false;

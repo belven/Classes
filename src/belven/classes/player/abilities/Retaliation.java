@@ -3,6 +3,7 @@ package belven.classes.player.abilities;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import belven.classes.RPGClass;
@@ -17,7 +18,7 @@ public class Retaliation extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility() {
+	public boolean PerformAbility(Event e) {
 		Player p = currentClass.getPlayer();
 		EntityDamageEvent ldc = p.getLastDamageCause();
 		LivingEntity entityDamaged = EntityFunctions.GetDamager(p);

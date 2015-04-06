@@ -102,7 +102,7 @@ public class PlayerListener implements Listener {
 		Entity currentEntity = event.getRightClicked();
 		if (plugin.GetClass(event.getPlayer()).CanCast) {
 			new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin, Functions.SecondsToTicks(1));
-			plugin.GetClass(currentPlayer).RightClickEntity(currentEntity);
+			plugin.GetClass(currentPlayer).RightClickEntity(event, currentEntity);
 		}
 	}
 
@@ -124,7 +124,7 @@ public class PlayerListener implements Listener {
 
 			if (plugin.GetClass(currentPlayer).CanCast) {
 				new AbilityDelay(currentPlayer, plugin).runTaskLater(plugin, Functions.SecondsToTicks(1));
-				plugin.GetClass(currentPlayer).SelfCast(currentPlayer);
+				plugin.GetClass(currentPlayer).SelfCast(event, currentPlayer);
 			}
 		}
 	}

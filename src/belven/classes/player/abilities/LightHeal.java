@@ -2,6 +2,7 @@ package belven.classes.player.abilities;
 
 import org.bukkit.DyeColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.material.Dye;
 
 import belven.classes.RPGClass;
@@ -13,7 +14,6 @@ import belven.resources.Functions;
 public class LightHeal extends Ability {
 	public LightHeal(RPGClass cc, int priority, int amp) {
 		super(cc, priority, amp);
-		
 
 		Dye dye = new Dye();
 		dye.setColor(DyeColor.BLUE);
@@ -24,7 +24,7 @@ public class LightHeal extends Ability {
 	}
 
 	@Override
-	public synchronized boolean PerformAbility() {
+	public synchronized boolean PerformAbility(Event e) {
 		Player playerToHeal = currentClass.targetPlayer;
 
 		if (playerToHeal == null || onCooldown) {

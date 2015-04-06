@@ -3,6 +3,7 @@ package belven.classes.player.abilities;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.event.Event;
 import org.bukkit.material.Dye;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -15,7 +16,6 @@ import belven.resources.Functions;
 public class FireTrap extends Ability {
 	public FireTrap(RPGClass cc, int priority, int amp) {
 		super(cc, priority, amp);
-		
 
 		Dye dye = new Dye();
 		dye.setColor(DyeColor.RED);
@@ -26,15 +26,15 @@ public class FireTrap extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility() {
+	public boolean PerformAbility(Event e) {
 		Location targetLocation = currentClass.getPlayer().getLocation();
 		if (targetLocation.getBlock().getType() != Material.WOOL) {
 			new FireTrapTimer(targetLocation.getBlock(), Functions.SecondsToTicks(Amplifier()), 4).runTaskTimer(
 					currentClass.plugin, Functions.SecondsToTicks(5), Functions.SecondsToTicks(2));
 
 			targetLocation.getBlock().setType(Material.WOOL);
-			currentClass.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Functions
-					.SecondsToTicks(2), 3));
+			currentClass.getPlayer().addPotionEffect(
+					new PotionEffect(PotionEffectType.SPEED, Functions.SecondsToTicks(2), 3));
 
 			RemoveItems();
 			return true;

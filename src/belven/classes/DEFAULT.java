@@ -4,6 +4,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public class DEFAULT extends RPGClass {
 
@@ -20,14 +22,6 @@ public class DEFAULT extends RPGClass {
 	}
 
 	@Override
-	public void SelfCast(Player currentPlayer) {
-	}
-
-	@Override
-	public void RightClickEntity(Entity currentEntity) {
-	}
-
-	@Override
 	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
 
 	}
@@ -38,5 +32,17 @@ public class DEFAULT extends RPGClass {
 
 	@Override
 	public void SetAbilities() {
+	}
+
+	@Override
+	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void SelfCast(PlayerInteractEvent event, Player currentPlayer) {
+		// TODO Auto-generated method stub
+
 	}
 }

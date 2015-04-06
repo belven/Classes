@@ -7,6 +7,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
@@ -102,16 +104,8 @@ public class Assassin extends RPGClass {
 	}
 
 	@Override
-	public void SelfCast(Player currentPlayer) {
+	public void SelfCast(PlayerInteractEvent event, Player currentPlayer) {
 
-	}
-
-	@Override
-	public void RightClickEntity(Entity currentEntity) {
-		if (!classSoulDrain.onCooldown && getPlayer().getItemInHand().getType() == Material.NETHER_STAR) {
-			classSoulDrain.PerformAbility();
-			UltAbilityUsed(classSoulDrain);
-		}
 	}
 
 	@Override
@@ -130,7 +124,7 @@ public class Assassin extends RPGClass {
 
 		if (!arrowEntity) {
 			if (!classStealth.onCooldown) {
-				classStealth.PerformAbility();
+				classStealth.PerformAbility(event);
 			}
 		} else {
 			TeleportToTarget(damagedEntity);
@@ -149,6 +143,14 @@ public class Assassin extends RPGClass {
 			classStealth.cooldown = 3;
 			SortAbilities();
 			abilitiesSet = true;
+		}
+	}
+
+	@Override
+	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
+		if (!classSoulDrain.onCooldown && getPlayer().getItemInHand().getType() == Material.NETHER_STAR) {
+			classSoulDrain.PerformAbility(event);
+			UltAbilityUsed(classSoulDrain);
 		}
 	}
 }
