@@ -1,13 +1,18 @@
 package belven.classes;
 
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class DEFAULT extends RPGClass {
-	public DEFAULT(Player currentPlayer, ClassManager instance) {
-		// Test
-		super(10, currentPlayer, instance);
+
+	public DEFAULT(double health, LivingEntity le, ClassManager instance) {
+		super(health, le, instance);
+	}
+
+	public DEFAULT(LivingEntity le, ClassManager classManager) {
+		this(le.getMaxHealth() / 2, le, classManager);
 	}
 
 	@Override

@@ -151,6 +151,8 @@ public class PlayerListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public synchronized void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
+		LivingEntity le;
+
 		if (event.getEntityType() == EntityType.PLAYER) {
 			Player dp = (Player) event.getEntity();
 			Group playerGroup = plugin.getAllyGroup(dp);
@@ -165,15 +167,19 @@ public class PlayerListener implements Listener {
 					}
 				}
 			}
-			plugin.GetClass(dp).SelfTakenDamage(event);
 		}
 
-		LivingEntity le = EntityFunctions.GetDamager(event);
-		if (le != null && le.getType() == EntityType.PLAYER) {
-			Player currentPlayer = (Player) le;
-			plugin.GetClass(currentPlayer).SelfDamageOther(event);
+		le = (LivingEntity) event.getEntity();
+
+		if (le != null) {
+			plugin.GetClass(le).SelfTakenDamage(event);
 		}
 
+		le = EntityFunctions.GetDamager(event);
+
+		if (le != null) {
+			plugin.GetClass(le).SelfDamageOther(event);
+		}
 	}
 
 	@EventHandler

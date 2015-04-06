@@ -325,8 +325,8 @@ public class ClassManager extends JavaPlugin {
 		}
 	}
 
-	public RPGClass GetClass(Player p) {
-		return currentPlayerClasses.get(p) != null ? currentPlayerClasses.get(p) : new DEFAULT(p, this);
+	public RPGClass GetClass(LivingEntity le) {
+		return currentPlayerClasses.get(le) != null ? currentPlayerClasses.get(le) : new DEFAULT(le, this);
 	}
 
 	public void SetClass(LivingEntity le, RPGClass newClass) {
