@@ -97,10 +97,10 @@ public class Assassin extends RPGClass {
 		ItemStack bow = new ItemStack(Material.BOW);
 		ItemStack speed = new Potion(PotionType.SPEED, 2).toItemStack(1);
 
-		classDrops.add(new ClassDrop(bow, true, 1));
-		classDrops.add(new ClassDrop(sword, true, 1));
-		classDrops.add(new ClassDrop(arrow, true, 30));
-		classDrops.add(new ClassDrop(speed, 0, 100, 1));
+		getClassDrops().add(new ClassDrop(bow, true, 1));
+		getClassDrops().add(new ClassDrop(sword, true, 1));
+		getClassDrops().add(new ClassDrop(arrow, true, 30));
+		getClassDrops().add(new ClassDrop(speed, 0, 100, 1));
 	}
 
 	@Override
@@ -135,14 +135,14 @@ public class Assassin extends RPGClass {
 
 	@Override
 	public void SetAbilities() {
-		if (!abilitiesSet) {
+		if (!AbilitiesSet()) {
 			classStealth = new Stealth(this, 1, 1);
 			classSoulDrain = new SoulDrain(this, 1, 0);
 			getAbilities().add(classSoulDrain);
 			getAbilities().add(classStealth);
 			classStealth.cooldown = 3;
 			SortAbilities();
-			abilitiesSet = true;
+			setAbilitiesSet(true);
 		}
 	}
 

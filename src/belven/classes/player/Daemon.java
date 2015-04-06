@@ -48,7 +48,7 @@ public class Daemon extends Berserker {
 
 	@Override
 	public void SelfTakenDamage(EntityDamageEvent event) {
-		double healthPercent = plugin.GetPlayerE(getPlayer()).GetHealthPercent();
+		double healthPercent = getPlugin().GetPlayerE(getPlayer()).GetHealthPercent();
 
 		if (event.getCause() == DamageCause.FIRE_TICK || event.getCause() == DamageCause.FIRE) {
 
@@ -84,6 +84,6 @@ public class Daemon extends Berserker {
 	@Override
 	public void SetClassDrops() {
 		ItemStack fire = new ItemStack(Material.FIREWORK_CHARGE, 2);
-		classDrops.add(new ClassDrop(fire, true, 10, 1));
+		getClassDrops().add(new ClassDrop(fire, true, 10, 1));
 	}
 }

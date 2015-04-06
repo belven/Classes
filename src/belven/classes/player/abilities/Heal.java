@@ -30,8 +30,8 @@ public class Heal extends Ability {
 			return false;
 		}
 
-		if (getRPGClass().plugin.GetPlayerE(playerToHeal).GetHealthPercent() <= 0.3) {
-			new HealTimer(getRPGClass().plugin, 0.4, playerToHeal);
+		if (getRPGClass().getPlugin().GetPlayerE(playerToHeal).GetHealthPercent() <= 0.3) {
+			new HealTimer(getRPGClass().getPlugin(), 0.4, playerToHeal);
 
 			getRPGClass().getPlayer().sendMessage("You healed " + playerToHeal.getName());
 

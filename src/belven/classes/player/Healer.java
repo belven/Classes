@@ -69,15 +69,15 @@ public class Healer extends RPGClass {
 		ItemStack stick = new ItemStack(Material.STICK);
 		ItemStack paper = new ItemStack(Material.PAPER);
 
-		classDrops.add(new ClassDrop(lapisBlock, true, 20, 1));
-		classDrops.add(new ClassDrop(woodSword, true, 1));
-		classDrops.add(new ClassDrop(paper, 20, 40, 5, 1));
-		classDrops.add(new ClassDrop(stick, 20, 40, 5, 1));
+		getClassDrops().add(new ClassDrop(lapisBlock, true, 20, 1));
+		getClassDrops().add(new ClassDrop(woodSword, true, 1));
+		getClassDrops().add(new ClassDrop(paper, 20, 40, 5, 1));
+		getClassDrops().add(new ClassDrop(stick, 20, 40, 5, 1));
 
-		classDrops.add(new ClassDrop(l_Boots(), 60, 100, 1));
-		classDrops.add(new ClassDrop(l_ChestPlate(), 60, 100, 1));
-		classDrops.add(new ClassDrop(l_Leggings(), 60, 100, 1));
-		classDrops.add(new ClassDrop(l_Helmet(), 60, 100, 1));
+		getClassDrops().add(new ClassDrop(l_Boots(), 60, 100, 1));
+		getClassDrops().add(new ClassDrop(l_ChestPlate(), 60, 100, 1));
+		getClassDrops().add(new ClassDrop(l_Leggings(), 60, 100, 1));
+		getClassDrops().add(new ClassDrop(l_Helmet(), 60, 100, 1));
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class Healer extends RPGClass {
 				playerSelected = getPlayer();
 			}
 
-			if (plugin.isAlly(getPlayer(), playerSelected)) {
+			if (getPlugin().isAlly(getPlayer(), playerSelected)) {
 				CheckAbilitiesToCast(playerSelected, event);
 			} else {
 				CheckAbilitiesToCast(getPlayer(), event);
@@ -115,7 +115,7 @@ public class Healer extends RPGClass {
 
 	@Override
 	public synchronized void SetAbilities() {
-		if (!abilitiesSet) {
+		if (!AbilitiesSet()) {
 			classHeal = new Heal(this, 1, 3);
 			classLightHeal = new LightHeal(this, 2, 8);
 			classBandage = new Bandage(this, 0, 3);
@@ -126,7 +126,7 @@ public class Healer extends RPGClass {
 			getAbilities().add(classHeal);
 			getAbilities().add(classLightHeal);
 			SortAbilities();
-			abilitiesSet = true;
+			setAbilitiesSet(true);
 		}
 	}
 
@@ -139,7 +139,7 @@ public class Healer extends RPGClass {
 		} else if (currentEntity.getType() == EntityType.PLAYER) {
 			playerSelected = (Player) currentEntity;
 
-			if (plugin.isAlly(getPlayer(), playerSelected)) {
+			if (getPlugin().isAlly(getPlayer(), playerSelected)) {
 				CheckAbilitiesToCast(playerSelected, event);
 			} else {
 				CheckAbilitiesToCast(getPlayer(), event);
@@ -153,7 +153,7 @@ public class Healer extends RPGClass {
 				playerSelected = getPlayer();
 			}
 
-			if (plugin.isAlly(getPlayer(), playerSelected)) {
+			if (getPlugin().isAlly(getPlayer(), playerSelected)) {
 				CheckAbilitiesToCast(playerSelected, event);
 			} else {
 				CheckAbilitiesToCast(getPlayer(), event);

@@ -70,17 +70,17 @@ public class Archer extends RPGClass {
 		ItemStack bow = new ItemStack(Material.BOW);
 		ItemStack snowBall = new ItemStack(Material.SNOW_BALL, 2);
 
-		classDrops.add(new ClassDrop(arrow, true, 30, 3));
-		classDrops.add(new ClassDrop(bow, true, 1, 1));
+		getClassDrops().add(new ClassDrop(arrow, true, 30, 3));
+		getClassDrops().add(new ClassDrop(bow, true, 1, 1));
 
-		classDrops.add(new ClassDrop(redwool, 0, 30, 5));
-		classDrops.add(new ClassDrop(graywool, 0, 30, 5));
-		classDrops.add(new ClassDrop(snowBall, 30, 50, 2));
+		getClassDrops().add(new ClassDrop(redwool, 0, 30, 5));
+		getClassDrops().add(new ClassDrop(graywool, 0, 30, 5));
+		getClassDrops().add(new ClassDrop(snowBall, 30, 50, 2));
 
-		classDrops.add(new ClassDrop(l_Boots(), 50, 100, 1));
-		classDrops.add(new ClassDrop(l_ChestPlate(), 50, 100, 1));
-		classDrops.add(new ClassDrop(l_Leggings(), 50, 100, 1));
-		classDrops.add(new ClassDrop(l_Helmet(), 50, 100, 1));
+		getClassDrops().add(new ClassDrop(l_Boots(), 50, 100, 1));
+		getClassDrops().add(new ClassDrop(l_ChestPlate(), 50, 100, 1));
+		getClassDrops().add(new ClassDrop(l_Leggings(), 50, 100, 1));
+		getClassDrops().add(new ClassDrop(l_Helmet(), 50, 100, 1));
 
 	}
 
@@ -96,7 +96,7 @@ public class Archer extends RPGClass {
 
 		if (getPlayer().getItemInHand().getType() == Material.BOW) {
 			if (classCripplingArrow.HasRequirements() && damagedEntityLocation.getBlock().getType() != Material.WEB) {
-				new BlockRestorer(damagedEntityLocation.getBlock(), Material.WEB).runTaskLater(plugin,
+				new BlockRestorer(damagedEntityLocation.getBlock(), Material.WEB).runTaskLater(getPlugin(),
 						Functions.SecondsToTicks(5));
 			}
 
@@ -109,7 +109,7 @@ public class Archer extends RPGClass {
 
 	@Override
 	public void SetAbilities() {
-		if (!abilitiesSet) {
+		if (!AbilitiesSet()) {
 			classCripplingArrow = new WebArrow(this, 0, 0);
 			classFireTrap = new FireTrap(this, 1, 0);
 			classDamageTrap = new DamageTrap(this, 1, 0);
@@ -117,7 +117,7 @@ public class Archer extends RPGClass {
 			getAbilities().add(classDamageTrap);
 			SortAbilities();
 
-			abilitiesSet = true;
+			setAbilitiesSet(true);
 		}
 	}
 

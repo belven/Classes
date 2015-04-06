@@ -12,12 +12,12 @@ public class AbilityDelay extends BukkitRunnable {
 	public AbilityDelay(Player CurrentPlayer, ClassManager Plugin) {
 		currentPlayer = CurrentPlayer;
 		plugin = Plugin;
-		plugin.GetClass(currentPlayer).CanCast = false;
+		plugin.GetClass(currentPlayer).setCanCast(false);
 	}
 
 	@Override
 	public void run() {
-		plugin.GetClass(currentPlayer).CanCast = true;
+		plugin.GetClass(currentPlayer).setCanCast(true);
 		this.cancel();
 	}
 }

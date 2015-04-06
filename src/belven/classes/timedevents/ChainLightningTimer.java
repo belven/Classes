@@ -57,7 +57,7 @@ public class ChainLightningTimer extends BukkitRunnable {
 					// !targetsHit.contains(le))
 					// {
 					if (le.getType() == EntityType.PLAYER
-							&& !currentClass.plugin.isAlly(currentClass.getPlayer(), (Player) le)) {
+							&& !currentClass.getPlugin().isAlly(currentClass.getPlayer(), (Player) le)) {
 						doDamage(le);
 						break;
 					} else if (le.getType() != EntityType.PLAYER) {

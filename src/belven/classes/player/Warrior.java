@@ -19,6 +19,7 @@ import belven.classes.RPGClass;
 import belven.classes.player.abilities.LastResort;
 import belven.classes.player.abilities.Retaliation;
 import belven.resources.ClassDrop;
+import belven.resources.EntityFunctions;
 import belven.resources.Functions;
 
 public class Warrior extends RPGClass {
@@ -38,13 +39,13 @@ public class Warrior extends RPGClass {
 		ItemStack bread = new ItemStack(Material.BREAD);
 		ItemStack sword = new ItemStack(Material.STONE_SWORD);
 		ItemStack strength = new ItemStack(new Potion(PotionType.STRENGTH, 2).toItemStack(1));
-		classDrops.add(new ClassDrop(bread, true, 5));
-		classDrops.add(new ClassDrop(sword, true, 1, 1));
-		classDrops.add(new ClassDrop(strength, 0, 10, 1));
-		classDrops.add(new ClassDrop(i_Boots(), true, 1));
-		classDrops.add(new ClassDrop(i_ChestPlate(), true, 1));
-		classDrops.add(new ClassDrop(i_Leggings(), true, 1));
-		classDrops.add(new ClassDrop(i_Helmet(), true, 1));
+		getClassDrops().add(new ClassDrop(bread, true, 5));
+		getClassDrops().add(new ClassDrop(sword, true, 1, 1));
+		getClassDrops().add(new ClassDrop(strength, 0, 10, 1));
+		getClassDrops().add(new ClassDrop(i_Boots(), true, 1));
+		getClassDrops().add(new ClassDrop(i_ChestPlate(), true, 1));
+		getClassDrops().add(new ClassDrop(i_Leggings(), true, 1));
+		getClassDrops().add(new ClassDrop(i_Helmet(), true, 1));
 	}
 
 	@Override
@@ -54,13 +55,14 @@ public class Warrior extends RPGClass {
 	@Override
 	public void OtherTakenDamage(EntityDamageByEntityEvent event) {
 		Player p = (Player) event.getEntity();
-		double healthPercent = plugin.GetPlayerE(getPlayer()).GetMissingHealthPercent();
+		double healthPercent = getPlugin().GetPlayerE(getPlayer()).GetMissingHealthPercent();
 
 		if (event.getDamage() > 0 && healthPercent > 0.1 && p.getLocation().distance(getOwner().getLocation()) < 30) {
 			getOwner().damage(event.getDamage());
 			event.setDamage(0.0);
-			this.getOwner().addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Functions
-					.SecondsToTicks(3), (int) (4 * healthPercent)));
+			this.getOwner().addPotionEffect(
+					new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Functions.SecondsToTicks(3),
+							(int) (4 * healthPercent)));
 		}
 	}
 
@@ -79,21 +81,23 @@ public class Warrior extends RPGClass {
 	@Override
 	public void SelfTakenDamage(EntityDamageEvent event) {
 		Damageable dcurrentPlayer = getOwner();
+		double herlthPercent = EntityFunctions.entityCurrentHealthPercent(dcurrentPlayer.getHealth(),
+				dcurrentPlayer.getMaxHealth());
 
-		if (!currentLastResort.onCooldown() && dcurrentPlayer.getHealth() <= 5 && currentLastResort.HasRequirements()) {
-			UltAbilityUsed(currentLastResort);
+		if (!currentLastResort.onCooldown() && herlthPercent <= 0.25 && currentLastResort.HasRequirements()) {
 			currentLastResort.PerformAbility(event);
 		}
 	}
 
 	@Override
 	public void SetAbilities() {
-		if (!abilitiesSet) {
-			currentLastResort = new LastResort(this, 1, 5);
+		if (!AbilitiesSet()) {
+			currentLastResort = new LastResort(this, 1, 60);
+			currentLastResort.cooldown = 60;
 			currentRetaliation = new Retaliation(this, 2, 1);
 			currentRetaliation.cooldown = 3;
 			SortAbilities();
-			abilitiesSet = true;
+			setAbilitiesSet(true);
 		}
 	}
 

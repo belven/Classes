@@ -30,7 +30,7 @@ public class FireTrap extends Ability {
 		Location targetLocation = getRPGClass().getPlayer().getLocation();
 		if (targetLocation.getBlock().getType() != Material.WOOL) {
 			new FireTrapTimer(targetLocation.getBlock(), Functions.SecondsToTicks(Amplifier()), 4).runTaskTimer(
-					getRPGClass().plugin, Functions.SecondsToTicks(5), Functions.SecondsToTicks(2));
+					getRPGClass().getPlugin(), Functions.SecondsToTicks(5), Functions.SecondsToTicks(2));
 
 			targetLocation.getBlock().setType(Material.WOOL);
 			getRPGClass().getPlayer().addPotionEffect(

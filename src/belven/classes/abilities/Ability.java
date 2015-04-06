@@ -30,7 +30,7 @@ public class Ability extends AbilityData {
 	}
 
 	public int Amplifier() {
-		return 0;
+		return amplifier;
 	}
 
 	public boolean hasInHandReq() {

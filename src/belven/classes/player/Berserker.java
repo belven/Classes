@@ -1,11 +1,16 @@
 package belven.classes.player;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -21,6 +26,8 @@ import belven.resources.EntityFunctions;
 import belven.resources.Functions;
 import belven.resources.MaterialFunctions;
 
+import com.google.common.base.Function;
+
 public class Berserker extends RPGClass {
 	public Grapple classGrapple;
 
@@ -35,8 +42,8 @@ public class Berserker extends RPGClass {
 	public void SetClassDrops() {
 		ItemStack string = new ItemStack(Material.STRING);
 		ItemStack sword = new ItemStack(Material.STONE_SWORD);
-		classDrops.add(new ClassDrop(string, true, 2, 1));
-		classDrops.add(new ClassDrop(sword, true, 1, 1));
+		getClassDrops().add(new ClassDrop(string, true, 2, 1));
+		getClassDrops().add(new ClassDrop(sword, true, 1, 1));
 	}
 
 	@Override
@@ -58,53 +65,56 @@ public class Berserker extends RPGClass {
 
 	@Override
 	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
-		double healthPercent = plugin.GetPlayerE(getPlayer()).GetMissingHealthPercent();
+		double healthPercent = getPlugin().GetPlayerE(getPlayer()).GetMissingHealthPercent();
 
-		this.getOwner().addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Functions.SecondsToTicks(2),
-				(int) (2 * healthPercent)));
+		this.getOwner().addPotionEffect(
+				new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Functions.SecondsToTicks(2),
+						(int) (2 * healthPercent)));
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void SelfDamageOther(EntityDamageByEntityEvent event) {
+	public synchronized void SelfDamageOther(EntityDamageByEntityEvent event) {
 		int mobCount = 0;
-		for (Entity e : EntityFunctions.getNearbyEntities(event.getEntity().getLocation(), 4)) {
-			double damageToDo = event.getDamage() / 3.0D;
+		DamageCause dc = DamageCause.CUSTOM;
 
-			if (e instanceof LivingEntity) {
+		if (event.getCause() != dc) {
+			for (Entity e : EntityFunctions.getNearbyEntities(event.getEntity().getLocation(), 4)) {
+				double damageToDo = event.getDamage();
 
-				if (mobCount >= 3) {
-					break;
-				}
-
-				LivingEntity le = (LivingEntity) e;
-
-				if (le != this.getOwner()) {
-					le.damage(damageToDo);
+				if (e instanceof LivingEntity && e != event.getEntity() && mobCount < 3 && e != this.getOwner()) {
+					LivingEntity le = (LivingEntity) e;
 					mobCount++;
+					try {
+						HashMap<DamageModifier, Double> damage = new HashMap<>();
+						damage.put(DamageModifier.BASE, damageToDo);
+
+						Map<DamageModifier, Function<? super Double, Double>> functions = new HashMap<>();
+
+						functions.put(DamageModifier.BASE, com.google.common.base.Functions.constant(damageToDo));
+
+						EntityDamageByEntityEvent ede = new EntityDamageByEntityEvent(getOwner(), le, dc, damage,
+								functions);
+
+						Bukkit.getPluginManager().callEvent(ede);
+						le.damage(ede.getDamage());
+					} catch (Throwable ex) {
+						Bukkit.getPluginManager().callEvent(
+								new EntityDamageByEntityEvent(getOwner(), le, dc, damageToDo));
+					}
+
 				}
-
-				// HashMap<DamageModifier, Double> damageModifiers = new HashMap<DamageModifier, Double>();
-				// damageModifiers.put(DamageModifier.BASE, damageToDo);
-
-				// Map<DamageModifier, ? extends Function<? super Double, Double>> test = null;
-
-				EntityDamageByEntityEvent ede = new EntityDamageByEntityEvent(getOwner(), le,
-						DamageCause.ENTITY_ATTACK, damageToDo);
-
-				le.setLastDamageCause(ede);
 			}
 		}
-
 	}
 
 	@Override
 	public void SetAbilities() {
-		if (!abilitiesSet) {
+		if (!AbilitiesSet()) {
 			this.classGrapple = new Grapple(this, 1, 0);
 			getAbilities().add(classGrapple);
 			SortAbilities();
-			abilitiesSet = true;
+			setAbilitiesSet(true);
 		}
 
 	}

@@ -15,7 +15,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -100,7 +99,7 @@ public class PlayerListener implements Listener {
 	public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
 		Player currentPlayer = event.getPlayer();
 		Entity currentEntity = event.getRightClicked();
-		if (plugin.GetClass(event.getPlayer()).CanCast) {
+		if (plugin.GetClass(event.getPlayer()).CanCast()) {
 			new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin, Functions.SecondsToTicks(1));
 			plugin.GetClass(currentPlayer).RightClickEntity(event, currentEntity);
 		}
@@ -122,7 +121,7 @@ public class PlayerListener implements Listener {
 				return;
 			}
 
-			if (plugin.GetClass(currentPlayer).CanCast) {
+			if (plugin.GetClass(currentPlayer).CanCast()) {
 				new AbilityDelay(currentPlayer, plugin).runTaskLater(plugin, Functions.SecondsToTicks(1));
 				plugin.GetClass(currentPlayer).SelfCast(event, currentPlayer);
 			}
@@ -131,7 +130,7 @@ public class PlayerListener implements Listener {
 
 	@EventHandler
 	public synchronized void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
-		if (plugin.GetClass(event.getPlayer()).CanCast) {
+		if (plugin.GetClass(event.getPlayer()).CanCast()) {
 			new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin, Functions.SecondsToTicks(1));
 			plugin.GetClass(event.getPlayer()).ToggleSneakEvent(event);
 		}
@@ -151,7 +150,7 @@ public class PlayerListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public synchronized void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
-		LivingEntity le;
+		LivingEntity le = (LivingEntity) event.getEntity();
 
 		if (event.getEntityType() == EntityType.PLAYER) {
 			Player dp = (Player) event.getEntity();
@@ -169,8 +168,6 @@ public class PlayerListener implements Listener {
 			}
 		}
 
-		le = (LivingEntity) event.getEntity();
-
 		if (le != null) {
 			plugin.GetClass(le).SelfTakenDamage(event);
 		}
@@ -179,14 +176,6 @@ public class PlayerListener implements Listener {
 
 		if (le != null) {
 			plugin.GetClass(le).SelfDamageOther(event);
-		}
-	}
-
-	@EventHandler
-	public synchronized void onEntityDamageEvent(EntityDamageEvent event) {
-		if (event.getEntityType() == EntityType.PLAYER) {
-			Player damagedPlayer = (Player) event.getEntity();
-			plugin.GetClass(damagedPlayer).SelfTakenDamage(event);
 		}
 	}
 

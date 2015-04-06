@@ -56,7 +56,6 @@ public class HealTimer extends BukkitRunnable {
 
 	private void heal() {
 		double amountToHeal = target.getMaxHealth() * perCentHeal;
-
 		if (target.getHealth() < target.getMaxHealth()) {
 			if (amountToHeal + target.getHealth() < target.getMaxHealth()) {
 				target.setHealth(amountToHeal + target.getHealth());
@@ -64,11 +63,6 @@ public class HealTimer extends BukkitRunnable {
 				target.setHealth(target.getMaxHealth());
 			}
 			count++;
-
-			// if (target.getType() == EntityType.PLAYER) {
-			// ((Player) target).sendMessage("You have been healed: " +
-			// String.valueOf(amountToHeal) + " health!");
-			// }
 		}
 	}
 }

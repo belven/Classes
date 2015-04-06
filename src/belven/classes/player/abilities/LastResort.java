@@ -3,12 +3,10 @@ package belven.classes.player.abilities;
 import org.bukkit.Material;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import belven.classes.RPGClass;
 import belven.classes.abilities.Ability;
-import belven.resources.Functions;
+import belven.classes.timedevents.HealTimer;
 
 public class LastResort extends Ability {
 	public LastResort(RPGClass cc, int priority, int amp) {
@@ -20,13 +18,9 @@ public class LastResort extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		getRPGClass().getPlayer().addPotionEffect(
-				new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Functions.SecondsToTicks(Amplifier()), 4), false);
+		new HealTimer(getRPGClass().getPlugin(), Amplifier() / 100.0, getRPGClass().getOwner());
+		getRPGClass().UltAbilityUsed(this);
 		return true;
 	}
 
-	@Override
-	public int Amplifier() {
-		return Math.round(getRPGClass().getPlayer().getLevel() / amplifier);
-	}
 }

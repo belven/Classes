@@ -35,7 +35,7 @@ public class LightHeal extends Ability {
 			playerToHeal = getRPGClass().getPlayer();
 		}
 
-		new HealTimer(getRPGClass().plugin, Amplifier() / 100.0, playerToHeal, 5, 1);
+		new HealTimer(getRPGClass().getPlugin(), Amplifier() / 100.0, playerToHeal, 5, 1);
 
 		getRPGClass().getPlayer().sendMessage("You healed " + playerToHeal.getName());
 

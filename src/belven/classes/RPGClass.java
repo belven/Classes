@@ -1,6 +1,5 @@
 package belven.classes;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -24,24 +23,10 @@ import belven.resources.ClassDrop;
 import belven.resources.EntityFunctions;
 import belven.resources.Functions;
 
-public abstract class RPGClass {
-	private List<Ability> abilities = new ArrayList<Ability>();
-	public List<ClassDrop> classDrops = new ArrayList<ClassDrop>();
-
-	public boolean abilitiesSet = false;
-	public boolean CanCast = true;
-
-	protected String baseClassName = "";
-	protected String className = "";
-
-	private LivingEntity classOwner = null;
-	private LivingEntity target;
-
-	public ClassManager plugin;
-	public Player targetPlayer;
+public abstract class RPGClass extends RPGClassData {
 
 	public RPGClass(double health, LivingEntity classOwner, ClassManager instance) {
-		plugin = instance;
+		setPlugin(instance);
 		this.setOwner(classOwner);
 
 		Damageable dcurrentPlayer = classOwner;
@@ -69,14 +54,6 @@ public abstract class RPGClass {
 		} else {
 			return false;
 		}
-	}
-
-	public final String getBaseClassName() {
-		return baseClassName;
-	}
-
-	public final String getClassName() {
-		return className;
 	}
 
 	public Player getPlayer() {
@@ -130,7 +107,7 @@ public abstract class RPGClass {
 	}
 
 	public synchronized void RemoveClassDrop(Material m) {
-		Iterator<ClassDrop> tempDrops = classDrops.iterator();
+		Iterator<ClassDrop> tempDrops = getClassDrops().iterator();
 
 		while (tempDrops.hasNext()) {
 			ClassDrop cd = tempDrops.next();
@@ -163,7 +140,7 @@ public abstract class RPGClass {
 	}
 
 	public void setAbilityOnCoolDown(Ability currentAbility, boolean sendMessage) {
-		new AbilityCooldown(currentAbility, sendMessage).runTaskLater(plugin,
+		new AbilityCooldown(currentAbility, sendMessage).runTaskLater(getPlugin(),
 				Functions.SecondsToTicks(currentAbility.cooldown));
 		currentAbility.setOnCooldown(true);
 	}
@@ -178,6 +155,7 @@ public abstract class RPGClass {
 
 	public void SortAbilities(List<Ability> tempAbilities) {
 		Collections.sort(tempAbilities, new Comparator<Ability>() {
+
 			@Override
 			public int compare(Ability a1, Ability a2) {
 				return Math.min(1, Math.max(-1, a1.priority - a2.priority));
@@ -190,30 +168,6 @@ public abstract class RPGClass {
 
 	public void UltAbilityUsed(Ability currentAbility) {
 		setAbilityOnCoolDown(currentAbility);
-	}
-
-	public LivingEntity getOwner() {
-		return classOwner;
-	}
-
-	public void setOwner(LivingEntity classOwner) {
-		this.classOwner = classOwner;
-	}
-
-	public LivingEntity getTarget() {
-		return target;
-	}
-
-	public void setTarget(LivingEntity target) {
-		this.target = target;
-	}
-
-	public List<Ability> getAbilities() {
-		return abilities;
-	}
-
-	public void setAbilities(List<Ability> abilities) {
-		this.abilities = abilities;
 	}
 
 }

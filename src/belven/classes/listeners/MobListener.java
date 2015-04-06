@@ -9,6 +9,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -37,7 +38,7 @@ public class MobListener implements Listener {
 		plugin = instance;
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onCreatureSpawnEvent(CreatureSpawnEvent event) {
 		if (EntityFunctions.IsAMob(event.getEntityType())) {
 			LivingEntity le = event.getEntity();
@@ -101,7 +102,7 @@ public class MobListener implements Listener {
 		PlayerInventory pInv = p.getInventory();
 		belven.classes.RPGClass playerClass = plugin.GetClass(p);
 
-		for (ClassDrop cd : playerClass.classDrops) {
+		for (ClassDrop cd : playerClass.getClassDrops()) {
 			if (cd.alwaysGive || Functions.numberBetween(ran, cd.lowChance, cd.highChance)
 					&& cd.isWilderness == isWilderness) {
 				if (!cd.isArmor) {

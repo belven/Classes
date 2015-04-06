@@ -31,7 +31,7 @@ public class DamageTrap extends Ability {
 		Location targetLocation = getRPGClass().getPlayer().getLocation();
 		if (targetLocation.getBlock().getType() != Material.WOOL) {
 			new DamageTrapTimer(targetLocation.getBlock(), getRPGClass().getPlayer().getLevel(), 6).runTaskTimer(
-					getRPGClass().plugin, Functions.SecondsToTicks(5), Functions.SecondsToTicks(2));
+					getRPGClass().getPlugin(), Functions.SecondsToTicks(5), Functions.SecondsToTicks(2));
 
 			targetLocation.getBlock().setType(Material.WOOL);
 			getRPGClass().getPlayer().addPotionEffect(
