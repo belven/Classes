@@ -16,6 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
@@ -26,6 +27,18 @@ import belven.classes.events.ClassChangeEvent;
 import belven.classes.listeners.BlockListener;
 import belven.classes.listeners.MobListener;
 import belven.classes.listeners.PlayerListener;
+import belven.classes.player.Archer;
+import belven.classes.player.Assassin;
+import belven.classes.player.Berserker;
+import belven.classes.player.DEFAULT;
+import belven.classes.player.Daemon;
+import belven.classes.player.Healer;
+import belven.classes.player.Knight;
+import belven.classes.player.Mage;
+import belven.classes.player.Monk;
+import belven.classes.player.Priest;
+import belven.classes.player.RPGClass;
+import belven.classes.player.Warrior;
 import belven.resources.Group;
 import belven.resources.PlayerExtended;
 
@@ -34,7 +47,7 @@ public class ClassManager extends JavaPlugin {
 	private final BlockListener blockListener = new BlockListener(this);
 	private final MobListener mobListener = new MobListener(this);
 
-	private HashMap<Player, RPGClass> CurrentPlayerClasses = new HashMap<Player, RPGClass>();
+	private HashMap<LivingEntity, RPGClass> CurrentPlayerClasses = new HashMap<LivingEntity, RPGClass>();
 	public HashMap<Player, PlayerExtended> PlayersE = new HashMap<Player, PlayerExtended>();
 
 	private static HashMap<String, Class<? extends RPGClass>> StrToRPGClass = new HashMap<String, Class<? extends RPGClass>>();
@@ -53,7 +66,6 @@ public class ClassManager extends JavaPlugin {
 		StrToRPGClass.put("Default", DEFAULT.class);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onEnable() {
 		PluginManager pm = getServer().getPluginManager();
@@ -90,7 +102,6 @@ public class ClassManager extends JavaPlugin {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		Player p = (Player) sender;
 		String commandSent = cmd.getName();

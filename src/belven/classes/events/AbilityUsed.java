@@ -29,10 +29,10 @@ public class AbilityUsed extends Event {
 	}
 
 	public Player GetPlayer() {
-		return a.currentClass.classOwner;
+		return a.currentClass.getPlayer();
 	}
 
-	public belven.classes.RPGClass GetClass() {
+	public belven.classes.player.RPGClass GetClass() {
 		return a.currentClass;
 	}
 }

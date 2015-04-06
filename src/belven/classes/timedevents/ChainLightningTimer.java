@@ -10,8 +10,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import belven.classes.RPGClass;
-import belven.classes.Abilities.ChainLightning;
+import belven.classes.player.RPGClass;
+import belven.classes.player.Abilities.ChainLightning;
 import belven.resources.EntityFunctions;
 import belven.resources.Functions;
 
@@ -25,7 +25,7 @@ public class ChainLightningTimer extends BukkitRunnable {
 
 	public ChainLightningTimer(ChainLightning currentChainLightning) {
 		currentClass = currentChainLightning.currentClass;
-		amp = currentChainLightning.Amplifier;
+		amp = currentChainLightning.amplifier;
 		maxDuration = 24;
 	}
 
@@ -43,7 +43,7 @@ public class ChainLightningTimer extends BukkitRunnable {
 
 	public Location getLocation() {
 		return target != null && !target.isDead() ? target.getLocation()
-				: currentClass.classOwner == null ? lastLocation : currentClass.classOwner.getLocation();
+				: currentClass.getPlayer() == null ? lastLocation : currentClass.getPlayer().getLocation();
 	}
 
 	@Override
@@ -53,11 +53,11 @@ public class ChainLightningTimer extends BukkitRunnable {
 			for (LivingEntity e : entities) {
 				LivingEntity le = entities.get(Functions.getRandomIndex(entities));
 
-				if (le != currentClass.classOwner) {// &&
+				if (le != currentClass.getPlayer()) {// &&
 					// !targetsHit.contains(le))
 					// {
 					if (le.getType() == EntityType.PLAYER
-							&& !currentClass.plugin.isAlly(currentClass.classOwner, (Player) le)) {
+							&& !currentClass.plugin.isAlly(currentClass.getPlayer(), (Player) le)) {
 						doDamage(le);
 						break;
 					} else if (le.getType() != EntityType.PLAYER) {
@@ -68,7 +68,7 @@ public class ChainLightningTimer extends BukkitRunnable {
 			}
 
 		} else {
-			currentClass.classOwner.sendMessage("Chain Lightning Ended");
+			currentClass.getPlayer().sendMessage("Chain Lightning Ended");
 			this.cancel();
 		}
 	}

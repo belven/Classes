@@ -1,0 +1,35 @@
+package belven.classes.player.Abilities;
+
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+
+import belven.classes.Abilities.Ability;
+import belven.classes.player.RPGClass;
+import belven.resources.Functions;
+
+public class SetAlight extends Ability {
+	public SetAlight(RPGClass cc, int priority, int amp) {
+		super(cc, priority, amp);
+
+		requirements.add(new ItemStack(Material.FIREWORK_CHARGE, 1));
+		abilitiyName = "Set Alight";
+	}
+
+	@Override
+	public boolean PerformAbility() {
+		int Amplifier = Amplifier();
+
+		if (Amplifier > 10) {
+			Amplifier = 10;
+		}
+
+		currentClass.getPlayer().setFireTicks(Functions.SecondsToTicks(Amplifier));
+		currentClass.setAbilityOnCoolDown(this);
+		return true;
+	}
+
+	@Override
+	public int Amplifier() {
+		return Math.round(currentClass.getPlayer().getLevel() / 5) + 2;
+	}
+}

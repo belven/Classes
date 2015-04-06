@@ -10,20 +10,23 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Dye;
 import org.bukkit.material.Wool;
 
+import belven.classes.player.RPGClass;
+
 public class Ability {
-	List<ItemStack> requirements = new ArrayList<ItemStack>();
-	List<Material> inHandRequirements = new ArrayList<Material>();
-	public belven.classes.RPGClass currentClass;
+	protected List<ItemStack> requirements = new ArrayList<ItemStack>();
+	protected List<Material> inHandRequirements = new ArrayList<Material>();
+	public RPGClass currentClass;
 	protected String abilitiyName = "";
 	public boolean onCooldown = false;
 	public boolean shouldBreak = true;
-	public int Priority = 0;
-	public int Amplifier = 5;
-	public int Cooldown = 1;
+	public int priority = 0;
+	public int amplifier = 5;
+	public int cooldown = 1;
 
-	public Ability(int Priority, int amplifier) {
-		this.Priority = Priority;
-		Amplifier = amplifier;
+	public Ability(RPGClass cc, int Priority, int amplifier) {
+		this.priority = Priority;
+		this.amplifier = amplifier;
+		this.currentClass = cc;
 	}
 
 	public boolean PerformAbility() {
@@ -34,16 +37,16 @@ public class Ability {
 		return 0;
 	}
 
-	public boolean hasInHandReq(Player p) {
+	public boolean hasInHandReq() {
 		if (inHandRequirements.size() > 0) {
-			Material type = p.getItemInHand().getType();
+			Material type = getPlayer().getItemInHand().getType();
 
 			if (!inHandRequirements.contains(type)) {
 				return false;
 			}
 
 			for (ItemStack is : requirements) {
-				if (is.getType() == type && hasSameItemData(is, p.getItemInHand())) {
+				if (is.getType() == type && hasSameItemData(is, getPlayer().getItemInHand())) {
 					return true;
 				}
 			}
@@ -54,11 +57,11 @@ public class Ability {
 		return true;
 	}
 
-	public boolean HasRequirements(Player p) {
+	public boolean HasRequirements() {
 		int checksRequired = 0;
-		Inventory playerInventory = p.getInventory();
+		Inventory playerInventory = getPlayer().getInventory();
 
-		if (!hasInHandReq(p)) {
+		if (!hasInHandReq()) {
 			return false;
 		}
 
@@ -91,7 +94,7 @@ public class Ability {
 
 	@SuppressWarnings("deprecation")
 	public void RemoveItems() {
-		Inventory playerInventory = currentClass.classOwner.getInventory();
+		Inventory playerInventory = getPlayer().getInventory();
 
 		for (ItemStack is : requirements) {
 			for (ItemStack iis : playerInventory) {
@@ -108,7 +111,11 @@ public class Ability {
 				}
 			}
 		}
-		currentClass.classOwner.updateInventory();
+		getPlayer().updateInventory();
+	}
+
+	private Player getPlayer() {
+		return (Player) currentClass.getPlayer();
 	}
 
 	public void removeItem(Inventory inv, ItemStack is) {

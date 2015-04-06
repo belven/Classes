@@ -79,7 +79,7 @@ public class MobListener implements Listener {
 	private synchronized void GiveClassDrops(Player p, boolean isWilderness) {
 		int ran = randomGenerator.nextInt(99);
 		PlayerInventory pInv = p.getInventory();
-		belven.classes.RPGClass playerClass = plugin.GetClass(p);
+		belven.classes.player.RPGClass playerClass = plugin.GetClass(p);
 
 		for (ClassDrop cd : playerClass.classDrops) {
 			if (cd.alwaysGive || Functions.numberBetween(ran, cd.lowChance, cd.highChance)

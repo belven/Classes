@@ -3,7 +3,7 @@ package belven.classes.timedevents;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import belven.classes.Abilities.Barrier;
+import belven.classes.player.Abilities.Barrier;
 
 public class BarrierTimer extends BukkitRunnable {
 	private Player currentPlayer;
@@ -12,7 +12,7 @@ public class BarrierTimer extends BukkitRunnable {
 
 	public BarrierTimer(Barrier currentBarrier) {
 		this.currentBarrier = currentBarrier;
-		currentPlayer = currentBarrier.currentClass.classOwner;
+		currentPlayer = currentBarrier.currentClass.getPlayer();
 		maxDuration = 30;
 	}
 
