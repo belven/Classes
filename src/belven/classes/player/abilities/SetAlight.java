@@ -24,13 +24,13 @@ public class SetAlight extends Ability {
 			Amplifier = 10;
 		}
 
-		currentClass.getPlayer().setFireTicks(Functions.SecondsToTicks(Amplifier));
-		currentClass.setAbilityOnCoolDown(this);
+		getRPGClass().getPlayer().setFireTicks(Functions.SecondsToTicks(Amplifier));
+		getRPGClass().setAbilityOnCoolDown(this);
 		return true;
 	}
 
 	@Override
 	public int Amplifier() {
-		return Math.round(currentClass.getPlayer().getLevel() / 5) + 2;
+		return Math.round(getRPGClass().getPlayer().getLevel() / 5) + 2;
 	}
 }

@@ -28,8 +28,8 @@ public class Sapper extends MobClass {
 
 	@Override
 	public void SetAbilities() {
-		abilities.add(new StealLife(this, 10, 1));
-		abilities.add(new Slow(this, 1, 1));
+		getAbilities().add(new StealLife(this, 10, 1));
+		getAbilities().add(new Slow(this, 1, 1));
 	}
 
 	@Override
@@ -40,12 +40,12 @@ public class Sapper extends MobClass {
 
 	@Override
 	public void SelfDamageOther(EntityDamageByEntityEvent event) {
-		targetLE = (LivingEntity) event.getEntity();
-		for (Ability a : abilities) {
-			if (!a.onCooldown) {
+		setTarget((LivingEntity) event.getEntity());
+		for (Ability a : getAbilities()) {
+			if (!a.onCooldown()) {
 				if (!a.PerformAbility(event)) {
 					continue;
-				} else if (a.shouldBreak) {
+				} else if (a.shouldBreak()) {
 					break;
 				}
 			}

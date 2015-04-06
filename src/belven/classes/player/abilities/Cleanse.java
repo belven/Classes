@@ -22,7 +22,7 @@ public class Cleanse extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		Player playerToHeal = currentClass.targetPlayer;
+		Player playerToHeal = getRPGClass().targetPlayer;
 
 		if (playerToHeal == null) {
 			return false;

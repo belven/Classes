@@ -24,7 +24,7 @@ public class BolsterHealth extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		Player playerToHeal = currentClass.targetPlayer;
+		Player playerToHeal = getRPGClass().targetPlayer;
 
 		if (playerToHeal == null) {
 			return false;
@@ -33,11 +33,11 @@ public class BolsterHealth extends Ability {
 		PotionEffect pe = new PotionEffect(PotionEffectType.HEALTH_BOOST, Functions.SecondsToTicks(Amplifier() + 30),
 				Amplifier(), true);
 
-		if (!onCooldown && !playerToHeal.hasPotionEffect(PotionEffectType.HEALTH_BOOST)) {
+		if (!onCooldown() && !playerToHeal.hasPotionEffect(PotionEffectType.HEALTH_BOOST)) {
 			playerToHeal.addPotionEffect(pe, false);
 
-			currentClass.getPlayer().sendMessage("You boosted  " + playerToHeal.getName() + "s max health");
-			currentClass.setAbilityOnCoolDown(this, true);
+			getRPGClass().getPlayer().sendMessage("You boosted  " + playerToHeal.getName() + "s max health");
+			getRPGClass().setAbilityOnCoolDown(this, true);
 			RemoveItems();
 			return true;
 		}
@@ -55,6 +55,6 @@ public class BolsterHealth extends Ability {
 
 	@Override
 	public int Amplifier() {
-		return Functions.abilityCap((double) amplifier + 1, currentClass.getPlayer().getLevel());
+		return Functions.abilityCap((double) amplifier + 1, getRPGClass().getPlayer().getLevel());
 	}
 }

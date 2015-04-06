@@ -20,9 +20,9 @@ public class ChainLightning extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		currentClass.getPlayer().sendMessage(abilitiyName + " has been used!");
-		new ChainLightningTimer(this).runTaskTimer(currentClass.plugin, 0, 10);
-		currentClass.UltAbilityUsed(this);
+		getRPGClass().getPlayer().sendMessage(abilitiyName + " has been used!");
+		new ChainLightningTimer(this).runTaskTimer(getRPGClass().plugin, 0, 10);
+		getRPGClass().UltAbilityUsed(this);
 		return true;
 	}
 }

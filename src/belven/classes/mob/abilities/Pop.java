@@ -12,16 +12,16 @@ public class Pop extends Ability {
 	public Pop(MobClass cc, int Priority, int amplifier) {
 		super(cc, Priority, amplifier);
 		cooldown = 10;
-		shouldBreak = true;
+		setShouldBreak(true);
 	}
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		if (currentClass.targetLE != null) {
-			Location l = currentClass.targetLE.getLocation();
+		if (getRPGClass().getTarget() != null) {
+			Location l = getRPGClass().getTarget().getLocation();
 			l = Functions.offsetLocation(l, 0, 1, 0);
-			currentClass.targetLE.teleport(l);
-			currentClass.setAbilityOnCoolDown(this);
+			getRPGClass().getTarget().teleport(l);
+			getRPGClass().setAbilityOnCoolDown(this);
 			return true;
 		}
 		return false;

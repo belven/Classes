@@ -42,17 +42,17 @@ public class Healer extends RPGClass {
 	}
 
 	public synchronized void CheckAbilitiesToCast(Player player, Event event) {
-		targetLE = player;
+		setTarget(player);
 		targetPlayer = player;
 		if (MaterialFunctions.isFood(getPlayer().getItemInHand().getType())) {
 			return;
 		}
 
-		for (Ability a : abilities) {
-			if (!a.onCooldown && a.HasRequirements()) {
+		for (Ability a : getAbilities()) {
+			if (!a.onCooldown() && a.HasRequirements()) {
 				if (!a.PerformAbility(event)) {
 					continue;
-				} else if (a.shouldBreak) {
+				} else if (a.shouldBreak()) {
 					break;
 				}
 			}
@@ -121,10 +121,10 @@ public class Healer extends RPGClass {
 			classBandage = new Bandage(this, 0, 3);
 			classBarrier = new Barrier(this, 6, 4, 10);
 
-			abilities.add(classBandage);
-			abilities.add(classBarrier);
-			abilities.add(classHeal);
-			abilities.add(classLightHeal);
+			getAbilities().add(classBandage);
+			getAbilities().add(classBarrier);
+			getAbilities().add(classHeal);
+			getAbilities().add(classLightHeal);
 			SortAbilities();
 			abilitiesSet = true;
 		}

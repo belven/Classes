@@ -21,20 +21,20 @@ public class Bandage extends Ability {
 		inHandRequirements.add(Material.PAPER);
 		inHandRequirements.add(Material.STICK);
 		abilitiyName = "Bandage";
-		shouldBreak = false;
+		setShouldBreak(false);
 		cooldown = 10;
 	}
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		Player targetPlayer = currentClass.targetPlayer;
+		Player targetPlayer = getRPGClass().targetPlayer;
 
 		if (targetPlayer == null) {
 			return false;
 		}
 
-		if (EntityFunctions.isHealthLessThanOther(currentClass.getPlayer(), targetPlayer)) {
-			targetPlayer = currentClass.getPlayer();
+		if (EntityFunctions.isHealthLessThanOther(getRPGClass().getPlayer(), targetPlayer)) {
+			targetPlayer = getRPGClass().getPlayer();
 		}
 
 		if (targetPlayer.hasPotionEffect(PotionEffectType.ABSORPTION)) {
@@ -51,14 +51,14 @@ public class Bandage extends Ability {
 		targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, Functions.SecondsToTicks(20),
 				Amplifier()), true);
 
-		currentClass.setAbilityOnCoolDown(this, true);
+		getRPGClass().setAbilityOnCoolDown(this, true);
 		RemoveItems();
 		return true;
 	}
 
 	@Override
 	public int Amplifier() {
-		return Functions.abilityCap((double) amplifier + 1, currentClass.getPlayer().getLevel());
+		return Functions.abilityCap((double) amplifier + 1, getRPGClass().getPlayer().getLevel());
 	}
 
 }

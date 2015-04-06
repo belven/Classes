@@ -25,7 +25,7 @@ import belven.resources.EntityFunctions;
 import belven.resources.Functions;
 
 public abstract class RPGClass {
-	public List<Ability> abilities = new ArrayList<Ability>();
+	private List<Ability> abilities = new ArrayList<Ability>();
 	public List<ClassDrop> classDrops = new ArrayList<ClassDrop>();
 
 	public boolean abilitiesSet = false;
@@ -34,15 +34,15 @@ public abstract class RPGClass {
 	protected String baseClassName = "";
 	protected String className = "";
 
-	public LivingEntity classOwner = null;
-	public LivingEntity targetLE;
+	private LivingEntity classOwner = null;
+	private LivingEntity target;
 
 	public ClassManager plugin;
 	public Player targetPlayer;
 
 	public RPGClass(double health, LivingEntity classOwner, ClassManager instance) {
 		plugin = instance;
-		this.classOwner = classOwner;
+		this.setOwner(classOwner);
 
 		Damageable dcurrentPlayer = classOwner;
 		dcurrentPlayer.setMaxHealth(health * 2);
@@ -54,7 +54,7 @@ public abstract class RPGClass {
 	}
 
 	public void AddAbility(Ability ability, int cooldown) {
-		abilities.add(ability);
+		getAbilities().add(ability);
 		ability.cooldown = cooldown;
 	}
 
@@ -80,7 +80,7 @@ public abstract class RPGClass {
 	}
 
 	public Player getPlayer() {
-		return (Player) classOwner;
+		return (Player) getOwner();
 	}
 
 	public LivingEntity getTarget(int radius, Player p) {
@@ -124,8 +124,8 @@ public abstract class RPGClass {
 	}
 
 	public void ListAbilities() {
-		for (Ability a : abilities) {
-			classOwner.sendMessage(a.GetAbilityName());
+		for (Ability a : getAbilities()) {
+			getOwner().sendMessage(a.GetAbilityName());
 		}
 	}
 
@@ -165,7 +165,7 @@ public abstract class RPGClass {
 	public void setAbilityOnCoolDown(Ability currentAbility, boolean sendMessage) {
 		new AbilityCooldown(currentAbility, sendMessage).runTaskLater(plugin,
 				Functions.SecondsToTicks(currentAbility.cooldown));
-		currentAbility.onCooldown = true;
+		currentAbility.setOnCooldown(true);
 	}
 
 	public void SetClassDrops() {
@@ -173,7 +173,7 @@ public abstract class RPGClass {
 	}
 
 	public void SortAbilities() {
-		SortAbilities(abilities);
+		SortAbilities(getAbilities());
 	}
 
 	public void SortAbilities(List<Ability> tempAbilities) {
@@ -190,6 +190,30 @@ public abstract class RPGClass {
 
 	public void UltAbilityUsed(Ability currentAbility) {
 		setAbilityOnCoolDown(currentAbility);
+	}
+
+	public LivingEntity getOwner() {
+		return classOwner;
+	}
+
+	public void setOwner(LivingEntity classOwner) {
+		this.classOwner = classOwner;
+	}
+
+	public LivingEntity getTarget() {
+		return target;
+	}
+
+	public void setTarget(LivingEntity target) {
+		this.target = target;
+	}
+
+	public List<Ability> getAbilities() {
+		return abilities;
+	}
+
+	public void setAbilities(List<Ability> abilities) {
+		this.abilities = abilities;
 	}
 
 }

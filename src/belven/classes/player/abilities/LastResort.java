@@ -20,13 +20,13 @@ public class LastResort extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		currentClass.getPlayer().addPotionEffect(
+		getRPGClass().getPlayer().addPotionEffect(
 				new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Functions.SecondsToTicks(Amplifier()), 4), false);
 		return true;
 	}
 
 	@Override
 	public int Amplifier() {
-		return Math.round(currentClass.getPlayer().getLevel() / amplifier);
+		return Math.round(getRPGClass().getPlayer().getLevel() / amplifier);
 	}
 }

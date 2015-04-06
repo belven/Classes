@@ -35,7 +35,7 @@ public class Assassin extends RPGClass {
 
 	public void TeleportToTarget(Entity currentEntity) {
 		Location mobLocation = currentEntity.getLocation(), locationToTeleportTo = currentEntity.getLocation();
-		Location playerLocation = classOwner.getLocation(), recallLocation = classOwner.getLocation();
+		Location playerLocation = getOwner().getLocation(), recallLocation = getOwner().getLocation();
 
 		recallLocation.setY(recallLocation.getY() - 1);
 		// recallBlock = recallLocation.getBlock();
@@ -63,7 +63,7 @@ public class Assassin extends RPGClass {
 	public boolean HasLineOfSight(Entity damagedEntity) {
 		if (damagedEntity instanceof LivingEntity) {
 			LivingEntity currentLivingEntity = (LivingEntity) damagedEntity;
-			return currentLivingEntity.hasLineOfSight(classOwner);
+			return currentLivingEntity.hasLineOfSight(getOwner());
 		}
 		return false;
 	}
@@ -72,7 +72,7 @@ public class Assassin extends RPGClass {
 		for (int i = (int) locationToTeleportTo.getY(); i < locationToTeleportTo.getY() + 20; i++) {
 			if (locationToTeleportTo.getBlock().getType() == Material.AIR) {
 				Location temp = EntityFunctions.lookAt(locationToTeleportTo, mobLocation);
-				classOwner.teleport(temp);
+				getOwner().teleport(temp);
 				break;
 			} else {
 				locationToTeleportTo.setY(i);
@@ -118,19 +118,19 @@ public class Assassin extends RPGClass {
 		Entity damagedEntity = event.getEntity();
 		boolean arrowEntity = event.getDamager().getType() == EntityType.ARROW;
 
-		if (classOwner.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-			classOwner.removePotionEffect(PotionEffectType.INVISIBILITY);
+		if (getOwner().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
+			getOwner().removePotionEffect(PotionEffectType.INVISIBILITY);
 		}
 
 		if (!arrowEntity) {
-			if (!classStealth.onCooldown) {
+			if (!classStealth.onCooldown()) {
 				classStealth.PerformAbility(event);
 			}
 		} else {
 			TeleportToTarget(damagedEntity);
 		}
 
-		EntityFunctions.Heal(classOwner, 1);
+		EntityFunctions.Heal(getOwner(), 1);
 	}
 
 	@Override
@@ -138,8 +138,8 @@ public class Assassin extends RPGClass {
 		if (!abilitiesSet) {
 			classStealth = new Stealth(this, 1, 1);
 			classSoulDrain = new SoulDrain(this, 1, 0);
-			abilities.add(classSoulDrain);
-			abilities.add(classStealth);
+			getAbilities().add(classSoulDrain);
+			getAbilities().add(classStealth);
 			classStealth.cooldown = 3;
 			SortAbilities();
 			abilitiesSet = true;
@@ -148,7 +148,7 @@ public class Assassin extends RPGClass {
 
 	@Override
 	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
-		if (!classSoulDrain.onCooldown && getPlayer().getItemInHand().getType() == Material.NETHER_STAR) {
+		if (!classSoulDrain.onCooldown() && getPlayer().getItemInHand().getType() == Material.NETHER_STAR) {
 			classSoulDrain.PerformAbility(event);
 			UltAbilityUsed(classSoulDrain);
 		}

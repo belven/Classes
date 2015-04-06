@@ -24,7 +24,7 @@ public class ChainLightningTimer extends BukkitRunnable {
 	private Location lastLocation;
 
 	public ChainLightningTimer(ChainLightning currentChainLightning) {
-		currentClass = currentChainLightning.currentClass;
+		currentClass = currentChainLightning.getRPGClass();
 		amp = currentChainLightning.amplifier;
 		maxDuration = 24;
 	}
@@ -50,7 +50,7 @@ public class ChainLightningTimer extends BukkitRunnable {
 	public void run() {
 		if (maxDuration > 0) {
 			List<LivingEntity> entities = EntityFunctions.getNearbyEntities(getLocation(), 15);
-			for (LivingEntity e : entities) {
+			for (int i = 0; i < entities.size(); i++) {
 				LivingEntity le = entities.get(Functions.getRandomIndex(entities));
 
 				if (le != currentClass.getPlayer()) {// &&

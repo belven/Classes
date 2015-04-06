@@ -15,9 +15,9 @@ public class StealLife extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		if (currentClass.targetLE != null) {
-			EntityFunctions.Heal(currentClass.targetLE, -amplifier);
-			EntityFunctions.Heal(currentClass.classOwner, amplifier);
+		if (getRPGClass().getTarget() != null) {
+			EntityFunctions.Heal(getRPGClass().getTarget(), -amplifier);
+			EntityFunctions.Heal(getRPGClass().getOwner(), amplifier);
 			return true;
 		}
 		return false;

@@ -42,12 +42,12 @@ public class KnightBoss extends MobClass {
 
 	@Override
 	public void SelfDamageOther(EntityDamageByEntityEvent event) {
-		targetLE = (LivingEntity) event.getEntity();
-		for (Ability a : abilities) {
-			if (!a.onCooldown) {
+		setTarget((LivingEntity) event.getEntity());
+		for (Ability a : getAbilities()) {
+			if (!a.onCooldown()) {
 				if (!a.PerformAbility(event)) {
 					continue;
-				} else if (a.shouldBreak) {
+				} else if (a.shouldBreak()) {
 					break;
 				}
 			}

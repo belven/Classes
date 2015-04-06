@@ -45,8 +45,8 @@ public class Berserker extends RPGClass {
 			return;
 		}
 
-		for (Ability a : abilities) {
-			if (!a.onCooldown && a.HasRequirements()) {
+		for (Ability a : getAbilities()) {
+			if (!a.onCooldown() && a.HasRequirements()) {
 				if (!a.PerformAbility(event)) {
 					continue;
 				} else {
@@ -60,7 +60,7 @@ public class Berserker extends RPGClass {
 	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
 		double healthPercent = plugin.GetPlayerE(getPlayer()).GetMissingHealthPercent();
 
-		this.classOwner.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Functions.SecondsToTicks(2),
+		this.getOwner().addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Functions.SecondsToTicks(2),
 				(int) (2 * healthPercent)));
 	}
 
@@ -79,7 +79,7 @@ public class Berserker extends RPGClass {
 
 				LivingEntity le = (LivingEntity) e;
 
-				if (le != this.classOwner) {
+				if (le != this.getOwner()) {
 					le.damage(damageToDo);
 					mobCount++;
 				}
@@ -89,7 +89,7 @@ public class Berserker extends RPGClass {
 
 				// Map<DamageModifier, ? extends Function<? super Double, Double>> test = null;
 
-				EntityDamageByEntityEvent ede = new EntityDamageByEntityEvent(classOwner, le,
+				EntityDamageByEntityEvent ede = new EntityDamageByEntityEvent(getOwner(), le,
 						DamageCause.ENTITY_ATTACK, damageToDo);
 
 				le.setLastDamageCause(ede);
@@ -102,7 +102,7 @@ public class Berserker extends RPGClass {
 	public void SetAbilities() {
 		if (!abilitiesSet) {
 			this.classGrapple = new Grapple(this, 1, 0);
-			abilities.add(classGrapple);
+			getAbilities().add(classGrapple);
 			SortAbilities();
 			abilitiesSet = true;
 		}
@@ -115,8 +115,8 @@ public class Berserker extends RPGClass {
 			return;
 		}
 
-		for (Ability a : abilities) {
-			if (!a.onCooldown && a.HasRequirements()) {
+		for (Ability a : getAbilities()) {
+			if (!a.onCooldown() && a.HasRequirements()) {
 				if (!a.PerformAbility(event)) {
 					continue;
 				} else {

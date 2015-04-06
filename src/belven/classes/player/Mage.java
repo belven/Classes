@@ -40,11 +40,11 @@ public class Mage extends RPGClass {
 	}
 
 	public void CheckAbilitiesToCast(Event event) {
-		for (Ability a : abilities) {
-			if (!a.onCooldown && a.HasRequirements()) {
+		for (Ability a : getAbilities()) {
+			if (!a.onCooldown() && a.HasRequirements()) {
 				if (!a.PerformAbility(event)) {
 					continue;
-				} else if (a.shouldBreak) {
+				} else if (a.shouldBreak()) {
 					break;
 				}
 			}
@@ -80,7 +80,7 @@ public class Mage extends RPGClass {
 	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
 		if (event.getDamager().getType() == EntityType.LIGHTNING) {
 			event.setDamage(0.0);
-		} else if (!classLightningStrike.onCooldown) {
+		} else if (!classLightningStrike.onCooldown()) {
 			Entity entityToStrike = EntityFunctions.GetDamager(event);
 			if (entityToStrike != null) {
 				classLightningStrike.PerformAbility(event);
@@ -102,10 +102,10 @@ public class Mage extends RPGClass {
 			classPop = new Pop(this, 4, 5);
 
 			classLightningStrike.cooldown = 2;
-			abilities.add(classFireball);
-			abilities.add(classChainLightning);
-			abilities.add(classLightningStrike);
-			abilities.add(classPop);
+			getAbilities().add(classFireball);
+			getAbilities().add(classChainLightning);
+			getAbilities().add(classLightningStrike);
+			getAbilities().add(classPop);
 			SortAbilities();
 			abilitiesSet = true;
 		}

@@ -20,8 +20,8 @@ public class Knight extends Warrior {
 
 	@Override
 	public void SelfDamageOther(EntityDamageByEntityEvent event) {
-		if (classOwner.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
-			classOwner.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
+		if (getOwner().hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
+			getOwner().removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
 		}
 	}
 
@@ -33,7 +33,7 @@ public class Knight extends Warrior {
 	@Override
 	public void AbilityUsed(Ability ability) {
 		if (ability == currentRetaliation) {
-			classOwner.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Functions.SecondsToTicks(10),
+			getOwner().addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Functions.SecondsToTicks(10),
 					Functions.abilityCap(2, getPlayer().getLevel())), true);
 		}
 	}

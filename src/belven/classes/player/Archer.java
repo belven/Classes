@@ -43,10 +43,10 @@ public class Archer extends RPGClass {
 	}
 
 	private void CheckAbilitiesToCast(Entity currentEntity, Event event) {
-		Location trapLocation = classOwner.getLocation();
+		Location trapLocation = getOwner().getLocation();
 		trapLocation.setY(trapLocation.getY() - 1);
-		for (Ability a : abilities) {
-			if (!a.onCooldown && a.HasRequirements()) {
+		for (Ability a : getAbilities()) {
+			if (!a.onCooldown() && a.HasRequirements()) {
 				if (!a.PerformAbility(event)) {
 					continue;
 				} else {
@@ -113,8 +113,8 @@ public class Archer extends RPGClass {
 			classCripplingArrow = new WebArrow(this, 0, 0);
 			classFireTrap = new FireTrap(this, 1, 0);
 			classDamageTrap = new DamageTrap(this, 1, 0);
-			abilities.add(classFireTrap);
-			abilities.add(classDamageTrap);
+			getAbilities().add(classFireTrap);
+			getAbilities().add(classDamageTrap);
 			SortAbilities();
 
 			abilitiesSet = true;

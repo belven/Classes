@@ -24,18 +24,18 @@ public class Heal extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		Player playerToHeal = currentClass.targetPlayer;
+		Player playerToHeal = getRPGClass().targetPlayer;
 
 		if (playerToHeal == null) {
 			return false;
 		}
 
-		if (currentClass.plugin.GetPlayerE(playerToHeal).GetHealthPercent() <= 0.3) {
-			new HealTimer(currentClass.plugin, 0.4, playerToHeal);
+		if (getRPGClass().plugin.GetPlayerE(playerToHeal).GetHealthPercent() <= 0.3) {
+			new HealTimer(getRPGClass().plugin, 0.4, playerToHeal);
 
-			currentClass.getPlayer().sendMessage("You healed " + playerToHeal.getName());
+			getRPGClass().getPlayer().sendMessage("You healed " + playerToHeal.getName());
 
-			currentClass.setAbilityOnCoolDown(this, true);
+			getRPGClass().setAbilityOnCoolDown(this, true);
 			RemoveItems();
 			return true;
 		}
@@ -44,6 +44,6 @@ public class Heal extends Ability {
 
 	@Override
 	public int Amplifier() {
-		return Functions.abilityCap(amplifier, currentClass.getPlayer().getLevel()) + 1;
+		return Functions.abilityCap(amplifier, getRPGClass().getPlayer().getLevel()) + 1;
 	}
 }

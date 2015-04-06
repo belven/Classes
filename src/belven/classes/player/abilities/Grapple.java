@@ -24,24 +24,24 @@ public class Grapple extends Ability {
 	@Override
 	public boolean PerformAbility(Event e) {
 
-		List<LivingEntity> tempTargets = EntityFunctions.findAllTargets(currentClass.getPlayer(), 50.0D);
+		List<LivingEntity> tempTargets = EntityFunctions.findAllTargets(getRPGClass().getPlayer(), 50.0D);
 
 		if (tempTargets != null && tempTargets.size() > 0) {
-			Location l = this.currentClass.getPlayer().getLocation();
+			Location l = this.getRPGClass().getPlayer().getLocation();
 			l.setY(l.getY() + 1.0D);
 
 			for (LivingEntity le : tempTargets) {
 				if (le.getType() == EntityType.PLAYER) {
 					Player p = (Player) le;
 					if (shouldPull(p)) {
-						le.teleport(this.currentClass.getPlayer());
+						le.teleport(this.getRPGClass().getPlayer());
 					}
 				} else {
-					le.teleport(this.currentClass.getPlayer());
+					le.teleport(this.getRPGClass().getPlayer());
 				}
 			}
 
-			currentClass.setAbilityOnCoolDown(this);
+			getRPGClass().setAbilityOnCoolDown(this);
 			RemoveItems();
 			return true;
 		}
@@ -49,8 +49,8 @@ public class Grapple extends Ability {
 	}
 
 	public boolean shouldPull(Player target) {
-		// Player self = currentClass.getPlayer();
-		// ClassManager plugin = currentClass.plugin;
+		// Player self = getRPGClass().getPlayer();
+		// ClassManager plugin = getRPGClass().plugin;
 
 		// if (plugin.arenas != null && plugin.teams != null) {
 		// boolean selfInArena = plugin.arenas.IsPlayerInArena(self);

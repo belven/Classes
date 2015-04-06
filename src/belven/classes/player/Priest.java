@@ -25,7 +25,7 @@ public class Priest extends Healer {
 	public synchronized void SetAbilities() {
 		super.SetAbilities();
 
-		abilities.remove(classHeal);
+		getAbilities().remove(classHeal);
 
 		classAOEHeal = new AOEHeal(this, 0, 12);
 		classCleanse = new Cleanse(this, 3, 3);
@@ -33,9 +33,9 @@ public class Priest extends Healer {
 		classLightHeal.amplifier = 12;
 		classAOEHeal.cooldown = 8;
 
-		abilities.add(classAOEHeal);
-		abilities.add(classCleanse);
-		abilities.remove(classBandage);
+		getAbilities().add(classAOEHeal);
+		getAbilities().add(classCleanse);
+		getAbilities().remove(classBandage);
 
 		SortAbilities();
 	}

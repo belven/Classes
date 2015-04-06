@@ -17,10 +17,10 @@ public class SelfProtection extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		if (currentClass.targetLE != null) {
-			currentClass.classOwner.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Functions
-					.SecondsToTicks(5), amplifier));
-			currentClass.setAbilityOnCoolDown(this);
+		if (getRPGClass().getTarget() != null) {
+			getRPGClass().getOwner().addPotionEffect(
+					new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Functions.SecondsToTicks(5), amplifier));
+			getRPGClass().setAbilityOnCoolDown(this);
 			return true;
 		}
 		return false;

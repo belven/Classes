@@ -27,13 +27,13 @@ public class FireTrap extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		Location targetLocation = currentClass.getPlayer().getLocation();
+		Location targetLocation = getRPGClass().getPlayer().getLocation();
 		if (targetLocation.getBlock().getType() != Material.WOOL) {
 			new FireTrapTimer(targetLocation.getBlock(), Functions.SecondsToTicks(Amplifier()), 4).runTaskTimer(
-					currentClass.plugin, Functions.SecondsToTicks(5), Functions.SecondsToTicks(2));
+					getRPGClass().plugin, Functions.SecondsToTicks(5), Functions.SecondsToTicks(2));
 
 			targetLocation.getBlock().setType(Material.WOOL);
-			currentClass.getPlayer().addPotionEffect(
+			getRPGClass().getPlayer().addPotionEffect(
 					new PotionEffect(PotionEffectType.SPEED, Functions.SecondsToTicks(2), 3));
 
 			RemoveItems();
@@ -45,6 +45,6 @@ public class FireTrap extends Ability {
 
 	@Override
 	public int Amplifier() {
-		return currentClass.getPlayer().getLevel() / 3 + 2;
+		return getRPGClass().getPlayer().getLevel() / 3 + 2;
 	}
 }

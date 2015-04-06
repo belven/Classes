@@ -24,13 +24,13 @@ public class AOEHeal extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		for (Player p : EntityFunctions.getNearbyPlayersNew(currentClass.getPlayer().getLocation(), Amplifier() + 8)) {
-			if (currentClass.plugin.isAlly(p, currentClass.getPlayer())) {
-				new HealTimer(currentClass.plugin, Amplifier() / 100.0, p, 5, 1);
+		for (Player p : EntityFunctions.getNearbyPlayersNew(getRPGClass().getPlayer().getLocation(), Amplifier() + 8)) {
+			if (getRPGClass().plugin.isAlly(p, getRPGClass().getPlayer())) {
+				new HealTimer(getRPGClass().plugin, Amplifier() / 100.0, p, 5, 1);
 			}
 		}
 
-		currentClass.setAbilityOnCoolDown(this, true);
+		getRPGClass().setAbilityOnCoolDown(this, true);
 
 		RemoveItems();
 		return true;
@@ -38,6 +38,6 @@ public class AOEHeal extends Ability {
 
 	@Override
 	public int Amplifier() {
-		return Functions.abilityCap((double) amplifier + 1, currentClass.getPlayer().getLevel());
+		return Functions.abilityCap((double) amplifier + 1, getRPGClass().getPlayer().getLevel());
 	}
 }

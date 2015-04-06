@@ -19,7 +19,7 @@ public class Retaliation extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		Player p = currentClass.getPlayer();
+		Player p = getRPGClass().getPlayer();
 		EntityDamageEvent ldc = p.getLastDamageCause();
 		LivingEntity entityDamaged = EntityFunctions.GetDamager(p);
 
@@ -28,7 +28,7 @@ public class Retaliation extends Ability {
 		}
 
 		Bukkit.getPluginManager().callEvent(new AbilityUsed(this));
-		currentClass.setAbilityOnCoolDown(this);
+		getRPGClass().setAbilityOnCoolDown(this);
 		return true;
 	}
 

@@ -17,18 +17,18 @@ public class MageFireball extends Ability {
 		requirements.add(dye.toItemStack(1));
 
 		abilitiyName = "Mage Fireball";
-		shouldBreak = false;
+		setShouldBreak(false);
 	}
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		currentClass.getPlayer().launchProjectile(Fireball.class);
+		getRPGClass().getPlayer().launchProjectile(Fireball.class);
 		RemoveItems();
 		return true;
 	}
 
 	@Override
 	public int Amplifier() {
-		return Math.round(currentClass.getPlayer().getLevel() / 7);
+		return Math.round(getRPGClass().getPlayer().getLevel() / 7);
 	}
 }

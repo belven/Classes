@@ -34,14 +34,14 @@ public class Daemon extends Berserker {
 		super.SelfDamageOther(event);
 
 		for (Entity e : EntityFunctions.getNearbyEntities(event.getEntity().getLocation(), 4)) {
-			e.setFireTicks(classOwner.getFireTicks());
+			e.setFireTicks(getOwner().getFireTicks());
 		}
 	}
 
 	@Override
 	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
 		super.SelfTakenDamage(event);
-		if (!classSetAlight.onCooldown && classSetAlight.HasRequirements()) {
+		if (!classSetAlight.onCooldown() && classSetAlight.HasRequirements()) {
 			classSetAlight.PerformAbility(event);
 		}
 	}
@@ -52,17 +52,17 @@ public class Daemon extends Berserker {
 
 		if (event.getCause() == DamageCause.FIRE_TICK || event.getCause() == DamageCause.FIRE) {
 
-			if (classOwner.hasPotionEffect(PotionEffectType.HUNGER)) {
-				classOwner.removePotionEffect(PotionEffectType.HUNGER);
+			if (getOwner().hasPotionEffect(PotionEffectType.HUNGER)) {
+				getOwner().removePotionEffect(PotionEffectType.HUNGER);
 			}
 
 			if (healthPercent <= 0.15) {
 				event.setDamage(0.0);
-			} else if (!classFeelTheBurn.onCooldown && classFeelTheBurn.HasRequirements()) {
+			} else if (!classFeelTheBurn.onCooldown() && classFeelTheBurn.HasRequirements()) {
 				classFeelTheBurn.PerformAbility(event);
 			}
 
-			classOwner.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Functions.SecondsToTicks(Amplifier()),
+			getOwner().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Functions.SecondsToTicks(Amplifier()),
 					3));
 		}
 	}

@@ -146,8 +146,8 @@ public class ClassManager extends JavaPlugin {
 			Collection<? extends Player> currentPlayers = this.getServer().getOnlinePlayers();
 			for (Player currentPlayer : currentPlayers) {
 				if (currentPlayer != null) {
-					RPGClass currentClass = currentPlayerClasses.get(currentPlayer);
-					p.sendMessage(currentPlayer.getName() + " is a " + currentClass.getClassName());
+					RPGClass newClass = currentPlayerClasses.get(currentPlayer);
+					p.sendMessage(currentPlayer.getName() + " is a " + newClass.getClassName());
 				}
 			}
 			return true;

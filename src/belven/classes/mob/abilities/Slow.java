@@ -17,10 +17,10 @@ public class Slow extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		if (currentClass.targetLE != null) {
-			currentClass.targetLE.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Functions.SecondsToTicks(3),
+		if (getRPGClass().getTarget() != null) {
+			getRPGClass().getTarget().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Functions.SecondsToTicks(3),
 					amplifier));
-			currentClass.setAbilityOnCoolDown(this);
+			getRPGClass().setAbilityOnCoolDown(this);
 			return true;
 		}
 		return false;

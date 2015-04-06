@@ -20,32 +20,32 @@ public class LightHeal extends Ability {
 		requirements.add(dye.toItemStack(1));
 
 		abilitiyName = "Light Heal";
-		shouldBreak = false;
+		setShouldBreak(false);
 	}
 
 	@Override
 	public synchronized boolean PerformAbility(Event e) {
-		Player playerToHeal = currentClass.targetPlayer;
+		Player playerToHeal = getRPGClass().targetPlayer;
 
-		if (playerToHeal == null || onCooldown) {
+		if (playerToHeal == null || onCooldown()) {
 			return false;
 		}
 
-		if (EntityFunctions.isHealthLessThanOther(currentClass.getPlayer(), playerToHeal)) {
-			playerToHeal = currentClass.getPlayer();
+		if (EntityFunctions.isHealthLessThanOther(getRPGClass().getPlayer(), playerToHeal)) {
+			playerToHeal = getRPGClass().getPlayer();
 		}
 
-		new HealTimer(currentClass.plugin, Amplifier() / 100.0, playerToHeal, 5, 1);
+		new HealTimer(getRPGClass().plugin, Amplifier() / 100.0, playerToHeal, 5, 1);
 
-		currentClass.getPlayer().sendMessage("You healed " + playerToHeal.getName());
+		getRPGClass().getPlayer().sendMessage("You healed " + playerToHeal.getName());
 
-		currentClass.setAbilityOnCoolDown(this);
+		getRPGClass().setAbilityOnCoolDown(this);
 		RemoveItems();
 		return true;
 	}
 
 	@Override
 	public int Amplifier() {
-		return Functions.abilityCap(amplifier + 1, currentClass.getPlayer().getLevel());
+		return Functions.abilityCap(amplifier + 1, getRPGClass().getPlayer().getLevel());
 	}
 }

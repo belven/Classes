@@ -46,7 +46,7 @@ public class Pop extends Ability {
 
 		for (Entity e : entitiesToDamage) {
 			if (e != null && e.getType() != EntityType.PLAYER) {
-				Vector vectorToUse = currentClass.getPlayer().getLocation().getDirection();
+				Vector vectorToUse = getRPGClass().getPlayer().getLocation().getDirection();
 				vectorToUse.setY(vectorToUse.getY() + 1);
 				e.setVelocity(vectorToUse);
 				counter++;

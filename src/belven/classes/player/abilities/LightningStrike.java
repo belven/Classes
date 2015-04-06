@@ -15,14 +15,14 @@ public class LightningStrike extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		LivingEntity targetEntity = currentClass.getTarget(30, currentClass.getPlayer());
+		LivingEntity targetEntity = getRPGClass().getTarget(30, getRPGClass().getPlayer());
 
 		if (targetEntity == null) {
 			return false;
 		}
 		LivingEntity entityDamaged = targetEntity;
 		entityDamaged.getWorld().strikeLightning(targetEntity.getLocation());
-		currentClass.setAbilityOnCoolDown(this);
+		getRPGClass().setAbilityOnCoolDown(this);
 		return true;
 	}
 }

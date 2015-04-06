@@ -12,7 +12,7 @@ public class BarrierTimer extends BukkitRunnable {
 
 	public BarrierTimer(Barrier currentBarrier) {
 		this.currentBarrier = currentBarrier;
-		currentPlayer = currentBarrier.currentClass.getPlayer();
+		currentPlayer = currentBarrier.getRPGClass().getPlayer();
 		maxDuration = 30;
 	}
 

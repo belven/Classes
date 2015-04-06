@@ -18,13 +18,13 @@ public class SoulDrain extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		LivingEntity targetEntity = currentClass.getTarget(30, currentClass.getPlayer());
+		LivingEntity targetEntity = getRPGClass().getTarget(30, getRPGClass().getPlayer());
 
 		if (targetEntity == null) {
 			return false;
 		}
 
-		if (currentClass.getPlayer().getItemInHand().getType() == Material.NETHER_STAR) {
+		if (getRPGClass().getPlayer().getItemInHand().getType() == Material.NETHER_STAR) {
 			targetEntity.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 1, Amplifier()));
 			return true;
 		}
@@ -33,6 +33,6 @@ public class SoulDrain extends Ability {
 
 	@Override
 	public int Amplifier() {
-		return currentClass.getPlayer().getLevel() / 4;
+		return getRPGClass().getPlayer().getLevel() / 4;
 	}
 }

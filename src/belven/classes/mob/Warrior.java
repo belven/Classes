@@ -28,8 +28,8 @@ public class Warrior extends MobClass {
 
 	@Override
 	public void SetAbilities() {
-		abilities.add(new Pop(this, 10, 1));
-		abilities.add(new Cleave(this, 1, 1));
+		getAbilities().add(new Pop(this, 10, 1));
+		getAbilities().add(new Cleave(this, 1, 1));
 	}
 
 	@Override
@@ -40,12 +40,12 @@ public class Warrior extends MobClass {
 
 	@Override
 	public void SelfDamageOther(EntityDamageByEntityEvent event) {
-		targetLE = (LivingEntity) event.getEntity();
-		for (Ability a : abilities) {
-			if (!a.onCooldown) {
+		setTarget((LivingEntity) event.getEntity());
+		for (Ability a : getAbilities()) {
+			if (!a.onCooldown()) {
 				if (!a.PerformAbility(event)) {
 					continue;
-				} else if (a.shouldBreak) {
+				} else if (a.shouldBreak()) {
 					break;
 				}
 			}

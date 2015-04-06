@@ -43,9 +43,9 @@ public class Barrier extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		new BarrierTimer(this).runTaskTimer(currentClass.plugin, 0, 10);
-		currentClass.UltAbilityUsed(this);
-		currentClass.getPlayer().sendMessage("You used " + GetAbilityName());
+		new BarrierTimer(this).runTaskTimer(getRPGClass().plugin, 0, 10);
+		getRPGClass().UltAbilityUsed(this);
+		getRPGClass().getPlayer().sendMessage("You used " + GetAbilityName());
 		return true;
 	}
 }

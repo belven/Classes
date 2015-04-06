@@ -56,31 +56,31 @@ public class Warrior extends RPGClass {
 		Player p = (Player) event.getEntity();
 		double healthPercent = plugin.GetPlayerE(getPlayer()).GetMissingHealthPercent();
 
-		if (event.getDamage() > 0 && healthPercent > 0.1 && p.getLocation().distance(classOwner.getLocation()) < 30) {
-			classOwner.damage(event.getDamage());
+		if (event.getDamage() > 0 && healthPercent > 0.1 && p.getLocation().distance(getOwner().getLocation()) < 30) {
+			getOwner().damage(event.getDamage());
 			event.setDamage(0.0);
-			this.classOwner.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Functions
+			this.getOwner().addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Functions
 					.SecondsToTicks(3), (int) (4 * healthPercent)));
 		}
 	}
 
 	@Override
 	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
-		Damageable dcurrentPlayer = classOwner;
+		Damageable dcurrentPlayer = getOwner();
 
-		if (!currentLastResort.onCooldown && dcurrentPlayer.getHealth() <= 5 && currentLastResort.HasRequirements()) {
+		if (!currentLastResort.onCooldown() && dcurrentPlayer.getHealth() <= 5 && currentLastResort.HasRequirements()) {
 			UltAbilityUsed(currentLastResort);
 			currentLastResort.PerformAbility(event);
-		} else if (!currentRetaliation.onCooldown && getPlayer().isBlocking()) {
+		} else if (!currentRetaliation.onCooldown() && getPlayer().isBlocking()) {
 			currentRetaliation.PerformAbility(event);
 		}
 	}
 
 	@Override
 	public void SelfTakenDamage(EntityDamageEvent event) {
-		Damageable dcurrentPlayer = classOwner;
+		Damageable dcurrentPlayer = getOwner();
 
-		if (!currentLastResort.onCooldown && dcurrentPlayer.getHealth() <= 5 && currentLastResort.HasRequirements()) {
+		if (!currentLastResort.onCooldown() && dcurrentPlayer.getHealth() <= 5 && currentLastResort.HasRequirements()) {
 			UltAbilityUsed(currentLastResort);
 			currentLastResort.PerformAbility(event);
 		}

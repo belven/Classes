@@ -1,6 +1,5 @@
 package belven.classes.abilities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -13,25 +12,12 @@ import org.bukkit.material.Wool;
 
 import belven.classes.RPGClass;
 
-public class Ability {
-	public List<Event> events = new ArrayList<>();
-	protected List<ItemStack> requirements = new ArrayList<ItemStack>();
-	protected List<Material> inHandRequirements = new ArrayList<Material>();
-
-	public RPGClass currentClass;
-	protected String abilitiyName = "";
-
-	public boolean onCooldown = false;
-	public boolean shouldBreak = true;
-
-	public int priority = 0;
-	public int amplifier = 5;
-	public int cooldown = 1;
+public class Ability extends AbilityData {
 
 	public Ability(RPGClass cc, int Priority, int amplifier) {
 		this.priority = Priority;
 		this.amplifier = amplifier;
-		this.currentClass = cc;
+		this.setRPGClass(cc);
 	}
 
 	public Ability(RPGClass cc, int Priority, int amplifier, List<Event> events) {
@@ -125,7 +111,7 @@ public class Ability {
 	}
 
 	private Player getPlayer() {
-		return currentClass.getPlayer();
+		return getRPGClass().getPlayer();
 	}
 
 	public void removeItem(Inventory inv, ItemStack is) {
@@ -139,11 +125,4 @@ public class Ability {
 
 	}
 
-	public String GetAbilityName() {
-		return abilitiyName;
-	}
-
-	public List<ItemStack> GetAbilityRequirements() {
-		return requirements;
-	}
 }

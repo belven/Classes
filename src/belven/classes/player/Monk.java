@@ -20,11 +20,11 @@ public class Monk extends Healer {
 	@Override
 	public synchronized void SetAbilities() {
 		super.SetAbilities();
-		abilities.remove(classHeal);
+		getAbilities().remove(classHeal);
 
 		classBolsterHealth = new BolsterHealth(this, 0, 5);
 		classBolsterHealth.cooldown = 8;
-		abilities.add(classBolsterHealth);
+		getAbilities().add(classBolsterHealth);
 
 		classLightHeal.priority = 10;
 		classLightHeal.amplifier = 10;
