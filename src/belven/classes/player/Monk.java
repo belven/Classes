@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import belven.classes.ClassManager;
-import belven.classes.player.Abilities.BolsterHealth;
+import belven.classes.player.abilities.BolsterHealth;
 
 public class Monk extends Healer {
 	public BolsterHealth classBolsterHealth;

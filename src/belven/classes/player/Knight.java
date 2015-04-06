@@ -6,7 +6,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import belven.classes.ClassManager;
-import belven.classes.Abilities.Ability;
+import belven.classes.abilities.Ability;
 import belven.resources.Functions;
 
 public class Knight extends Warrior {

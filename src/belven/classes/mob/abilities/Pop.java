@@ -1,8 +1,8 @@
-package belven.mobs.abilities;
+package belven.classes.mob.abilities;
 
 import org.bukkit.Location;
 
-import belven.classes.Abilities.Ability;
+import belven.classes.abilities.Ability;
 import belven.classes.mob.MobClass;
 import belven.resources.Functions;
 

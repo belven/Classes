@@ -11,8 +11,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import belven.classes.ClassManager;
-import belven.classes.player.Abilities.FeelTheBurn;
-import belven.classes.player.Abilities.SetAlight;
+import belven.classes.player.abilities.FeelTheBurn;
+import belven.classes.player.abilities.SetAlight;
 import belven.resources.ClassDrop;
 import belven.resources.EntityFunctions;
 import belven.resources.Functions;

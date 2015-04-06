@@ -1,11 +1,11 @@
-package belven.classes.player.Abilities;
+package belven.classes.player.abilities;
 
 import org.bukkit.DyeColor;
 import org.bukkit.entity.Player;
 import org.bukkit.material.Dye;
 
 import belven.classes.RPGClass;
-import belven.classes.Abilities.Ability;
+import belven.classes.abilities.Ability;
 import belven.classes.timedevents.HealTimer;
 import belven.resources.EntityFunctions;
 import belven.resources.Functions;

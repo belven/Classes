@@ -12,11 +12,11 @@ import org.bukkit.material.Dye;
 
 import belven.classes.ClassManager;
 import belven.classes.RPGClass;
-import belven.classes.Abilities.Ability;
-import belven.classes.player.Abilities.Bandage;
-import belven.classes.player.Abilities.Barrier;
-import belven.classes.player.Abilities.Heal;
-import belven.classes.player.Abilities.LightHeal;
+import belven.classes.abilities.Ability;
+import belven.classes.player.abilities.Bandage;
+import belven.classes.player.abilities.Barrier;
+import belven.classes.player.abilities.Heal;
+import belven.classes.player.abilities.LightHeal;
 import belven.resources.ClassDrop;
 import belven.resources.EntityFunctions;
 import belven.resources.MaterialFunctions;

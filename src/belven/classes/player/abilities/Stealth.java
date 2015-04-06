@@ -1,10 +1,10 @@
-package belven.classes.player.Abilities;
+package belven.classes.player.abilities;
 
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import belven.classes.RPGClass;
-import belven.classes.Abilities.Ability;
+import belven.classes.abilities.Ability;
 import belven.resources.Functions;
 
 public class Stealth extends Ability {

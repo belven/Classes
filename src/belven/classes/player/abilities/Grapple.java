@@ -1,4 +1,4 @@
-package belven.classes.player.Abilities;
+package belven.classes.player.abilities;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import belven.classes.RPGClass;
-import belven.classes.Abilities.Ability;
+import belven.classes.abilities.Ability;
 import belven.resources.EntityFunctions;
 
 public class Grapple extends Ability {

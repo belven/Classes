@@ -1,4 +1,4 @@
-package belven.classes.player.Abilities;
+package belven.classes.player.abilities;
 
 import java.util.Iterator;
 
@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
 import belven.classes.RPGClass;
-import belven.classes.Abilities.Ability;
+import belven.classes.abilities.Ability;
 import belven.resources.Functions;
 
 public class Cleanse extends Ability {

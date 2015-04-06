@@ -1,4 +1,4 @@
-package belven.classes.Abilities;
+package belven.classes.abilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +15,13 @@ import belven.classes.RPGClass;
 public class Ability {
 	protected List<ItemStack> requirements = new ArrayList<ItemStack>();
 	protected List<Material> inHandRequirements = new ArrayList<Material>();
+
 	public RPGClass currentClass;
 	protected String abilitiyName = "";
+
 	public boolean onCooldown = false;
 	public boolean shouldBreak = true;
+
 	public int priority = 0;
 	public int amplifier = 5;
 	public int cooldown = 1;
@@ -115,7 +118,7 @@ public class Ability {
 	}
 
 	private Player getPlayer() {
-		return (Player) currentClass.getPlayer();
+		return currentClass.getPlayer();
 	}
 
 	public void removeItem(Inventory inv, ItemStack is) {

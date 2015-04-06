@@ -16,7 +16,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import belven.classes.Abilities.Ability;
+import belven.classes.abilities.Ability;
 import belven.classes.timedevents.AbilityCooldown;
 import belven.resources.ClassDrop;
 import belven.resources.EntityFunctions;

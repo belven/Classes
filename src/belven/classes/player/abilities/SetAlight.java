@@ -1,10 +1,10 @@
-package belven.classes.player.Abilities;
+package belven.classes.player.abilities;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import belven.classes.RPGClass;
-import belven.classes.Abilities.Ability;
+import belven.classes.abilities.Ability;
 import belven.resources.Functions;
 
 public class SetAlight extends Ability {

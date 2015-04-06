@@ -6,9 +6,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import belven.classes.ClassManager;
-import belven.classes.Abilities.Ability;
-import belven.mobs.abilities.Cleave;
-import belven.mobs.abilities.Pop;
+import belven.classes.abilities.Ability;
+import belven.classes.mob.abilities.Cleave;
+import belven.classes.mob.abilities.Pop;
 
 public class Warrior extends MobClass {
 

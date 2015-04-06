@@ -1,4 +1,4 @@
-package belven.classes.player.Abilities;
+package belven.classes.player.abilities;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import belven.classes.RPGClass;
-import belven.classes.Abilities.Ability;
+import belven.classes.abilities.Ability;
 import belven.classes.events.AbilityUsed;
 import belven.resources.EntityFunctions;
 

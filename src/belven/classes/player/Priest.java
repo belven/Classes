@@ -5,8 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import belven.classes.ClassManager;
-import belven.classes.player.Abilities.AOEHeal;
-import belven.classes.player.Abilities.Cleanse;
+import belven.classes.player.abilities.AOEHeal;
+import belven.classes.player.abilities.Cleanse;
 import belven.resources.ClassDrop;
 
 public class Priest extends Healer {

@@ -14,8 +14,8 @@ import org.bukkit.potion.PotionType;
 
 import belven.classes.ClassManager;
 import belven.classes.RPGClass;
-import belven.classes.player.Abilities.LastResort;
-import belven.classes.player.Abilities.Retaliation;
+import belven.classes.player.abilities.LastResort;
+import belven.classes.player.abilities.Retaliation;
 import belven.resources.ClassDrop;
 import belven.resources.Functions;
 

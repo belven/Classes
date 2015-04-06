@@ -1,7 +1,7 @@
-package belven.classes.player.Abilities;
+package belven.classes.player.abilities;
 
 import belven.classes.RPGClass;
-import belven.classes.Abilities.Ability;
+import belven.classes.abilities.Ability;
 import belven.resources.EntityFunctions;
 
 public class FeelTheBurn extends Ability {

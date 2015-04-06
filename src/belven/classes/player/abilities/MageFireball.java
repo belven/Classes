@@ -1,11 +1,11 @@
-package belven.classes.player.Abilities;
+package belven.classes.player.abilities;
 
 import org.bukkit.DyeColor;
 import org.bukkit.entity.Fireball;
 import org.bukkit.material.Dye;
 
 import belven.classes.RPGClass;
-import belven.classes.Abilities.Ability;
+import belven.classes.abilities.Ability;
 
 public class MageFireball extends Ability {
 	public MageFireball(RPGClass cc, int priority, int amp) {

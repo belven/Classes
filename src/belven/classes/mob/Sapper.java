@@ -6,9 +6,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import belven.classes.ClassManager;
-import belven.classes.Abilities.Ability;
-import belven.mobs.abilities.Slow;
-import belven.mobs.abilities.StealLife;
+import belven.classes.abilities.Ability;
+import belven.classes.mob.abilities.Slow;
+import belven.classes.mob.abilities.StealLife;
 
 public class Sapper extends MobClass {
 

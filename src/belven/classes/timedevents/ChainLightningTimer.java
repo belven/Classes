@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import belven.classes.RPGClass;
-import belven.classes.player.Abilities.ChainLightning;
+import belven.classes.player.abilities.ChainLightning;
 import belven.resources.EntityFunctions;
 import belven.resources.Functions;
 

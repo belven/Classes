@@ -1,9 +1,9 @@
-package belven.classes.player.Abilities;
+package belven.classes.player.abilities;
 
 import org.bukkit.entity.LivingEntity;
 
 import belven.classes.RPGClass;
-import belven.classes.Abilities.Ability;
+import belven.classes.abilities.Ability;
 
 public class LightningStrike extends Ability {
 	public LightningStrike(RPGClass cc, int priority, int amp) {

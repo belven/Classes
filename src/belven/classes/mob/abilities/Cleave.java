@@ -1,11 +1,11 @@
-package belven.mobs.abilities;
+package belven.classes.mob.abilities;
 
 import java.util.List;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
-import belven.classes.Abilities.Ability;
+import belven.classes.abilities.Ability;
 import belven.classes.mob.MobClass;
 import belven.resources.EntityFunctions;
 

@@ -13,10 +13,10 @@ import org.bukkit.material.Dye;
 
 import belven.classes.ClassManager;
 import belven.classes.RPGClass;
-import belven.classes.Abilities.Ability;
-import belven.classes.player.Abilities.DamageTrap;
-import belven.classes.player.Abilities.FireTrap;
-import belven.classes.player.Abilities.WebArrow;
+import belven.classes.abilities.Ability;
+import belven.classes.player.abilities.DamageTrap;
+import belven.classes.player.abilities.FireTrap;
+import belven.classes.player.abilities.WebArrow;
 import belven.classes.timedevents.BlockRestorer;
 import belven.resources.ClassDrop;
 import belven.resources.EntityFunctions;

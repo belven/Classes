@@ -1,4 +1,4 @@
-package belven.classes.player.Abilities;
+package belven.classes.player.abilities;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
-import belven.classes.Abilities.Ability;
+import belven.classes.abilities.Ability;
 import belven.classes.timedevents.BarrierTimer;
 import belven.resources.EntityFunctions;
 

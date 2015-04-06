@@ -2,7 +2,7 @@ package belven.classes.timedevents;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
-import belven.classes.Abilities.Ability;
+import belven.classes.abilities.Ability;
 
 public class AbilityCooldown extends BukkitRunnable {
 	private Ability currentAbility;

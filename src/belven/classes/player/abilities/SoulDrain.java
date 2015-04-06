@@ -1,4 +1,4 @@
-package belven.classes.player.Abilities;
+package belven.classes.player.abilities;
 
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -6,7 +6,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import belven.classes.RPGClass;
-import belven.classes.Abilities.Ability;
+import belven.classes.abilities.Ability;
 
 public class SoulDrain extends Ability {
 	public SoulDrain(RPGClass cc, int priority, int amp) {
