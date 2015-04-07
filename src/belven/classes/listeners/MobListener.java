@@ -48,7 +48,7 @@ public class MobListener implements Listener {
 				plugin.SetClass(le, new KnightBoss(le.getMaxHealth() / 2, le, plugin));
 			} else if (Functions.numberBetween(rand, 10, 20)) {
 				plugin.SetClass(le, new Warrior(le.getMaxHealth() / 2, le, plugin));
-			} else { // if (Functions.numberBetween(rand, 20, 30)) {
+			} else if (Functions.numberBetween(rand, 20, 50)) {
 				plugin.SetClass(le, new Sapper(le.getMaxHealth() / 2, le, plugin));
 			}
 		}

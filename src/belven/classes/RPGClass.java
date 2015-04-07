@@ -26,12 +26,16 @@ import belven.resources.Functions;
 public abstract class RPGClass extends RPGClassData {
 
 	public RPGClass(double health, LivingEntity classOwner, ClassManager instance) {
-		setPlugin(instance);
-		this.setOwner(classOwner);
+		this(classOwner, instance);
 
 		Damageable dcurrentPlayer = classOwner;
 		dcurrentPlayer.setMaxHealth(health * 2);
 		dcurrentPlayer.setHealth(dcurrentPlayer.getMaxHealth());
+	}
+
+	public RPGClass(LivingEntity classOwner, ClassManager instance) {
+		setPlugin(instance);
+		this.setOwner(classOwner);
 	}
 
 	public void AbilityUsed(Ability ability) {

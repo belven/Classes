@@ -72,7 +72,6 @@ public class Berserker extends RPGClass {
 						(int) (2 * healthPercent)));
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public synchronized void SelfDamageOther(EntityDamageByEntityEvent event) {
 		int mobCount = 0;
@@ -85,24 +84,17 @@ public class Berserker extends RPGClass {
 				if (e instanceof LivingEntity && e != event.getEntity() && mobCount < 3 && e != this.getOwner()) {
 					LivingEntity le = (LivingEntity) e;
 					mobCount++;
-					try {
-						HashMap<DamageModifier, Double> damage = new HashMap<>();
-						damage.put(DamageModifier.BASE, damageToDo);
 
-						Map<DamageModifier, Function<? super Double, Double>> functions = new HashMap<>();
+					HashMap<DamageModifier, Double> damage = new HashMap<>();
+					damage.put(DamageModifier.BASE, damageToDo);
 
-						functions.put(DamageModifier.BASE, com.google.common.base.Functions.constant(damageToDo));
+					Map<DamageModifier, Function<? super Double, Double>> functions = new HashMap<>();
+					functions.put(DamageModifier.BASE, com.google.common.base.Functions.constant(damageToDo));
 
-						EntityDamageByEntityEvent ede = new EntityDamageByEntityEvent(getOwner(), le, dc, damage,
-								functions);
+					EntityDamageByEntityEvent ede = new EntityDamageByEntityEvent(getOwner(), le, dc, damage, functions);
 
-						Bukkit.getPluginManager().callEvent(ede);
-						le.damage(ede.getDamage());
-					} catch (Throwable ex) {
-						Bukkit.getPluginManager().callEvent(
-								new EntityDamageByEntityEvent(getOwner(), le, dc, damageToDo));
-					}
-
+					Bukkit.getPluginManager().callEvent(ede);
+					le.damage(ede.getDamage());
 				}
 			}
 		}

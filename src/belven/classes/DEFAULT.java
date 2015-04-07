@@ -9,12 +9,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class DEFAULT extends RPGClass {
 
-	public DEFAULT(double health, LivingEntity le, ClassManager instance) {
-		super(health, le, instance);
-	}
-
-	public DEFAULT(LivingEntity le, ClassManager classManager) {
-		this(le.getMaxHealth() / 2, le, classManager);
+	public DEFAULT(LivingEntity le, ClassManager instance) {
+		super(le, instance);
 	}
 
 	@Override

@@ -7,6 +7,6 @@
 			<attribute name="javadoc_location" value="https://hub.spigotmc.org/javadocs/bukkit/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/sam/Desktop/BukkitServer/plugins/BelvensResources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/sam/Desktop/BukkitServer/plugins/BelvensResources.jar" sourcepath="/BelvensResources"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

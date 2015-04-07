@@ -91,7 +91,7 @@ public class ClassManager extends JavaPlugin {
 
 			if (classString != null) {
 				if (currentPlayerClasses.get(playerToAdd) == null) {
-					currentPlayerClasses.put(playerToAdd, StringToClass(classString, playerToAdd));
+					SetClass(playerToAdd, StringToClass(classString, playerToAdd));
 				}
 			}
 
@@ -331,6 +331,7 @@ public class ClassManager extends JavaPlugin {
 
 	public void SetClass(LivingEntity le, RPGClass newClass) {
 		currentPlayerClasses.put(le, newClass);
+		getLogger().info("A " + newClass.getClassName() + " has been created!");
 	}
 
 	public void SetClass(Player playerToChange, String classString) {

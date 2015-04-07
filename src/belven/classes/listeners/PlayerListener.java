@@ -99,8 +99,8 @@ public class PlayerListener implements Listener {
 	public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
 		Player currentPlayer = event.getPlayer();
 		Entity currentEntity = event.getRightClicked();
-		if (plugin.GetClass(event.getPlayer()).CanCast()) {
-			new AbilityDelay(event.getPlayer(), plugin).runTaskLater(plugin, Functions.SecondsToTicks(1));
+		if (plugin.GetClass(currentPlayer).CanCast()) {
+			new AbilityDelay(currentPlayer, plugin).runTaskLater(plugin, Functions.SecondsToTicks(1));
 			plugin.GetClass(currentPlayer).RightClickEntity(event, currentEntity);
 		}
 	}
@@ -148,12 +148,16 @@ public class PlayerListener implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public synchronized void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
-		LivingEntity le = (LivingEntity) event.getEntity();
+		// The entity that took the damage
+		LivingEntity damagee = (LivingEntity) event.getEntity();
+
+		// The entity that dealt the damage
+		LivingEntity damager = EntityFunctions.GetDamager(event);
 
 		if (event.getEntityType() == EntityType.PLAYER) {
-			Player dp = (Player) event.getEntity();
+			Player dp = (Player) damagee;
 			Group playerGroup = plugin.getAllyGroup(dp);
 
 			if (playerGroup != null) {
@@ -168,14 +172,12 @@ public class PlayerListener implements Listener {
 			}
 		}
 
-		if (le != null) {
-			plugin.GetClass(le).SelfTakenDamage(event);
+		if (damagee != null) {
+			plugin.GetClass(damagee).SelfTakenDamage(event);
 		}
 
-		le = EntityFunctions.GetDamager(event);
-
-		if (le != null) {
-			plugin.GetClass(le).SelfDamageOther(event);
+		if (damager != null) {
+			plugin.GetClass(damager).SelfDamageOther(event);
 		}
 	}
 

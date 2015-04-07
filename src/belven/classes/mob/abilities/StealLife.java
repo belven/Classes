@@ -1,5 +1,6 @@
 package belven.classes.mob.abilities;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
 import belven.classes.abilities.Ability;
@@ -16,7 +17,9 @@ public class StealLife extends Ability {
 	@Override
 	public boolean PerformAbility(Event e) {
 		if (getRPGClass().getTarget() != null) {
-			EntityFunctions.Heal(getRPGClass().getTarget(), -amplifier);
+			Bukkit.getServer().getLogger().info("Steal life: " + String.valueOf(amplifier));
+			getRPGClass().getTarget().damage(amplifier);
+			// EntityFunctions.Heal(getRPGClass().getTarget(), -amplifier);
 			EntityFunctions.Heal(getRPGClass().getOwner(), amplifier);
 			return true;
 		}
