@@ -28,7 +28,7 @@ public class MageFireball extends Ability {
 	}
 
 	@Override
-	public int Amplifier() {
+	public int getAmplifier() {
 		return Math.round(getRPGClass().getPlayer().getLevel() / 7);
 	}
 }

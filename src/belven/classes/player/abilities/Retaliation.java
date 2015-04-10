@@ -24,7 +24,7 @@ public class Retaliation extends Ability {
 		LivingEntity entityDamaged = EntityFunctions.GetDamager(p);
 
 		if (entityDamaged != null) {
-			entityDamaged.damage(ldc.getDamage() * Amplifier());
+			entityDamaged.damage(ldc.getDamage() * getAmplifier(), getRPGClass().getPlayer());
 		}
 
 		Bukkit.getPluginManager().callEvent(new AbilityUsed(this));
@@ -33,7 +33,7 @@ public class Retaliation extends Ability {
 	}
 
 	@Override
-	public int Amplifier() {
+	public int getAmplifier() {
 		return amplifier;
 	}
 }

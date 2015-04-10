@@ -18,7 +18,7 @@ public class SetAlight extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		int Amplifier = Amplifier();
+		int Amplifier = getAmplifier();
 
 		if (Amplifier > 10) {
 			Amplifier = 10;
@@ -30,7 +30,7 @@ public class SetAlight extends Ability {
 	}
 
 	@Override
-	public int Amplifier() {
+	public int getAmplifier() {
 		return Math.round(getRPGClass().getPlayer().getLevel() / 5) + 2;
 	}
 }

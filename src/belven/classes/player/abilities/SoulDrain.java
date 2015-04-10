@@ -25,14 +25,14 @@ public class SoulDrain extends Ability {
 		}
 
 		if (getRPGClass().getPlayer().getItemInHand().getType() == Material.NETHER_STAR) {
-			targetEntity.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 1, Amplifier()));
+			targetEntity.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 1, getAmplifier()));
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public int Amplifier() {
+	public int getAmplifier() {
 		return getRPGClass().getPlayer().getLevel() / 4;
 	}
 }

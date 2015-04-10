@@ -43,7 +43,7 @@ public class Heal extends Ability {
 	}
 
 	@Override
-	public int Amplifier() {
+	public int getAmplifier() {
 		return Functions.abilityCap(amplifier, getRPGClass().getPlayer().getLevel()) + 1;
 	}
 }

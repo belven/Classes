@@ -32,7 +32,7 @@ public class ChainLightningTimer extends BukkitRunnable {
 	public synchronized void doDamage(LivingEntity le) {
 		if (le != null) {
 			double damage = ((Damageable) le).getMaxHealth() * (amp * 2 / 100.0);
-			le.damage(damage);
+			le.damage(damage, currentClass.getOwner());
 			lastLocation = le.getLocation();
 			target = le;
 			targetsHit.add(le);

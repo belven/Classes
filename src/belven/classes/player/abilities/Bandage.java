@@ -49,7 +49,7 @@ public class Bandage extends Ability {
 		}
 
 		targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, Functions.SecondsToTicks(20),
-				Amplifier()), true);
+				getAmplifier()), true);
 
 		getRPGClass().setAbilityOnCoolDown(this, true);
 		RemoveItems();
@@ -57,7 +57,7 @@ public class Bandage extends Ability {
 	}
 
 	@Override
-	public int Amplifier() {
+	public int getAmplifier() {
 		return Functions.abilityCap((double) amplifier + 1, getRPGClass().getPlayer().getLevel());
 	}
 

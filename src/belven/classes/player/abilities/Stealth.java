@@ -24,7 +24,7 @@ public class Stealth extends Ability {
 	}
 
 	@Override
-	public int Amplifier() {
+	public int getAmplifier() {
 		return 0;
 	}
 }

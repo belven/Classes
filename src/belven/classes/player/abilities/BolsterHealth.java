@@ -30,8 +30,8 @@ public class BolsterHealth extends Ability {
 			return false;
 		}
 
-		PotionEffect pe = new PotionEffect(PotionEffectType.HEALTH_BOOST, Functions.SecondsToTicks(Amplifier() + 30),
-				Amplifier(), true);
+		PotionEffect pe = new PotionEffect(PotionEffectType.HEALTH_BOOST, Functions.SecondsToTicks(getAmplifier() + 30),
+				getAmplifier(), true);
 
 		if (!onCooldown() && !playerToHeal.hasPotionEffect(PotionEffectType.HEALTH_BOOST)) {
 			playerToHeal.addPotionEffect(pe, false);
@@ -54,7 +54,7 @@ public class BolsterHealth extends Ability {
 	}
 
 	@Override
-	public int Amplifier() {
+	public int getAmplifier() {
 		return Functions.abilityCap((double) amplifier + 1, getRPGClass().getPlayer().getLevel());
 	}
 }

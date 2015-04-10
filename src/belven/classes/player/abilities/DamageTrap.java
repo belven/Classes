@@ -46,7 +46,7 @@ public class DamageTrap extends Ability {
 	}
 
 	@Override
-	public int Amplifier() {
+	public int getAmplifier() {
 		return getRPGClass().getPlayer().getLevel() / 3 + 2;
 	}
 }

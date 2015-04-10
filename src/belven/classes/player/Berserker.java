@@ -1,16 +1,11 @@
 package belven.classes.player;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -25,8 +20,6 @@ import belven.resources.ClassDrop;
 import belven.resources.EntityFunctions;
 import belven.resources.Functions;
 import belven.resources.MaterialFunctions;
-
-import com.google.common.base.Function;
 
 public class Berserker extends RPGClass {
 	public Grapple classGrapple;
@@ -85,16 +78,15 @@ public class Berserker extends RPGClass {
 					LivingEntity le = (LivingEntity) e;
 					mobCount++;
 
-					HashMap<DamageModifier, Double> damage = new HashMap<>();
-					damage.put(DamageModifier.BASE, damageToDo);
-
-					Map<DamageModifier, Function<? super Double, Double>> functions = new HashMap<>();
-					functions.put(DamageModifier.BASE, com.google.common.base.Functions.constant(damageToDo));
-
-					EntityDamageByEntityEvent ede = new EntityDamageByEntityEvent(getOwner(), le, dc, damage, functions);
-
-					Bukkit.getPluginManager().callEvent(ede);
-					le.damage(ede.getDamage());
+					/* HashMap<DamageModifier, Double> damage = new HashMap<>(); damage.put(DamageModifier.BASE, damageToDo);
+					 * 
+					 * Map<DamageModifier, Function<? super Double, Double>> functions = new HashMap<>();
+					 * functions.put(DamageModifier.BASE, com.google.common.base.Functions.constant(damageToDo));
+					 * 
+					 * EntityDamageByEntityEvent ede = new EntityDamageByEntityEvent(getOwner(), le, dc, damage, functions);
+					 * 
+					 * Bukkit.getPluginManager().callEvent(ede); */
+					le.damage(damageToDo, getOwner());
 				}
 			}
 		}

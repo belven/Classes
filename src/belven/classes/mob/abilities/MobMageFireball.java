@@ -24,7 +24,7 @@ public class MobMageFireball extends Ability {
 	}
 
 	@Override
-	public int Amplifier() {
+	public int getAmplifier() {
 		return Math.round(getRPGClass().getPlayer().getLevel() / 7);
 	}
 }

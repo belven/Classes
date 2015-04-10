@@ -29,7 +29,7 @@ public class Ability extends AbilityData {
 		return false;
 	}
 
-	public int Amplifier() {
+	public int getAmplifier() {
 		return amplifier;
 	}
 
@@ -88,7 +88,6 @@ public class Ability extends AbilityData {
 		return true;
 	}
 
-	@SuppressWarnings("deprecation")
 	public void RemoveItems() {
 		Inventory playerInventory = getPlayer().getInventory();
 
