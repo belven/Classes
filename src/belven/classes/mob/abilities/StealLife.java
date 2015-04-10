@@ -16,7 +16,8 @@ public class StealLife extends Ability {
 	@Override
 	public boolean PerformAbility(Event e) {
 		if (getRPGClass().getTarget() != null) {
-			getRPGClass().getTarget().damage(amplifier);
+			getRPGClass().setAbilityOnCoolDown(this);
+			getRPGClass().getTarget().damage(amplifier, getRPGClass().getOwner());
 			EntityFunctions.Heal(getRPGClass().getOwner(), amplifier);
 			return true;
 		}

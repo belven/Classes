@@ -15,6 +15,7 @@ public class TeleportToTarget extends Ability {
 	@Override
 	public boolean PerformAbility(Event e) {
 		if (getRPGClass().getTarget() != null) {
+			getRPGClass().setAbilityOnCoolDown(this);
 			getRPGClass().getOwner().teleport(getRPGClass().getTarget());
 			return true;
 		}

@@ -18,9 +18,9 @@ public class SpeedBoost extends Ability {
 	@Override
 	public boolean PerformAbility(Event e) {
 		if (getRPGClass().getTarget() != null) {
+			getRPGClass().setAbilityOnCoolDown(this);
 			getRPGClass().getOwner().addPotionEffect(
 					new PotionEffect(PotionEffectType.SPEED, Functions.SecondsToTicks(5), amplifier));
-			getRPGClass().setAbilityOnCoolDown(this);
 			return true;
 		}
 		return false;

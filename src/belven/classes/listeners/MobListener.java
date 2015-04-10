@@ -15,12 +15,15 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import belven.classes.ClassManager;
 import belven.classes.mob.AssassinBoss;
 import belven.classes.mob.KnightBoss;
+import belven.classes.mob.MageBoss;
+import belven.classes.mob.MobClass;
 import belven.classes.mob.Sapper;
 import belven.classes.mob.Warrior;
 import belven.resources.ClassDrop;
@@ -61,10 +64,22 @@ public class MobListener implements Listener {
 			LivingEntity le = (LivingEntity) event.getEntity();
 
 			int rand = new Random().nextInt(99);
-			if (Functions.numberBetween(rand, 0, 50)) {
+			if (Functions.numberBetween(rand, 0, 25)) {
 				plugin.SetClass(le, new KnightBoss(le.getMaxHealth() / 2, le, plugin));
+			} else if (Functions.numberBetween(rand, 25, 50)) {
+				plugin.SetClass(le, new MageBoss(le.getMaxHealth() / 2, le, plugin));
 			} else {
 				plugin.SetClass(le, new AssassinBoss(le.getMaxHealth() / 2, le, plugin));
+			}
+		}
+	}
+
+	@EventHandler
+	public void onEntityTargetLivingEntityEvent(EntityTargetLivingEntityEvent event) {
+		if (event.getTarget() != null && event.getEntity() instanceof LivingEntity) {
+			if (plugin.GetClass((LivingEntity) event.getEntity()) instanceof MobClass) {
+				MobClass mc = (MobClass) plugin.GetClass((LivingEntity) event.getEntity());
+				mc.SelfTargetOther(event);
 			}
 		}
 	}

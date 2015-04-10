@@ -20,7 +20,7 @@ public class AbilityCooldown extends BukkitRunnable {
 	@Override
 	public void run() {
 		if (sendMessage) {
-			currentAbility.getRPGClass().getPlayer().sendMessage(currentAbility.GetAbilityName() + " is now availble.");
+			currentAbility.getRPGClass().getOwner().sendMessage(currentAbility.GetAbilityName() + " is now availble.");
 		}
 		currentAbility.setOnCooldown(false);
 		this.cancel();

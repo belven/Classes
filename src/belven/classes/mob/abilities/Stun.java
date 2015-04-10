@@ -18,9 +18,9 @@ public class Stun extends Ability {
 	@Override
 	public boolean PerformAbility(Event e) {
 		if (getRPGClass().getTarget() != null) {
+			getRPGClass().setAbilityOnCoolDown(this);
 			getRPGClass().getTarget().addPotionEffect(
 					new PotionEffect(PotionEffectType.SLOW, Functions.SecondsToTicks(3), 5));
-			getRPGClass().setAbilityOnCoolDown(this);
 			return true;
 		}
 		return false;

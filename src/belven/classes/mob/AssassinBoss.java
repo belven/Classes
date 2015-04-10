@@ -4,6 +4,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -15,6 +16,8 @@ import belven.classes.mob.abilities.TeleportToTarget;
 import belven.resources.EntityFunctions;
 
 public class AssassinBoss extends MobClass {
+	private TeleportToTarget teleport;
+
 	public AssassinBoss(double health, LivingEntity classOwner, ClassManager instance) {
 		super(health, classOwner, instance);
 		className = "Assassin Boss";
@@ -29,10 +32,9 @@ public class AssassinBoss extends MobClass {
 
 	@Override
 	public void SetAbilities() {
-		AddAbility(new StealLife(this, 10, 4), 2);
-		AddAbility(new SpeedBoost(this, 1, 2), 5);
-		AddAbility(new TeleportToTarget(this, 1, 2), 10);
-
+		AddAbility(new StealLife(this, 10, 3), 3);
+		AddAbility(new SpeedBoost(this, 1, 1), 5);
+		AddAbility(teleport = new TeleportToTarget(this, 1, 2), 10);
 	}
 
 	@Override
@@ -65,6 +67,22 @@ public class AssassinBoss extends MobClass {
 
 	@Override
 	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void SelfTargetOther(EntityTargetLivingEntityEvent event) {
+		if (teleport != null) {
+			setTarget(event.getTarget());
+			if (!teleport.onCooldown()) {
+				teleport.PerformAbility(event);
+			}
+		}
+	}
+
+	@Override
+	public void TimedSelfCast() {
 		// TODO Auto-generated method stub
 
 	}

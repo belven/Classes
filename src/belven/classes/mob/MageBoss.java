@@ -10,14 +10,16 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import belven.classes.ClassManager;
 import belven.classes.abilities.Ability;
-import belven.classes.mob.abilities.Cleave;
-import belven.classes.mob.abilities.Pop;
+import belven.classes.mob.abilities.MobAOEHeal;
+import belven.classes.mob.abilities.MobLightningStrike;
+import belven.classes.mob.abilities.MobMageFireball;
+import belven.resources.EntityFunctions;
 
-public class Warrior extends MobClass {
+public class MageBoss extends MobClass {
 
-	public Warrior(double health, LivingEntity classOwner, ClassManager instance) {
+	public MageBoss(double health, LivingEntity classOwner, ClassManager instance) {
 		super(health, classOwner, instance);
-		className = "Warrior";
+		className = "Mage Boss";
 		SetAbilities();
 		SortAbilities();
 	}
@@ -29,45 +31,43 @@ public class Warrior extends MobClass {
 
 	@Override
 	public void SetAbilities() {
-		getAbilities().add(new Pop(this, 10, 1));
-		getAbilities().add(new Cleave(this, 1, 1));
+		AddAbility(new MobMageFireball(this, 1, 1), 3);
+		AddAbility(new MobAOEHeal(this, 10, 10), 10);
+		AddAbility(new MobLightningStrike(this, 2, 10), 2);
 	}
 
 	@Override
 	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
-		// TODO Auto-generated method stub
+		if (EntityFunctions.GetDamager(event) == getOwner()) {
+			event.setCancelled(true);
+			event.setDamage(0);
+		}
+	}
+
+	@Override
+	public void SelfDamageOther(EntityDamageByEntityEvent event) {
+	}
+
+	@Override
+	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
 
 	}
 
 	@Override
-	public synchronized void SelfDamageOther(EntityDamageByEntityEvent event) {
-		setTarget((LivingEntity) event.getEntity());
+	public void SelfTargetOther(EntityTargetLivingEntityEvent event) {
+
+	}
+
+	@Override
+	public void TimedSelfCast() {
 		for (Ability a : getAbilities()) {
 			if (!a.onCooldown()) {
-				if (!a.PerformAbility(event)) {
+				if (!a.PerformAbility(null)) {
 					continue;
 				} else if (a.shouldBreak()) {
 					break;
 				}
 			}
 		}
-	}
-
-	@Override
-	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void SelfTargetOther(EntityTargetLivingEntityEvent event) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void TimedSelfCast() {
-		// TODO Auto-generated method stub
-
 	}
 }

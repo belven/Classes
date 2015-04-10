@@ -19,15 +19,16 @@ public class Cleave extends Ability {
 	}
 
 	@Override
-	public boolean PerformAbility(Event e) {
+	public synchronized boolean PerformAbility(Event e) {
+		getRPGClass().setAbilityOnCoolDown(this);
 		List<LivingEntity> entities = EntityFunctions.getNearbyEntities(getRPGClass().getOwner().getLocation(), 4);
 
 		for (LivingEntity le : entities) {
 			if (le.getType() == EntityType.PLAYER) {
-				EntityFunctions.Heal(le, -amplifier);
+				// Functions.callDamageEvent(getRPGClass().getOwner(), le, amplifier);
+				le.damage(amplifier, getRPGClass().getOwner());
 			}
 		}
-		getRPGClass().setAbilityOnCoolDown(this);
 		return true;
 	}
 }

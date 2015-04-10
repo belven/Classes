@@ -19,11 +19,11 @@ public class Pop extends Ability {
 	@Override
 	public boolean PerformAbility(Event e) {
 		if (getRPGClass().getTarget() != null) {
+			getRPGClass().setAbilityOnCoolDown(this);
 			Location l = getRPGClass().getTarget().getLocation();
 			l = Functions.offsetLocation(l, 0, 1, 0);
 			l = EntityFunctions.lookAt(l, getRPGClass().getTarget().getLocation());
 			getRPGClass().getTarget().teleport(l);
-			getRPGClass().setAbilityOnCoolDown(this);
 			return true;
 		}
 		return false;

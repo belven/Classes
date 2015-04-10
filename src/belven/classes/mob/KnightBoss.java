@@ -4,17 +4,19 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import belven.classes.ClassManager;
 import belven.classes.abilities.Ability;
 import belven.classes.mob.abilities.Cleave;
+import belven.classes.mob.abilities.MobAOEGrapple;
 import belven.classes.mob.abilities.SelfProtection;
-import belven.classes.mob.abilities.Stun;
 
 public class KnightBoss extends MobClass {
 	SelfProtection sp;
+	private MobAOEGrapple grapple;
 
 	public KnightBoss(double health, LivingEntity classOwner, ClassManager instance) {
 		super(health, classOwner, instance);
@@ -30,7 +32,7 @@ public class KnightBoss extends MobClass {
 
 	@Override
 	public void SetAbilities() {
-		AddAbility(new Stun(this, 2, 1), 5);
+		AddAbility(grapple = new MobAOEGrapple(this, 2, 1), 6);
 		AddAbility(new Cleave(this, 1, 2), 5);
 		AddAbility(sp = new SelfProtection(this, 3, 4), 10);
 	}
@@ -60,5 +62,18 @@ public class KnightBoss extends MobClass {
 	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void SelfTargetOther(EntityTargetLivingEntityEvent event) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void TimedSelfCast() {
+		if (!grapple.onCooldown()) {
+			grapple.PerformAbility(null);
+		}
 	}
 }

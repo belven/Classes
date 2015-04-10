@@ -4,6 +4,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -13,7 +14,6 @@ import belven.classes.mob.abilities.Slow;
 import belven.classes.mob.abilities.StealLife;
 
 public class Sapper extends MobClass {
-
 	public Sapper(double health, LivingEntity classOwner, ClassManager instance) {
 		super(health, classOwner, instance);
 		className = "Sapper";
@@ -54,6 +54,18 @@ public class Sapper extends MobClass {
 
 	@Override
 	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void SelfTargetOther(EntityTargetLivingEntityEvent event) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void TimedSelfCast() {
 		// TODO Auto-generated method stub
 
 	}
