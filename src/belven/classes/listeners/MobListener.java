@@ -19,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import belven.classes.ClassManager;
+import belven.classes.mob.AssassinBoss;
 import belven.classes.mob.KnightBoss;
 import belven.classes.mob.Sapper;
 import belven.classes.mob.Warrior;
@@ -26,6 +27,7 @@ import belven.resources.ClassDrop;
 import belven.resources.EntityFunctions;
 import belven.resources.Functions;
 import belven.resources.Group;
+import belven.resources.events.EntityMetadataChanged;
 
 public class MobListener implements Listener {
 	private final ClassManager plugin;
@@ -44,12 +46,25 @@ public class MobListener implements Listener {
 			LivingEntity le = event.getEntity();
 			int rand = new Random().nextInt(99);
 
-			if (le.hasMetadata("ArenaBoss")) {
-				plugin.SetClass(le, new KnightBoss(le.getMaxHealth() / 2, le, plugin));
-			} else if (Functions.numberBetween(rand, 10, 20)) {
+			if (Functions.numberBetween(rand, 10, 20)) {
 				plugin.SetClass(le, new Warrior(le.getMaxHealth() / 2, le, plugin));
 			} else if (Functions.numberBetween(rand, 20, 50)) {
 				plugin.SetClass(le, new Sapper(le.getMaxHealth() / 2, le, plugin));
+			}
+		}
+	}
+
+	@EventHandler
+	public synchronized void onEntityMetadataChanged(EntityMetadataChanged event) {
+		if (event.getEntity() instanceof LivingEntity
+				&& (event.getEntity().hasMetadata("ArenaBoss") || event.getEntity().hasMetadata("RewardBoss"))) {
+			LivingEntity le = (LivingEntity) event.getEntity();
+
+			int rand = new Random().nextInt(99);
+			if (Functions.numberBetween(rand, 0, 50)) {
+				plugin.SetClass(le, new KnightBoss(le.getMaxHealth() / 2, le, plugin));
+			} else {
+				plugin.SetClass(le, new AssassinBoss(le.getMaxHealth() / 2, le, plugin));
 			}
 		}
 	}

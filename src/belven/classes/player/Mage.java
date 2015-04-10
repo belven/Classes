@@ -4,6 +4,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -81,7 +82,8 @@ public class Mage extends RPGClass {
 		if (event.getDamager().getType() == EntityType.LIGHTNING) {
 			event.setDamage(0.0);
 		} else if (!classLightningStrike.onCooldown()) {
-			Entity entityToStrike = EntityFunctions.GetDamager(event);
+			LivingEntity entityToStrike = EntityFunctions.GetDamager(event);
+			setTarget(entityToStrike);
 			if (entityToStrike != null) {
 				classLightningStrike.PerformAbility(event);
 			}
@@ -97,11 +99,12 @@ public class Mage extends RPGClass {
 	public void SetAbilities() {
 		if (!AbilitiesSet()) {
 			classFireball = new MageFireball(this, 2, 5);
-			classChainLightning = new ChainLightning(this, 1, 10);
+			classChainLightning = new ChainLightning(this, 1, 5);
 			classLightningStrike = new LightningStrike(this, 3, 5);
 			classPop = new Pop(this, 4, 5);
 
 			classLightningStrike.cooldown = 2;
+
 			getAbilities().add(classFireball);
 			getAbilities().add(classChainLightning);
 			getAbilities().add(classLightningStrike);

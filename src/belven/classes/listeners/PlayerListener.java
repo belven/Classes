@@ -148,8 +148,11 @@ public class PlayerListener implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.LOW)
 	public synchronized void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
+		if (!(event.getEntity() instanceof LivingEntity)) {
+			return;
+		}
 		// The entity that took the damage
 		LivingEntity damagee = (LivingEntity) event.getEntity();
 

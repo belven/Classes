@@ -9,16 +9,15 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import belven.classes.ClassManager;
 import belven.classes.abilities.Ability;
-import belven.classes.mob.abilities.Cleave;
-import belven.classes.mob.abilities.SelfProtection;
-import belven.classes.mob.abilities.Stun;
+import belven.classes.mob.abilities.SpeedBoost;
+import belven.classes.mob.abilities.StealLife;
+import belven.classes.mob.abilities.TeleportToTarget;
+import belven.resources.EntityFunctions;
 
-public class KnightBoss extends MobClass {
-	SelfProtection sp;
-
-	public KnightBoss(double health, LivingEntity classOwner, ClassManager instance) {
+public class AssassinBoss extends MobClass {
+	public AssassinBoss(double health, LivingEntity classOwner, ClassManager instance) {
 		super(health, classOwner, instance);
-		className = "Knight Boss";
+		className = "Assassin Boss";
 		SetAbilities();
 		SortAbilities();
 	}
@@ -30,15 +29,23 @@ public class KnightBoss extends MobClass {
 
 	@Override
 	public void SetAbilities() {
-		AddAbility(new Stun(this, 2, 1), 5);
-		AddAbility(new Cleave(this, 1, 2), 5);
-		AddAbility(sp = new SelfProtection(this, 3, 4), 10);
+		AddAbility(new StealLife(this, 10, 4), 2);
+		AddAbility(new SpeedBoost(this, 1, 2), 5);
+		AddAbility(new TeleportToTarget(this, 1, 2), 10);
+
 	}
 
 	@Override
 	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
-		if (!sp.onCooldown()) {
-			sp.PerformAbility(event);
+		setTarget(EntityFunctions.GetDamager(event));
+		for (Ability a : getAbilities()) {
+			if (!a.onCooldown()) {
+				if (!a.PerformAbility(event)) {
+					continue;
+				} else if (a.shouldBreak()) {
+					break;
+				}
+			}
 		}
 	}
 

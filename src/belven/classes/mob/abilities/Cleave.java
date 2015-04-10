@@ -20,7 +20,7 @@ public class Cleave extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		List<LivingEntity> entities = EntityFunctions.getNearbyEntities(getRPGClass().getOwner().getLocation(), 2);
+		List<LivingEntity> entities = EntityFunctions.getNearbyEntities(getRPGClass().getOwner().getLocation(), 4);
 
 		for (LivingEntity le : entities) {
 			if (le.getType() == EntityType.PLAYER) {

@@ -4,11 +4,10 @@ import org.bukkit.event.Event;
 
 import belven.classes.abilities.Ability;
 import belven.classes.mob.MobClass;
-import belven.resources.EntityFunctions;
 
-public class StealLife extends Ability {
+public class TeleportToTarget extends Ability {
 
-	public StealLife(MobClass cc, int Priority, int amplifier) {
+	public TeleportToTarget(MobClass cc, int Priority, int amplifier) {
 		super(cc, Priority, amplifier);
 		cooldown = 3;
 	}
@@ -16,8 +15,7 @@ public class StealLife extends Ability {
 	@Override
 	public boolean PerformAbility(Event e) {
 		if (getRPGClass().getTarget() != null) {
-			getRPGClass().getTarget().damage(amplifier);
-			EntityFunctions.Heal(getRPGClass().getOwner(), amplifier);
+			getRPGClass().getOwner().teleport(getRPGClass().getTarget());
 			return true;
 		}
 		return false;

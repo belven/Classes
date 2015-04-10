@@ -56,14 +56,15 @@ public class Daemon extends Berserker {
 				getOwner().removePotionEffect(PotionEffectType.HUNGER);
 			}
 
-			if (healthPercent <= 0.15) {
+			if (healthPercent <= 0.25) {
 				event.setDamage(0.0);
 			} else if (!classFeelTheBurn.onCooldown() && classFeelTheBurn.HasRequirements()) {
+				event.setDamage(0.0);
 				classFeelTheBurn.PerformAbility(event);
 			}
 
-			getOwner().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Functions.SecondsToTicks(Amplifier()),
-					3));
+			getOwner().addPotionEffect(
+					new PotionEffect(PotionEffectType.SPEED, Functions.SecondsToTicks(Amplifier()), 3));
 		}
 	}
 
