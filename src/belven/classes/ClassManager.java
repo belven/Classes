@@ -143,6 +143,7 @@ public class ClassManager extends JavaPlugin {
 			p.setLevel(level);
 			return true;
 		case "listclasses":
+			listAvailableClasses(p);
 			Collection<? extends Player> currentPlayers = this.getServer().getOnlinePlayers();
 			for (Player currentPlayer : currentPlayers) {
 				if (currentPlayer != null) {
@@ -327,6 +328,10 @@ public class ClassManager extends JavaPlugin {
 
 	public RPGClass GetClass(LivingEntity le) {
 		return currentPlayerClasses.get(le) != null ? currentPlayerClasses.get(le) : new DEFAULT(le, this);
+	}
+
+	public RPGClass RemoveClass(LivingEntity le) {
+		return currentPlayerClasses.remove(le);
 	}
 
 	public void SetClass(LivingEntity le, RPGClass newClass) {

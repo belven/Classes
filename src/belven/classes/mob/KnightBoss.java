@@ -13,6 +13,8 @@ import belven.classes.abilities.Ability;
 import belven.classes.mob.abilities.Cleave;
 import belven.classes.mob.abilities.MobAOEGrapple;
 import belven.classes.mob.abilities.SelfProtection;
+import belven.classes.mob.abilities.SpeedBoost;
+import belven.resources.EntityFunctions;
 
 public class KnightBoss extends MobClass {
 	SelfProtection sp;
@@ -32,15 +34,23 @@ public class KnightBoss extends MobClass {
 
 	@Override
 	public void SetAbilities() {
-		AddAbility(grapple = new MobAOEGrapple(this, 2, 1), 6);
+		AddAbility(grapple = new MobAOEGrapple(this, 2, 15), 6);
 		AddAbility(new Cleave(this, 1, 2), 5);
-		AddAbility(sp = new SelfProtection(this, 3, 4), 10);
+		AddAbility(new SpeedBoost(this, 1, 1), 2);
+		AddAbility(sp = new SelfProtection(this, 3, 4), 7);
 	}
 
 	@Override
 	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
-		if (!sp.onCooldown()) {
-			sp.PerformAbility(event);
+		setTarget(EntityFunctions.GetDamager(event));
+		for (Ability a : getAbilities()) {
+			if (!a.onCooldown()) {
+				if (!a.PerformAbility(event)) {
+					continue;
+				} else if (a.shouldBreak()) {
+					break;
+				}
+			}
 		}
 	}
 
@@ -66,8 +76,7 @@ public class KnightBoss extends MobClass {
 
 	@Override
 	public void SelfTargetOther(EntityTargetLivingEntityEvent event) {
-		// TODO Auto-generated method stub
-
+		setTarget(event.getTarget());
 	}
 
 	@Override

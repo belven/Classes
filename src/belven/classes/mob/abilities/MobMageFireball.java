@@ -15,7 +15,7 @@ public class MobMageFireball extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		if (getRPGClass().getTarget() != null) {
+		if (getRPGClass().getTarget() != null && getRPGClass().getOwner().hasLineOfSight(getRPGClass().getTarget())) {
 			getRPGClass().setAbilityOnCoolDown(this);
 			getRPGClass().getOwner().launchProjectile(Fireball.class);
 			return true;

@@ -1,5 +1,6 @@
 package belven.classes.mob.abilities;
 
+import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
@@ -17,7 +18,10 @@ public class MobAOEGrapple extends Ability {
 	@Override
 	public boolean PerformAbility(Event e) {
 		boolean playerFound = false;
-		for (LivingEntity le : EntityFunctions.getNearbyEntities(getRPGClass().getOwner().getLocation(), getAmplifier())) {
+		Location l = getRPGClass().getTarget() != null ? getRPGClass().getTarget().getLocation() : getRPGClass()
+				.getOwner().getLocation();
+
+		for (LivingEntity le : EntityFunctions.getNearbyEntities(l, getAmplifier())) {
 			if (le.getType() == EntityType.PLAYER && getRPGClass().getOwner().hasLineOfSight(le)) {
 				le.teleport(getRPGClass().getOwner());
 				playerFound = true;
@@ -30,5 +34,4 @@ public class MobAOEGrapple extends Ability {
 		}
 		return false;
 	}
-
 }

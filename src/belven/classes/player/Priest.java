@@ -10,8 +10,6 @@ import belven.classes.player.abilities.Cleanse;
 import belven.resources.ClassDrop;
 
 public class Priest extends Healer {
-	public AOEHeal classAOEHeal;
-	public Cleanse classCleanse;
 
 	public Priest(Player currentPlayer, ClassManager instance) {
 		super(8, currentPlayer, instance);
@@ -19,25 +17,17 @@ public class Priest extends Healer {
 		baseClassName = "Healer";
 		SetClassDrops();
 		SetAbilities();
+		SortAbilities();
 	}
 
 	@Override
 	public synchronized void SetAbilities() {
 		super.SetAbilities();
-
 		getAbilities().remove(classHeal);
-
-		classAOEHeal = new AOEHeal(this, 0, 12);
-		classCleanse = new Cleanse(this, 3, 3);
-
-		classLightHeal.amplifier = 12;
-		classAOEHeal.cooldown = 8;
-
-		getAbilities().add(classAOEHeal);
-		getAbilities().add(classCleanse);
 		getAbilities().remove(classBandage);
-
-		SortAbilities();
+		AddAbility(new AOEHeal(this, 0, 12), 8);
+		AddAbility(new Cleanse(this, 3, 3), 4);
+		classLightHeal.amplifier = 12;
 	}
 
 	@Override

@@ -10,16 +10,17 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import belven.classes.ClassManager;
 import belven.classes.abilities.Ability;
-import belven.classes.mob.abilities.MobAOEHeal;
-import belven.classes.mob.abilities.MobLightningStrike;
-import belven.classes.mob.abilities.MobMageFireball;
-import belven.resources.EntityFunctions;
+import belven.classes.mob.abilities.Blind;
+import belven.classes.mob.abilities.Slow;
+import belven.classes.mob.abilities.SummonAllies;
+import belven.classes.mob.abilities.Weakness;
+import belven.classes.mob.abilities.Wither;
 
-public class MageBoss extends MobClass {
+public class NecromancerBoss extends MobClass {
 
-	public MageBoss(double health, LivingEntity classOwner, ClassManager instance) {
+	public NecromancerBoss(double health, LivingEntity classOwner, ClassManager instance) {
 		super(health, classOwner, instance);
-		className = "Mage Boss";
+		className = "Necromancer Boss";
 		SetAbilities();
 		SortAbilities();
 	}
@@ -31,19 +32,15 @@ public class MageBoss extends MobClass {
 
 	@Override
 	public void SetAbilities() {
-		AddAbility(new MobMageFireball(this, 1, 1), 1);
-		AddAbility(new MobAOEHeal(this, 10, 10), 10);
-		AddAbility(new MobLightningStrike(this, 2, 10), 2);
+		AddAbility(new SummonAllies(this, 1, 2), 15);
+		AddAbility(new Slow(this, 10, 7), 10);
+		AddAbility(new Weakness(this, 2, 4), 5);
+		AddAbility(new Blind(this, 2, 10), 10);
+		AddAbility(new Wither(this, 2, 10), 10);
 	}
 
 	@Override
 	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
-		if (EntityFunctions.GetDamager(event) == getOwner()) {
-			event.setCancelled(true);
-			event.setDamage(0);
-		} else {
-			setTarget(EntityFunctions.GetDamager(event));
-		}
 	}
 
 	@Override

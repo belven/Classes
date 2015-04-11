@@ -75,10 +75,8 @@ public class Daemon extends Berserker {
 	@Override
 	public void SetAbilities() {
 		super.SetAbilities();
-		classFeelTheBurn = new FeelTheBurn(this, 1, 0);
-		classSetAlight = new SetAlight(this, 2, 0);
-		classSetAlight.cooldown = 1;
-		classFeelTheBurn.cooldown = 2;
+		AddAbility(classFeelTheBurn = new FeelTheBurn(this, 1, 0), 2);
+		AddAbility(classSetAlight = new SetAlight(this, 2, 0), 1);
 		SortAbilities();
 	}
 

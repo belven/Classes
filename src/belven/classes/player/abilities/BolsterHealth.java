@@ -30,10 +30,10 @@ public class BolsterHealth extends Ability {
 			return false;
 		}
 
-		PotionEffect pe = new PotionEffect(PotionEffectType.HEALTH_BOOST, Functions.SecondsToTicks(getAmplifier() + 30),
-				getAmplifier(), true);
-
 		if (!onCooldown() && !playerToHeal.hasPotionEffect(PotionEffectType.HEALTH_BOOST)) {
+			PotionEffect pe = new PotionEffect(PotionEffectType.HEALTH_BOOST,
+					Functions.SecondsToTicks(getAmplifier() + 30), getAmplifier(), true);
+
 			playerToHeal.addPotionEffect(pe, false);
 
 			getRPGClass().getPlayer().sendMessage("You boosted  " + playerToHeal.getName() + "s max health");

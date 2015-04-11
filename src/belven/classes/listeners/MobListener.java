@@ -20,10 +20,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import belven.classes.ClassManager;
+import belven.classes.DEFAULT;
 import belven.classes.mob.AssassinBoss;
 import belven.classes.mob.KnightBoss;
 import belven.classes.mob.MageBoss;
 import belven.classes.mob.MobClass;
+import belven.classes.mob.NecromancerBoss;
 import belven.classes.mob.Sapper;
 import belven.classes.mob.Warrior;
 import belven.resources.ClassDrop;
@@ -68,6 +70,8 @@ public class MobListener implements Listener {
 				plugin.SetClass(le, new KnightBoss(le.getMaxHealth() / 2, le, plugin));
 			} else if (Functions.numberBetween(rand, 25, 50)) {
 				plugin.SetClass(le, new MageBoss(le.getMaxHealth() / 2, le, plugin));
+			} else if (Functions.numberBetween(rand, 50, 75)) {
+				plugin.SetClass(le, new NecromancerBoss(le.getMaxHealth() / 2, le, plugin));
 			} else {
 				plugin.SetClass(le, new AssassinBoss(le.getMaxHealth() / 2, le, plugin));
 			}
@@ -89,19 +93,27 @@ public class MobListener implements Listener {
 		Entity currentEntity = event.getEntity();
 		EntityDamageEvent lastDamage = event.getEntity().getLastDamageCause();
 
-		if (!(lastDamage instanceof EntityDamageByEntityEvent)) {
-			return;
+		if (currentEntity.getType() != EntityType.PLAYER && currentEntity instanceof LivingEntity) {
+			LivingEntity le = (LivingEntity) currentEntity;
+			if (!(plugin.GetClass(le) instanceof DEFAULT)) {
+				plugin.RemoveClass(le);
+			}
 		}
 
-		Entity damager = EntityFunctions.GetDamager((EntityDamageByEntityEvent) lastDamage);
-		Object data = null;
+		if (lastDamage instanceof EntityDamageByEntityEvent) {
+			GiveClassDrops(event, currentEntity, (EntityDamageByEntityEvent) lastDamage);
+		}
+	}
+
+	private void GiveClassDrops(EntityDeathEvent event, Entity currentEntity, EntityDamageByEntityEvent lastDamage) {
+		LivingEntity damager = EntityFunctions.GetDamager(lastDamage);
+		Group g = null;
 
 		if (currentEntity.hasMetadata("ArenaMob")) {
-			data = currentEntity.getMetadata("ArenaMob").get(0).value();
+			g = (Group) currentEntity.getMetadata("ArenaMob").get(0).value();
 		}
 
-		if (data != null && damager != null && damager.getType() == EntityType.PLAYER) {
-			Group g = (Group) data;
+		if (g != null && damager != null && damager.getType() == EntityType.PLAYER) {
 			String name = g.getName();
 			Player damagerP = (Player) damager;
 
@@ -110,20 +122,11 @@ public class MobListener implements Listener {
 					GiveClassDrops(p, false);
 				}
 			}
-		} else {
-			EntityDamageEvent cause = event.getEntity().getLastDamageCause();
-
-			if (cause instanceof EntityDamageByEntityEvent) {
-				LivingEntity e = EntityFunctions.GetDamager((EntityDamageByEntityEvent) cause);
-
-				if (e != null && e.getType() == EntityType.PLAYER) {
-					Player p = (Player) e;
-
-					p.giveExp(event.getDroppedExp());
-					event.setDroppedExp(0);
-					GiveClassDrops(p, true);
-				}
-			}
+		} else if (damager != null && damager.getType() == EntityType.PLAYER) {
+			Player p = (Player) damager;
+			p.giveExp(event.getDroppedExp());
+			event.setDroppedExp(0);
+			GiveClassDrops(p, true);
 		}
 	}
 

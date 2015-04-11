@@ -2,7 +2,6 @@ package belven.classes.player.abilities;
 
 import java.util.List;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -23,21 +22,13 @@ public class Grapple extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-
-		List<LivingEntity> tempTargets = EntityFunctions.findAllTargets(getRPGClass().getPlayer(), 50.0D);
+		List<LivingEntity> tempTargets = EntityFunctions.findAllTargets(getRPGClass().getPlayer(), getAmplifier());
 
 		if (tempTargets != null && tempTargets.size() > 0) {
-			Location l = this.getRPGClass().getPlayer().getLocation();
-			l.setY(l.getY() + 1.0D);
-
 			for (LivingEntity le : tempTargets) {
-				if (le.getType() == EntityType.PLAYER) {
-					Player p = (Player) le;
-					if (shouldPull(p)) {
-						le.teleport(this.getRPGClass().getPlayer());
-					}
-				} else {
-					le.teleport(this.getRPGClass().getPlayer());
+				if (shouldPull(le)) {
+					le.teleport(this.getRPGClass().getOwner());
+					break;
 				}
 			}
 
@@ -48,26 +39,21 @@ public class Grapple extends Ability {
 		return false;
 	}
 
-	public boolean shouldPull(Player target) {
-		// Player self = getRPGClass().getPlayer();
-		// ClassManager plugin = getRPGClass().plugin;
+	public boolean shouldPull(LivingEntity le) {
+		if (getRPGClass().getOwner().hasLineOfSight(le)) {
+			if (le.getType() == EntityType.PLAYER) {
+				Player p = (Player) le;
+				if (shouldPullPlayer(p)) {
+					return true;
+				}
+			} else {
+				return true;
+			}
+		}
+		return false;
+	}
 
-		// if (plugin.arenas != null && plugin.teams != null) {
-		// boolean selfInArena = plugin.arenas.IsPlayerInArena(self);
-		// boolean targetInArena = plugin.arenas.IsPlayerInArena(target);
-		// ArenaTypes arenaType = null;
-		//
-		// if (selfInArena) {
-		// arenaType = plugin.arenas.getArena(self).getType();
-		// }
-		//
-		// if (selfInArena && targetInArena && arenaType != ArenaTypes.PvP) {
-		// return true;
-		// } else if (plugin.teams.isInSameTeam(self, target)) {
-		// return true;
-		// }
-		// }
-
-		return true;
+	public boolean shouldPullPlayer(Player target) {
+		return !getRPGClass().getPlugin().isAlly(getRPGClass().getPlayer(), target);
 	}
 }

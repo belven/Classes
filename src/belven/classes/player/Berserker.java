@@ -5,7 +5,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -15,14 +14,15 @@ import org.bukkit.potion.PotionEffectType;
 import belven.classes.ClassManager;
 import belven.classes.RPGClass;
 import belven.classes.abilities.Ability;
+import belven.classes.player.abilities.Cleave;
 import belven.classes.player.abilities.Grapple;
 import belven.resources.ClassDrop;
-import belven.resources.EntityFunctions;
 import belven.resources.Functions;
 import belven.resources.MaterialFunctions;
 
 public class Berserker extends RPGClass {
 	public Grapple classGrapple;
+	private Cleave cleave;
 
 	public Berserker(Player currentPlayer, ClassManager instance) {
 		super(30, currentPlayer, instance);
@@ -62,45 +62,25 @@ public class Berserker extends RPGClass {
 
 		this.getOwner().addPotionEffect(
 				new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Functions.SecondsToTicks(2),
-						(int) (2 * healthPercent)));
+						(int) (3 * healthPercent)));
 	}
 
 	@Override
 	public synchronized void SelfDamageOther(EntityDamageByEntityEvent event) {
-		int mobCount = 0;
-		DamageCause dc = DamageCause.CUSTOM;
-
-		if (event.getCause() != dc) {
-			for (Entity e : EntityFunctions.getNearbyEntities(event.getEntity().getLocation(), 4)) {
-				double damageToDo = event.getDamage();
-
-				if (e instanceof LivingEntity && e != event.getEntity() && mobCount < 3 && e != this.getOwner()) {
-					LivingEntity le = (LivingEntity) e;
-					mobCount++;
-
-					/* HashMap<DamageModifier, Double> damage = new HashMap<>(); damage.put(DamageModifier.BASE, damageToDo);
-					 * 
-					 * Map<DamageModifier, Function<? super Double, Double>> functions = new HashMap<>();
-					 * functions.put(DamageModifier.BASE, com.google.common.base.Functions.constant(damageToDo));
-					 * 
-					 * EntityDamageByEntityEvent ede = new EntityDamageByEntityEvent(getOwner(), le, dc, damage, functions);
-					 * 
-					 * Bukkit.getPluginManager().callEvent(ede); */
-					le.damage(damageToDo, getOwner());
-				}
-			}
+		setTarget((LivingEntity) event.getEntity());
+		if (!cleave.onCooldown()) {
+			cleave.PerformAbility(event);
 		}
 	}
 
 	@Override
 	public void SetAbilities() {
 		if (!AbilitiesSet()) {
-			this.classGrapple = new Grapple(this, 1, 0);
-			getAbilities().add(classGrapple);
+			AddAbility(classGrapple = new Grapple(this, 1, 20), 4);
+			AddAbility(cleave = new Cleave(this, 1, 5), 1);
 			SortAbilities();
 			setAbilitiesSet(true);
 		}
-
 	}
 
 	@Override
