@@ -18,6 +18,8 @@ public class Cleanse extends Ability {
 
 		requirements.add(new ItemStack(Material.GLOWSTONE_DUST, 1));
 		abilitiyName = "Cleanse";
+		setShouldBreak(true);
+		inHandRequirements.add(Material.GLOWSTONE_DUST);
 	}
 
 	@Override
@@ -36,7 +38,6 @@ public class Cleanse extends Ability {
 			PotionEffect pe = ActivePotionEffects.next();
 			if (Functions.debuffs(pe.getType())) {
 				playerToHeal.removePotionEffect(pe.getType());
-				break;
 			}
 		}
 

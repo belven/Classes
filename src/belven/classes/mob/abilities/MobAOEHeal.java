@@ -20,7 +20,7 @@ public class MobAOEHeal extends Ability {
 		getRPGClass().setAbilityOnCoolDown(this, true);
 		for (LivingEntity le : EntityFunctions.getNearbyEntities(getRPGClass().getOwner().getLocation(), 3)) {
 			if (le.getType() != EntityType.PLAYER) {
-				new HealTimer(getRPGClass().getPlugin(), getAmplifier() / 100.0, le, 5, 1);
+				new HealTimer(getRPGClass().getPlugin(), getAmplifier() / 100.0, le, 4, 1);
 			}
 		}
 		return true;

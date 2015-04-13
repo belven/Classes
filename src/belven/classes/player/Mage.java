@@ -10,6 +10,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Dye;
 import org.bukkit.potion.Potion;
@@ -20,6 +21,7 @@ import belven.classes.ClassManager;
 import belven.classes.RPGClass;
 import belven.classes.abilities.Ability;
 import belven.classes.player.abilities.ChainLightning;
+import belven.classes.player.abilities.Levitate;
 import belven.classes.player.abilities.LightningStrike;
 import belven.classes.player.abilities.MageFireball;
 import belven.classes.player.abilities.Pop;
@@ -32,6 +34,7 @@ public class Mage extends RPGClass {
 	public LightningStrike classLightningStrike;
 	public BlockIterator currentBlockIterator;
 	public Pop classPop;
+	private Levitate classLevitate;
 
 	public Mage(Player currentPlayer, ClassManager instance) {
 		super(8, currentPlayer, instance);
@@ -96,26 +99,36 @@ public class Mage extends RPGClass {
 	}
 
 	@Override
+	public void ToggleSneakEvent(PlayerToggleSneakEvent event) {
+		if (!classLevitate.onCooldown() && classLevitate.HasRequirements()) {
+			if (classLevitate.getTimer() != null) {
+				classLevitate.getTimer().run();
+				classLevitate.getTimer().cancel();
+				classLevitate.setTimer(null);
+			}
+			// if (event.getPlayer().isSneaking()) {
+			classLevitate.PerformAbility(event);
+			// }
+		}
+	}
+
+	@Override
 	public void SetAbilities() {
 		if (!AbilitiesSet()) {
-			classFireball = new MageFireball(this, 2, 5);
-			classChainLightning = new ChainLightning(this, 1, 5);
-			classLightningStrike = new LightningStrike(this, 3, 5);
-			classPop = new Pop(this, 4, 5);
-
-			classLightningStrike.cooldown = 2;
-
-			getAbilities().add(classFireball);
-			getAbilities().add(classChainLightning);
-			getAbilities().add(classLightningStrike);
-			getAbilities().add(classPop);
-			SortAbilities();
 			setAbilitiesSet(true);
+			AddAbility(classFireball = new MageFireball(this, 2, 5), 1);
+			AddAbility(classChainLightning = new ChainLightning(this, 1, 5), 60);
+			AddAbility(classLevitate = new Levitate(this, 1, 5), 0);
+			AddAbility(classLightningStrike = new LightningStrike(this, 3, 2), 2);
+			AddAbility(classPop = new Pop(this, 1, 5), 1);
+
+			SortAbilities();
 		}
 	}
 
 	@Override
 	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
+		setTarget((LivingEntity) event.getRightClicked());
 		CheckAbilitiesToCast(event);
 	}
 }

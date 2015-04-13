@@ -81,8 +81,9 @@ public class MobListener implements Listener {
 	@EventHandler
 	public void onEntityTargetLivingEntityEvent(EntityTargetLivingEntityEvent event) {
 		if (event.getTarget() != null && event.getEntity() instanceof LivingEntity) {
-			if (plugin.GetClass((LivingEntity) event.getEntity()) instanceof MobClass) {
-				MobClass mc = (MobClass) plugin.GetClass((LivingEntity) event.getEntity());
+			LivingEntity le = (LivingEntity) event.getEntity();
+			if (plugin.GetClass(le) instanceof MobClass) {
+				MobClass mc = (MobClass) plugin.GetClass(le);
 				mc.SelfTargetOther(event);
 			}
 		}

@@ -19,7 +19,7 @@ public class LastResort extends Ability {
 	@Override
 	public boolean PerformAbility(Event e) {
 		new HealTimer(getRPGClass().getPlugin(), getAmplifier() / 100.0, getRPGClass().getOwner());
-		getRPGClass().UltAbilityUsed(this);
+		getRPGClass().setAbilityOnCoolDown(this, true);
 		return true;
 	}
 

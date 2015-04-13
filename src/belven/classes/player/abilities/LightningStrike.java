@@ -11,7 +11,6 @@ import org.bukkit.event.Event;
 import belven.classes.RPGClass;
 import belven.classes.abilities.Ability;
 import belven.resources.EntityFunctions;
-import belven.resources.Functions;
 
 public class LightningStrike extends Ability {
 	public LightningStrike(RPGClass cc, int priority, int amp) {
@@ -29,15 +28,11 @@ public class LightningStrike extends Ability {
 		}
 		getRPGClass().setAbilityOnCoolDown(this);
 
-		List<LivingEntity> entities = EntityFunctions.getNearbyEntities(targetEntity.getLocation(), 1);
-		for (int i = 0; i < entities.size(); i++) {
-			LivingEntity le = entities.get(Functions.getRandomIndex(entities));
-
+		List<LivingEntity> entities = EntityFunctions.getNearbyEntities(targetEntity.getLocation(), 2);
+		for (LivingEntity le : entities) {
 			if (le != getRPGClass().getPlayer()) {
-				if (le.getType() == EntityType.PLAYER
+				if (le.getType() != EntityType.PLAYER || le.getType() == EntityType.PLAYER
 						&& !getRPGClass().getPlugin().isAlly(getRPGClass().getPlayer(), (Player) le)) {
-					doDamage(le);
-				} else if (le.getType() != EntityType.PLAYER) {
 					doDamage(le);
 				}
 			}

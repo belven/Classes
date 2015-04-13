@@ -2,11 +2,10 @@ package belven.classes.player.abilities;
 
 import java.util.List;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -25,19 +24,24 @@ public class Pop extends Ability {
 		abilitiyName = "Pop";
 	}
 
-	public boolean PerformAbility(Location targetLocation) {
-		List<LivingEntity> entitiesToDamage = EntityFunctions.getNearbyEntities(targetLocation, 4);
+	@Override
+	public boolean PerformAbility(Event e) {
+		if (getRPGClass().getTarget() == null) {
+			return false;
+		}
 
-		for (Entity e : entitiesToDamage) {
-			if (e != null && e.getType() != EntityType.PLAYER) {
-				Vector vectorToUse = getRPGClass().getPlayer().getLocation().getDirection();
+		List<LivingEntity> entitiesToDamage = EntityFunctions.getNearbyEntities(
+				getRPGClass().getTarget().getLocation(), 4);
+
+		for (LivingEntity le : entitiesToDamage) {
+			if (counter >= 3) {
+				counter = 0;
+				break;
+			} else if (le != null && le.getType() != EntityType.PLAYER) {
+				Vector vectorToUse = getRPGClass().getOwner().getLocation().getDirection();
 				vectorToUse.setY(vectorToUse.getY() + 1);
-				e.setVelocity(vectorToUse);
+				le.setVelocity(vectorToUse);
 				counter++;
-				if (counter >= 3) {
-					counter = 0;
-					break;
-				}
 			}
 		}
 		RemoveItems();

@@ -32,10 +32,10 @@ public class NecromancerBoss extends MobClass {
 
 	@Override
 	public void SetAbilities() {
-		AddAbility(new SummonAllies(this, 1, 2), 15);
+		AddAbility(new SummonAllies(this, 1, 2), 10);
 		AddAbility(new Slow(this, 10, 7), 10);
 		AddAbility(new Weakness(this, 2, 4), 5);
-		AddAbility(new Blind(this, 2, 10), 10);
+		AddAbility(new Blind(this, 2, 5), 10);
 		AddAbility(new Wither(this, 2, 10), 10);
 	}
 

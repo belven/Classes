@@ -116,12 +116,12 @@ public class Healer extends RPGClass {
 	@Override
 	public synchronized void SetAbilities() {
 		if (!AbilitiesSet()) {
+			setAbilitiesSet(true);
 			getAbilities().add(classHeal = new Heal(this, 1, 3));
 			getAbilities().add(classLightHeal = new LightHeal(this, 2, 8));
 			getAbilities().add(classBandage = new Bandage(this, 0, 3));
 			getAbilities().add(classBarrier = new Barrier(this, 6, 4, 10));
 			SortAbilities();
-			setAbilitiesSet(true);
 		}
 	}
 

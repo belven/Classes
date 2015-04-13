@@ -25,8 +25,8 @@ public class Priest extends Healer {
 		super.SetAbilities();
 		getAbilities().remove(classHeal);
 		getAbilities().remove(classBandage);
-		AddAbility(new AOEHeal(this, 0, 12), 8);
-		AddAbility(new Cleanse(this, 3, 3), 4);
+		AddAbility(new Cleanse(this, 1, 3), 4);
+		AddAbility(new AOEHeal(this, 2, 12), 10);
 		classLightHeal.amplifier = 12;
 	}
 

@@ -12,6 +12,7 @@ import belven.classes.ClassManager;
 import belven.classes.abilities.Ability;
 import belven.classes.mob.abilities.Slow;
 import belven.classes.mob.abilities.StealLife;
+import belven.classes.mob.abilities.Weakness;
 
 public class Sapper extends MobClass {
 	public Sapper(double health, LivingEntity classOwner, ClassManager instance) {
@@ -28,8 +29,9 @@ public class Sapper extends MobClass {
 
 	@Override
 	public void SetAbilities() {
-		getAbilities().add(new StealLife(this, 10, 1));
-		getAbilities().add(new Slow(this, 1, 1));
+		AddAbility(new StealLife(this, 10, 2), 4);
+		AddAbility(new Slow(this, 1, 3), 5);
+		AddAbility(new Weakness(this, 1, 3), 10);
 	}
 
 	@Override

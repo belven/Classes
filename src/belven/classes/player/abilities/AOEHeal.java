@@ -20,18 +20,19 @@ public class AOEHeal extends Ability {
 		requirements.add(dye.toItemStack(1));
 
 		abilitiyName = "AOE Heal";
+		setShouldBreak(true);
 	}
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		for (Player p : EntityFunctions.getNearbyPlayersNew(getRPGClass().getPlayer().getLocation(), getAmplifier() + 8)) {
+		getRPGClass().setAbilityOnCoolDown(this, true);
+		for (Player p : EntityFunctions
+				.getNearbyPlayersNew(getRPGClass().getPlayer().getLocation(), getAmplifier() + 8)) {
 			if (getRPGClass().getPlugin().isAlly(p, getRPGClass().getPlayer())) {
+				getRPGClass().getPlayer().sendMessage("You healed " + p.getName());
 				new HealTimer(getRPGClass().getPlugin(), getAmplifier() / 100.0, p, 5, 1);
 			}
 		}
-
-		getRPGClass().setAbilityOnCoolDown(this, true);
-
 		RemoveItems();
 		return true;
 	}

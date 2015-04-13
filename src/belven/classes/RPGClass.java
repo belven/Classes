@@ -43,8 +43,10 @@ public abstract class RPGClass extends RPGClassData {
 	}
 
 	public void AddAbility(Ability ability, int cooldown) {
-		getAbilities().add(ability);
-		ability.cooldown = cooldown;
+		if (!getAbilities().contains(ability)) {
+			getAbilities().add(ability);
+			ability.cooldown = cooldown;
+		}
 	}
 
 	@Override
@@ -168,10 +170,6 @@ public abstract class RPGClass extends RPGClassData {
 	}
 
 	public void ToggleSneakEvent(PlayerToggleSneakEvent event) {
-	}
-
-	public void UltAbilityUsed(Ability currentAbility) {
-		setAbilityOnCoolDown(currentAbility);
 	}
 
 }

@@ -22,7 +22,7 @@ public class ChainLightning extends Ability {
 	public boolean PerformAbility(Event e) {
 		getRPGClass().getPlayer().sendMessage(abilitiyName + " has been used!");
 		new ChainLightningTimer(this).runTaskTimer(getRPGClass().getPlugin(), 0, 10);
-		getRPGClass().UltAbilityUsed(this);
+		getRPGClass().setAbilityOnCoolDown(this, true);
 		return true;
 	}
 }

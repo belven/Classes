@@ -32,8 +32,8 @@ public class AssassinBoss extends MobClass {
 
 	@Override
 	public void SetAbilities() {
-		AddAbility(new StealLife(this, 10, 3), 3);
-		AddAbility(new SpeedBoost(this, 1, 1), 5);
+		AddAbility(new StealLife(this, 10, 1), 1);
+		AddAbility(new SpeedBoost(this, 1, 1), 1);
 		AddAbility(teleport = new TeleportToTarget(this, 1, 2), 10);
 	}
 

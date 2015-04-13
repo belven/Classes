@@ -17,7 +17,7 @@ public class Slow extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		if (getRPGClass().getTarget() != null) {
+		if (getRPGClass().getTarget() != null && getRPGClass().getOwner().hasLineOfSight(getRPGClass().getTarget())) {
 			getRPGClass().setAbilityOnCoolDown(this);
 			getRPGClass().getTarget().addPotionEffect(
 					new PotionEffect(PotionEffectType.SLOW, Functions.SecondsToTicks(3), amplifier));

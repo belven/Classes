@@ -32,7 +32,7 @@ public class MageBoss extends MobClass {
 	@Override
 	public void SetAbilities() {
 		AddAbility(new MobMageFireball(this, 1, 1), 1);
-		AddAbility(new MobAOEHeal(this, 10, 10), 10);
+		AddAbility(new MobAOEHeal(this, 10, 5), 8);
 		AddAbility(new MobLightningStrike(this, 2, 10), 2);
 	}
 

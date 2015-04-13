@@ -26,6 +26,7 @@ public class SoulDrain extends Ability {
 
 		if (getRPGClass().getPlayer().getItemInHand().getType() == Material.NETHER_STAR) {
 			targetEntity.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 1, getAmplifier()));
+			getRPGClass().setAbilityOnCoolDown(this, true);
 			return true;
 		}
 		return false;

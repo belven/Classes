@@ -71,7 +71,6 @@ public class Warrior extends RPGClass {
 		Damageable dcurrentPlayer = getOwner();
 
 		if (!currentLastResort.onCooldown() && dcurrentPlayer.getHealth() <= 5 && currentLastResort.HasRequirements()) {
-			UltAbilityUsed(currentLastResort);
 			currentLastResort.PerformAbility(event);
 		} else if (!currentRetaliation.onCooldown() && getPlayer().isBlocking()) {
 			currentRetaliation.PerformAbility(event);

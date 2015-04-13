@@ -17,7 +17,7 @@ public class Weakness extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		if (getRPGClass().getTarget() != null) {
+		if (getRPGClass().getTarget() != null && getRPGClass().getOwner().hasLineOfSight(getRPGClass().getTarget())) {
 			getRPGClass().setAbilityOnCoolDown(this);
 			getRPGClass().getTarget().addPotionEffect(
 					new PotionEffect(PotionEffectType.WEAKNESS, Functions.SecondsToTicks(3), getAmplifier()));
