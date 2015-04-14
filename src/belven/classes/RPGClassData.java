@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 
 import belven.classes.abilities.Ability;
 import belven.resources.ClassDrop;
+import belven.resources.Ratio;
+import belven.resources.RatioContainer;
 
 public abstract class RPGClassData {
 	private List<Ability> abilities = new ArrayList<Ability>();
@@ -17,6 +19,7 @@ public abstract class RPGClassData {
 	private boolean canCast = true;
 
 	private List<ClassDrop> classDrops = new ArrayList<ClassDrop>();
+	private RatioContainer<ClassDrop> chanceClassDrops = new RatioContainer<>();
 	protected String className = "";
 
 	private LivingEntity classOwner = null;
@@ -87,6 +90,18 @@ public abstract class RPGClassData {
 
 	public void setAbilitiesSet(boolean abilitiesSet) {
 		this.abilitiesSet = abilitiesSet;
+	}
+
+	public void AddChanceToDrop(ClassDrop cd, double ratio) {
+		getChanceClassDrops().Add(new Ratio<ClassDrop, Double>(cd, ratio));
+	}
+
+	public RatioContainer<ClassDrop> getChanceClassDrops() {
+		return chanceClassDrops;
+	}
+
+	public void setChanceClassDrops(RatioContainer<ClassDrop> ClassDropsNew) {
+		this.chanceClassDrops = ClassDropsNew;
 	}
 
 }

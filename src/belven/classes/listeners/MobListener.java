@@ -21,6 +21,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import belven.classes.ClassManager;
 import belven.classes.DEFAULT;
+import belven.classes.RPGClass;
 import belven.classes.mob.AssassinBoss;
 import belven.classes.mob.KnightBoss;
 import belven.classes.mob.MageBoss;
@@ -132,13 +133,12 @@ public class MobListener implements Listener {
 	}
 
 	private synchronized void GiveClassDrops(Player p, boolean isWilderness) {
-		int ran = randomGenerator.nextInt(99);
+		// int ran = randomGenerator.nextInt(99);
 		PlayerInventory pInv = p.getInventory();
-		belven.classes.RPGClass playerClass = plugin.GetClass(p);
+		RPGClass playerClass = plugin.GetClass(p);
 
 		for (ClassDrop cd : playerClass.getClassDrops()) {
-			if (cd.alwaysGive || Functions.numberBetween(ran, cd.lowChance, cd.highChance)
-					&& cd.isWilderness == isWilderness) {
+			if (cd.alwaysGive) {
 				if (!cd.isArmor) {
 					ItemStack is = cd.is.clone();
 					is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is.getAmount());
@@ -148,6 +148,31 @@ public class MobListener implements Listener {
 				}
 			}
 		}
+
+		ClassDrop cd = playerClass.getChanceClassDrops().getRandomKey();
+
+		while (cd != null && cd.isWilderness == isWilderness) {
+			if (!cd.isArmor) {
+				ItemStack is = cd.is.clone();
+				is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is.getAmount());
+				Functions.AddToInventory(p, is, cd.maxAmount);
+			} else if (!AddArmor(pInv, cd.is)) {
+				cd = playerClass.getChanceClassDrops().getRandomKey();
+			}
+		}
+
+		// for (ClassDrop cd : playerClass.getClassDrops()) {
+		// if (cd.alwaysGive || Functions.numberBetween(ran, cd.lowChance, cd.highChance)
+		// && cd.isWilderness == isWilderness) {
+		// if (!cd.isArmor) {
+		// ItemStack is = cd.is.clone();
+		// is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is.getAmount());
+		// Functions.AddToInventory(p, is, cd.maxAmount);
+		// } else if (AddArmor(pInv, cd.is)) {
+		// break;
+		// }
+		// }
+		// }
 
 	}
 

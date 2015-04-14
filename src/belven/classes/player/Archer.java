@@ -73,14 +73,16 @@ public class Archer extends RPGClass {
 		getClassDrops().add(new ClassDrop(arrow, true, 30, 3));
 		getClassDrops().add(new ClassDrop(bow, true, 1, 1));
 
-		getClassDrops().add(new ClassDrop(redwool, 0, 30, 5));
-		getClassDrops().add(new ClassDrop(graywool, 0, 30, 5));
-		getClassDrops().add(new ClassDrop(snowBall, 30, 50, 2));
+		AddChanceToDrop(new ClassDrop(arrow, true, 30, 3), 1);
 
-		getClassDrops().add(new ClassDrop(l_Boots(), 50, 100, 1));
-		getClassDrops().add(new ClassDrop(l_ChestPlate(), 50, 100, 1));
-		getClassDrops().add(new ClassDrop(l_Leggings(), 50, 100, 1));
-		getClassDrops().add(new ClassDrop(l_Helmet(), 50, 100, 1));
+		AddChanceToDrop(new ClassDrop(redwool, 0, 30, 5), 1);
+		AddChanceToDrop(new ClassDrop(graywool, 0, 30, 5), 1);
+		AddChanceToDrop(new ClassDrop(snowBall, 30, 50, 2), 1);
+
+		AddChanceToDrop(new ClassDrop(l_Boots(), 50, 100, 1), 1);
+		AddChanceToDrop(new ClassDrop(l_ChestPlate(), 50, 100, 1), 1);
+		AddChanceToDrop(new ClassDrop(l_Leggings(), 50, 100, 1), 1);
+		AddChanceToDrop(new ClassDrop(l_Helmet(), 50, 100, 1), 1);
 
 	}
 
