@@ -37,26 +37,39 @@ import belven.resources.events.EntityMetadataChanged;
 
 public class MobListener implements Listener {
 	private final ClassManager plugin;
-
 	public List<ClassDrop> classDrops = new ArrayList<ClassDrop>();
-
 	Random randomGenerator = new Random();
+	
+	private RatioContainer<Class<? extends RPGClass>> mobBossClasses = new RatioContainer<>();
+	private RatioContainer<Class<? extends RPGClass>> mobClasses = new RatioContainer<>();
 
 	public MobListener(ClassManager instance) {
 		plugin = instance;
+		
+		mobBossClasses.Add(KnightBoss.class, 1);
+		mobBossClasses.Add(MageBoss.class, 1);
+		mobBossClasses.Add(NecromancerBoss.class, 1);
+		mobBossClasses.Add(AssassinBoss.class, 1);
+		
+		mobClasses.Add(Warrior.class, 1);
+		mobClasses.Add(Sapper.class, 1);
+		mobClasses.Add(Deafult.class, 5);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onCreatureSpawnEvent(CreatureSpawnEvent event) {
 		if (EntityFunctions.IsAMob(event.getEntityType())) {
 			LivingEntity le = event.getEntity();
-			int rand = new Random().nextInt(99);
+			Class<? extends RPGClass> rpgClass = mobClasses.getRandomKey();
+			RPGClass class = rpgClass.getDeclaredConstructor(Double.class, LivingEntity.class, ClassManager.class).newInstance(le.getMaxHealth() / 2, le, plugin); 
+			plugin.SetClass(le, class);
+			//int rand = new Random().nextInt(99);
 
-			if (Functions.numberBetween(rand, 10, 20)) {
-				plugin.SetClass(le, new Warrior(le.getMaxHealth() / 2, le, plugin));
-			} else if (Functions.numberBetween(rand, 20, 50)) {
-				plugin.SetClass(le, new Sapper(le.getMaxHealth() / 2, le, plugin));
-			}
+			//if (Functions.numberBetween(rand, 10, 20)) {
+				//plugin.SetClass(le, new Warrior(le.getMaxHealth() / 2, le, plugin));
+			//} else if (Functions.numberBetween(rand, 20, 50)) {
+				//plugin.SetClass(le, new Sapper(le.getMaxHealth() / 2, le, plugin));
+			//}
 		}
 	}
 
@@ -66,16 +79,20 @@ public class MobListener implements Listener {
 				&& (event.getEntity().hasMetadata("ArenaBoss") || event.getEntity().hasMetadata("RewardBoss"))) {
 			LivingEntity le = (LivingEntity) event.getEntity();
 
-			int rand = new Random().nextInt(99);
-			if (Functions.numberBetween(rand, 0, 25)) {
-				plugin.SetClass(le, new KnightBoss(le.getMaxHealth() / 2, le, plugin));
-			} else if (Functions.numberBetween(rand, 25, 50)) {
-				plugin.SetClass(le, new MageBoss(le.getMaxHealth() / 2, le, plugin));
-			} else if (Functions.numberBetween(rand, 50, 75)) {
-				plugin.SetClass(le, new NecromancerBoss(le.getMaxHealth() / 2, le, plugin));
-			} else {
-				plugin.SetClass(le, new AssassinBoss(le.getMaxHealth() / 2, le, plugin));
-			}
+			Class<? extends RPGClass> rpgClass = mobBossClasses.getRandomKey();
+			RPGClass class = rpgClass.getDeclaredConstructor(Double.class, LivingEntity.class, ClassManager.class).newInstance(le.getMaxHealth() / 2, le, plugin); 
+			plugin.SetClass(le, class);
+
+			// int rand = new Random().nextInt(99);
+			// if (Functions.numberBetween(rand, 0, 25)) {
+			// 	plugin.SetClass(le, new KnightBoss(le.getMaxHealth() / 2, le, plugin));
+			// } else if (Functions.numberBetween(rand, 25, 50)) {
+			// 	plugin.SetClass(le, new MageBoss(le.getMaxHealth() / 2, le, plugin));
+			// } else if (Functions.numberBetween(rand, 50, 75)) {
+			// 	plugin.SetClass(le, new NecromancerBoss(le.getMaxHealth() / 2, le, plugin));
+			// } else {
+			// 	plugin.SetClass(le, new AssassinBoss(le.getMaxHealth() / 2, le, plugin));
+			// }
 		}
 	}
 
