@@ -151,12 +151,18 @@ public class MobListener implements Listener {
 
 		ClassDrop cd = playerClass.getChanceClassDrops().getRandomKey();
 
-		while (cd != null && cd.isWilderness == isWilderness) {
-			if (!cd.isArmor) {
-				ItemStack is = cd.is.clone();
-				is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is.getAmount());
-				Functions.AddToInventory(p, is, cd.maxAmount);
-			} else if (!AddArmor(pInv, cd.is)) {
+		while (cd != null) {
+			if (cd.isWilderness == isWilderness) {
+				if (!cd.isArmor) {
+					ItemStack is = cd.is.clone();
+					is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is.getAmount());
+					Functions.AddToInventory(p, is, cd.maxAmount);
+				} else if (!AddArmor(pInv, cd.is)) {
+					cd = playerClass.getChanceClassDrops().getRandomKey();
+				} else {
+					cd = null;
+				}
+			} else {
 				cd = playerClass.getChanceClassDrops().getRandomKey();
 			}
 		}
