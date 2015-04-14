@@ -33,27 +33,28 @@ import belven.resources.ClassDrop;
 import belven.resources.EntityFunctions;
 import belven.resources.Functions;
 import belven.resources.Group;
+import belven.resources.RatioContainer;
 import belven.resources.events.EntityMetadataChanged;
 
 public class MobListener implements Listener {
 	private final ClassManager plugin;
 	public List<ClassDrop> classDrops = new ArrayList<ClassDrop>();
 	Random randomGenerator = new Random();
-	
+
 	private RatioContainer<Class<? extends RPGClass>> mobBossClasses = new RatioContainer<>();
 	private RatioContainer<Class<? extends RPGClass>> mobClasses = new RatioContainer<>();
 
 	public MobListener(ClassManager instance) {
 		plugin = instance;
-		
-		mobBossClasses.Add(KnightBoss.class, 1);
-		mobBossClasses.Add(MageBoss.class, 1);
-		mobBossClasses.Add(NecromancerBoss.class, 1);
-		mobBossClasses.Add(AssassinBoss.class, 1);
-		
-		mobClasses.Add(Warrior.class, 1);
-		mobClasses.Add(Sapper.class, 1);
-		mobClasses.Add(Deafult.class, 5);
+
+		mobBossClasses.Add(KnightBoss.class, 1.0);
+		mobBossClasses.Add(MageBoss.class, 1.0);
+		mobBossClasses.Add(NecromancerBoss.class, 1.0);
+		mobBossClasses.Add(AssassinBoss.class, 1.0);
+
+		mobClasses.Add(Warrior.class, 1.0);
+		mobClasses.Add(Sapper.class, 1.0);
+		mobClasses.Add(DEFAULT.class, 5.0);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -61,15 +62,21 @@ public class MobListener implements Listener {
 		if (EntityFunctions.IsAMob(event.getEntityType())) {
 			LivingEntity le = event.getEntity();
 			Class<? extends RPGClass> rpgClass = mobClasses.getRandomKey();
-			RPGClass class = rpgClass.getDeclaredConstructor(Double.class, LivingEntity.class, ClassManager.class).newInstance(le.getMaxHealth() / 2, le, plugin); 
-			plugin.SetClass(le, class);
-			//int rand = new Random().nextInt(99);
 
-			//if (Functions.numberBetween(rand, 10, 20)) {
-				//plugin.SetClass(le, new Warrior(le.getMaxHealth() / 2, le, plugin));
-			//} else if (Functions.numberBetween(rand, 20, 50)) {
-				//plugin.SetClass(le, new Sapper(le.getMaxHealth() / 2, le, plugin));
-			//}
+			try {
+				RPGClass newClass = rpgClass.getDeclaredConstructor(double.class, LivingEntity.class,
+						ClassManager.class).newInstance(le.getMaxHealth() / 2, le, plugin);
+				plugin.SetClass(le, newClass);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			// int rand = new Random().nextInt(99);
+
+			// if (Functions.numberBetween(rand, 10, 20)) {
+			// plugin.SetClass(le, new Warrior(le.getMaxHealth() / 2, le, plugin));
+			// } else if (Functions.numberBetween(rand, 20, 50)) {
+			// plugin.SetClass(le, new Sapper(le.getMaxHealth() / 2, le, plugin));
+			// }
 		}
 	}
 
@@ -80,18 +87,24 @@ public class MobListener implements Listener {
 			LivingEntity le = (LivingEntity) event.getEntity();
 
 			Class<? extends RPGClass> rpgClass = mobBossClasses.getRandomKey();
-			RPGClass class = rpgClass.getDeclaredConstructor(Double.class, LivingEntity.class, ClassManager.class).newInstance(le.getMaxHealth() / 2, le, plugin); 
-			plugin.SetClass(le, class);
+
+			try {
+				RPGClass newClass = rpgClass.getDeclaredConstructor(double.class, LivingEntity.class,
+						ClassManager.class).newInstance(le.getMaxHealth() / 2, le, plugin);
+				plugin.SetClass(le, newClass);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			// int rand = new Random().nextInt(99);
 			// if (Functions.numberBetween(rand, 0, 25)) {
-			// 	plugin.SetClass(le, new KnightBoss(le.getMaxHealth() / 2, le, plugin));
+			// plugin.SetClass(le, new KnightBoss(le.getMaxHealth() / 2, le, plugin));
 			// } else if (Functions.numberBetween(rand, 25, 50)) {
-			// 	plugin.SetClass(le, new MageBoss(le.getMaxHealth() / 2, le, plugin));
+			// plugin.SetClass(le, new MageBoss(le.getMaxHealth() / 2, le, plugin));
 			// } else if (Functions.numberBetween(rand, 50, 75)) {
-			// 	plugin.SetClass(le, new NecromancerBoss(le.getMaxHealth() / 2, le, plugin));
+			// plugin.SetClass(le, new NecromancerBoss(le.getMaxHealth() / 2, le, plugin));
 			// } else {
-			// 	plugin.SetClass(le, new AssassinBoss(le.getMaxHealth() / 2, le, plugin));
+			// plugin.SetClass(le, new AssassinBoss(le.getMaxHealth() / 2, le, plugin));
 			// }
 		}
 	}
@@ -150,34 +163,34 @@ public class MobListener implements Listener {
 	}
 
 	private synchronized void GiveClassDrops(Player p, boolean isWilderness) {
-		// int ran = randomGenerator.nextInt(99);
 		PlayerInventory pInv = p.getInventory();
 		RPGClass playerClass = plugin.GetClass(p);
+		RatioContainer<ClassDrop> ratios = playerClass.getChanceClassDrops();
 
 		for (ClassDrop cd : playerClass.getClassDrops()) {
-			if (cd.alwaysGive) {
-				if (!cd.isArmor) {
-					ItemStack is = cd.is.clone();
-					is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is.getAmount());
-					Functions.AddToInventory(p, is, cd.maxAmount);
-				} else if (AddArmor(pInv, cd.is)) {
-					break;
-				}
+			if (!cd.isArmor) {
+				ItemStack is = cd.is.clone();
+				is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is.getAmount());
+				Functions.AddToInventory(p, is, cd.maxAmount);
+			} else if (AddArmor(pInv, cd.is)) {
+				break;
 			}
 		}
 
-		for (int i = 0; i < playerClass.getChanceClassDrops().getListActualValues().size(); i++) {
-			ClassDrop cd = playerClass.getChanceClassDrops().getRandomKey();
-			if (cd.isWilderness == isWilderness) {
-				if (!cd.isArmor) {
-					ItemStack is = cd.is.clone();
-					is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is.getAmount());
-					Functions.AddToInventory(p, is, cd.maxAmount);
-					break;
-				} else if (AddArmor(pInv, cd.is)) {
-					break;
-				}
+		for (int i = 0; i < ratios.getRatios().size(); i++) {
+			ClassDrop cd = ratios.getRandomKey();
+			// if (cd.isWilderness == isWilderness) {
+			plugin.getLogger().info(cd.is.getType().toString());
+
+			if (!cd.isArmor) {
+				ItemStack is = cd.is.clone();
+				is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is.getAmount());
+				Functions.AddToInventory(p, is, cd.maxAmount);
+				break;
+			} else if (AddArmor(pInv, cd.is)) {
+				break;
 			}
+			// }
 		}
 
 		// for (ClassDrop cd : playerClass.getClassDrops()) {

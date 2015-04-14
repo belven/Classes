@@ -66,14 +66,12 @@ public class Archer extends RPGClass {
 		dye.setColor(DyeColor.GRAY);
 		ItemStack graywool = dye.toItemStack(2);
 
-		ItemStack arrow = new ItemStack(Material.ARROW, 10);
+		ItemStack arrow = new ItemStack(Material.ARROW, 20);
 		ItemStack bow = new ItemStack(Material.BOW);
 		ItemStack snowBall = new ItemStack(Material.SNOW_BALL, 2);
 
-		getClassDrops().add(new ClassDrop(arrow, true, 30, 3));
+		getClassDrops().add(new ClassDrop(arrow, true, 30, 7));
 		getClassDrops().add(new ClassDrop(bow, true, 1, 1));
-
-		AddChanceToDrop(new ClassDrop(arrow, true, 30, 3), 1);
 
 		AddChanceToDrop(new ClassDrop(redwool, 0, 30, 5), 1);
 		AddChanceToDrop(new ClassDrop(graywool, 0, 30, 5), 1);

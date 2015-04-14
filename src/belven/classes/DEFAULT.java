@@ -13,6 +13,10 @@ public class DEFAULT extends RPGClass {
 		super(le, instance);
 	}
 
+	public DEFAULT(double health, LivingEntity le, ClassManager instance) {
+		super(le, instance);
+	}
+
 	@Override
 	public void SetClassDrops() {
 	}
