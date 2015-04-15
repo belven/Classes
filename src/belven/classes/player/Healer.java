@@ -34,7 +34,7 @@ public class Healer extends RPGClass {
 		super(Health, currentPlayer, instance);
 		className = "Healer";
 		SetAbilities();
-		this.SetClassDrops();
+		SetClassDrops();
 	}
 
 	public Healer(Player currentPlayer, ClassManager instance) {
@@ -69,15 +69,16 @@ public class Healer extends RPGClass {
 		ItemStack stick = new ItemStack(Material.STICK);
 		ItemStack paper = new ItemStack(Material.PAPER);
 
-		getClassDrops().add(new ClassDrop(lapisBlock, true, 20, 1));
-		getClassDrops().add(new ClassDrop(woodSword, true, 1));
-		getClassDrops().add(new ClassDrop(paper, 20, 40, 5, 1));
-		getClassDrops().add(new ClassDrop(stick, 20, 40, 5, 1));
+		getClassDrops().add(new ClassDrop(lapisBlock, 30, 1));
+		getClassDrops().add(new ClassDrop(woodSword, 1));
 
-		getClassDrops().add(new ClassDrop(l_Boots(), 60, 100, 1));
-		getClassDrops().add(new ClassDrop(l_ChestPlate(), 60, 100, 1));
-		getClassDrops().add(new ClassDrop(l_Leggings(), 60, 100, 1));
-		getClassDrops().add(new ClassDrop(l_Helmet(), 60, 100, 1));
+		AddChanceToDrop(new ClassDrop(paper, 5, 1), 1);
+		AddChanceToDrop(new ClassDrop(stick, 5, 1), 1);
+
+		AddChanceToDrop(new ClassDrop(l_Boots(), 1), 1);
+		AddChanceToDrop(new ClassDrop(l_ChestPlate(), 1), 1);
+		AddChanceToDrop(new ClassDrop(l_Leggings(), 1), 1);
+		AddChanceToDrop(new ClassDrop(l_Helmet(), 1), 1);
 	}
 
 	@Override

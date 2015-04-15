@@ -34,6 +34,6 @@ public class Priest extends Healer {
 	public void SetClassDrops() {
 		super.SetClassDrops();
 		ItemStack glow = new ItemStack(Material.GLOWSTONE_DUST, 1);
-		getClassDrops().add(new ClassDrop(glow, true, 10));
+		AddChanceToDrop(new ClassDrop(glow, 10), 1);
 	}
 }

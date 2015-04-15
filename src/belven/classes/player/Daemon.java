@@ -83,6 +83,6 @@ public class Daemon extends Berserker {
 	@Override
 	public void SetClassDrops() {
 		ItemStack fire = new ItemStack(Material.FIREWORK_CHARGE, 2);
-		getClassDrops().add(new ClassDrop(fire, true, 10, 1));
+		AddChanceToDrop(new ClassDrop(fire, 10, 1), 1);
 	}
 }

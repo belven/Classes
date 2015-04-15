@@ -39,13 +39,15 @@ public class Warrior extends RPGClass {
 		ItemStack bread = new ItemStack(Material.BREAD);
 		ItemStack sword = new ItemStack(Material.STONE_SWORD);
 		ItemStack strength = new ItemStack(new Potion(PotionType.STRENGTH, 2).toItemStack(1));
-		getClassDrops().add(new ClassDrop(bread, true, 5));
-		getClassDrops().add(new ClassDrop(sword, true, 1, 1));
-		getClassDrops().add(new ClassDrop(strength, 0, 10, 1));
-		getClassDrops().add(new ClassDrop(i_Boots(), true, 1));
-		getClassDrops().add(new ClassDrop(i_ChestPlate(), true, 1));
-		getClassDrops().add(new ClassDrop(i_Leggings(), true, 1));
-		getClassDrops().add(new ClassDrop(i_Helmet(), true, 1));
+
+		getClassDrops().add(new ClassDrop(bread, 5));
+		getClassDrops().add(new ClassDrop(sword, 1, 1));
+
+		AddChanceToDrop(new ClassDrop(strength, 1), 1);
+		AddChanceToDrop(new ClassDrop(i_Boots(), 1), 1);
+		AddChanceToDrop(new ClassDrop(i_ChestPlate(), 1), 1);
+		AddChanceToDrop(new ClassDrop(i_Leggings(), 1), 1);
+		AddChanceToDrop(new ClassDrop(i_Helmet(), 1), 1);
 	}
 
 	@Override

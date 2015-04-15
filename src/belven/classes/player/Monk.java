@@ -1,6 +1,5 @@
 package belven.classes.player;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import belven.classes.ClassManager;
@@ -31,12 +30,6 @@ public class Monk extends Healer {
 
 		classBandage.amplifier = 5;
 		SortAbilities();
-	}
-
-	@Override
-	public void SetClassDrops() {
-		super.SetClassDrops();
-		RemoveClassDrop(Material.WOOD_SWORD);
 	}
 
 }

@@ -35,8 +35,9 @@ public class Berserker extends RPGClass {
 	public void SetClassDrops() {
 		ItemStack string = new ItemStack(Material.STRING);
 		ItemStack sword = new ItemStack(Material.STONE_SWORD);
-		getClassDrops().add(new ClassDrop(string, true, 2, 1));
-		getClassDrops().add(new ClassDrop(sword, true, 1, 1));
+		getClassDrops().add(new ClassDrop(sword, 1, 1));
+
+		AddChanceToDrop(new ClassDrop(string, 2, 1), 1);
 	}
 
 	@Override

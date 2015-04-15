@@ -97,10 +97,11 @@ public class Assassin extends RPGClass {
 		ItemStack bow = new ItemStack(Material.BOW);
 		ItemStack speed = new Potion(PotionType.SPEED, 2).toItemStack(1);
 
-		getClassDrops().add(new ClassDrop(bow, true, 1));
-		getClassDrops().add(new ClassDrop(sword, true, 1));
-		getClassDrops().add(new ClassDrop(arrow, true, 30));
-		getClassDrops().add(new ClassDrop(speed, 0, 100, 1));
+		getClassDrops().add(new ClassDrop(sword, 1));
+
+		AddChanceToDrop(new ClassDrop(bow, 1), 1.0);
+		AddChanceToDrop(new ClassDrop(arrow, 30), 1.0);
+		AddChanceToDrop(new ClassDrop(speed, 1), 1.0);
 	}
 
 	@Override

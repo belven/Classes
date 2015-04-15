@@ -167,45 +167,37 @@ public class MobListener implements Listener {
 		RPGClass playerClass = plugin.GetClass(p);
 		RatioContainer<ClassDrop> ratios = playerClass.getChanceClassDrops();
 
+		// Give the player the items they always get on entity death
 		for (ClassDrop cd : playerClass.getClassDrops()) {
 			if (!cd.isArmor) {
 				ItemStack is = cd.is.clone();
 				is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is.getAmount());
 				Functions.AddToInventory(p, is, cd.maxAmount);
-			} else if (AddArmor(pInv, cd.is)) {
-				break;
+			} else {
+				AddArmor(pInv, cd.is);
 			}
 		}
 
+		// Get a random chance drop using the ratio system
+		// A loop is used to ensure that if nothing is given then it will always end
+		// This shouldn't happen but this has happened before
 		for (int i = 0; i < ratios.getRatios().size(); i++) {
 			ClassDrop cd = ratios.getRandomKey();
-			// if (cd.isWilderness == isWilderness) {
 			plugin.getLogger().info(cd.is.getType().toString());
 
+			// Make sure that the item isn't armour, as it's added in a different way
 			if (!cd.isArmor) {
 				ItemStack is = cd.is.clone();
 				is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is.getAmount());
-				Functions.AddToInventory(p, is, cd.maxAmount);
-				break;
+
+				// Check to make sure the item is actually given as the players inventory might be full etc.
+				if (Functions.AddToInventory(p, is, cd.maxAmount)) {
+					break;
+				}
 			} else if (AddArmor(pInv, cd.is)) {
 				break;
 			}
-			// }
 		}
-
-		// for (ClassDrop cd : playerClass.getClassDrops()) {
-		// if (cd.alwaysGive || Functions.numberBetween(ran, cd.lowChance, cd.highChance)
-		// && cd.isWilderness == isWilderness) {
-		// if (!cd.isArmor) {
-		// ItemStack is = cd.is.clone();
-		// is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is.getAmount());
-		// Functions.AddToInventory(p, is, cd.maxAmount);
-		// } else if (AddArmor(pInv, cd.is)) {
-		// break;
-		// }
-		// }
-		// }
-
 	}
 
 	public synchronized boolean AddArmor(PlayerInventory pInv, ItemStack is) {

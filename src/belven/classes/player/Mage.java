@@ -65,14 +65,15 @@ public class Mage extends RPGClass {
 
 		ItemStack feather = new ItemStack(Material.FEATHER, 2);
 
-		getClassDrops().add(new ClassDrop(lapisBlock, true, 20));
-		getClassDrops().add(new ClassDrop(feather, 0, 20, 5));
-		getClassDrops().add(new ClassDrop(firePot, 20, 40, 1));
+		getClassDrops().add(new ClassDrop(lapisBlock, 30));
 
-		getClassDrops().add(new ClassDrop(l_Boots(), 40, 100, 1));
-		getClassDrops().add(new ClassDrop(l_ChestPlate(), 40, 100, 1));
-		getClassDrops().add(new ClassDrop(l_Leggings(), 40, 100, 1));
-		getClassDrops().add(new ClassDrop(l_Helmet(), 40, 100, 1));
+		AddChanceToDrop(new ClassDrop(feather, 5), 1);
+		AddChanceToDrop(new ClassDrop(firePot, 1), 1);
+
+		AddChanceToDrop(new ClassDrop(l_Boots(), 1), 1);
+		AddChanceToDrop(new ClassDrop(l_ChestPlate(), 1), 1);
+		AddChanceToDrop(new ClassDrop(l_Leggings(), 1), 1);
+		AddChanceToDrop(new ClassDrop(l_Helmet(), 1), 1);
 	}
 
 	@Override

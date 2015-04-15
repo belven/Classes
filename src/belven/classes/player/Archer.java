@@ -70,17 +70,17 @@ public class Archer extends RPGClass {
 		ItemStack bow = new ItemStack(Material.BOW);
 		ItemStack snowBall = new ItemStack(Material.SNOW_BALL, 2);
 
-		getClassDrops().add(new ClassDrop(arrow, true, 30, 7));
-		getClassDrops().add(new ClassDrop(bow, true, 1, 1));
+		getClassDrops().add(new ClassDrop(arrow, 30, 7));
+		getClassDrops().add(new ClassDrop(bow, 1, 1));
 
-		AddChanceToDrop(new ClassDrop(redwool, 0, 30, 5), 1);
-		AddChanceToDrop(new ClassDrop(graywool, 0, 30, 5), 1);
-		AddChanceToDrop(new ClassDrop(snowBall, 30, 50, 2), 1);
+		AddChanceToDrop(new ClassDrop(redwool, 5), 1);
+		AddChanceToDrop(new ClassDrop(graywool, 5), 1);
+		AddChanceToDrop(new ClassDrop(snowBall, 2), 1);
 
-		AddChanceToDrop(new ClassDrop(l_Boots(), 50, 100, 1), 1);
-		AddChanceToDrop(new ClassDrop(l_ChestPlate(), 50, 100, 1), 1);
-		AddChanceToDrop(new ClassDrop(l_Leggings(), 50, 100, 1), 1);
-		AddChanceToDrop(new ClassDrop(l_Helmet(), 50, 100, 1), 1);
+		AddChanceToDrop(new ClassDrop(l_Boots(), 1), 1);
+		AddChanceToDrop(new ClassDrop(l_ChestPlate(), 1), 1);
+		AddChanceToDrop(new ClassDrop(l_Leggings(), 1), 1);
+		AddChanceToDrop(new ClassDrop(l_Helmet(), 1), 1);
 
 	}
 
