@@ -15,8 +15,9 @@ public class FeelTheBurn extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		EntityFunctions.Heal(getRPGClass().getPlayer(), 2);
+		EntityFunctions.Heal(getRPGClass().getPlayer(), 4);
 		getRPGClass().setAbilityOnCoolDown(this);
+		RemoveItems();
 		return true;
 	}
 }

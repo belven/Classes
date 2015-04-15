@@ -32,7 +32,7 @@ public class AssassinBoss extends MobClass {
 
 	@Override
 	public void SetAbilities() {
-		AddAbility(new StealLife(this, 10, 1), 1);
+		AddAbility(new StealLife(this, 10, 1), 2);
 		AddAbility(new SpeedBoost(this, 1, 1), 1);
 		AddAbility(teleport = new TeleportToTarget(this, 1, 2), 10);
 	}
@@ -83,7 +83,14 @@ public class AssassinBoss extends MobClass {
 
 	@Override
 	public void TimedSelfCast() {
-		// TODO Auto-generated method stub
-
+		for (Ability a : getAbilities()) {
+			if (!a.onCooldown()) {
+				if (!a.PerformAbility(null)) {
+					continue;
+				} else if (a.shouldBreak()) {
+					break;
+				}
+			}
+		}
 	}
 }
