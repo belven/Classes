@@ -13,6 +13,7 @@ public class Weakness extends Ability {
 	public Weakness(MobClass cc, int Priority, int amplifier) {
 		super(cc, Priority, amplifier);
 		cooldown = 2;
+		abilitiyName = "Weakness";
 	}
 
 	@Override

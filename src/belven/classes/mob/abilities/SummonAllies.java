@@ -13,6 +13,7 @@ public class SummonAllies extends Ability {
 	public SummonAllies(MobClass cc, int Priority, int amplifier) {
 		super(cc, Priority, amplifier);
 		cooldown = 10;
+		abilitiyName = "Summon Allies";
 	}
 
 	@Override

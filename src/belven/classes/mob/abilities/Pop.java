@@ -12,13 +12,14 @@ public class Pop extends Ability {
 		super(cc, Priority, amplifier);
 		cooldown = 10;
 		setShouldBreak(true);
+		abilitiyName = "Pop";
 	}
 
 	@Override
 	public boolean PerformAbility(Event e) {
 		if (getRPGClass().getTarget() != null) {
 			getRPGClass().setAbilityOnCoolDown(this);
-			getRPGClass().getTarget().setVelocity(new Vector(0, 2, 0));
+			getRPGClass().getTarget().setVelocity(new Vector(0, 1, 0));
 			return true;
 		}
 		return false;

@@ -3,7 +3,6 @@ package belven.classes.listeners;
 import java.util.Iterator;
 
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -18,13 +17,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 
 import belven.classes.ClassManager;
-import belven.classes.RPGClass;
 import belven.classes.events.AbilityUsed;
 import belven.classes.player.Archer;
 import belven.classes.player.Assassin;
@@ -74,25 +71,25 @@ public class PlayerListener implements Listener {
 		plugin.PlayersE.remove(event.getPlayer());
 	}
 
-	@EventHandler
-	public void onPlayerMoveEvent(PlayerMoveEvent event) {
-		RPGClass pClass = plugin.GetClass(event.getPlayer());
-		Block currentBlock = event.getTo().getBlock();
-		org.bukkit.Location upLoc = event.getTo();
-		upLoc.setY(upLoc.getY() + 1);
-
-		event.getPlayer().setWalkSpeed(.2F);
-
-		if (pClass.getClassName() == "Archer") {
-			if (currentBlock.getType() == Material.WEB) {
-				event.getPlayer().setWalkSpeed(1F);
-			}
-		}
-	}
+	// @EventHandler
+	// public void onPlayerMoveEvent(PlayerMoveEvent event) {
+	// RPGClass pClass = plugin.GetClass(event.getPlayer());
+	// Block currentBlock = event.getTo().getBlock();
+	// org.bukkit.Location upLoc = event.getTo();
+	// upLoc.setY(upLoc.getY() + 1);
+	//
+	// event.getPlayer().setWalkSpeed(.2F);
+	//
+	// if (pClass.getClassName() == "Archer") {
+	// if (currentBlock.getType() == Material.WEB) {
+	// event.getPlayer().setWalkSpeed(1F);
+	// }
+	// }
+	// }
 
 	@EventHandler
 	public void onAbilityUsed(AbilityUsed event) {
-		plugin.GetClass(event.GetPlayer()).AbilityUsed(event.GetAbility());
+		plugin.GetClass(event.GetOwner()).AbilityUsed(event.GetAbility());
 	}
 
 	@EventHandler

@@ -13,6 +13,7 @@ public class Stun extends Ability {
 	public Stun(MobClass cc, int Priority, int amplifier) {
 		super(cc, Priority, amplifier);
 		cooldown = 2;
+		abilitiyName = "Stun";
 	}
 
 	@Override

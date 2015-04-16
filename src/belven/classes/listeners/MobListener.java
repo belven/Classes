@@ -70,13 +70,6 @@ public class MobListener implements Listener {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			// int rand = new Random().nextInt(99);
-
-			// if (Functions.numberBetween(rand, 10, 20)) {
-			// plugin.SetClass(le, new Warrior(le.getMaxHealth() / 2, le, plugin));
-			// } else if (Functions.numberBetween(rand, 20, 50)) {
-			// plugin.SetClass(le, new Sapper(le.getMaxHealth() / 2, le, plugin));
-			// }
 		}
 	}
 
@@ -95,17 +88,6 @@ public class MobListener implements Listener {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
-			// int rand = new Random().nextInt(99);
-			// if (Functions.numberBetween(rand, 0, 25)) {
-			// plugin.SetClass(le, new KnightBoss(le.getMaxHealth() / 2, le, plugin));
-			// } else if (Functions.numberBetween(rand, 25, 50)) {
-			// plugin.SetClass(le, new MageBoss(le.getMaxHealth() / 2, le, plugin));
-			// } else if (Functions.numberBetween(rand, 50, 75)) {
-			// plugin.SetClass(le, new NecromancerBoss(le.getMaxHealth() / 2, le, plugin));
-			// } else {
-			// plugin.SetClass(le, new AssassinBoss(le.getMaxHealth() / 2, le, plugin));
-			// }
 		}
 	}
 
@@ -149,6 +131,11 @@ public class MobListener implements Listener {
 			String name = g.getName();
 			Player damagerP = (Player) damager;
 
+			damagerP.giveExp(event.getDroppedExp());
+			plugin.writeToLog(getPlayerKilledXText(damagerP, event));
+
+			event.setDroppedExp(0);
+
 			if (plugin.getGroup(damagerP).getName().equals(name)) {
 				for (Player p : plugin.getArenaAllies(damagerP)) {
 					GiveClassDrops(p, false);
@@ -156,10 +143,18 @@ public class MobListener implements Listener {
 			}
 		} else if (damager != null && damager.getType() == EntityType.PLAYER) {
 			Player p = (Player) damager;
+
 			p.giveExp(event.getDroppedExp());
+			plugin.writeToLog(getPlayerKilledXText(p, event));
+
 			event.setDroppedExp(0);
 			GiveClassDrops(p, true);
 		}
+	}
+
+	private String getPlayerKilledXText(Player p, EntityDeathEvent event) {
+		return p.getName() + " killed a " + event.getEntity().getType() + " and gained "
+				+ String.valueOf(event.getDroppedExp()) + " exp";
 	}
 
 	private synchronized void GiveClassDrops(Player p, boolean isWilderness) {
@@ -173,8 +168,11 @@ public class MobListener implements Listener {
 				ItemStack is = cd.is.clone();
 				is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is.getAmount());
 				Functions.AddToInventory(p, is, cd.maxAmount);
+				plugin.writeToLog(p.getName() + " was given " + String.valueOf(cd.is.getAmount()) + " "
+						+ cd.is.getType().toString());
 			} else {
 				AddArmor(pInv, cd.is);
+				plugin.writeToLog(p.getName() + " was given " + cd.is.getType().toString());
 			}
 		}
 
@@ -183,7 +181,6 @@ public class MobListener implements Listener {
 		// This shouldn't happen but this has happened before
 		for (int i = 0; i < ratios.getRatios().size(); i++) {
 			ClassDrop cd = ratios.getRandomKey();
-			plugin.getLogger().info(cd.is.getType().toString());
 
 			// Make sure that the item isn't armour, as it's added in a different way
 			if (!cd.isArmor) {
@@ -192,9 +189,12 @@ public class MobListener implements Listener {
 
 				// Check to make sure the item is actually given as the players inventory might be full etc.
 				if (Functions.AddToInventory(p, is, cd.maxAmount)) {
+					plugin.writeToLog(p.getName() + " was given " + String.valueOf(is.getAmount()) + " "
+							+ cd.is.getType().toString());
 					break;
 				}
 			} else if (AddArmor(pInv, cd.is)) {
+				plugin.writeToLog(p.getName() + " was given " + cd.is.getType().toString());
 				break;
 			}
 		}

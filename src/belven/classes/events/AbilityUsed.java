@@ -1,9 +1,10 @@
 package belven.classes.events;
 
-import org.bukkit.entity.Player;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import belven.classes.RPGClass;
 import belven.classes.abilities.Ability;
 
 public class AbilityUsed extends Event {
@@ -28,11 +29,11 @@ public class AbilityUsed extends Event {
 		return a;
 	}
 
-	public Player GetPlayer() {
-		return a.getRPGClass().getPlayer();
+	public LivingEntity GetOwner() {
+		return a.getRPGClass().getOwner();
 	}
 
-	public belven.classes.RPGClass GetClass() {
+	public RPGClass GetClass() {
 		return a.getRPGClass();
 	}
 }

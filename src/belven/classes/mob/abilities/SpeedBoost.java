@@ -13,6 +13,7 @@ public class SpeedBoost extends Ability {
 	public SpeedBoost(MobClass cc, int Priority, int amplifier) {
 		super(cc, Priority, amplifier);
 		cooldown = 10;
+		abilitiyName = "Speed Boost";
 	}
 
 	@Override

@@ -23,6 +23,7 @@ public class MageFireball extends Ability {
 	@Override
 	public boolean PerformAbility(Event e) {
 		getRPGClass().getPlayer().launchProjectile(Fireball.class);
+		getRPGClass().setAbilityOnCoolDown(this);
 		RemoveItems();
 		return true;
 	}

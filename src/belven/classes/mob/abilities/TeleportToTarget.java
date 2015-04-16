@@ -10,6 +10,7 @@ public class TeleportToTarget extends Ability {
 	public TeleportToTarget(MobClass cc, int Priority, int amplifier) {
 		super(cc, Priority, amplifier);
 		cooldown = 3;
+		abilitiyName = "Teleport To Target";
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -18,6 +19,7 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import belven.classes.abilities.Ability;
+import belven.classes.events.AbilityUsed;
 import belven.classes.timedevents.AbilityCooldown;
 import belven.resources.ClassDrop;
 import belven.resources.EntityFunctions;
@@ -149,6 +151,19 @@ public abstract class RPGClass extends RPGClassData {
 		new AbilityCooldown(currentAbility, sendMessage).runTaskLater(getPlugin(),
 				Functions.SecondsToTicks(currentAbility.cooldown));
 		currentAbility.setOnCooldown(true);
+
+		Bukkit.getPluginManager().callEvent(new AbilityUsed(currentAbility));
+		getPlugin().writeToLog(
+				getClassName() + " (" + getActualName(getOwner()) + ") used " + currentAbility.GetAbilityName());
+	}
+
+	public String getActualName(LivingEntity le) {
+		if (getOwner().isDead() || !getOwner().isValid()) {
+			return "N/A";
+		}
+
+		String name = getOwner().getName();
+		return name.contains("?") ? getOwner().getType().toString() : name;
 	}
 
 	public void SetClassDrops() {

@@ -16,6 +16,7 @@ public class Cleave extends Ability {
 		super(cc, Priority, amplifier);
 		cooldown = 10;
 		setShouldBreak(true);
+		abilitiyName = "Cleave";
 	}
 
 	@Override

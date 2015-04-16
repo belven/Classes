@@ -13,6 +13,7 @@ public class Wither extends Ability {
 	public Wither(MobClass cc, int Priority, int amplifier) {
 		super(cc, Priority, amplifier);
 		cooldown = 2;
+		abilitiyName = "Wither";
 	}
 
 	@Override

@@ -13,6 +13,7 @@ public class SelfProtection extends Ability {
 	public SelfProtection(MobClass cc, int Priority, int amplifier) {
 		super(cc, Priority, amplifier);
 		cooldown = 10;
+		abilitiyName = "Self Protection";
 	}
 
 	@Override

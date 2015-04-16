@@ -1,6 +1,5 @@
 package belven.classes.player.abilities;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -8,7 +7,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import belven.classes.RPGClass;
 import belven.classes.abilities.Ability;
-import belven.classes.events.AbilityUsed;
 import belven.resources.EntityFunctions;
 
 public class Retaliation extends Ability {
@@ -27,7 +25,6 @@ public class Retaliation extends Ability {
 			entityDamaged.damage(ldc.getDamage() * getAmplifier(), getRPGClass().getPlayer());
 		}
 
-		Bukkit.getPluginManager().callEvent(new AbilityUsed(this));
 		getRPGClass().setAbilityOnCoolDown(this);
 		return true;
 	}

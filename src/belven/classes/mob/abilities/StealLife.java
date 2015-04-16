@@ -11,6 +11,7 @@ public class StealLife extends Ability {
 	public StealLife(MobClass cc, int Priority, int amplifier) {
 		super(cc, Priority, amplifier);
 		cooldown = 3;
+		abilitiyName = "Steal Life";
 	}
 
 	@Override

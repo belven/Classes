@@ -1,8 +1,13 @@
 package belven.classes;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -44,6 +49,7 @@ public class ClassManager extends JavaPlugin {
 	private final PlayerListener newplayerListener = new PlayerListener(this);
 	private final BlockListener blockListener = new BlockListener(this);
 	private final MobListener mobListener = new MobListener(this);
+	private static String logFileName = "ClassesLog.log";
 
 	private HashMap<LivingEntity, RPGClass> currentPlayerClasses = new HashMap<LivingEntity, RPGClass>();
 	public HashMap<Player, PlayerExtended> PlayersE = new HashMap<Player, PlayerExtended>();
@@ -73,6 +79,30 @@ public class ClassManager extends JavaPlugin {
 
 		for (Player currentPlayer : getServer().getOnlinePlayers()) {
 			AddClassToPlayer(currentPlayer);
+		}
+	}
+
+	public void writeToLog(String logText) {
+		try {
+			File saveTo = new File(getDataFolder(), logFileName);
+
+			if (!saveTo.exists()) {
+				saveTo.createNewFile();
+			}
+
+			FileWriter fw = new FileWriter(saveTo, true);
+			PrintWriter pw = new PrintWriter(fw);
+
+			Date dt = new Date();
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String time = df.format(dt);
+
+			pw.println(time + " " + logText);
+			pw.flush();
+			pw.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -336,7 +366,9 @@ public class ClassManager extends JavaPlugin {
 
 	public void SetClass(LivingEntity le, RPGClass newClass) {
 		currentPlayerClasses.put(le, newClass);
-		getLogger().info("A " + newClass.getClassName() + " has been created!");
+		if (newClass.getClassName() != "") {
+			writeToLog("A " + newClass.getClassName() + " has been created!");
+		}
 	}
 
 	public void SetClass(Player playerToChange, String classString) {

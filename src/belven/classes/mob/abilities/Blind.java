@@ -13,6 +13,7 @@ public class Blind extends Ability {
 	public Blind(MobClass cc, int Priority, int amplifier) {
 		super(cc, Priority, amplifier);
 		cooldown = 2;
+		abilitiyName = "Blind";
 	}
 
 	@Override

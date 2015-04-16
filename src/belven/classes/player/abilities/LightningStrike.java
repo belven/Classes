@@ -43,9 +43,7 @@ public class LightningStrike extends Ability {
 
 	public synchronized void doDamage(LivingEntity le) {
 		if (le != null) {
-			getRPGClass().setAbilityOnCoolDown(this);
 			double damage = ((Damageable) le).getMaxHealth() * (amplifier * 2 / 100.0);
-			// Functions.callDamageEvent(getRPGClass().getOwner(), le, damage);
 			le.damage(damage, getRPGClass().getOwner());
 		}
 	}
