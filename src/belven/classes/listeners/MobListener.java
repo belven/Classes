@@ -167,12 +167,15 @@ public class MobListener implements Listener {
 			if (!cd.isArmor) {
 				ItemStack is = cd.is.clone();
 				is.setAmount(cd.isWilderness ? cd.wildernessAmount : cd.is.getAmount());
-				Functions.AddToInventory(p, is, cd.maxAmount);
-				plugin.writeToLog(p.getName() + " was given " + String.valueOf(cd.is.getAmount()) + " "
-						+ cd.is.getType().toString());
+
+				if (Functions.AddToInventory(p, is, cd.maxAmount)) {
+					plugin.writeToLog(p.getName() + " was given " + String.valueOf(cd.is.getAmount()) + " "
+							+ cd.is.getType().toString());
+				}
 			} else {
-				AddArmor(pInv, cd.is);
-				plugin.writeToLog(p.getName() + " was given " + cd.is.getType().toString());
+				if (AddArmor(pInv, cd.is)) {
+					plugin.writeToLog(p.getName() + " was given " + cd.is.getType().toString());
+				}
 			}
 		}
 

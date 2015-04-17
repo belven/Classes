@@ -3,7 +3,6 @@ package belven.classes.player;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -20,10 +19,7 @@ import belven.classes.abilities.Ability;
 import belven.classes.player.abilities.DamageTrap;
 import belven.classes.player.abilities.FireTrap;
 import belven.classes.player.abilities.WebArrow;
-import belven.classes.timedevents.BlockRestorer;
 import belven.resources.ClassDrop;
-import belven.resources.EntityFunctions;
-import belven.resources.Functions;
 
 public class Archer extends RPGClass {
 	public WebArrow classCripplingArrow;
@@ -90,20 +86,11 @@ public class Archer extends RPGClass {
 
 	@Override
 	public void SelfDamageOther(EntityDamageByEntityEvent event) {
-		LivingEntity currentLivingEntity = EntityFunctions.GetDamager(event);
-		Location damagedEntityLocation = event.getEntity().getLocation();
-		damagedEntityLocation.setY(damagedEntityLocation.getY());
-
+		setTarget((LivingEntity) event.getEntity());
 		if (getPlayer().getItemInHand().getType() == Material.BOW) {
-			if (classCripplingArrow.HasRequirements() && damagedEntityLocation.getBlock().getType() != Material.WEB) {
-				new BlockRestorer(damagedEntityLocation.getBlock(), Material.WEB).runTaskLater(getPlugin(),
-						Functions.SecondsToTicks(5));
+			if (!classCripplingArrow.onCooldown() && classCripplingArrow.HasRequirements()) {
+				classCripplingArrow.PerformAbility(event);
 			}
-
-			Damageable dcurrentLivingEntity = currentLivingEntity;
-
-			event.setDamage(Functions.damageToDo(event.getDamage(), dcurrentLivingEntity.getHealth(),
-					dcurrentLivingEntity.getMaxHealth()));
 		}
 	}
 

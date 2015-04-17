@@ -14,8 +14,6 @@ public class Knight extends Warrior {
 		super(currentPlayer, instance);
 		className = "Knight";
 		baseClassName = "Warrior";
-		SortAbilities();
-		SetClassDrops();
 	}
 
 	@Override
@@ -33,8 +31,9 @@ public class Knight extends Warrior {
 	@Override
 	public void AbilityUsed(Ability ability) {
 		if (ability == currentRetaliation) {
-			getOwner().addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Functions.SecondsToTicks(10),
-					Functions.abilityCap(2, getPlayer().getLevel())), true);
+			getOwner().addPotionEffect(
+					new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Functions.SecondsToTicks(10),
+							Functions.abilityCap(2, getPlayer().getLevel())), true);
 		}
 	}
 

@@ -25,8 +25,6 @@ public class Daemon extends Berserker {
 		super(currentPlayer, instance);
 		this.className = "Daemon";
 		baseClassName = "Berserker";
-		SetClassDrops();
-		SetAbilities();
 	}
 
 	@Override
@@ -74,6 +72,7 @@ public class Daemon extends Berserker {
 
 	@Override
 	public void SetAbilities() {
+		super.SetAbilities();
 		AddAbility(classFeelTheBurn = new FeelTheBurn(this, 1, 0), 2);
 		AddAbility(classSetAlight = new SetAlight(this, 2, 0), 1);
 		SortAbilities();
@@ -81,6 +80,7 @@ public class Daemon extends Berserker {
 
 	@Override
 	public void SetClassDrops() {
+		super.SetClassDrops();
 		ItemStack fire = new ItemStack(Material.FIREWORK_CHARGE, 2);
 		AddChanceToDrop(new ClassDrop(fire, 10, 1), 1);
 	}

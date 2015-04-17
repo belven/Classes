@@ -59,7 +59,7 @@ public class Warrior extends RPGClass {
 		Player p = (Player) event.getEntity();
 		double healthPercent = getPlugin().GetPlayerE(getPlayer()).GetMissingHealthPercent();
 
-		if (event.getDamage() > 0 && healthPercent > 0.1 && p.getLocation().distance(getOwner().getLocation()) < 30) {
+		if (event.getDamage() > 0 && healthPercent > 0.1 && p.getLocation().distance(getOwner().getLocation()) < 50) {
 			getOwner().damage(event.getDamage());
 			event.setDamage(0.0);
 			this.getOwner().addPotionEffect(

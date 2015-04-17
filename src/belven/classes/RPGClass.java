@@ -46,8 +46,8 @@ public abstract class RPGClass extends RPGClassData {
 
 	public void AddAbility(Ability ability, int cooldown) {
 		if (!getAbilities().contains(ability)) {
-			getAbilities().add(ability);
 			ability.cooldown = cooldown;
+			getAbilities().add(ability);
 		}
 	}
 

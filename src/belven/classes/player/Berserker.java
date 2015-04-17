@@ -76,12 +76,9 @@ public class Berserker extends RPGClass {
 
 	@Override
 	public void SetAbilities() {
-		if (!AbilitiesSet()) {
-			AddAbility(classGrapple = new Grapple(this, 1, 20), 4);
-			AddAbility(cleave = new Cleave(this, 1, 5), 1);
-			SortAbilities();
-			setAbilitiesSet(true);
-		}
+		AddAbility(classGrapple = new Grapple(this, 1, 20), 4);
+		AddAbility(cleave = new Cleave(this, 1, 5), 1);
+		SortAbilities();
 	}
 
 	@Override

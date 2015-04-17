@@ -15,24 +15,24 @@ public class Priest extends Healer {
 		super(8, currentPlayer, instance);
 		className = "Priest";
 		baseClassName = "Healer";
-		SetClassDrops();
-		SetAbilities();
-		SortAbilities();
 	}
 
 	@Override
-	public synchronized void SetAbilities() {
+	public void SetAbilities() {
 		super.SetAbilities();
 		getAbilities().remove(classHeal);
 		getAbilities().remove(classBandage);
-		AddAbility(new Cleanse(this, 1, 3), 4);
-		AddAbility(new AOEHeal(this, -1, 12), 10);
-		classLightHeal.amplifier = 12;
+		AddAbility(new Cleanse(this, -1, 3), 4);
+		AddAbility(new AOEHeal(this, 0, 12), 10);
+		this.SortAbilities();
 	}
 
 	@Override
 	public void SetClassDrops() {
 		super.SetClassDrops();
+		RemoveClassDrop(Material.STICK);
+		RemoveClassDrop(Material.PAPER);
+
 		ItemStack glow = new ItemStack(Material.GLOWSTONE_DUST, 1);
 		AddChanceToDrop(new ClassDrop(glow, 10), 1);
 	}

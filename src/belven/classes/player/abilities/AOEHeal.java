@@ -1,6 +1,7 @@
 package belven.classes.player.abilities;
 
 import org.bukkit.DyeColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.material.Dye;
@@ -26,13 +27,15 @@ public class AOEHeal extends Ability {
 	@Override
 	public boolean PerformAbility(Event e) {
 		getRPGClass().setAbilityOnCoolDown(this, true);
-		for (Player p : EntityFunctions
-				.getNearbyPlayersNew(getRPGClass().getPlayer().getLocation(), getAmplifier() + 8)) {
+		Location location = getRPGClass().getPlayer().getLocation();
+
+		for (Player p : EntityFunctions.getNearbyPlayersNew(location, getAmplifier() + 8)) {
 			if (getRPGClass().getPlugin().isAlly(p, getRPGClass().getPlayer())) {
 				getRPGClass().getPlayer().sendMessage("You healed " + p.getName());
 				new HealTimer(getRPGClass().getPlugin(), getAmplifier() / 100.0, p, 5, 1);
 			}
 		}
+
 		RemoveItems();
 		return true;
 	}

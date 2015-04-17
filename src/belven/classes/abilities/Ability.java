@@ -12,7 +12,7 @@ import org.bukkit.material.Wool;
 
 import belven.classes.RPGClass;
 
-public class Ability extends AbilityData {
+public abstract class Ability extends AbilityData {
 
 	public Ability(RPGClass cc, int Priority, int amplifier) {
 		this.priority = Priority;
@@ -25,9 +25,7 @@ public class Ability extends AbilityData {
 		this.events = events;
 	}
 
-	public boolean PerformAbility(Event e) {
-		return false;
-	}
+	public abstract boolean PerformAbility(Event e);
 
 	public int getAmplifier() {
 		return amplifier;

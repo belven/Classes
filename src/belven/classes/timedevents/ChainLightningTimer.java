@@ -1,6 +1,5 @@
 package belven.classes.timedevents;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -13,13 +12,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import belven.classes.RPGClass;
 import belven.classes.player.abilities.ChainLightning;
 import belven.resources.EntityFunctions;
-import belven.resources.Functions;
 
 public class ChainLightningTimer extends BukkitRunnable {
 	private RPGClass currentClass;
 	private int maxDuration;
 	private LivingEntity target;
-	private List<LivingEntity> targetsHit = new ArrayList<LivingEntity>();
 	private int amp;
 	private Location lastLocation;
 
@@ -35,7 +32,6 @@ public class ChainLightningTimer extends BukkitRunnable {
 			le.damage(damage, currentClass.getOwner());
 			lastLocation = le.getLocation();
 			target = le;
-			targetsHit.add(le);
 			maxDuration--;
 			lastLocation.getWorld().strikeLightningEffect(lastLocation);
 		}
@@ -51,16 +47,14 @@ public class ChainLightningTimer extends BukkitRunnable {
 		if (maxDuration > 0) {
 			List<LivingEntity> entities = EntityFunctions.getNearbyEntities(getLocation(), 15);
 			for (int i = 0; i < entities.size(); i++) {
-				LivingEntity le = entities.get(Functions.getRandomIndex(entities));
+				LivingEntity le = entities.get(i);
 
-				if (le != currentClass.getPlayer()) {// &&
-					// !targetsHit.contains(le))
-					// {
+				if (le != currentClass.getPlayer()) {
 					if (le.getType() == EntityType.PLAYER
 							&& !currentClass.getPlugin().isAlly(currentClass.getPlayer(), (Player) le)) {
 						doDamage(le);
 						break;
-					} else if (le.getType() != EntityType.PLAYER) {
+					} else if (EntityFunctions.IsAMob(le.getType())) {
 						doDamage(le);
 						break;
 					}

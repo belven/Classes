@@ -216,40 +216,21 @@ public class ClassManager extends JavaPlugin {
 		}
 
 		Group p1Arena = null;
-		Group p2Arena = null;
 		Group p1Team = null;
-		Group p2Team = null;
 
 		if (p1.hasMetadata("InArena")) {
 			p1Arena = (Group) p1.getMetadata("InArena").get(0).value();
-		}
-
-		if (p2.hasMetadata("InArena")) {
-			p2Arena = (Group) p2.getMetadata("InArena").get(0).value();
 		}
 
 		if (p1.hasMetadata("InTeam")) {
 			p1Team = (Group) p1.getMetadata("InTeam").get(0).value();
 		}
 
-		if (p2.hasMetadata("InTeam")) {
-			p2Team = (Group) p2.getMetadata("InTeam").get(0).value();
-		}
-
-		boolean selfInArena = p1Arena != null;
-		boolean targetInArena = p2Arena != null;
-		boolean isPvP = false;
-
-		if (selfInArena) {
-			isPvP = p1Arena.isPvP();
-		}
-
-		if (selfInArena && targetInArena && !isPvP) {
+		if (p1Arena != null && p1Arena.getPlayers().contains(p2)) {
 			return true;
-		} else if (p1Team != null && p2Team != null && p1Team.getName().equals(p2Team.getName())) {
+		} else if (p1Team != null && p1Team.getPlayers().contains(p2)) {
 			return true;
 		}
-
 		return false;
 	}
 
