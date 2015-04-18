@@ -12,7 +12,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import belven.classes.ClassManager;
@@ -119,32 +118,25 @@ public class Assassin extends RPGClass {
 		Entity damagedEntity = event.getEntity();
 		boolean arrowEntity = event.getDamager().getType() == EntityType.ARROW;
 
-		if (getOwner().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-			getOwner().removePotionEffect(PotionEffectType.INVISIBILITY);
-		}
-
 		if (!arrowEntity) {
 			if (!classStealth.onCooldown()) {
 				classStealth.PerformAbility(event);
 			}
+
+			EntityFunctions.Heal(getOwner(), 1);
 		} else {
 			TeleportToTarget(damagedEntity);
 		}
-
-		EntityFunctions.Heal(getOwner(), 1);
 	}
 
 	@Override
 	public void SetAbilities() {
-		if (!AbilitiesSet()) {
-			classStealth = new Stealth(this, 1, 1);
-			classSoulDrain = new SoulDrain(this, 1, 0);
-			getAbilities().add(classSoulDrain);
-			getAbilities().add(classStealth);
-			classStealth.cooldown = 3;
-			SortAbilities();
-			setAbilitiesSet(true);
-		}
+		classStealth = new Stealth(this, 1, 10);
+		classSoulDrain = new SoulDrain(this, 1, 0);
+		getAbilities().add(classSoulDrain);
+		getAbilities().add(classStealth);
+		classStealth.cooldown = 3;
+		SortAbilities();
 	}
 
 	@Override
