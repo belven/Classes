@@ -7,7 +7,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import belven.classes.ClassManager;
@@ -32,7 +31,7 @@ public class Daemon extends Berserker {
 		super.SelfDamageOther(event);
 
 		for (Entity e : EntityFunctions.getNearbyEntities(event.getEntity().getLocation(), 4)) {
-			e.setFireTicks(getOwner().getFireTicks());
+			// e.setFireTicks(getOwner().getFireTicks());
 		}
 	}
 
@@ -46,23 +45,17 @@ public class Daemon extends Berserker {
 
 	@Override
 	public void SelfTakenDamage(EntityDamageEvent event) {
-		double healthPercent = getPlugin().GetPlayerE(getPlayer()).GetHealthPercent();
-
-		if (event.getCause() == DamageCause.FIRE_TICK || event.getCause() == DamageCause.FIRE) {
-
+		if (event.getCause() == DamageCause.FIRE_TICK || event.getCause() == DamageCause.FIRE
+				|| event.getCause() == DamageCause.LAVA) {
 			if (getOwner().hasPotionEffect(PotionEffectType.HUNGER)) {
 				getOwner().removePotionEffect(PotionEffectType.HUNGER);
 			}
 
-			if (healthPercent <= 0.25) {
-				event.setDamage(0.0);
-			} else if (!classFeelTheBurn.onCooldown() && classFeelTheBurn.HasRequirements()) {
-				event.setDamage(0.0);
+			if (!classFeelTheBurn.onCooldown() && classFeelTheBurn.HasRequirements()) {
 				classFeelTheBurn.PerformAbility(event);
+				event.setDamage(0.0);
 			}
 
-			getOwner().addPotionEffect(
-					new PotionEffect(PotionEffectType.SPEED, Functions.SecondsToTicks(Amplifier()), 3));
 		}
 	}
 
@@ -73,8 +66,8 @@ public class Daemon extends Berserker {
 	@Override
 	public void SetAbilities() {
 		super.SetAbilities();
-		AddAbility(classFeelTheBurn = new FeelTheBurn(this, 1, 0), 2);
-		AddAbility(classSetAlight = new SetAlight(this, 2, 0), 1);
+		AddAbility(classFeelTheBurn = new FeelTheBurn(this, 1, 4), 1);
+		AddAbility(classSetAlight = new SetAlight(this, 2, 4), 1);
 		SortAbilities();
 	}
 

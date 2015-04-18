@@ -18,19 +18,10 @@ public class SetAlight extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		int Amplifier = getAmplifier();
-
-		if (Amplifier > 10) {
-			Amplifier = 10;
-		}
-
-		getRPGClass().getPlayer().setFireTicks(Functions.SecondsToTicks(Amplifier));
+		getRPGClass().getOwner().setFireTicks(Functions.SecondsToTicks(getAmplifier()));
 		getRPGClass().setAbilityOnCoolDown(this);
+		RemoveItems();
 		return true;
 	}
 
-	@Override
-	public int getAmplifier() {
-		return Math.round(getRPGClass().getPlayer().getLevel() / 5) + 2;
-	}
 }

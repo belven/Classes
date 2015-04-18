@@ -72,8 +72,9 @@ public abstract class Ability extends AbilityData {
 
 		if (checksRequired == requirements.size()) {
 			return true;
+		} else {
+			return false;
 		}
-		return false;
 	}
 
 	private boolean hasSameItemData(ItemStack is, ItemStack iis) {

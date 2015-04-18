@@ -14,6 +14,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -142,6 +143,19 @@ public class PlayerListener implements Listener {
 			event.setCancelled(true);
 		} else if (plugin.GetClass(event.getPlayer()) instanceof Daemon && event.getPlayer().getFireTicks() > 0) {
 			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOW)
+	public synchronized void onEntityDamage(EntityDamageEvent event) {
+		if (!(event.getEntity() instanceof LivingEntity)) {
+			return;
+		}
+		// The entity that took the damage
+		LivingEntity damagee = (LivingEntity) event.getEntity();
+
+		if (damagee != null) {
+			plugin.GetClass(damagee).SelfTakenDamage(event);
 		}
 	}
 
