@@ -1,13 +1,12 @@
 package belven.classes.player.abilities;
 
-import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import belven.classes.RPGClass;
 import belven.classes.abilities.Ability;
+import belven.classes.timedevents.DamageTimer;
+import belven.classes.timedevents.HealTimer;
 
 public class SoulDrain extends Ability {
 	public SoulDrain(RPGClass cc, int priority, int amp) {
@@ -18,17 +17,15 @@ public class SoulDrain extends Ability {
 
 	@Override
 	public boolean PerformAbility(Event e) {
-		LivingEntity targetEntity = getRPGClass().getTarget(30, getRPGClass().getPlayer());
+		LivingEntity targetEntity = getRPGClass().getTarget();
 
-		if (targetEntity == null) {
-			return false;
-		}
-
-		if (getRPGClass().getPlayer().getItemInHand().getType() == Material.NETHER_STAR) {
-			targetEntity.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 1, getAmplifier()));
+		if (targetEntity != null) {
+			new HealTimer(getRPGClass().getPlugin(), 0.20, getRPGClass().getOwner(), 5, 1);
+			new DamageTimer(getRPGClass().getPlugin(), 0.10, targetEntity, getRPGClass().getOwner(), 5, 1);
 			getRPGClass().setAbilityOnCoolDown(this, true);
 			return true;
 		}
+
 		return false;
 	}
 

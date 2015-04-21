@@ -110,7 +110,7 @@ public class Archer extends RPGClass {
 
 	@Override
 	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
-		// TODO Auto-generated method stub
+		
 
 	}
 

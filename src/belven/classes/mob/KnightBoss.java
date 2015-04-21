@@ -70,7 +70,7 @@ public class KnightBoss extends MobClass {
 
 	@Override
 	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
-		// TODO Auto-generated method stub
+		
 
 	}
 

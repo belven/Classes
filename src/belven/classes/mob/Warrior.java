@@ -35,7 +35,7 @@ public class Warrior extends MobClass {
 
 	@Override
 	public void SelfTakenDamage(EntityDamageByEntityEvent event) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
@@ -55,19 +55,19 @@ public class Warrior extends MobClass {
 
 	@Override
 	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void SelfTargetOther(EntityTargetLivingEntityEvent event) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void TimedSelfCast() {
-		// TODO Auto-generated method stub
+		
 
 	}
 }

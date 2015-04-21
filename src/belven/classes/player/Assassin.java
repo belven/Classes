@@ -1,7 +1,10 @@
 package belven.classes.player;
 
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -11,11 +14,13 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Dye;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 
 import belven.classes.ClassManager;
 import belven.classes.RPGClass;
+import belven.classes.player.abilities.Bleed;
 import belven.classes.player.abilities.SoulDrain;
 import belven.classes.player.abilities.Stealth;
 import belven.resources.ClassDrop;
@@ -24,6 +29,7 @@ import belven.resources.EntityFunctions;
 public class Assassin extends RPGClass {
 	private SoulDrain classSoulDrain;
 	private Stealth classStealth;
+	private Bleed bleed;
 
 	public Assassin(Player currentPlayer, ClassManager instance) {
 		super(12, currentPlayer, instance);
@@ -68,14 +74,15 @@ public class Assassin extends RPGClass {
 	}
 
 	public void CanTeleportTo(Location locationToTeleportTo, Location mobLocation) {
-		for (int i = (int) locationToTeleportTo.getY(); i < locationToTeleportTo.getY() + 20; i++) {
-			if (locationToTeleportTo.getBlock().getType() == Material.AIR) {
-				Location temp = EntityFunctions.lookAt(locationToTeleportTo, mobLocation);
-				getOwner().teleport(temp);
-				break;
-			} else {
-				locationToTeleportTo.setY(i);
-			}
+		Block b = locationToTeleportTo.getBlock();
+		Block below = b.getRelative(BlockFace.DOWN);
+
+		if (b.getType() == Material.AIR && below.getType() != Material.AIR) {
+			Location temp = EntityFunctions.lookAt(locationToTeleportTo, mobLocation);
+			getOwner().teleport(temp);
+		} else {
+			Location temp = EntityFunctions.lookAt(mobLocation, mobLocation);
+			getOwner().teleport(temp);
 		}
 	}
 
@@ -96,11 +103,15 @@ public class Assassin extends RPGClass {
 		ItemStack bow = new ItemStack(Material.BOW);
 		ItemStack speed = new Potion(PotionType.SPEED, 2).toItemStack(1);
 
+		Dye dye = new Dye();
+		dye.setColor(DyeColor.RED);
+
 		getClassDrops().add(new ClassDrop(sword, 1));
 
 		AddChanceToDrop(new ClassDrop(bow, 1), 1.0);
 		AddChanceToDrop(new ClassDrop(arrow, 30), 1.0);
 		AddChanceToDrop(new ClassDrop(speed, 1), 1.0);
+		AddChanceToDrop(new ClassDrop(dye.toItemStack(3), 10), 1.0);
 	}
 
 	@Override
@@ -116,9 +127,15 @@ public class Assassin extends RPGClass {
 	@Override
 	public void SelfDamageOther(EntityDamageByEntityEvent event) {
 		Entity damagedEntity = event.getEntity();
+		setTarget((LivingEntity) damagedEntity);
+
 		boolean arrowEntity = event.getDamager().getType() == EntityType.ARROW;
 
 		if (!arrowEntity) {
+			if (!bleed.onCooldown() && bleed.HasRequirements()) {
+				bleed.PerformAbility(event);
+			}
+
 			if (!classStealth.onCooldown()) {
 				classStealth.PerformAbility(event);
 			}
@@ -131,18 +148,19 @@ public class Assassin extends RPGClass {
 
 	@Override
 	public void SetAbilities() {
-		classStealth = new Stealth(this, 1, 10);
-		classSoulDrain = new SoulDrain(this, 1, 0);
-		getAbilities().add(classSoulDrain);
-		getAbilities().add(classStealth);
-		classStealth.cooldown = 3;
+		AddAbility(classSoulDrain = new SoulDrain(this, 1, 0), 3);
+		AddAbility(classStealth = new Stealth(this, 1, 5), 10);
+		AddAbility(bleed = new Bleed(this, 1, 2), 2);
 		SortAbilities();
 	}
 
 	@Override
 	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
-		if (!classSoulDrain.onCooldown() && getPlayer().getItemInHand().getType() == Material.NETHER_STAR) {
-			classSoulDrain.PerformAbility(event);
+		if (event.getRightClicked() instanceof LivingEntity) {
+			setTarget((LivingEntity) event.getRightClicked());
+			if (!classSoulDrain.onCooldown() && classSoulDrain.HasRequirements()) {
+				classSoulDrain.PerformAbility(event);
+			}
 		}
 	}
 }

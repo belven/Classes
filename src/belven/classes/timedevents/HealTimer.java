@@ -44,7 +44,7 @@ public class HealTimer extends BukkitRunnable {
 
 	@Override
 	public void run() {
-		if (count < HealTimes) {
+		if (count < HealTimes && !target.isDead() && target.isValid()) {
 			heal();
 		} else {
 			if (target.hasMetadata("HealTimer")) {

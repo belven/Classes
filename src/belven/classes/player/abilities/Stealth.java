@@ -18,7 +18,7 @@ public class Stealth extends Ability {
 	@Override
 	public boolean PerformAbility(Event e) {
 		getRPGClass().getPlayer().addPotionEffect(
-				new PotionEffect(PotionEffectType.INVISIBILITY, Functions.SecondsToTicks(6), 1));
+				new PotionEffect(PotionEffectType.INVISIBILITY, Functions.SecondsToTicks(getAmplifier()), 1));
 		getRPGClass().setAbilityOnCoolDown(this, true);
 		return true;
 	}

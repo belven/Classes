@@ -63,10 +63,10 @@ public class MageBoss extends MobClass {
 
 	@Override
 	public void TimedSelfCast() {
-		if(getTarget() != nul){
-			getOwner().teleport(Functions.lookAt(getOwner().getLocation(), getTarget().getLocation()));
+		if (getTarget() != null) {
+			getOwner().teleport(EntityFunctions.lookAt(getOwner().getLocation(), getTarget().getLocation()));
 		}
-		
+
 		for (Ability a : getAbilities()) {
 			if (!a.onCooldown()) {
 				if (!a.PerformAbility(null)) {

@@ -25,14 +25,18 @@ public class Cleave extends Ability {
 		if (getRPGClass().getTarget() == null) {
 			return false;
 		}
+		int count = 0;
+		int total = Math.round(getRPGClass().getPlayer().getLevel() / 5) + 1;
+
+		count++;
 
 		getRPGClass().setAbilityOnCoolDown(this);
-		List<LivingEntity> entities = EntityFunctions.getNearbyEntities(getRPGClass().getTarget().getLocation(), 2);
+		List<LivingEntity> entities = EntityFunctions.getNearbyEntities(getRPGClass().getTarget().getLocation(), 4);
 
 		for (LivingEntity le : entities) {
-			if (shouldAffect(le)) {
+			if (count < total && shouldAffect(le)) {
 				le.damage(amplifier, getRPGClass().getOwner());
-				break;
+				count++;
 			}
 		}
 		return true;

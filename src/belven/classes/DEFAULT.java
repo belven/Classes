@@ -36,13 +36,13 @@ public class DEFAULT extends RPGClass {
 
 	@Override
 	public void RightClickEntity(PlayerInteractEntityEvent event, Entity currentEntity) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void SelfCast(PlayerInteractEvent event, Player currentPlayer) {
-		// TODO Auto-generated method stub
+		
 
 	}
 }
